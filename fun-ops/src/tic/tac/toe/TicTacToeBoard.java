@@ -118,7 +118,6 @@ public class TicTacToeBoard implements ActionListener {
 			} else if(playerTwosTurn) {
 				playerTwosTurn(button_1);
 			}
-			
 		} else if(ae.getSource() == button_2 && button_2.getText().isEmpty()) {
 			if(playerOnesTurn) {
 				playerOnesTurn(button_2);
@@ -260,9 +259,6 @@ public class TicTacToeBoard implements ActionListener {
 				new Winner(playerTwo);
 			}
 		}
-		
-		// for player1 being winner ->  3, 6, 9 works   // 2, 5, 8 works // 1, 4, 7 works // 1, 2, 3 works // 4, 5, 6 works // 7, 8, 9 works // 1, 5, 9 works
-		// for both player1 or player2 being winner -> 1, 5, 9 and 3, 5, 7 doesn't work 
 	}
 
 	public void playerOnesTurn(JButton button_) {
