@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField textFieldScore;
 	private JTextField guessesTextField;
 	private JTextField textFieldGuessTheNumber;
 	private JTextField textFieldRandomNumber;
@@ -70,11 +70,11 @@ public class GuessingGame implements ActionListener {
 		lblScore.setBounds(21, 24, 34, 17);
 		frame.getContentPane().add(lblScore);
 		
-		textField = new JTextField(Integer.toString(score));
-		textField.setBounds(64, 22, 52, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		textField.setEditable(false);
+		textFieldScore = new JTextField(Integer.toString(score));
+		textFieldScore.setBounds(64, 22, 52, 20);
+		frame.getContentPane().add(textFieldScore);
+		textFieldScore.setColumns(10);
+		textFieldScore.setEditable(false);
 		
 		JLabel lblGuesses = new JLabel("Guesses");
 		lblGuesses.setBounds(145, 25, 65, 17);
@@ -140,7 +140,7 @@ public class GuessingGame implements ActionListener {
 				guessesTextField.setText(Integer.toString(guesses));
 			} else if(Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
-				guessesTextField.setText("0");
+				guessesTextField.setText(Integer.toString(guesses));
 				randomNumber = ran.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
 				score += 10;
@@ -152,7 +152,8 @@ public class GuessingGame implements ActionListener {
 				}
 			}
 			
-			textField.setText(Integer.toString(score));
+			// set score after action is completed
+			textFieldScore.setText(Integer.toString(score));
 			
 		} else if(ae.getSource() == btnGuess && !textFieldGuessTheNumber.getText().matches("^[0-9]*$")){
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a numeric value");
@@ -161,10 +162,11 @@ public class GuessingGame implements ActionListener {
 			guessesTextField.setText("0");
 			randomNumber = ran.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
-			textField.setText("0");
+			textFieldScore.setText("0");
 			guesses = 0;
 		}
 		
+		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
 	}
 }
