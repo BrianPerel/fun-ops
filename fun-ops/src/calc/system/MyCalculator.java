@@ -31,15 +31,13 @@ public class MyCalculator {
 	public static void setNumber(String num) {
 		num = num.trim();
 
-		// do not set number in memory if % is still attached to number or if string
+		// do not set number in memory if % is still attached to number (enforces fact that code must remove % before this step) or if string
 		// includes a character
-		if (!num.contains("%") && num.matches("[0-9]+")) {
+		if (!num.contains("%")) {
 			nums.add(arrayPosNum, num);
 			arrayPosNum++;
 			arrayNumsFilled++;
-		} else if (!num.matches("[0-9]+") && num.isEmpty()) {
-			nums.add(arrayPosNum, "0");
-		}
+		} 
 	}
 
 	/**

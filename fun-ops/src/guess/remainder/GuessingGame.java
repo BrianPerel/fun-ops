@@ -156,14 +156,13 @@ public class GuessingGame implements ActionListener {
 			
 		} else if(ae.getSource() == btnGuess && !textFieldGuessTheNumber.getText().matches("^[0-9]*$")){
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a numeric value");
-		} 
-		
-		if(ae.getSource() == btnPlayAgain) {			
+		} else if(ae.getSource() == btnPlayAgain) {			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
 			randomNumber = ran.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textField.setText("0");
+			guesses = 0;
 		}
 		
 		textFieldGuessTheNumber.setText("");
