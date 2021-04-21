@@ -368,7 +368,7 @@ public class App implements ActionListener {
 			// removed)
 			else if (textField.getText().trim().substring(0, 1).equals("-")) {
 				textField.setText(cursor_right_position + textField.getText().replace("-", ""));
-			}
+			}			
 		} else if (action.equals(".") && !textField.getText().contains(".")) {
 			textField.setText(textField.getText() + ".");
 		}

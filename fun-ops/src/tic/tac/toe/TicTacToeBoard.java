@@ -99,7 +99,7 @@ public class TicTacToeBoard implements ActionListener {
 		f.getContentPane().add(button_9);
 		button_9.addActionListener(this); 		
 		
-		lblNewLabel.setBounds(63, 15, 170, 38);
+		lblNewLabel.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(lblNewLabel);
 	}
 	
@@ -153,7 +153,7 @@ public class TicTacToeBoard implements ActionListener {
 				playerOnesTurn(button_7);
 			} else if(playerTwosTurn) {
 				playerTwosTurn(button_7);
-			}
+			}			
 		} else if(ae.getSource() == button_8 && button_8.getText().isEmpty()) {
 			if(playerOnesTurn) {
 				playerOnesTurn(button_8);

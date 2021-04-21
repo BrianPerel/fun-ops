@@ -47,10 +47,6 @@ public class Start implements ActionListener {
 	 * Create the application.
 	 */
 	public Start() {
-		initialize1();
-	}
-
-	private void initialize1() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 399, 358);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
