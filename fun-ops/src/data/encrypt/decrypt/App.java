@@ -1,15 +1,26 @@
 package data.encrypt.decrypt;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
-public class App {
+public class App implements ActionListener {
 
 	private JFrame frame;
+	private JTextField loadingTextField;
+	JButton btnLoadFile = new JButton("Load file");
+	JButton btnEncrypt = new JButton("Encrypt");
+	JButton btnDecrypt = new JButton("Decrypt");
+	EncryptDecrypt dataSet1 = new EncryptDecrypt("");
 
 	/**
 	 * Launch the application.
@@ -21,6 +32,9 @@ public class App {
 				try {
 					App window = new App();
 					window.frame.setVisible(true);
+					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
+					window.frame.setResizable(false);
+					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -34,31 +48,68 @@ public class App {
 	 * @throws FileNotFoundException
 	 */
 	public App() throws FileNotFoundException {
-		String data = "";
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 412, 272);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		try {
-			File f1 = new File("secret.txt");
-			Scanner read = new Scanner(f1);
-
-			while (read.hasNextLine()) {
-				data = read.nextLine();
-			}
-
-			read.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
-		}
-
-		EncryptDecrypt dataSet1 = new EncryptDecrypt(data);
-		System.out.println("Data in original form: " + dataSet1);
-		dataSet1.encrypt();
-		System.out.println("Encrypted data: " + dataSet1);
-		dataSet1.decrypt();
-		System.out.println("Decrypted data: " + dataSet1);
+		frame.getContentPane().setLayout(null);
+		
+		btnLoadFile.setBounds(80, 57, 89, 23);
+		frame.getContentPane().add(btnLoadFile);
+		btnLoadFile.addActionListener(this);
+		btnLoadFile.setFocusable(false);
+		
+		loadingTextField = new JTextField();
+		loadingTextField.setBounds(234, 57, 86, 20);
+		frame.getContentPane().add(loadingTextField);
+		loadingTextField.setColumns(10);
+		
+		btnEncrypt.setBounds(80, 132, 89, 23);
+		frame.getContentPane().add(btnEncrypt);
+		btnEncrypt.addActionListener(this);
+		
+		btnDecrypt.setBounds(231, 131, 89, 23);
+		frame.getContentPane().add(btnDecrypt);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(41, 105, 307, 2);
+		frame.getContentPane().add(separator);
+		btnDecrypt.addActionListener(this);	
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		String data = "";
+				
+		if(ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty()) {
+			try {
+				File f1 = new File(loadingTextField.getText());
+				Scanner read = new Scanner(f1);
 
+				while (read.hasNextLine()) {
+					data = read.nextLine();
+				}
+				
+				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
+				dataSet1 = new EncryptDecrypt(data);
+
+				read.close();
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
+				loadingTextField.setText("");
+			}
+		} else if(ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered");
+		}
+		
+		else if(ae.getSource() == btnEncrypt) {
+			dataSet1.encrypt();
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
+		}
+		
+		else if(ae.getSource() == btnDecrypt) {
+			dataSet1.decrypt();
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
+		}
+	}
 }

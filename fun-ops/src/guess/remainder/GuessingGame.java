@@ -52,13 +52,6 @@ public class GuessingGame implements ActionListener {
 	 * Create the application.
 	 */
 	public GuessingGame() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
@@ -71,10 +64,10 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(lblScore);
 		
 		textFieldScore = new JTextField(Integer.toString(score));
+		textFieldScore.setEditable(false);
 		textFieldScore.setBounds(64, 22, 52, 20);
 		frame.getContentPane().add(textFieldScore);
 		textFieldScore.setColumns(10);
-		textFieldScore.setEditable(false);
 		
 		JLabel lblGuesses = new JLabel("Guesses");
 		lblGuesses.setBounds(145, 25, 65, 17);
@@ -84,7 +77,7 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setEditable(false);
 		guessesTextField.setColumns(10);
 		guessesTextField.setBounds(204, 23, 52, 20);
-		frame.getContentPane().add(guessesTextField);		
+		frame.getContentPane().add(guessesTextField);	
 		
 		ImageIcon image = new ImageIcon(getClass().getResource("question.jpg"));
 		JLabel lblImage = new JLabel(image);
@@ -115,7 +108,8 @@ public class GuessingGame implements ActionListener {
 		textFieldGuessTheNumber.setBounds(345, 189, 52, 20);
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
-		textFieldGuessTheNumber.addActionListener(this); 		
+		textFieldGuessTheNumber.addActionListener(this); 
+		textFieldGuessTheNumber.setFocusable(true);
 
 		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
 		lblScoringInfo.setBounds(283, 26, 172, 17);

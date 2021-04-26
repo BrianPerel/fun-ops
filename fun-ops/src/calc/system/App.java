@@ -340,7 +340,7 @@ public class App implements ActionListener {
 
 				// re set all array values to 0
 				Arrays.fill(operatorFlags, Boolean.FALSE);
-				Collections.fill(MyCalculator.nums, null);
+				Collections.fill(MyCalculator.nums, "");
 				Collections.fill(MyCalculator.doubleNums, 0.0);
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
