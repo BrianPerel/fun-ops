@@ -4,6 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * Class performs encryption and decryption process
+ * @author Brian Perel
+ *
+ */
 public class EncryptDecrypt implements IEncryptDecrypt {
 	
 	private String data; // field to hold data from file provided by user 
@@ -21,9 +26,10 @@ public class EncryptDecrypt implements IEncryptDecrypt {
 	/**
 	 * encrypt data given through constructor set to data field.
 	 * Traverse data field String 
+	 * @throws IOException 
 	 */
 	@Override
-	public void encrypt() {
+	public void encrypt() throws IOException {
 		if(!encrypted) { // checks if encryption process has already occurred. Since you can't encrypt encrypted data  
 			StringBuilder masked = new StringBuilder("");
 			
@@ -36,20 +42,22 @@ public class EncryptDecrypt implements IEncryptDecrypt {
 			// cast the StringBuilder into a String 
 			data = masked.toString();
 			
+			FileWriter myWriter = new FileWriter(App.fileName);
+
 			try {
-				FileWriter myWriter = new FileWriter("secret.txt");
 				myWriter.write(data);
-				myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			myWriter.close();
 			 
 			encrypted = true;
 		}
 	}
 
 	@Override
-	public String decrypt() {
+	public String decrypt() throws IOException {
 		// checks to make sure encryption has already occured. Otherwise it won't be possible to decrypt un-encrypted data 
 		if(encrypted) {
 			StringBuilder unmasked = new StringBuilder();
@@ -63,13 +71,15 @@ public class EncryptDecrypt implements IEncryptDecrypt {
 			// cast the StringBuilder into a String 
 			data = unmasked.toString();
 			
+			FileWriter myWriter = new FileWriter(App.fileName);
+
 			try {
-				FileWriter myWriter = new FileWriter("secret.txt");
 				myWriter.write(data);
-				myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			myWriter.close();
 			
 			encrypted = false;
 		}

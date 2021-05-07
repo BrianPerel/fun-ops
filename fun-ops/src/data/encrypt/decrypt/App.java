@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -13,6 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+/**
+ * Encryption-decryption application
+ * @author Brian Perel
+ *
+ */
 public class App implements ActionListener {
 
 	private JFrame frame;
@@ -20,7 +26,10 @@ public class App implements ActionListener {
 	JButton btnLoadFile = new JButton("Load file");
 	JButton btnEncrypt = new JButton("Encrypt");
 	JButton btnDecrypt = new JButton("Decrypt");
-	EncryptDecrypt dataSet1 = new EncryptDecrypt("");
+	EncryptDecrypt dataSet1;
+	String data = "";	
+	static String fileName;
+	boolean fileLoaded;
 
 	/**
 	 * Launch the application.
@@ -78,38 +87,60 @@ public class App implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent ae) {
-		String data = "";
+	public void actionPerformed(ActionEvent ae) {		
 				
-		if(ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty()) {
+		if(ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
+			
+			Scanner read = null;
+			
 			try {
 				File f1 = new File(loadingTextField.getText());
-				Scanner read = new Scanner(f1);
+				read = new Scanner(f1);
 
 				while (read.hasNextLine()) {
 					data = read.nextLine();
 				}
 				
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
+				fileName = f1.toString();
 				dataSet1 = new EncryptDecrypt(data);
-
-				read.close();
+				fileLoaded = true;
+				
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
 				loadingTextField.setText("");
 			}
+			
+			read.close();
+
 		} else if(ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered");
 		}
 		
-		else if(ae.getSource() == btnEncrypt) {
-			dataSet1.encrypt();
+		else if(ae.getSource() == btnEncrypt && !data.isBlank()) {
+			try {
+				dataSet1.encrypt();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
 		}
 		
-		else if(ae.getSource() == btnDecrypt) {
-			dataSet1.decrypt();
+		else if(ae.getSource() == btnDecrypt && !data.isBlank()) {
+			try {
+				dataSet1.decrypt();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
+		}
+		
+		else if(data.isBlank() && ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet");
+		}
+
+		else if(ae.getSource() == btnLoadFile && fileLoaded) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded");
 		}
 	}
 }
