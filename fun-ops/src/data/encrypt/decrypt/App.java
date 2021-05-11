@@ -89,6 +89,7 @@ public class App implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {		
 				
+		// if filename isn't empty or file hasn't yet been loaded
 		if(ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
 			
 			Scanner read = null;
@@ -113,10 +114,14 @@ public class App implements ActionListener {
 			
 			read.close();
 
-		} else if(ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
+		} 
+		
+		// if file load textfield is empty while load file btn is pushed
+		else if(ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered");
 		}
 		
+		// if loaded file isn't blank, allow encryption op  
 		else if(ae.getSource() == btnEncrypt && !data.isBlank()) {
 			try {
 				dataSet1.encrypt();
@@ -126,6 +131,7 @@ public class App implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
 		}
 		
+		// if loaded file isn't blank, allow decryption op 
 		else if(ae.getSource() == btnDecrypt && !data.isBlank()) {
 			try {
 				dataSet1.decrypt();
@@ -135,10 +141,12 @@ public class App implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
 		
-		else if(data.isBlank() && ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt) {
+		// if loaded file is blank or decrypt btn pushed 
+		else if(data.isBlank() && ae.getSource() == btnEncrypt && ae.getSource() == btnDecrypt) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet");
 		}
 
+		// if file has been already been loaded and load file btn pushed 
 		else if(ae.getSource() == btnLoadFile && fileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded");
 		}

@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Brian Perel
  *
  */
-public class EncryptDecrypt implements IEncryptDecrypt {
+public class EncryptDecrypt {
 	
 	private String data; // field to hold data from file provided by user 
 	private boolean encrypted; // flag to tell if encryption has already occured or not 
@@ -28,7 +28,6 @@ public class EncryptDecrypt implements IEncryptDecrypt {
 	 * Traverse data field String 
 	 * @throws IOException 
 	 */
-	@Override
 	public void encrypt() throws IOException {
 		if(!encrypted) { // checks if encryption process has already occurred. Since you can't encrypt encrypted data  
 			StringBuilder masked = new StringBuilder("");
@@ -56,7 +55,6 @@ public class EncryptDecrypt implements IEncryptDecrypt {
 		}
 	}
 
-	@Override
 	public String decrypt() throws IOException {
 		// checks to make sure encryption has already occured. Otherwise it won't be possible to decrypt un-encrypted data 
 		if(encrypted) {

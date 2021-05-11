@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 /**
- * Application implementation for the UI. Builds and displays all GUI components
+ * Application implementation for the calculator's UI. Builds and displays all GUI components
  * for the calculator. Note: the reason for all this back and forth casting is
  * because textField and all other Swing GUI components are type String class
  * <br>
