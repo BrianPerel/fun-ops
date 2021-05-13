@@ -140,9 +140,9 @@ public class MyCalculator {
 	}
 
 	/**
-	 * calls appropriate requested operation
+	 * calls appropriate requested operation after converting String to Double and then formatting return value 
 	 * 
-	 * @return result value after performing operation
+	 * @return formatted result value after performing operation
 	 */
 	public String compute() {
 		stringToDoubleConv();

@@ -109,6 +109,7 @@ public class App implements ActionListener {
 				
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
+				read = new Scanner("");
 				loadingTextField.setText("");
 			}
 			

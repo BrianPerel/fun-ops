@@ -44,7 +44,7 @@ public class Start implements ActionListener {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the application. Build all components
 	 */
 	public Start() {
 		frame = new JFrame();
@@ -78,23 +78,28 @@ public class Start implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
+		// remove whitespace from name textfields before proceeding 
 		TicTacToeBoard.playerOne = textField.getText().trim();
 		TicTacToeBoard.playerTwo = textField_1.getText().trim();
-		
+
+		// if start button is pushed and both name fields arn't empty 
 		if (ae.getSource() == startBtn && !textField.getText().isEmpty() && !textField_1.getText().isEmpty()) {
-						
-			if(textField.getText().equals(textField_1.getText())) {
+
+			// if first name field equals the second one
+			if (textField.getText().equals(textField_1.getText())) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
 				textField.setText("");
 				textField_1.setText("");
-				return;
+				return; 
 			}
 
+			// if first letter of player one's name is lowercase make upper case 
 			if (Character.isLowerCase(TicTacToeBoard.playerOne.charAt(0))) {
 				TicTacToeBoard.playerOne = (TicTacToeBoard.playerOne.charAt(0) + "").toUpperCase()
 						+ TicTacToeBoard.playerOne.substring(1);
 			}
 
+			// if first letter of player two's name is lowercase make upper case 
 			if (Character.isLowerCase(TicTacToeBoard.playerTwo.charAt(0))) {
 				TicTacToeBoard.playerTwo = (TicTacToeBoard.playerTwo.charAt(0) + "").toUpperCase()
 						+ TicTacToeBoard.playerTwo.substring(1);
@@ -102,8 +107,9 @@ public class Start implements ActionListener {
 
 			frame.dispose();
 			new TicTacToeBoard();
-		}
-		else if(textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
+
+		// if both name textfields are empty
+		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players");
 		}
 	}

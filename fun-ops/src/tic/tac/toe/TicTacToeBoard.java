@@ -33,11 +33,11 @@ public class TicTacToeBoard implements ActionListener {
 	static String playerOne;
 	static String playerTwo;
 	private final JLabel lblNewLabel = new JLabel(playerOne + "'s turn:");
-	static boolean playerOnesTurn = true;
-	static boolean playerTwosTurn;
+	boolean playerOnesTurn = true;
+	boolean playerTwosTurn;
 	private static final Logger logger = Logger.getLogger("MyLog");
-	static final String p1Wins = "Player 1 wins!";
-	static final String p2Wins = "Player 2 wins!";
+	final String p1Wins = "Player 1 wins!";
+	final String p2Wins = "Player 2 wins!";
 	
 	// needed to invert these to fix a window2 symbol problem 
 	static final String P_ONE_SHAPE = "O";
