@@ -2,25 +2,20 @@ package data.encrypt.decrypt;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 
 /**
- * Class performs encryption and decryption process
+ * Class performs encryption and decryption process. Note: file to encrypt or decrypt must be kept in same directory as this .jar file
  * @author Brian Perel
  *
  */
 public class EncryptDecrypt {
 	
 	private String data; // field to hold data from file provided by user 
-	private boolean encrypted; // flag to tell if encryption has already occured or not 
-	private int shift; // shift field used to add a random number value during data String traversal 
-	private Random generator; // random class generator
+	private boolean encrypted; // flag to tell if encryption has already occurred or not 
 	
 	public EncryptDecrypt(String data) {
 		this.data = data;
 		encrypted = false;
-		generator = new Random();
-		shift = generator.nextInt(10) + 5;
 	}
 
 	/**
@@ -31,12 +26,13 @@ public class EncryptDecrypt {
 	 */
 	public void encrypt() throws IOException {
 		if(!encrypted) { // checks if encryption process has already occurred. Since you can't encrypt encrypted data  
-			StringBuilder masked = new StringBuilder(""); // create blank variable that will store a line of random characters same length as original sentence in txt file 
+			StringBuilder masked = new StringBuilder(""); // create blank variable that will store a line of random characters of same length as original sentence in the file 
 			
 			// loop to traverse data String provided by user, in order to replace every character
-			// into a random integer number casted to char type 
+			// with a random integer number added and casted to char type 
 			for(int index = 0; index < data.length(); index++) {
-				masked.append((char) (data.charAt(index) + shift));
+				// example: 'a' is replaced with ('a' + 14) then cast a14 (which is type int) into a char which is 'o'
+				masked.append((char) (data.charAt(index) + 5)); 	
 			}
 			
 			// cast the StringBuilder into a String 
@@ -64,14 +60,14 @@ public class EncryptDecrypt {
 	 * @throws IOException
 	 */
 	public String decrypt() throws IOException {
-		// checks to make sure encryption has already occured. Otherwise it won't be possible to decrypt un-encrypted data 
-		if(encrypted) {
-			StringBuilder unmasked = new StringBuilder();
+
+		StringBuilder unmasked = new StringBuilder();
 			
 			// loop to traverse encrypted data, fill in a blank StringBuilder variable with values from data variable 
-			// into a random integer number casted to char type 
+			// with a random integer number subtracted and casted to char type 
 			for (int index = 0; index < data.length(); index++) {
-				unmasked.append((char) (data.charAt(index) - shift));
+				// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int) into a char which is 'a'
+				unmasked.append((char) (data.charAt(index) - 5)); 
 			}
 			
 			// cast the StringBuilder into a String 
@@ -88,7 +84,6 @@ public class EncryptDecrypt {
 			myWriter.close();
 			
 			encrypted = false;
-		}
 		
 		return data;		
 	}

@@ -15,7 +15,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 /**
- * Encryption-decryption application
+ * Encryption-decryption application. The idea is that the user can load a file, encrypt it's contents, and hold an encrypted file. Then at any point can open this modified file and decrypt it.
  * @author Brian Perel
  *
  */
@@ -150,6 +150,10 @@ public class App implements ActionListener {
 		// if file has been already been loaded and load file btn pushed 
 		else if(ae.getSource() == btnLoadFile && fileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded");
+		}
+		
+		else if(ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet");
 		}
 	}
 }
