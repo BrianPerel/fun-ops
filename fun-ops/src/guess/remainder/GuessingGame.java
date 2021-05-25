@@ -66,17 +66,19 @@ public class GuessingGame implements ActionListener {
 		textFieldScore = new JTextField(Integer.toString(score));
 		textFieldScore.setEditable(false);
 		textFieldScore.setBounds(64, 22, 52, 20);
-		frame.getContentPane().add(textFieldScore);
 		textFieldScore.setColumns(10);
+		textFieldScore.setFocusable(false);
+		frame.getContentPane().add(textFieldScore);
 
-		JLabel lblGuesses = new JLabel("Guesses");
-		lblGuesses.setBounds(145, 25, 65, 17);
+		JLabel lblGuesses = new JLabel("Total Guesses");
+		lblGuesses.setBounds(144, 24, 84, 17);
 		frame.getContentPane().add(lblGuesses);
 
 		guessesTextField = new JTextField(Integer.toString(guesses));
 		guessesTextField.setEditable(false);
 		guessesTextField.setColumns(10);
-		guessesTextField.setBounds(204, 23, 52, 20);
+		guessesTextField.setBounds(238, 22, 52, 20);
+		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
 		ImageIcon image = new ImageIcon(getClass().getResource("question.jpg"));
@@ -93,6 +95,7 @@ public class GuessingGame implements ActionListener {
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);
 		textFieldRandomNumber.setBounds(400, 90, 34, 20);
+		textFieldRandomNumber.setFocusable(false);
 		frame.getContentPane().add(textFieldRandomNumber);
 
 		JLabel lblGuess = new JLabel("Enter a number b/w 1-99 to make 100");
@@ -112,7 +115,7 @@ public class GuessingGame implements ActionListener {
 		textFieldGuessTheNumber.setFocusable(true);
 
 		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
-		lblScoringInfo.setBounds(283, 26, 172, 17);
+		lblScoringInfo.setBounds(315, 24, 172, 17);
 		frame.getContentPane().add(lblScoringInfo);
 
 		btnPlayAgain.setBounds(382, 230, 105, 23);
@@ -128,7 +131,7 @@ public class GuessingGame implements ActionListener {
 			guesses++;
 
 			// if input remainder entered is outside of range 1-99
-			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100 && Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
+			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100 || Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
 				guessesTextField.setText(Integer.toString(guesses));
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {

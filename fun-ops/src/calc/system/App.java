@@ -351,11 +351,12 @@ public class App implements ActionListener {
 		if (action.equals("%") && !textField.getText().equals(cursor_right_position)) {
 			MyCalculator.setNumber(String.valueOf(system.percent(Double.parseDouble(textField.getText()))));
 			textField.setText(textField.getText() + "%");
+		// x\u00B2 -> X^2 symbol
 		} else if (action.equals("x\u00B2") && !textField.getText().equals(cursor_right_position)) {
 			textField.setText(
 					cursor_right_position + Double.toString(Math.pow((Double.valueOf(textField.getText())), 2)));
 		}
-		// 2 square root x symbol
+		// 2\u221Ax -> 2 square root x symbol
 		else if (action.equals("2\u221Ax") && !textField.getText().equals(cursor_right_position)) {
 			textField.setText(cursor_right_position + Math.sqrt(Double.valueOf(textField.getText())));
 		} else if (action.equals("+/-") && !textField.getText().equals(cursor_right_position)) {

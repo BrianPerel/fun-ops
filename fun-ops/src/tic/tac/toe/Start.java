@@ -78,12 +78,12 @@ public class Start implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-		// remove whitespace from name textfields before proceeding 
-		TicTacToeBoard.playerOne = textField.getText().trim();
-		TicTacToeBoard.playerTwo = textField_1.getText().trim();
-
 		// if start button is pushed and both name fields arn't empty 
 		if (ae.getSource() == startBtn && !textField.getText().isEmpty() && !textField_1.getText().isEmpty()) {
+			
+			// remove whitespace from name textfields before proceeding 
+			TicTacToeBoard.playerOne = textField.getText().trim();
+			TicTacToeBoard.playerTwo = textField_1.getText().trim();
 
 			// if first name field equals the second one
 			if (textField.getText().equals(textField_1.getText())) {
@@ -108,7 +108,7 @@ public class Start implements ActionListener {
 			frame.dispose();
 			new TicTacToeBoard();
 
-		// if both name textfields are empty
+		// if both name text fields are empty
 		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players");
 		}
