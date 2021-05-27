@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  * @author Brian Perel
  *
  */
-public class App implements ActionListener {
+public class EncryptionGUI implements ActionListener {
 
 	private JFrame frame;
 	private JTextField loadingTextField;
@@ -39,7 +39,7 @@ public class App implements ActionListener {
 			@Override
 			public void run() {
 				try {
-					App window = new App();
+					EncryptionGUI window = new EncryptionGUI();
 					window.frame.setVisible(true);
 					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 					window.frame.setResizable(false);
@@ -56,7 +56,7 @@ public class App implements ActionListener {
 	 * 
 	 * @throws FileNotFoundException
 	 */
-	public App() throws FileNotFoundException {
+	public EncryptionGUI() throws FileNotFoundException {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 412, 272);

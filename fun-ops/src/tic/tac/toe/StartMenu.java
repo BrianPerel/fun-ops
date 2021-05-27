@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  *         Implementation for start window. Prompts for player's 1 and 2's
  *         names.
  */
-public class Start implements ActionListener {
+public class StartMenu implements ActionListener {
 
 	private JFrame frame;
 	JButton startBtn = new JButton("Start");
@@ -32,7 +32,7 @@ public class Start implements ActionListener {
 			@Override
 			public void run() {
 				try {
-					Start window = new Start();
+					StartMenu window = new StartMenu();
 					window.frame.setVisible(true);
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
@@ -46,7 +46,7 @@ public class Start implements ActionListener {
 	/**
 	 * Create the application. Build all components
 	 */
-	public Start() {
+	public StartMenu() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 399, 358);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

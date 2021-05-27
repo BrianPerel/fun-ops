@@ -112,7 +112,6 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
-		textFieldGuessTheNumber.setFocusable(true);
 
 		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
 		lblScoringInfo.setBounds(315, 24, 172, 17);
@@ -125,7 +124,7 @@ public class GuessingGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
+		
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			guesses++;
