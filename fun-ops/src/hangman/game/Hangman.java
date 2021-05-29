@@ -13,21 +13,24 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 public class Hangman implements KeyListener, FocusListener {
 
 	private JFrame frame;
-	private JTextField letter1TextField;
+	private JFormattedTextField letter1TextField;
+	private JFormattedTextField letter2TextField;
+	private JFormattedTextField letter3TextField;
+	private JFormattedTextField letter4TextField;
 	private JTextField hangmanTextField;
-	private JTextField letter2TextField;
-	private JTextField letter3TextField;
-	private JTextField letter4TextField;
 	private JTextField hangmanWordTextField;
+	private Random rand = new Random();
 	String wrongLetterResult = "YOU LOOSE";
 	// chosen hangman word
 	String word = "";
@@ -46,7 +49,7 @@ public class Hangman implements KeyListener, FocusListener {
 	
 	// flags to indicate this particular letter has been discovered by user and printed
 	boolean w, o, r, d = false;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -84,12 +87,13 @@ public class Hangman implements KeyListener, FocusListener {
 		frame.getContentPane().add(separator);
 		
 		hangmanTextField = new JTextField();
-		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		hangmanTextField.setBounds(29, 31, 151, 172);
 		frame.getContentPane().add(hangmanTextField);
 		hangmanTextField.setColumns(10);
 		hangmanTextField.setEditable(false);
 		hangmanTextField.setFocusable(false);
+		hangmanTextField.setHorizontalAlignment(JTextField.CENTER);
 		
 		hangmanWordTextField = new JTextField();
 		hangmanWordTextField.setBounds(289, 72, 86, 20);
@@ -98,28 +102,28 @@ public class Hangman implements KeyListener, FocusListener {
 		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setFocusable(false);
 		
-		letter1TextField = new JTextField();
+		letter1TextField = new JFormattedTextField(createFormatter("U"));
 		letter1TextField.setBounds(257, 176, 17, 20);
 		frame.getContentPane().add(letter1TextField);
 		letter1TextField.setColumns(10);
 		letter1TextField.addKeyListener(this);
 		letter1TextField.addFocusListener(this);
 		
-		letter2TextField = new JTextField();
+		letter2TextField = new JFormattedTextField(createFormatter("U"));
 		letter2TextField.setColumns(10);
 		letter2TextField.setBounds(284, 176, 17, 20);
 		frame.getContentPane().add(letter2TextField);
 		letter2TextField.addKeyListener(this);
 		letter2TextField.addFocusListener(this);
 		
-		letter3TextField = new JTextField();
+		letter3TextField = new JFormattedTextField(createFormatter("U"));
 		letter3TextField.setColumns(10);
 		letter3TextField.setBounds(311, 176, 17, 20);
 		frame.getContentPane().add(letter3TextField);
 		letter3TextField.addKeyListener(this);
 		letter3TextField.addFocusListener(this);
 		
-		letter4TextField = new JTextField();
+		letter4TextField = new JFormattedTextField(createFormatter("U"));
 		letter4TextField.setColumns(10);
 		letter4TextField.setBounds(338, 176, 17, 20);
 		frame.getContentPane().add(letter4TextField);
@@ -134,11 +138,28 @@ public class Hangman implements KeyListener, FocusListener {
 		lblNewLabel_1.setBounds(243, 31, 151, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
+		getHangmanWord();
+	}
+	
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	        System.exit(-1);
+	    }
+	    return formatter;
+	}
+	
+	/**
+	 * read from list file and randomly select a hangman word
+	 */
+	public void getHangmanWord() {
 		try {
 			// read file of random hangman words
 			File myObj = new File("hangmanWords.txt");
 			Scanner myReader = new Scanner(myObj);
-			Random r = new Random();
 						
 			while(myReader.hasNext()) {
 				// store every line in arraylist 
@@ -147,8 +168,8 @@ public class Hangman implements KeyListener, FocusListener {
 			}
 						
 			// choose random word from txt file
-			word = line.get(r.nextInt(6));
-
+			word = line.get(rand.nextInt(6));
+			
 			myReader.close();
 			
 		} catch (FileNotFoundException e) {
@@ -156,9 +177,22 @@ public class Hangman implements KeyListener, FocusListener {
 		}
 	}
 	
+	
+	/**
+	 * resets the game, occurs when user wins or looses
+	 */
+	public void resetGame() {
+		hangmanTextField.setText(""); hangmanWordTextField.setText(""); letter1TextField.setText("");
+		letter2TextField.setText(""); letter3TextField.setText(""); letter4TextField.setText("");
+		letter1TextField.requestFocus();
+		w = o = r = d = false;
+		getHangmanWord();
+		count = 0;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) { 
-		// Do nothing because method isn't needed but must be overridden due to interface rule
+		// Do nothing here because method isn't needed but must be overridden due to interface rule
 	}
 
 	/**
@@ -199,34 +233,23 @@ public class Hangman implements KeyListener, FocusListener {
 				hangmanTextField.setText(hangmanTextField.getText() + wrongLetterResult.charAt(count));
 	
 				if(count == wrongLetterResult.length()-1) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "YOU LOOSE!!");
-					hangmanTextField.setText(""); hangmanWordTextField.setText(""); letter1TextField.setText("");
-					letter2TextField.setText(""); letter3TextField.setText(""); letter4TextField.setText("");
-					w = o = r = d = false;
+					JOptionPane.showMessageDialog(frame.getComponent(0), "YOU LOOSE.");
+					resetGame();
 				}
 				
 				count++;
 			}
 			
 			if(w && o && r && d) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "YOU WIN!! The random word was: " + word);
-				hangmanTextField.setText(""); hangmanWordTextField.setText(""); letter1TextField.setText("");
-				letter2TextField.setText(""); letter3TextField.setText(""); letter4TextField.setText("");
-				w = o = r = d = false;
+				JOptionPane.showMessageDialog(frame.getComponent(0), "YOU WIN! The random word was: " + word);
+				resetGame();
 			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {		
-		// code to perform backspace
-		
-		/*
-		 * if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE &&
-		 * hangmanWordTextField.getText().length() > 0) {
-		 * hangmanWordTextField.setText(hangmanWordTextField.getText().substring(0,
-		 * hangmanWordTextField.getText().length()-1)); }
-		 */
+		// Do nothing here because method isn't needed but must be overridden due to interface rule
 	}
 
 	/**
@@ -235,7 +258,7 @@ public class Hangman implements KeyListener, FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {		
 		
-		if(letter1TextField.hasFocus()) {			
+		if(letter1TextField.hasFocus()) {		
 			t1 = true;
 		}
 		
@@ -257,7 +280,7 @@ public class Hangman implements KeyListener, FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-				
+		
 		if(!letter1TextField.hasFocus()) {
 			t1 = false;
 		}
