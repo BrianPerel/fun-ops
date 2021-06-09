@@ -9,8 +9,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 /**
  * Application implementation for the calculator's UI. Builds and displays all GUI components
@@ -24,7 +25,7 @@ import javax.swing.JTextField;
 public class App implements ActionListener {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JFormattedTextField inputTextField;
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean operatorFlags[] = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
@@ -94,12 +95,12 @@ public class App implements ActionListener {
 		frame.getContentPane().add(btnPercent);
 		btnPercent.addActionListener(this);
 
-		textField = new JTextField(cursor_right_position_with_zero);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField.setBounds(178, 27, 170, 40);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		textField.setEditable(false);
+		inputTextField = new JFormattedTextField(cursor_right_position_with_zero);
+		inputTextField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inputTextField.setBounds(178, 27, 170, 40);
+		frame.getContentPane().add(inputTextField);
+		inputTextField.setColumns(10);
+		inputTextField.setEditable(false);
 
 		// Unicode for X^2
 		JButton btnSquare = new JButton("x\u00B2");
@@ -199,6 +200,17 @@ public class App implements ActionListener {
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);
 	}
+	
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	        System.exit(-1);
+	    }
+	    return formatter;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -207,56 +219,56 @@ public class App implements ActionListener {
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
-		if (textField.getText().equals(cursor_right_position_with_zero)) {
-			textField.setText(cursor_right_position);
+		if (inputTextField.getText().equals(cursor_right_position_with_zero)) {
+			inputTextField.setText(cursor_right_position);
 		}
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
 		switch (action) {
 		case "0":
-			textField.setText(textField.getText() + "0");
+			inputTextField.setText(inputTextField.getText() + "0");
 			break;
 
 		case "1":
-			textField.setText(textField.getText() + "1");
+			inputTextField.setText(inputTextField.getText() + "1");
 			break;
 
 		case "2":
-			textField.setText(textField.getText() + "2");
+			inputTextField.setText(inputTextField.getText() + "2");
 			break;
 
 		case "3":
-			textField.setText(textField.getText() + "3");
+			inputTextField.setText(inputTextField.getText() + "3");
 			break;
 
 		case "4":
-			textField.setText(textField.getText() + "4");
+			inputTextField.setText(inputTextField.getText() + "4");
 			break;
 
 		case "5":
-			textField.setText(textField.getText() + "5");
+			inputTextField.setText(inputTextField.getText() + "5");
 			break;
 
 		case "6":
-			textField.setText(textField.getText() + "6");
+			inputTextField.setText(inputTextField.getText() + "6");
 			break;
 
 		case "7":
-			textField.setText(textField.getText() + "7");
+			inputTextField.setText(inputTextField.getText() + "7");
 			break;
 
 		case "8":
-			textField.setText(textField.getText() + "8");
+			inputTextField.setText(inputTextField.getText() + "8");
 			break;
 
 		case "9":
-			textField.setText(textField.getText() + "9");
+			inputTextField.setText(inputTextField.getText() + "9");
 			break;
 
 		// actions for symbol buttons
 		case "CE":
-			textField.setText(cursor_right_position_with_zero);
+			inputTextField.setText(cursor_right_position_with_zero);
 			Collections.fill(MyCalculator.nums, null);
 			Collections.fill(MyCalculator.doubleNums, 0.0);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
@@ -267,7 +279,7 @@ public class App implements ActionListener {
 			break;
 
 		case "C":
-			textField.setText(cursor_right_position_with_zero);
+			inputTextField.setText(cursor_right_position_with_zero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
 			Collections.fill(MyCalculator.nums, null);
 			Collections.fill(MyCalculator.doubleNums, 0.0);
@@ -278,48 +290,48 @@ public class App implements ActionListener {
 			break;
 
 		case "*":
-			MyCalculator.setNumber(textField.getText());
-			textField.setText(cursor_right_position);
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
 			operatorFlags[1] = true;
 			break;
 
 		// division symbol
 		case "\u00F7":
-			MyCalculator.setNumber(textField.getText());
-			textField.setText(cursor_right_position);
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
 			operatorFlags[0] = true;
 			break;
 
 		case "+":
-			MyCalculator.setNumber(textField.getText());
-			textField.setText(cursor_right_position);
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
 			operatorFlags[3] = true;
 			break;
 
 		case "-":
-			MyCalculator.setNumber(textField.getText());
-			textField.setText(cursor_right_position);
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
 			operatorFlags[2] = true;
 			break;
 
 		// backspace symbol
 		case "\u232B":
-			textField.setText(textField.getText().substring(0, textField.getText().length() - 1));
+			inputTextField.setText(inputTextField.getText().substring(0, inputTextField.getText().length() - 1));
 			break;
 
 		case "1/x":
 			// validate that the current text in textField isn't blank
-			if (!textField.getText().equals(cursor_right_position)) {
+			if (!inputTextField.getText().equals(cursor_right_position)) {
 				// need to cast below multiple times in order to perform 1/x operation
-				textField.setText(cursor_right_position + Double.toString(1 / Double.valueOf(textField.getText())));
+				inputTextField.setText(cursor_right_position + Double.toString(1 / Double.valueOf(inputTextField.getText())));
 			}
 			break;
 
 		case "=":
 			// if textField label is blank, then no action has been done.
 			// Hence equal operation isn't performed
-			if (!textField.getText().equals(cursor_right_position)) {
-				MyCalculator.setNumber(textField.getText());
+			if (!inputTextField.getText().equals(cursor_right_position)) {
+				MyCalculator.setNumber(inputTextField.getText());
 
 				// perform computation to make the value
 				String value = system.compute();
@@ -333,9 +345,9 @@ public class App implements ActionListener {
 
 				// check for division by zero. Avoid exception being flagged
 				if (MyCalculator.divideByZeroflag) {
-					textField.setText(" Cannot divide by zero");
+					inputTextField.setText(" Cannot divide by zero");
 				} else {
-					textField.setText(cursor_right_position + value);
+					inputTextField.setText(cursor_right_position + value);
 				}
 
 				// re set all array values to 0
@@ -348,30 +360,30 @@ public class App implements ActionListener {
 			}
 		}
 
-		if (action.equals("%") && !textField.getText().equals(cursor_right_position)) {
-			MyCalculator.setNumber(String.valueOf(system.percent(Double.parseDouble(textField.getText()))));
-			textField.setText(textField.getText() + "%");
+		if (action.equals("%") && !inputTextField.getText().equals(cursor_right_position)) {
+			MyCalculator.setNumber(String.valueOf(system.percent(Double.parseDouble(inputTextField.getText()))));
+			inputTextField.setText(inputTextField.getText() + "%");
 		// x\u00B2 -> X^2 symbol
-		} else if (action.equals("x\u00B2") && !textField.getText().equals(cursor_right_position)) {
-			textField.setText(
-					cursor_right_position + Double.toString(Math.pow((Double.valueOf(textField.getText())), 2)));
+		} else if (action.equals("x\u00B2") && !inputTextField.getText().equals(cursor_right_position)) {
+			inputTextField.setText(
+					cursor_right_position + Double.toString(Math.pow((Double.valueOf(inputTextField.getText())), 2)));
 		}
 		// 2\u221Ax -> 2 square root x symbol
-		else if (action.equals("2\u221Ax") && !textField.getText().equals(cursor_right_position)) {
-			textField.setText(cursor_right_position + Math.sqrt(Double.valueOf(textField.getText())));
-		} else if (action.equals("+/-") && !textField.getText().equals(cursor_right_position)) {
+		else if (action.equals("2\u221Ax") && !inputTextField.getText().equals(cursor_right_position)) {
+			inputTextField.setText(cursor_right_position + Math.sqrt(Double.valueOf(inputTextField.getText())));
+		} else if (action.equals("+/-") && !inputTextField.getText().equals(cursor_right_position)) {
 			// if current number is a positive number, number becomes negative (minus is
 			// prepended)
-			if (!textField.getText().trim().substring(0, 1).equals("-")) {
-				textField.setText(cursor_right_position + ("-" + textField.getText().trim()));
+			if (!inputTextField.getText().trim().substring(0, 1).equals("-")) {
+				inputTextField.setText(cursor_right_position + ("-" + inputTextField.getText().trim()));
 			}
 			// if current number is a negative number, number becomes positive (minus is
 			// removed)
-			else if (textField.getText().trim().substring(0, 1).equals("-")) {
-				textField.setText(cursor_right_position + textField.getText().replace("-", ""));
+			else if (inputTextField.getText().trim().substring(0, 1).equals("-")) {
+				inputTextField.setText(cursor_right_position + inputTextField.getText().replace("-", ""));
 			}			
-		} else if (action.equals(".") && !textField.getText().contains(".")) {
-			textField.setText(textField.getText() + ".");
+		} else if (action.equals(".") && !inputTextField.getText().contains(".")) {
+			inputTextField.setText(inputTextField.getText() + ".");
 		}
 	}
 }

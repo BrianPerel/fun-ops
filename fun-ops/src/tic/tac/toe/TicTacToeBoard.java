@@ -2,15 +2,12 @@ package tic.tac.toe;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -32,12 +29,12 @@ public class TicTacToeBoard implements ActionListener {
 	JButton button_9 = new JButton("");
 	static String playerOne;
 	static String playerTwo;
-	private final JLabel lblNewLabel = new JLabel(playerOne + "'s turn:");
 	boolean playerOnesTurn = true;
 	boolean playerTwosTurn;
-	private static final Logger logger = Logger.getLogger("MyLog");
-	final String p1Wins = "Player 1 wins!";
-	final String p2Wins = "Player 2 wins!";
+	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
+	private static final Logger logger_ = Logger.getLogger(TicTacToeBoard.class);
+	final String P1WINS = "Player 1 wins!";
+	final String P2WINS = "Player 2 wins!";
 	
 	// needed to invert these to fix a window2 symbol problem 
 	static final String P_ONE_SHAPE = "O";
@@ -45,17 +42,6 @@ public class TicTacToeBoard implements ActionListener {
 	static boolean start = true;
 	
 	public TicTacToeBoard() { 
-		
-		try {
-			FileHandler fh = new FileHandler("C:/Users/brian/eclipse-workspace/Brians-apps/log/ticTacToe_log.log");
-			logger.addHandler(fh);
-			SimpleFormatter formatter = new SimpleFormatter();
-			fh.setFormatter(formatter);
-			logger.info("Starting tic tac toe log file"); 
-
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
 		
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
@@ -99,8 +85,8 @@ public class TicTacToeBoard implements ActionListener {
 		f.getContentPane().add(button_9);
 		button_9.addActionListener(this); 		
 		
-		lblNewLabel.setBounds(63, 15, 260, 38);
-		f.getContentPane().add(lblNewLabel);
+		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
+		f.getContentPane().add(LABEL_PLAYER_TURN);
 	}
 	
 	@Override
@@ -167,7 +153,7 @@ public class TicTacToeBoard implements ActionListener {
 				playerTwosTurn(button_9);
 			}
 		} else {
-			logger.warning("Invalid Move!");
+			logger_.warn("Invalid Move!");
 		}
 
 		
@@ -180,81 +166,81 @@ public class TicTacToeBoard implements ActionListener {
 		}
 		if(!button_1.getText().isEmpty() && !button_2.getText().isEmpty() && !button_3.getText().isEmpty()) {
 			if(button_1.getText().equals("X") && button_2.getText().equals("X") && button_3.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_1.getText().equals("O") && button_2.getText().equals("O") && button_3.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_4.getText().isEmpty() && !button_5.getText().isEmpty() && !button_6.getText().isEmpty()) {
 			if(button_4.getText().equals("X") && button_5.getText().equals("X") && button_6.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_4.getText().equals("O") && button_5.getText().equals("O") && button_6.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_7.getText().isEmpty() && !button_8.getText().isEmpty() && !button_9.getText().isEmpty()) {
 			if(button_7.getText().equals("X") && button_8.getText().equals("X") && button_9.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_7.getText().equals("O") && button_8.getText().equals("O") && button_9.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_1.getText().isEmpty() && !button_4.getText().isEmpty() && !button_7.getText().isEmpty()) {
 			if(button_1.getText().equals("X") && button_4.getText().equals("X") && button_7.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_1.getText().equals("O") && button_4.getText().equals("O") && button_7.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_2.getText().isEmpty() && !button_5.getText().isEmpty() && !button_8.getText().isEmpty()) {
 			if(button_2.getText().equals("X") && button_5.getText().equals("X") && button_8.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_2.getText().equals("O") && button_5.getText().equals("O") && button_8.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_3.getText().isEmpty() && !button_6.getText().isEmpty() && !button_9.getText().isEmpty()) {
 			if(button_3.getText().equals("X") && button_6.getText().equals("X") && button_9.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_3.getText().equals("O") && button_6.getText().equals("O") && button_9.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_1.getText().isEmpty() && !button_5.getText().isEmpty() && !button_9.getText().isEmpty()) { 
 			if(button_1.getText().equals("X") && button_5.getText().equals("X") && button_9.getText().equals("X")) { 
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_1.getText().equals("O") && button_5.getText().equals("O") && button_9.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
 		} if(!button_3.getText().isEmpty() && !button_5.getText().isEmpty() && !button_7.getText().isEmpty()) {
 			if(button_3.getText().equals("X") && button_5.getText().equals("X") && button_7.getText().equals("X")) {
-				logger.info(p1Wins);
+				logger_.info(P1WINS);
 				f.dispose();
 				new Winner(playerOne);
 			} else if(button_3.getText().equals("O") && button_5.getText().equals("O") && button_7.getText().equals("O")) {
-				logger.info(p2Wins);
+				logger_.info(P2WINS);
 				f.dispose();
 				new Winner(playerTwo);
 			}
@@ -263,14 +249,14 @@ public class TicTacToeBoard implements ActionListener {
 
 	public void playerOnesTurn(JButton button_) {
 		button_.setText(P_ONE_SHAPE);
-		lblNewLabel.setText(playerOne + "'s turn:");
+		LABEL_PLAYER_TURN.setText(playerOne + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
 		playerTwosTurn = !playerTwosTurn;
 	}
 	
 	public void playerTwosTurn(JButton button_) {
 		button_.setText(P_TWO_SHAPE);
-		lblNewLabel.setText(playerTwo + "'s turn:");
+		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
 		playerTwosTurn = !playerTwosTurn;
 	}

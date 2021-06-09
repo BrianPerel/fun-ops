@@ -21,9 +21,13 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 public class Hangman implements KeyListener, FocusListener {
 
 	private JFrame frame;
+	private static final Logger logger_ = Logger.getLogger("Logging");
 	private JFormattedTextField letter1TextField;
 	private JFormattedTextField letter2TextField;
 	private JFormattedTextField letter3TextField;
@@ -57,6 +61,8 @@ public class Hangman implements KeyListener, FocusListener {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				BasicConfigurator.configure();
+				
 				try {
 					Hangman window = new Hangman();
 					window.frame.setVisible(true);
@@ -65,7 +71,7 @@ public class Hangman implements KeyListener, FocusListener {
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger_.error("Error: " + e.toString());
 				}
 			}
 		});
@@ -94,6 +100,7 @@ public class Hangman implements KeyListener, FocusListener {
 		hangmanTextField.setEditable(false);
 		hangmanTextField.setFocusable(false);
 		hangmanTextField.setHorizontalAlignment(JTextField.CENTER);
+		hangmanTextField.setToolTipText("Your health");
 		
 		hangmanWordTextField = new JTextField();
 		hangmanWordTextField.setBounds(289, 72, 86, 20);
@@ -101,6 +108,7 @@ public class Hangman implements KeyListener, FocusListener {
 		hangmanWordTextField.setColumns(10);
 		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setFocusable(false);
+		hangmanWordTextField.setToolTipText("Secret Word");
 		
 		letter1TextField = new JFormattedTextField(createFormatter("U"));
 		letter1TextField.setBounds(257, 176, 17, 20);
@@ -138,24 +146,6 @@ public class Hangman implements KeyListener, FocusListener {
 		lblNewLabel_1.setBounds(243, 31, 151, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
-		getHangmanWord();
-	}
-	
-	protected MaskFormatter createFormatter(String s) {
-	    MaskFormatter formatter = null;
-	    try {
-	        formatter = new MaskFormatter(s);
-	    } catch (java.text.ParseException exc) {
-	        System.err.println("formatter is bad: " + exc.getMessage());
-	        System.exit(-1);
-	    }
-	    return formatter;
-	}
-	
-	/**
-	 * read from list file and randomly select a hangman word
-	 */
-	public void getHangmanWord() {
 		try {
 			// read file of random hangman words
 			File myObj = new File("hangmanWords.txt");
@@ -166,15 +156,40 @@ public class Hangman implements KeyListener, FocusListener {
 				// to attach a line number to each element
 				line.add(myReader.nextLine());
 			}
-						
-			// choose random word from txt file
-			word = line.get(rand.nextInt(6));
 			
 			myReader.close();
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
+			logger_.error("Error: File not found." + e.toString());
 		}
+				
+		getHangmanWord();
+	}
+	
+	/**
+	 * MaskFormatter is used to specify/create the format of a text field
+	 * @param s is the text field's user input area (the box)
+	 * @return the formatted text field 
+	 */
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        logger_.error("formatter is bad: " + exc.getMessage());
+	        System.exit(-1);
+	    }
+	    return formatter;
+	}
+	
+	/**
+	 * read from list file and randomly select a hangman word
+	 */
+	public void getHangmanWord() {
+		// choose random word from txt file
+		word = line.get(rand.nextInt(6));
+		//	System.out.println(word);
 	}
 	
 	
@@ -182,8 +197,12 @@ public class Hangman implements KeyListener, FocusListener {
 	 * resets the game, occurs when user wins or looses
 	 */
 	public void resetGame() {
-		hangmanTextField.setText(""); hangmanWordTextField.setText(""); letter1TextField.setText("");
-		letter2TextField.setText(""); letter3TextField.setText(""); letter4TextField.setText("");
+		hangmanTextField.setText(""); hangmanWordTextField.setText(""); 
+		// Needed to use setText() twice for each letter to fix extra space being entered
+		letter1TextField.setText(""); letter1TextField.setText("");
+		letter2TextField.setText(""); letter2TextField.setText("");
+		letter3TextField.setText(""); letter3TextField.setText("");
+		letter4TextField.setText(""); letter4TextField.setText("");
 		letter1TextField.requestFocus();
 		w = o = r = d = false;
 		getHangmanWord();
@@ -200,34 +219,36 @@ public class Hangman implements KeyListener, FocusListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {	
-		
+				
 		// accept only letters from user
 		if(KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
 						
 			// text field 1 chosen + letter entered matches first char of 
 			// hangman word + the letter hasn't been guessed yet 
 			if(t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) {
-				hangmanWordTextField.setText(String.valueOf(word.charAt(0)));
+				hangmanWordTextField.setText(String.valueOf(word.charAt(0))); // x000
 				w = true;
 			}
 					
 			else if(t2 && Character.toUpperCase(e.getKeyChar()) == word.charAt(1) && !o) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(1)));
+				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(1))); // 0x00
 				o = true;
 			}
 			
 			else if(t3 && Character.toUpperCase(e.getKeyChar()) == word.charAt(2) && !r) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(2)));
+				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(2))); // 00x0
 				r = true;
 			}
 			
 			else if(t4 && Character.toUpperCase(e.getKeyChar()) == word.charAt(3) && !d) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(3)));
+				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(3))); // 000x
+				// below line of code will force set/display final letter if correct before trigger of winner message appears 
+				letter4TextField.setText(letter4TextField.getText());
 				d = true;
 			}
 			
-			else if(Character.toUpperCase(e.getKeyChar()) != word.charAt(0) && Character.toUpperCase(e.getKeyChar()) != word.charAt(1)
-					&& Character.toUpperCase(e.getKeyChar()) != word.charAt(2) && e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
+			else if(letter1TextField.getText().length() <= 1 && Character.toUpperCase(e.getKeyChar()) != word.charAt(0) 
+					&& Character.toUpperCase(e.getKeyChar()) != word.charAt(1) && Character.toUpperCase(e.getKeyChar()) != word.charAt(2)) {
 											
 				// in large text box add a character for display from 'YOU LOOSE'
 				hangmanTextField.setText(hangmanTextField.getText() + wrongLetterResult.charAt(count));
@@ -253,7 +274,7 @@ public class Hangman implements KeyListener, FocusListener {
 	}
 
 	/**
-	 * Indicates which text field is currently holding insertion pointer
+	 * Indicates which text field is currently holding insertion pointer (at current moment)
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {		
@@ -276,7 +297,7 @@ public class Hangman implements KeyListener, FocusListener {
 	}
 
 	/**
-	 * Indicates if specific text field doesn't not have insertion pointer
+	 * Indicates if specific text field doesn't have insertion pointer (at current moment)
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {

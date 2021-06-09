@@ -9,17 +9,19 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
 	private JTextField textFieldScore;
 	private JTextField guessesTextField;
-	private JTextField textFieldGuessTheNumber;
+	private JFormattedTextField textFieldGuessTheNumber;
 	private JTextField textFieldRandomNumber;
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
@@ -37,7 +39,7 @@ public class GuessingGame implements ActionListener {
 			public void run() {
 				try {
 					GuessingGame window = new GuessingGame();
-					window.frame.setTitle("Guess the number App by: Brian Perel");
+					window.frame.setTitle("Number Guessing Game by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setVisible(true);
@@ -107,8 +109,8 @@ public class GuessingGame implements ActionListener {
 		btnGuess.addActionListener(this);
 		frame.getContentPane().add(btnGuess);
 
-		textFieldGuessTheNumber = new JTextField();
-		textFieldGuessTheNumber.setBounds(345, 189, 52, 20);
+		textFieldGuessTheNumber = new JFormattedTextField(createFormatter("##"));
+		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
@@ -120,6 +122,17 @@ public class GuessingGame implements ActionListener {
 		btnPlayAgain.setBounds(382, 230, 105, 23);
 		frame.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
+	}
+	
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	        System.exit(-1);
+	    }
+	    return formatter;
 	}
 
 	@Override
@@ -152,11 +165,6 @@ public class GuessingGame implements ActionListener {
 
 		}
 
-		// if guess btn is pushed and input is not numeric data
-		else if (ae.getSource() == btnGuess && !textFieldGuessTheNumber.getText().matches("^[0-9]*$")) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a numeric value");
-		}
-
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
@@ -174,5 +182,8 @@ public class GuessingGame implements ActionListener {
 
 		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
+		
+		textFieldGuessTheNumber.requestFocus();
+
 	}
 }
