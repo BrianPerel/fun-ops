@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -32,21 +33,27 @@ public class Hangman implements KeyListener, FocusListener {
 	private JFormattedTextField letter2TextField;
 	private JFormattedTextField letter3TextField;
 	private JFormattedTextField letter4TextField;
-	private JTextField hangmanTextField;
+	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
 	private Random rand = new Random();
-	String wrongLetterResult = "YOU LOOSE";
+
 	// chosen hangman word
 	String word = "";
 		
 	// store contents of random words in arraylist to give ability to extract txt at specific line
 	ArrayList<String> line = new ArrayList<>();
 	
+	// store hangman drawing in arraylist, each part to be displayed is in separate space of arraylist 
+	ArrayList<String> hangString = new ArrayList<String>();
+	
 	// placeholder for a counter
 	int count = 0;
 	
 	// placeholder to store letter entered
 	char letterGuessed;
+	
+	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
+	char tmp = '!';
 	
 	// flags to indicate which of the 4 user guessing text fields have the insertion pointer
 	boolean t1, t2, t3, t4 = false;
@@ -82,6 +89,17 @@ public class Hangman implements KeyListener, FocusListener {
 	 */
 	public Hangman() {
 		
+		// add drawing components to list
+		hangString.add("  __________");
+		hangString.add("\n |        |");
+		hangString.add("\n          0");
+		hangString.add("\n          |");
+		hangString.add("\n       /  |  \\");
+		hangString.add("\n      /   |   \\");
+		hangString.add("\n          |");
+		hangString.add("\n         / \\");
+		hangString.add("\n        /   \\");
+						
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.getContentPane().setBackground(Color.WHITE);
@@ -92,14 +110,13 @@ public class Hangman implements KeyListener, FocusListener {
 		separator.setBounds(223, 158, 171, 7);
 		frame.getContentPane().add(separator);
 		
-		hangmanTextField = new JTextField();
+		hangmanTextField = new JTextArea();
 		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		hangmanTextField.setBounds(29, 31, 151, 172);
+		hangmanTextField.setBounds(30, 3, 151, 193);
 		frame.getContentPane().add(hangmanTextField);
 		hangmanTextField.setColumns(10);
 		hangmanTextField.setEditable(false);
 		hangmanTextField.setFocusable(false);
-		hangmanTextField.setHorizontalAlignment(JTextField.CENTER);
 		hangmanTextField.setToolTipText("Your health");
 		
 		hangmanWordTextField = new JTextField();
@@ -189,7 +206,7 @@ public class Hangman implements KeyListener, FocusListener {
 	public void getHangmanWord() {
 		// choose random word from txt file
 		word = line.get(rand.nextInt(6));
-		//	System.out.println(word);
+		System.out.println(word);
 	}
 	
 	
@@ -249,16 +266,20 @@ public class Hangman implements KeyListener, FocusListener {
 			
 			else if(letter1TextField.getText().length() <= 1 && Character.toUpperCase(e.getKeyChar()) != word.charAt(0) 
 					&& Character.toUpperCase(e.getKeyChar()) != word.charAt(1) && Character.toUpperCase(e.getKeyChar()) != word.charAt(2)) {
-											
-				// in large text box add a character for display from 'YOU LOOSE'
-				hangmanTextField.setText(hangmanTextField.getText() + wrongLetterResult.charAt(count));
+													
+				// defect fix - prevent character from loosing health if same wrong letter was pressed more than once
+				if(e.getKeyChar() != tmp) {
+					hangmanTextField.append(hangString.get(count));
+				}
+				
+				count++;
 	
-				if(count == wrongLetterResult.length()-1) {
+				if(count == hangString.size()) {
 					JOptionPane.showMessageDialog(frame.getComponent(0), "YOU LOOSE.");
 					resetGame();
 				}
 				
-				count++;
+				tmp = e.getKeyChar();				
 			}
 			
 			if(w && o && r && d) {

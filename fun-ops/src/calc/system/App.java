@@ -201,6 +201,11 @@ public class App implements ActionListener {
 		btnEquals.addActionListener(this);
 	}
 	
+	/**
+	 * MaskFormatter is used to specify/create the format of a text field
+	 * @param s is the text field's user input area (the box)
+	 * @return the formatted text field 
+	 */
 	protected MaskFormatter createFormatter(String s) {
 	    MaskFormatter formatter = null;
 	    try {
