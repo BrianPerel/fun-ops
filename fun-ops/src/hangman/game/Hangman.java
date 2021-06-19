@@ -90,15 +90,15 @@ public class Hangman implements KeyListener, FocusListener {
 	public Hangman() {
 		
 		// add drawing components to list
-		hangString.add("  __________");
-		hangString.add("\n |        |");
-		hangString.add("\n          0");
-		hangString.add("\n          |");
-		hangString.add("\n       /  |  \\");
-		hangString.add("\n      /   |   \\");
-		hangString.add("\n          |");
-		hangString.add("\n         / \\");
-		hangString.add("\n        /   \\");
+		hangString.add("  ___________");
+		hangString.add("\n |         |");
+		hangString.add("\n |         0");
+		hangString.add("\n |         |");
+		hangString.add("\n |      /  |  \\");
+		hangString.add("\n |     /   |   \\");
+		hangString.add("\n |         |");
+		hangString.add("\n |        / \\");
+		hangString.add("\n |       /   \\");
 						
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
@@ -111,8 +111,9 @@ public class Hangman implements KeyListener, FocusListener {
 		frame.getContentPane().add(separator);
 		
 		hangmanTextField = new JTextArea();
+		hangmanTextField.setBackground(Color.LIGHT_GRAY);
 		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		hangmanTextField.setBounds(30, 3, 151, 193);
+		hangmanTextField.setBounds(36, 22, 142, 213);
 		frame.getContentPane().add(hangmanTextField);
 		hangmanTextField.setColumns(10);
 		hangmanTextField.setEditable(false);
@@ -165,7 +166,7 @@ public class Hangman implements KeyListener, FocusListener {
 		
 		try {
 			// read file of random hangman words
-			File myObj = new File("hangmanWords.txt");
+			File myObj = new File("WordsForHangman.txt");
 			Scanner myReader = new Scanner(myObj);
 						
 			while(myReader.hasNext()) {

@@ -188,7 +188,7 @@ public class GuessingGame implements ActionListener {
 		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
 		
+		// forces focus to jump from button pressed to guessing text field again
 		textFieldGuessTheNumber.requestFocus();
-
 	}
 }
