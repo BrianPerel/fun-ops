@@ -1,6 +1,6 @@
 Fun ops - A collection of all sorts of different programs I am making that I find interesting.
 
-List of apps:
+List of apps: <br>
 -Calculator
 -Encryption
 -Guessing game
