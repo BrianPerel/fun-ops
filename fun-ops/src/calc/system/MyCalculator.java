@@ -28,7 +28,7 @@ public class MyCalculator {
 	 * 
 	 * @param num number to be set
 	 */
-	public static void setNumber(String num) {
+	public static void setNumber(String num) { 
 
 		// do not set number in memory if % is still attached to number (enforces fact that code must remove % before this step) or if string
 		// includes a character
