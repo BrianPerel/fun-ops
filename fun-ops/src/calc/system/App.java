@@ -14,10 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.text.MaskFormatter;
 
 /**
- * Application implementation for the calculator's UI. Builds and displays all GUI components
- * for the calculator. Note: the reason for all this back and forth casting is
- * because textField and all other Swing GUI components are type String class
- * <br>
+ * Application implementation for the calculator's UI. Builds and displays all
+ * GUI components for the calculator. Note: the reason for all this back and
+ * forth casting is because textField and all other Swing GUI components are
+ * type String class <br>
  * 
  * @author Brian Perel
  * @created Dec 11, 2020
@@ -29,10 +29,14 @@ public class App implements ActionListener {
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean operatorFlags[] = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
+
+	char spaces[] = new char[29];
 	static String cursor_right_position_with_zero;
 	static String cursor_right_position;
 
 	MyCalculator system = new MyCalculator();
+	
+	boolean zeroEnteredByUser;
 
 	/**
 	 * Launch the application.
@@ -59,7 +63,6 @@ public class App implements ActionListener {
 	 */
 	public App() {
 
-		char spaces[] = new char[29];
 		Arrays.fill(spaces, ' ');
 		cursor_right_position = String.valueOf(spaces);
 		cursor_right_position_with_zero = String.valueOf(spaces) + "0";
@@ -120,45 +123,15 @@ public class App implements ActionListener {
 		frame.getContentPane().add(btnDivision);
 		btnDivision.addActionListener(this);
 
-		JButton btnNumberSeven = new JButton("7");
-		btnNumberSeven.setBounds(31, 182, 80, 40);
-		frame.getContentPane().add(btnNumberSeven);
-		btnNumberSeven.addActionListener(this);
-
-		JButton btnNumberEight = new JButton("8");
-		btnNumberEight.setBounds(110, 182, 80, 40);
-		frame.getContentPane().add(btnNumberEight);
-		btnNumberEight.addActionListener(this);
-
-		JButton btnNumberNine = new JButton("9");
-		btnNumberNine.setBounds(189, 182, 80, 40);
-		frame.getContentPane().add(btnNumberNine);
-		btnNumberNine.addActionListener(this);
-
 		JButton btnMultiply = new JButton("*");
 		btnMultiply.setBounds(268, 182, 80, 40);
 		frame.getContentPane().add(btnMultiply);
 		btnMultiply.addActionListener(this);
 
-		JButton btnNumberFour = new JButton("4");
-		btnNumberFour.setBounds(31, 222, 80, 40);
-		frame.getContentPane().add(btnNumberFour);
-		btnNumberFour.addActionListener(this);
-
-		JButton btnNumberFive = new JButton("5");
-		btnNumberFive.setBounds(110, 222, 80, 40);
-		frame.getContentPane().add(btnNumberFive);
-		btnNumberFive.addActionListener(this);
-
-		JButton btnNumberSix = new JButton("6");
-		btnNumberSix.setBounds(189, 222, 80, 40);
-		frame.getContentPane().add(btnNumberSix);
-		btnNumberSix.addActionListener(this);
-
-		JButton btnSubtract = new JButton("-");
-		btnSubtract.setBounds(268, 222, 80, 40);
-		frame.getContentPane().add(btnSubtract);
-		btnSubtract.addActionListener(this);
+		JButton btnNumberZero = new JButton("0");
+		btnNumberZero.setBounds(110, 300, 80, 40);
+		frame.getContentPane().add(btnNumberZero);
+		btnNumberZero.addActionListener(this);
 
 		JButton btnNumberOne = new JButton("1");
 		btnNumberOne.setBounds(31, 263, 80, 40);
@@ -175,20 +148,50 @@ public class App implements ActionListener {
 		frame.getContentPane().add(btnNumberThree);
 		btnNumberThree.addActionListener(this);
 
+		JButton btnNumberFour = new JButton("4");
+		btnNumberFour.setBounds(31, 222, 80, 40);
+		frame.getContentPane().add(btnNumberFour);
+		btnNumberFour.addActionListener(this);
+
+		JButton btnNumberFive = new JButton("5");
+		btnNumberFive.setBounds(110, 222, 80, 40);
+		frame.getContentPane().add(btnNumberFive);
+		btnNumberFive.addActionListener(this);
+
+		JButton btnNumberSix = new JButton("6");
+		btnNumberSix.setBounds(189, 222, 80, 40);
+		frame.getContentPane().add(btnNumberSix);
+		btnNumberSix.addActionListener(this);
+
+		JButton btnNumberSeven = new JButton("7");
+		btnNumberSeven.setBounds(31, 182, 80, 40);
+		frame.getContentPane().add(btnNumberSeven);
+		btnNumberSeven.addActionListener(this);
+
+		JButton btnNumberEight = new JButton("8");
+		btnNumberEight.setBounds(110, 182, 80, 40);
+		frame.getContentPane().add(btnNumberEight);
+		btnNumberEight.addActionListener(this);
+
+		JButton btnNumberNine = new JButton("9");
+		btnNumberNine.setBounds(189, 182, 80, 40);
+		frame.getContentPane().add(btnNumberNine);
+		btnNumberNine.addActionListener(this);
+
+		JButton btnSubtract = new JButton("-");
+		btnSubtract.setBounds(268, 222, 80, 40);
+		frame.getContentPane().add(btnSubtract);
+		btnSubtract.addActionListener(this);
+
 		JButton btnAdd = new JButton("+");
 		btnAdd.setBounds(268, 263, 80, 40);
 		frame.getContentPane().add(btnAdd);
 		btnAdd.addActionListener(this);
 
-		JButton btnNewButton_20 = new JButton("+/-");
-		btnNewButton_20.setBounds(31, 300, 80, 40);
-		frame.getContentPane().add(btnNewButton_20);
-		btnNewButton_20.addActionListener(this);
-
-		JButton btnNumberZero = new JButton("0");
-		btnNumberZero.setBounds(110, 300, 80, 40);
-		frame.getContentPane().add(btnNumberZero);
-		btnNumberZero.addActionListener(this);
+		JButton btnPlusMinus = new JButton("+/-");
+		btnPlusMinus.setBounds(31, 300, 80, 40);
+		frame.getContentPane().add(btnPlusMinus);
+		btnPlusMinus.addActionListener(this);
 
 		JButton btnDecimalPoint = new JButton(".");
 		btnDecimalPoint.setBounds(189, 300, 80, 40);
@@ -200,21 +203,22 @@ public class App implements ActionListener {
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);
 	}
-	
+
 	/**
 	 * MaskFormatter is used to specify/create the format of a text field
+	 * 
 	 * @param s is the text field's user input area (the box)
-	 * @return the formatted text field 
+	 * @return the formatted text field
 	 */
 	protected MaskFormatter createFormatter(String s) {
-	    MaskFormatter formatter = null;
-	    try {
-	        formatter = new MaskFormatter(s);
-	    } catch (java.text.ParseException exc) {
-	        System.err.println("formatter is bad: " + exc.getMessage());
-	        System.exit(-1);
-	    }
-	    return formatter;
+		MaskFormatter formatter = null;
+		try {
+			formatter = new MaskFormatter(s);
+		} catch (java.text.ParseException exc) {
+			System.err.println("formatter is bad: " + exc.getMessage());
+			System.exit(-1);
+		}
+		return formatter;
 	}
 
 	@Override
@@ -224,7 +228,7 @@ public class App implements ActionListener {
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
-		if (inputTextField.getText().equals(cursor_right_position_with_zero)) {
+		if (inputTextField.getText().equals(cursor_right_position_with_zero) && !zeroEnteredByUser) {
 			inputTextField.setText(cursor_right_position);
 		}
 
@@ -233,6 +237,7 @@ public class App implements ActionListener {
 		switch (action) {
 		case "0":
 			inputTextField.setText(inputTextField.getText() + "0");
+			zeroEnteredByUser = true;
 			break;
 
 		case "1":
@@ -328,13 +333,14 @@ public class App implements ActionListener {
 			// validate that the current text in textField isn't blank
 			if (!inputTextField.getText().equals(cursor_right_position)) {
 				// need to cast below multiple times in order to perform 1/x operation
-				inputTextField.setText(cursor_right_position + Double.toString(1 / Double.valueOf(inputTextField.getText())));
+				inputTextField
+						.setText(cursor_right_position + Double.toString(1 / Double.valueOf(inputTextField.getText())));
 			}
 			break;
 
 		case "=":
-			// if textField label is blank, then no action has been done.
-			// Hence equal operation isn't performed
+			// if textField label is blank, then no action has been done by user.
+			// Hence in that scenario equal operation isn't performed
 			if (!inputTextField.getText().equals(cursor_right_position)) {
 				MyCalculator.setNumber(inputTextField.getText());
 
@@ -344,8 +350,8 @@ public class App implements ActionListener {
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
 				// display 25
 				double v = Double.parseDouble(value);
-				if ((v * 10) % 10 == 0) {
-					value = df.format(v);
+				if ((v * 10) % 10 == 0) { // if value calculated is whole number
+					value = df.format(v); // removes zero's after decimal point
 				}
 
 				// check for division by zero. Avoid exception being flagged
@@ -362,13 +368,14 @@ public class App implements ActionListener {
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
 				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
+				zeroEnteredByUser = false;
 			}
 		}
 
 		if (action.equals("%") && !inputTextField.getText().equals(cursor_right_position)) {
 			MyCalculator.setNumber(String.valueOf(system.percent(Double.parseDouble(inputTextField.getText()))));
 			inputTextField.setText(inputTextField.getText() + "%");
-		// x\u00B2 -> X^2 symbol
+			// x\u00B2 -> X^2 symbol
 		} else if (action.equals("x\u00B2") && !inputTextField.getText().equals(cursor_right_position)) {
 			inputTextField.setText(
 					cursor_right_position + Double.toString(Math.pow((Double.valueOf(inputTextField.getText())), 2)));
@@ -386,7 +393,7 @@ public class App implements ActionListener {
 			// removed)
 			else if (inputTextField.getText().trim().substring(0, 1).equals("-")) {
 				inputTextField.setText(cursor_right_position + inputTextField.getText().replace("-", ""));
-			}			
+			}
 		} else if (action.equals(".") && !inputTextField.getText().contains(".")) {
 			inputTextField.setText(inputTextField.getText() + ".");
 		}
