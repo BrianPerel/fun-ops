@@ -112,6 +112,7 @@ public class MyCalculator {
 	 */
 	public double add() {
 		double ans = doubleNums.get(0);
+		
 		for (int i = 1; i < doubleNums.size(); i++) {
 			ans += doubleNums.get(i);
 		}

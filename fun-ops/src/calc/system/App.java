@@ -277,28 +277,6 @@ public class App implements ActionListener {
 			break;
 
 		// actions for symbol buttons
-		case "CE":
-			inputTextField.setText(cursor_right_position_with_zero);
-			Collections.fill(MyCalculator.nums, null);
-			Collections.fill(MyCalculator.doubleNums, 0.0);
-			Arrays.fill(operatorFlags, Boolean.FALSE);
-			MyCalculator.nums.clear();
-			MyCalculator.doubleNums.clear();
-			MyCalculator.divideByZeroflag = false;
-			MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
-			break;
-
-		case "C":
-			inputTextField.setText(cursor_right_position_with_zero);
-			Arrays.fill(operatorFlags, Boolean.FALSE);
-			Collections.fill(MyCalculator.nums, null);
-			Collections.fill(MyCalculator.doubleNums, 0.0);
-			MyCalculator.nums.clear();
-			MyCalculator.doubleNums.clear();
-			MyCalculator.divideByZeroflag = false;
-			MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
-			break;
-
 		case "*":
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
@@ -370,6 +348,17 @@ public class App implements ActionListener {
 				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
 				zeroEnteredByUser = false;
 			}
+		}
+		
+		if(action.equals("CE") || action.equals("C")) {
+			inputTextField.setText(cursor_right_position_with_zero);
+			Arrays.fill(operatorFlags, Boolean.FALSE);
+			Collections.fill(MyCalculator.nums, null);
+			Collections.fill(MyCalculator.doubleNums, 0.0);
+			MyCalculator.nums.clear();
+			MyCalculator.doubleNums.clear();
+			MyCalculator.divideByZeroflag = false;
+			MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
 		}
 
 		if (action.equals("%") && !inputTextField.getText().equals(cursor_right_position)) {
