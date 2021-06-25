@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +24,7 @@ import javax.swing.text.MaskFormatter;
  * @author Brian Perel
  * @created Dec 11, 2020
  */
-public class App implements ActionListener {
+public class App implements ActionListener, KeyListener {
 
 	private JFrame frame;
 	private JFormattedTextField inputTextField;
@@ -104,6 +106,7 @@ public class App implements ActionListener {
 		frame.getContentPane().add(inputTextField);
 		inputTextField.setColumns(10);
 		inputTextField.setEditable(false);
+		inputTextField.addKeyListener(this);
 
 		// Unicode for X^2
 		JButton btnSquare = new JButton("x\u00B2");
@@ -221,6 +224,9 @@ public class App implements ActionListener {
 		return formatter;
 	}
 
+	/**
+	 * This is responsible for listening to when buttons are clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		String action = ae.getActionCommand();
@@ -236,8 +242,10 @@ public class App implements ActionListener {
 		// are utilized as a case
 		switch (action) {
 		case "0":
-			inputTextField.setText(inputTextField.getText() + "0");
-			zeroEnteredByUser = true;
+			if(!inputTextField.getText().equals(cursor_right_position_with_zero)) {
+				inputTextField.setText(inputTextField.getText() + "0");
+				zeroEnteredByUser = true;
+			}
 			break;
 
 		case "1":
@@ -348,11 +356,13 @@ public class App implements ActionListener {
 				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
 				zeroEnteredByUser = false;
 			}
-		}
+			break; // break statement for case equals button
+		} // end switch
 		
 		if(action.equals("CE") || action.equals("C")) {
 			inputTextField.setText(cursor_right_position_with_zero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
+			zeroEnteredByUser = false;
 			Collections.fill(MyCalculator.nums, null);
 			Collections.fill(MyCalculator.doubleNums, 0.0);
 			MyCalculator.nums.clear();
@@ -387,4 +397,134 @@ public class App implements ActionListener {
 			inputTextField.setText(inputTextField.getText() + ".");
 		}
 	}
+
+	/**
+	 * This is responsible for listening to all keyboard keys input
+	 */
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		// remove auto display '0' value from main number entry textField box so that
+		// '0' is not included in calculation
+		// Since it's only needed for display purposes
+		if (inputTextField.getText().equals(cursor_right_position_with_zero) && !zeroEnteredByUser) {
+			inputTextField.setText(cursor_right_position);
+		}
+
+		// actions for numbers 0-9 buttons. No need for default case since all buttons
+		// are utilized as a case
+		switch (e.getKeyChar()) {
+		case KeyEvent.VK_0:
+			inputTextField.setText(inputTextField.getText() + "0");
+			zeroEnteredByUser = true;
+			break;
+
+		case KeyEvent.VK_1:
+			inputTextField.setText(inputTextField.getText() + "1");
+			break;
+
+		case KeyEvent.VK_2:
+			inputTextField.setText(inputTextField.getText() + "2");
+			break;
+
+		case KeyEvent.VK_3:
+			inputTextField.setText(inputTextField.getText() + "3");
+			break;
+
+		case KeyEvent.VK_4:
+			inputTextField.setText(inputTextField.getText() + "4");
+			break;
+
+		case KeyEvent.VK_5:
+			inputTextField.setText(inputTextField.getText() + "5");
+			break;
+
+		case KeyEvent.VK_6:
+			inputTextField.setText(inputTextField.getText() + "6");
+			break;
+
+		case KeyEvent.VK_7:
+			inputTextField.setText(inputTextField.getText() + "7");
+			break;
+
+		case KeyEvent.VK_8:
+			inputTextField.setText(inputTextField.getText() + "8");
+			break;
+
+		case KeyEvent.VK_9:
+			inputTextField.setText(inputTextField.getText() + "9");
+			break;
+
+		// actions for symbol buttons
+		case KeyEvent.VK_SLASH: 
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
+			operatorFlags[0] = true;
+			break;
+		
+		// DOESN'T WORK
+		case KeyEvent.VK_PLUS:
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
+			operatorFlags[3] = true;
+			break;
+	
+		case KeyEvent.VK_MINUS:
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
+			operatorFlags[2] = true;
+			break;
+			
+		case KeyEvent.VK_ENTER: case KeyEvent.VK_EQUALS:
+			// if textField label is blank, then no action has been done by user.
+			// Hence in that scenario equal operation isn't performed
+			if (!inputTextField.getText().equals(cursor_right_position)) {
+				MyCalculator.setNumber(inputTextField.getText());
+
+				// perform computation to make the value
+				String value = system.compute();
+
+				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
+				// display 25
+				double v = Double.parseDouble(value);
+				if ((v * 10) % 10 == 0) { // if value calculated is whole number
+					value = df.format(v); // removes zero's after decimal point
+				}
+
+				// check for division by zero. Avoid exception being flagged
+				if (MyCalculator.divideByZeroflag) {
+					inputTextField.setText(" Cannot divide by zero");
+				} else {
+					inputTextField.setText(cursor_right_position + value);
+				}
+
+				// re set all array values to 0
+				Arrays.fill(operatorFlags, Boolean.FALSE);
+				Collections.fill(MyCalculator.nums, "");
+				Collections.fill(MyCalculator.doubleNums, 0.0);
+				MyCalculator.nums.clear();
+				MyCalculator.doubleNums.clear();
+				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
+				zeroEnteredByUser = false;
+			}
+			break; // break statement for case enter key button
+
+			
+		case KeyEvent.VK_BACK_SPACE:
+			inputTextField.setText(inputTextField.getText().substring(0, inputTextField.getText().length() - 1));
+			break;
+		}
+	}
+
+	/**
+	 * Do nothing because method isn't needed
+	 */
+	@Override
+	public void keyReleased(KeyEvent e) { }
+	
+	/**
+	 * Do nothing because method isn't needed
+	 */
+	@Override
+	public void keyTyped(KeyEvent e) { }
 }
