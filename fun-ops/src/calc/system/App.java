@@ -78,27 +78,32 @@ public class App implements ActionListener, KeyListener {
 		btnTurnToFraction.setBounds(31, 141, 80, 40);
 		frame.getContentPane().add(btnTurnToFraction);
 		btnTurnToFraction.addActionListener(this);
+		btnTurnToFraction.addKeyListener(this);
 
 		JButton btnClearCE = new JButton("CE");
 		btnClearCE.setBounds(110, 100, 80, 40);
 		frame.getContentPane().add(btnClearCE);
 		btnClearCE.addActionListener(this);
+		btnClearCE.addKeyListener(this);
 
 		JButton btnClearC = new JButton("C");
 		btnClearC.setBounds(189, 100, 80, 40);
 		frame.getContentPane().add(btnClearC);
 		btnClearC.addActionListener(this);
+		btnClearC.addKeyListener(this);
 
 		// backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
 		btnBackspace.setBounds(268, 100, 80, 40);
 		frame.getContentPane().add(btnBackspace);
 		btnBackspace.addActionListener(this);
+		btnBackspace.addKeyListener(this);
 
 		JButton btnPercent = new JButton("%");
 		btnPercent.setBounds(31, 100, 80, 40);
 		frame.getContentPane().add(btnPercent);
 		btnPercent.addActionListener(this);
+		btnPercent.addKeyListener(this);
 
 		inputTextField = new JFormattedTextField(cursor_right_position_with_zero);
 		inputTextField.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -113,23 +118,27 @@ public class App implements ActionListener, KeyListener {
 		btnSquare.setBounds(110, 141, 80, 40);
 		frame.getContentPane().add(btnSquare);
 		btnSquare.addActionListener(this);
+		btnSquare.addKeyListener(this);
 
 		// 2 square root x symbol
 		JButton btnSquareRoot = new JButton("2\u221Ax");
 		btnSquareRoot.setBounds(189, 141, 80, 40);
 		frame.getContentPane().add(btnSquareRoot);
 		btnSquareRoot.addActionListener(this);
+		btnSquareRoot.addKeyListener(this);
 
 		// division symbol
 		JButton btnDivision = new JButton("\u00F7");
 		btnDivision.setBounds(268, 141, 80, 40);
 		frame.getContentPane().add(btnDivision);
 		btnDivision.addActionListener(this);
+		btnDivision.addKeyListener(this);
 
 		JButton btnMultiply = new JButton("*");
 		btnMultiply.setBounds(268, 182, 80, 40);
 		frame.getContentPane().add(btnMultiply);
 		btnMultiply.addActionListener(this);
+		btnMultiply.addKeyListener(this);
 
 		JButton btnNumberZero = new JButton("0");
 		btnNumberZero.setBounds(110, 300, 80, 40);
@@ -200,6 +209,7 @@ public class App implements ActionListener, KeyListener {
 		btnDecimalPoint.setBounds(189, 300, 80, 40);
 		frame.getContentPane().add(btnDecimalPoint);
 		btnDecimalPoint.addActionListener(this);
+		btnDecimalPoint.addKeyListener(this);
 
 		JButton btnEquals = new JButton("=");
 		btnEquals.setBounds(268, 300, 80, 40);
@@ -508,11 +518,26 @@ public class App implements ActionListener, KeyListener {
 				zeroEnteredByUser = false;
 			}
 			break; // break statement for case enter key button
-
 			
 		case KeyEvent.VK_BACK_SPACE:
 			inputTextField.setText(inputTextField.getText().substring(0, inputTextField.getText().length() - 1));
 			break;
+		}
+		
+		if (e.getKeyChar() == KeyEvent.VK_PERIOD && !inputTextField.getText().contains(".")) {
+			inputTextField.setText(inputTextField.getText() + ".");
+		} 
+		
+		if(e.getKeyChar() == '*') {
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
+			operatorFlags[1] = true;
+		}
+		
+		if(e.getKeyChar() == '+') {
+			MyCalculator.setNumber(inputTextField.getText());
+			inputTextField.setText(cursor_right_position);
+			operatorFlags[3] = true;
 		}
 	}
 

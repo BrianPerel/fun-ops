@@ -24,9 +24,11 @@ public class Winner implements ActionListener {
 		
 		lblNewLabel.setText("Label");
 		f2.setResizable(false);
-		f2.setBounds(100, 100, 399, 358);
+		f2.setBounds(100, 100, 315, 167);
 		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f2.getContentPane().setLayout(null);
+		f2.setLocationRelativeTo(null);
+
 		
 		if(!winner.equals("Game Over!")) { 
 			lblNewLabel.setText(winner + " wins!");
@@ -38,10 +40,10 @@ public class Winner implements ActionListener {
 		
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				
-		lblNewLabel.setBounds(42, 59, 310, 57);
+		lblNewLabel.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblNewLabel);
 		
-		btn1.setBounds(145, 153, 100, 34);
+		btn1.setBounds(104, 68, 100, 34);
 		f2.getContentPane().add(btn1);
 		f2.setVisible(true);
 		btn1.addActionListener(this); 		

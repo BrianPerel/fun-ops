@@ -76,7 +76,6 @@ public class Hangman implements KeyListener, FocusListener {
 					window.frame.setTitle("Hangman App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-					window.frame.setVisible(true);
 				} catch (Exception e) {
 					logger_.error("Error: " + e.toString());
 				}
@@ -229,7 +228,7 @@ public class Hangman implements KeyListener, FocusListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) { 
-		// Do nothing here because method isn't needed but must be overridden due to interface rule
+		// Do nothing because method isn't needed
 	}
 
 	/**
@@ -237,13 +236,15 @@ public class Hangman implements KeyListener, FocusListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {	
-				
+		
+		if(e.getKeyChar() == KeyEvent.VK_3) { System.out.println("I"); }
+		
 		// accept only letters from user
 		if(KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
 						
 			// text field 1 chosen + letter entered matches first char of 
 			// hangman word + the letter hasn't been guessed yet 
-			if(t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) {
+			if(t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) { 
 				hangmanWordTextField.setText(String.valueOf(word.charAt(0))); // x000
 				w = true;
 			}
@@ -302,7 +303,7 @@ public class Hangman implements KeyListener, FocusListener {
 	public void focusGained(FocusEvent e) {		
 		
 		if(letter1TextField.hasFocus()) {		
-			t1 = true;
+			t1 = true; 
 		}
 		
 		else if(letter2TextField.hasFocus()) {

@@ -10,9 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-
 /**
  * 
  * @author Brian Perel
@@ -26,7 +23,7 @@ public class StartMenu implements ActionListener {
 	JButton startBtn;
 	private JTextField textField;
 	private JTextField textField_1;
-	private static final Logger logger_ = Logger.getLogger(StartMenu.class);
+//	private static final Logger logger_ = Logger.getLogger(StartMenu.class);
 
 	/**
 	 * Launch the application.
@@ -40,10 +37,11 @@ public class StartMenu implements ActionListener {
 					window.frame.setVisible(true);
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
-					BasicConfigurator.configure();
-					logger_.info("Starting tic tac toe log"); 
+					window.frame.setLocationRelativeTo(null);
+			//		BasicConfigurator.configure();
+			//		logger_.info("Starting tic tac toe log"); 
 				} catch (Exception e) {
-					logger_.error("Error: " + e.toString());
+			//		logger_.error("Error: " + e.toString());
 					e.printStackTrace();
 				}
 			}
