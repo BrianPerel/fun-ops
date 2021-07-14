@@ -38,10 +38,10 @@ public class StartMenu implements ActionListener {
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-			//		BasicConfigurator.configure();
-			//		logger_.info("Starting tic tac toe log"); 
+					// BasicConfigurator.configure();
+					// logger_.info("Starting tic tac toe log");
 				} catch (Exception e) {
-			//		logger_.error("Error: " + e.toString());
+					// logger_.error("Error: " + e.toString());
 					e.printStackTrace();
 				}
 			}
@@ -84,10 +84,10 @@ public class StartMenu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-		// if start button is pushed and both name fields arn't empty 
+		// if start button is pushed and both name fields arn't empty
 		if (ae.getSource() == startBtn && !textField.getText().isEmpty() && !textField_1.getText().isEmpty()) {
-			
-			// remove whitespace from name textfields before proceeding 
+
+			// remove whitespace from name textfields before proceeding
 			TicTacToeBoard.playerOne = textField.getText().trim();
 			TicTacToeBoard.playerTwo = textField_1.getText().trim();
 
@@ -96,16 +96,16 @@ public class StartMenu implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
 				textField.setText("");
 				textField_1.setText("");
-				return; 
+				return;
 			}
 
-			// if first letter of player one's name is lowercase make upper case 
+			// if first letter of player one's name is lowercase make upper case
 			if (Character.isLowerCase(TicTacToeBoard.playerOne.charAt(0))) {
 				TicTacToeBoard.playerOne = (TicTacToeBoard.playerOne.charAt(0) + "").toUpperCase()
 						+ TicTacToeBoard.playerOne.substring(1);
 			}
 
-			// if first letter of player two's name is lowercase make upper case 
+			// if first letter of player two's name is lowercase make upper case
 			if (Character.isLowerCase(TicTacToeBoard.playerTwo.charAt(0))) {
 				TicTacToeBoard.playerTwo = (TicTacToeBoard.playerTwo.charAt(0) + "").toUpperCase()
 						+ TicTacToeBoard.playerTwo.substring(1);
@@ -114,7 +114,7 @@ public class StartMenu implements ActionListener {
 			frame.dispose();
 			new TicTacToeBoard();
 
-		// if both name text fields are empty
+			// if both name text fields are empty
 		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players");
 		}

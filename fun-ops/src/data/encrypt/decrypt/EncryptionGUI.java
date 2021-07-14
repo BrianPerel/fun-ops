@@ -1,5 +1,6 @@
 package data.encrypt.decrypt;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 /**
- * Encryption-decryption application. The idea is that the user can load a file, encrypt it's contents, and hold an encrypted file. Then at any point can open this modified file and decrypt it.
+ * Encryption-decryption application. The idea is that the user can load a file,
+ * encrypt it's contents, and hold an encrypted file. Then at any point can open
+ * this modified file and decrypt it.
+ * 
  * @author Brian Perel
  *
  */
@@ -27,7 +31,7 @@ public class EncryptionGUI implements ActionListener {
 	JButton btnEncrypt = new JButton("Encrypt");
 	JButton btnDecrypt = new JButton("Decrypt");
 	EncryptDecrypt dataSet1;
-	String data = "";	
+	String data = "";
 	static String fileName;
 	boolean fileLoaded;
 
@@ -57,73 +61,90 @@ public class EncryptionGUI implements ActionListener {
 	 * @throws FileNotFoundException
 	 */
 	public EncryptionGUI() throws FileNotFoundException {
-		
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 412, 272);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		btnLoadFile.setBounds(80, 57, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
-		
+
 		loadingTextField = new JTextField();
 		loadingTextField.setBounds(234, 57, 86, 20);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
-		
+
 		btnEncrypt.setBounds(80, 132, 89, 23);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
-		
+
 		btnDecrypt.setBounds(231, 131, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(41, 105, 307, 2);
 		frame.getContentPane().add(separator);
-		btnDecrypt.addActionListener(this);	
+		btnDecrypt.addActionListener(this);
 	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent ae) {		
-				
+	public void actionPerformed(ActionEvent ae) {
+
 		// if filename isn't empty or file hasn't yet been loaded
-		if(ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
-			
+		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
+
 			Scanner read = null;
-			
+
 			try {
-				File f1 = new File(loadingTextField.getText());
+				// File f1 = new File(loadingTextField.getText());
+				File f1 = new File("secret.txt");
 				read = new Scanner(f1);
 
 				while (read.hasNextLine()) {
 					data = read.nextLine();
 				}
-				
+
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
 				fileName = f1.toString();
 				dataSet1 = new EncryptDecrypt(data);
 				fileLoaded = true;
-				
+
+				// check if Desktop is supported by Platform or not
+				if (!Desktop.isDesktopSupported()) {
+					JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					read.close();
+					return;
+				}
+
+				// check if this file exists
+				if (f1.exists()) {
+					// open the specified file
+					Desktop.getDesktop().open(f1);
+				}
+
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
 				read = new Scanner("");
 				loadingTextField.setText("");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			
+
 			read.close();
 
-		} 
-		
+		}
+
 		// if file load textfield is empty while load file btn is pushed
-		else if(ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
+		else if (ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered");
 		}
-		
-		// if loaded file isn't blank, allow encryption op  
-		else if(ae.getSource() == btnEncrypt && !data.isBlank()) {
+
+		// if loaded file isn't blank, allow encryption op
+		else if (ae.getSource() == btnEncrypt && !data.isBlank()) {
 			try {
 				dataSet1.encrypt();
 			} catch (IOException e) {
@@ -131,9 +152,9 @@ public class EncryptionGUI implements ActionListener {
 			}
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
 		}
-		
-		// if loaded file isn't blank, allow decryption op 
-		else if(ae.getSource() == btnDecrypt && !data.isBlank()) {
+
+		// if loaded file isn't blank, allow decryption op
+		else if (ae.getSource() == btnDecrypt && !data.isBlank()) {
 			try {
 				dataSet1.decrypt();
 			} catch (IOException e) {
@@ -141,18 +162,18 @@ public class EncryptionGUI implements ActionListener {
 			}
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
-		
-		// if loaded file is blank or decrypt btn pushed 
-		else if(data.isBlank() && ae.getSource() == btnEncrypt && ae.getSource() == btnDecrypt) {
+
+		// if loaded file is blank or decrypt btn pushed
+		else if (data.isBlank() && ae.getSource() == btnEncrypt && ae.getSource() == btnDecrypt) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet");
 		}
 
-		// if file has been already been loaded and load file btn pushed 
-		else if(ae.getSource() == btnLoadFile && fileLoaded) {
+		// if file has been already been loaded and load file btn pushed
+		else if (ae.getSource() == btnLoadFile && fileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded");
 		}
-		
-		else if(ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
+
+		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet");
 		}
 	}

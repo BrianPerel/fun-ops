@@ -19,7 +19,8 @@ public class MyCalculator {
 
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to double
-	static List<String> nums = new ArrayList<>(); // hold values input into calculator, max width should be 10 point values
+	static List<String> nums = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
+													// values
 	static List<Double> doubleNums = new ArrayList<>(); // container for when values are converted
 
 	/**
@@ -28,16 +29,17 @@ public class MyCalculator {
 	 * 
 	 * @param num number to be set
 	 */
-	public static void setNumber(String num) { 
+	public static void setNumber(String num) {
 
-		// do not set number in memory if % is still attached to number (enforces fact that code must remove % before this step) or if string
+		// do not set number in memory if % is still attached to number (enforces fact
+		// that code must remove % before this step) or if string
 		// includes a character
 		if (!num.contains("%")) {
 			num = num.trim();
 			nums.add(arrayPosNum, num);
 			arrayPosNum++;
 			arrayNumsFilled++;
-		} 
+		}
 	}
 
 	/**
@@ -112,7 +114,7 @@ public class MyCalculator {
 	 */
 	public double add() {
 		double ans = doubleNums.get(0);
-		
+
 		for (int i = 1; i < doubleNums.size(); i++) {
 			ans += doubleNums.get(i);
 		}
@@ -141,7 +143,8 @@ public class MyCalculator {
 	}
 
 	/**
-	 * calls appropriate requested operation after converting String to Double and then formatting return value 
+	 * calls appropriate requested operation after converting String to Double and
+	 * then formatting return value
 	 * 
 	 * @return formatted result value after performing operation
 	 */

@@ -26,7 +26,8 @@ public class GuessingGame implements ActionListener {
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
 	Random ran = new Random();
-	int randomNumber = ran.nextInt(100);
+	// random number will be between 10 and 99
+	int randomNumber = ran.nextInt(99) + 10;
 	int guesses = 0;
 	int score = 0;
 
@@ -51,7 +52,7 @@ public class GuessingGame implements ActionListener {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the application - Build the GUI
 	 */
 	public GuessingGame() {
 		frame = new JFrame();
@@ -123,32 +124,34 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 	}
-	
+
 	/**
 	 * MaskFormatter is used to specify/create the format of a text field
+	 * 
 	 * @param s is the text field's user input area (the box)
-	 * @return the formatted text field 
+	 * @return the formatted text field
 	 */
 	protected MaskFormatter createFormatter(String s) {
-	    MaskFormatter formatter = null;
-	    try {
-	        formatter = new MaskFormatter(s);
-	    } catch (java.text.ParseException exc) {
-	        System.err.println("formatter is bad: " + exc.getMessage());
-	        System.exit(-1);
-	    }
-	    return formatter;
+		MaskFormatter formatter = null;
+		try {
+			formatter = new MaskFormatter(s);
+		} catch (java.text.ParseException exc) {
+			System.err.println("formatter is bad: " + exc.getMessage());
+			System.exit(-1);
+		}
+		return formatter;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
+
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			guesses++;
 
 			// if input remainder entered is outside of range 1-99
-			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100 || Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
+			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
+					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
 				guessesTextField.setText(Integer.toString(guesses));
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
@@ -179,15 +182,15 @@ public class GuessingGame implements ActionListener {
 			textFieldScore.setText("0");
 			guesses = 0;
 		}
-		
+
 		// if guess btn is pushed and input is empty
-		else if(ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
+		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 
 		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
-		
+
 		// forces focus to jump from button pressed to guessing text field again
 		textFieldGuessTheNumber.requestFocus();
 	}

@@ -37,7 +37,7 @@ public class App implements ActionListener, KeyListener {
 	static String cursor_right_position;
 
 	MyCalculator system = new MyCalculator();
-	
+
 	boolean zeroEnteredByUser;
 
 	/**
@@ -144,16 +144,19 @@ public class App implements ActionListener, KeyListener {
 		btnNumberZero.setBounds(110, 300, 80, 40);
 		frame.getContentPane().add(btnNumberZero);
 		btnNumberZero.addActionListener(this);
+		btnNumberZero.addKeyListener(this);
 
 		JButton btnNumberOne = new JButton("1");
 		btnNumberOne.setBounds(31, 263, 80, 40);
 		frame.getContentPane().add(btnNumberOne);
 		btnNumberOne.addActionListener(this);
+		btnNumberOne.addKeyListener(this);
 
 		JButton btnNumberTwo = new JButton("2");
 		btnNumberTwo.setBounds(110, 263, 80, 40);
 		frame.getContentPane().add(btnNumberTwo);
 		btnNumberTwo.addActionListener(this);
+		btnNumberTwo.addKeyListener(this);
 
 		JButton btnNumberThree = new JButton("3");
 		btnNumberThree.setBounds(189, 263, 80, 40);
@@ -164,46 +167,55 @@ public class App implements ActionListener, KeyListener {
 		btnNumberFour.setBounds(31, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFour);
 		btnNumberFour.addActionListener(this);
+		btnNumberFour.addKeyListener(this);
 
 		JButton btnNumberFive = new JButton("5");
 		btnNumberFive.setBounds(110, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFive);
 		btnNumberFive.addActionListener(this);
+		btnNumberFive.addKeyListener(this);
 
 		JButton btnNumberSix = new JButton("6");
 		btnNumberSix.setBounds(189, 222, 80, 40);
 		frame.getContentPane().add(btnNumberSix);
 		btnNumberSix.addActionListener(this);
+		btnNumberSix.addKeyListener(this);
 
 		JButton btnNumberSeven = new JButton("7");
 		btnNumberSeven.setBounds(31, 182, 80, 40);
 		frame.getContentPane().add(btnNumberSeven);
 		btnNumberSeven.addActionListener(this);
+		btnNumberSeven.addKeyListener(this);
 
 		JButton btnNumberEight = new JButton("8");
 		btnNumberEight.setBounds(110, 182, 80, 40);
 		frame.getContentPane().add(btnNumberEight);
 		btnNumberEight.addActionListener(this);
+		btnNumberEight.addKeyListener(this);
 
 		JButton btnNumberNine = new JButton("9");
 		btnNumberNine.setBounds(189, 182, 80, 40);
 		frame.getContentPane().add(btnNumberNine);
 		btnNumberNine.addActionListener(this);
+		btnNumberNine.addKeyListener(this);
 
 		JButton btnSubtract = new JButton("-");
 		btnSubtract.setBounds(268, 222, 80, 40);
 		frame.getContentPane().add(btnSubtract);
 		btnSubtract.addActionListener(this);
+		btnSubtract.addKeyListener(this);
 
 		JButton btnAdd = new JButton("+");
 		btnAdd.setBounds(268, 263, 80, 40);
 		frame.getContentPane().add(btnAdd);
 		btnAdd.addActionListener(this);
+		btnAdd.addKeyListener(this);
 
 		JButton btnPlusMinus = new JButton("+/-");
 		btnPlusMinus.setBounds(31, 300, 80, 40);
 		frame.getContentPane().add(btnPlusMinus);
 		btnPlusMinus.addActionListener(this);
+		btnPlusMinus.addKeyListener(this);
 
 		JButton btnDecimalPoint = new JButton(".");
 		btnDecimalPoint.setBounds(189, 300, 80, 40);
@@ -215,6 +227,7 @@ public class App implements ActionListener, KeyListener {
 		btnEquals.setBounds(268, 300, 80, 40);
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);
+		btnEquals.addKeyListener(this);
 	}
 
 	/**
@@ -252,7 +265,7 @@ public class App implements ActionListener, KeyListener {
 		// are utilized as a case
 		switch (action) {
 		case "0":
-			if(!inputTextField.getText().equals(cursor_right_position_with_zero)) {
+			if (!inputTextField.getText().equals(cursor_right_position_with_zero)) {
 				inputTextField.setText(inputTextField.getText() + "0");
 				zeroEnteredByUser = true;
 			}
@@ -368,8 +381,8 @@ public class App implements ActionListener, KeyListener {
 			}
 			break; // break statement for case equals button
 		} // end switch
-		
-		if(action.equals("CE") || action.equals("C")) {
+
+		if (action.equals("CE") || action.equals("C")) {
 			inputTextField.setText(cursor_right_position_with_zero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
 			zeroEnteredByUser = false;
@@ -413,7 +426,7 @@ public class App implements ActionListener, KeyListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
@@ -466,26 +479,27 @@ public class App implements ActionListener, KeyListener {
 			break;
 
 		// actions for symbol buttons
-		case KeyEvent.VK_SLASH: 
+		case KeyEvent.VK_SLASH:
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
 			operatorFlags[0] = true;
 			break;
-		
+
 		// DOESN'T WORK
 		case KeyEvent.VK_PLUS:
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
 			operatorFlags[3] = true;
 			break;
-	
+
 		case KeyEvent.VK_MINUS:
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
 			operatorFlags[2] = true;
 			break;
-			
-		case KeyEvent.VK_ENTER: case KeyEvent.VK_EQUALS:
+
+		case KeyEvent.VK_ENTER:
+		case KeyEvent.VK_EQUALS:
 			// if textField label is blank, then no action has been done by user.
 			// Hence in that scenario equal operation isn't performed
 			if (!inputTextField.getText().equals(cursor_right_position)) {
@@ -518,23 +532,23 @@ public class App implements ActionListener, KeyListener {
 				zeroEnteredByUser = false;
 			}
 			break; // break statement for case enter key button
-			
+
 		case KeyEvent.VK_BACK_SPACE:
 			inputTextField.setText(inputTextField.getText().substring(0, inputTextField.getText().length() - 1));
 			break;
 		}
-		
+
 		if (e.getKeyChar() == KeyEvent.VK_PERIOD && !inputTextField.getText().contains(".")) {
 			inputTextField.setText(inputTextField.getText() + ".");
-		} 
-		
-		if(e.getKeyChar() == '*') {
+		}
+
+		if (e.getKeyChar() == '*') {
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
 			operatorFlags[1] = true;
 		}
-		
-		if(e.getKeyChar() == '+') {
+
+		if (e.getKeyChar() == '+') {
 			MyCalculator.setNumber(inputTextField.getText());
 			inputTextField.setText(cursor_right_position);
 			operatorFlags[3] = true;
@@ -545,11 +559,13 @@ public class App implements ActionListener, KeyListener {
 	 * Do nothing because method isn't needed
 	 */
 	@Override
-	public void keyReleased(KeyEvent e) { }
-	
+	public void keyReleased(KeyEvent e) {
+	}
+
 	/**
 	 * Do nothing because method isn't needed
 	 */
 	@Override
-	public void keyTyped(KeyEvent e) { }
+	public void keyTyped(KeyEvent e) {
+	}
 }
