@@ -13,7 +13,7 @@ import javax.swing.JLabel;
  *
  *         Implementation for tic tac toe game board. Initiates the game.
  */
-public class TicTacToeBoard implements ActionListener {
+public class GameBoard implements ActionListener {
 
 	private JFrame f = new JFrame("Tic Tac Toe");
 	JButton button_1 = new JButton("");
@@ -39,7 +39,7 @@ public class TicTacToeBoard implements ActionListener {
 	static final String P_TWO_SHAPE = "X";
 	static boolean start = true;
 
-	public TicTacToeBoard() {
+	public GameBoard() {
 
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);

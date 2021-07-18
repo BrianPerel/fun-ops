@@ -53,7 +53,7 @@ public class Winner implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btn1) {
 			f2.dispose();
-			new TicTacToeBoard();
+			new GameBoard();
 		}
 	}
 }

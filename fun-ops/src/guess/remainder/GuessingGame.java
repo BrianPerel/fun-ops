@@ -108,6 +108,7 @@ public class GuessingGame implements ActionListener {
 
 		btnGuess.setBounds(255, 230, 105, 23);
 		btnGuess.addActionListener(this);
+		btnGuess.setBackground(Color.green);
 		frame.getContentPane().add(btnGuess);
 
 		textFieldGuessTheNumber = new JFormattedTextField(createFormatter("##"));
@@ -121,8 +122,9 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(lblScoringInfo);
 
 		btnPlayAgain.setBounds(382, 230, 105, 23);
-		frame.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
+		btnPlayAgain.setBackground(Color.ORANGE);
+		frame.getContentPane().add(btnPlayAgain);
 	}
 
 	/**
@@ -180,6 +182,7 @@ public class GuessingGame implements ActionListener {
 			randomNumber = ran.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
+			score = 0;
 			guesses = 0;
 		}
 

@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,12 +19,14 @@ import javax.swing.text.MaskFormatter;
  * Application implementation for the calculator's UI. Builds and displays all
  * GUI components for the calculator. Note: the reason for all this back and
  * forth casting is because textField and all other Swing GUI components are
- * type String class <br>
+ * type String class. I extended KeyAdapter abstract class instead of KeyListener 
+ * for the purpose of not having to hold override methods that I won't be using 
+ * <br>
  * 
  * @author Brian Perel
  * @created Dec 11, 2020
  */
-public class App implements ActionListener, KeyListener {
+public class App extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
 	private JFormattedTextField inputTextField;
@@ -33,12 +35,12 @@ public class App implements ActionListener, KeyListener {
 														// clicked
 
 	char spaces[] = new char[29];
-	static String cursor_right_position_with_zero;
-	static String cursor_right_position;
+	static String cursorRightPositionedWithZero;
+	static String cursorRightPositioned;
 
 	MyCalculator system = new MyCalculator();
 
-	boolean zeroEnteredByUser;
+	boolean numberZeroEnteredByUser;
 
 	/**
 	 * Launch the application.
@@ -66,8 +68,8 @@ public class App implements ActionListener, KeyListener {
 	public App() {
 
 		Arrays.fill(spaces, ' ');
-		cursor_right_position = String.valueOf(spaces);
-		cursor_right_position_with_zero = String.valueOf(spaces) + "0";
+		cursorRightPositioned = String.valueOf(spaces);
+		cursorRightPositionedWithZero = String.valueOf(spaces) + "0";
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 436);
@@ -105,7 +107,7 @@ public class App implements ActionListener, KeyListener {
 		btnPercent.addActionListener(this);
 		btnPercent.addKeyListener(this);
 
-		inputTextField = new JFormattedTextField(cursor_right_position_with_zero);
+		inputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
 		inputTextField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		inputTextField.setBounds(178, 27, 170, 40);
 		frame.getContentPane().add(inputTextField);
@@ -257,17 +259,17 @@ public class App implements ActionListener, KeyListener {
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
-		if (inputTextField.getText().equals(cursor_right_position_with_zero) && !zeroEnteredByUser) {
-			inputTextField.setText(cursor_right_position);
+		if (inputTextField.getText().equals(cursorRightPositionedWithZero) && !numberZeroEnteredByUser) {
+			inputTextField.setText(cursorRightPositioned);
 		}
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
 		switch (action) {
 		case "0":
-			if (!inputTextField.getText().equals(cursor_right_position_with_zero)) {
+			if (!inputTextField.getText().equals(cursorRightPositionedWithZero)) {
 				inputTextField.setText(inputTextField.getText() + "0");
-				zeroEnteredByUser = true;
+				numberZeroEnteredByUser = true;
 			}
 			break;
 
@@ -310,26 +312,26 @@ public class App implements ActionListener, KeyListener {
 		// actions for symbol buttons
 		case "*":
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[1] = true;
 			break;
 
 		// division symbol
 		case "\u00F7":
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[0] = true;
 			break;
 
 		case "+":
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[3] = true;
 			break;
 
 		case "-":
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[2] = true;
 			break;
 
@@ -340,17 +342,17 @@ public class App implements ActionListener, KeyListener {
 
 		case "1/x":
 			// validate that the current text in textField isn't blank
-			if (!inputTextField.getText().equals(cursor_right_position)) {
+			if (!inputTextField.getText().equals(cursorRightPositioned)) {
 				// need to cast below multiple times in order to perform 1/x operation
 				inputTextField
-						.setText(cursor_right_position + Double.toString(1 / Double.valueOf(inputTextField.getText())));
+						.setText(cursorRightPositioned + Double.toString(1 / Double.valueOf(inputTextField.getText())));
 			}
 			break;
 
 		case "=":
 			// if textField label is blank, then no action has been done by user.
 			// Hence in that scenario equal operation isn't performed
-			if (!inputTextField.getText().equals(cursor_right_position)) {
+			if (!inputTextField.getText().equals(cursorRightPositioned)) {
 				MyCalculator.setNumber(inputTextField.getText());
 
 				// perform computation to make the value
@@ -367,7 +369,7 @@ public class App implements ActionListener, KeyListener {
 				if (MyCalculator.divideByZeroflag) {
 					inputTextField.setText(" Cannot divide by zero");
 				} else {
-					inputTextField.setText(cursor_right_position + value);
+					inputTextField.setText(cursorRightPositioned + value);
 				}
 
 				// re set all array values to 0
@@ -377,15 +379,15 @@ public class App implements ActionListener, KeyListener {
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
 				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
-				zeroEnteredByUser = false;
+				numberZeroEnteredByUser = false;
 			}
 			break; // break statement for case equals button
 		} // end switch
 
 		if (action.equals("CE") || action.equals("C")) {
-			inputTextField.setText(cursor_right_position_with_zero);
+			inputTextField.setText(cursorRightPositionedWithZero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
-			zeroEnteredByUser = false;
+			numberZeroEnteredByUser = false;
 			Collections.fill(MyCalculator.nums, null);
 			Collections.fill(MyCalculator.doubleNums, 0.0);
 			MyCalculator.nums.clear();
@@ -394,27 +396,27 @@ public class App implements ActionListener, KeyListener {
 			MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
 		}
 
-		if (action.equals("%") && !inputTextField.getText().equals(cursor_right_position)) {
+		if (action.equals("%") && !inputTextField.getText().equals(cursorRightPositioned)) {
 			MyCalculator.setNumber(String.valueOf(system.percent(Double.parseDouble(inputTextField.getText()))));
 			inputTextField.setText(inputTextField.getText() + "%");
 			// x\u00B2 -> X^2 symbol
-		} else if (action.equals("x\u00B2") && !inputTextField.getText().equals(cursor_right_position)) {
+		} else if (action.equals("x\u00B2") && !inputTextField.getText().equals(cursorRightPositioned)) {
 			inputTextField.setText(
-					cursor_right_position + Double.toString(Math.pow((Double.valueOf(inputTextField.getText())), 2)));
+					cursorRightPositioned + Double.toString(Math.pow((Double.valueOf(inputTextField.getText())), 2)));
 		}
 		// 2\u221Ax -> 2 square root x symbol
-		else if (action.equals("2\u221Ax") && !inputTextField.getText().equals(cursor_right_position)) {
-			inputTextField.setText(cursor_right_position + Math.sqrt(Double.valueOf(inputTextField.getText())));
-		} else if (action.equals("+/-") && !inputTextField.getText().equals(cursor_right_position)) {
+		else if (action.equals("2\u221Ax") && !inputTextField.getText().equals(cursorRightPositioned)) {
+			inputTextField.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(inputTextField.getText())));
+		} else if (action.equals("+/-") && !inputTextField.getText().equals(cursorRightPositioned)) {
 			// if current number is a positive number, number becomes negative (minus is
 			// prepended)
 			if (!inputTextField.getText().trim().substring(0, 1).equals("-")) {
-				inputTextField.setText(cursor_right_position + ("-" + inputTextField.getText().trim()));
+				inputTextField.setText(cursorRightPositioned + ("-" + inputTextField.getText().trim()));
 			}
 			// if current number is a negative number, number becomes positive (minus is
 			// removed)
 			else if (inputTextField.getText().trim().substring(0, 1).equals("-")) {
-				inputTextField.setText(cursor_right_position + inputTextField.getText().replace("-", ""));
+				inputTextField.setText(cursorRightPositioned + inputTextField.getText().replace("-", ""));
 			}
 		} else if (action.equals(".") && !inputTextField.getText().contains(".")) {
 			inputTextField.setText(inputTextField.getText() + ".");
@@ -430,8 +432,8 @@ public class App implements ActionListener, KeyListener {
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
-		if (inputTextField.getText().equals(cursor_right_position_with_zero) && !zeroEnteredByUser) {
-			inputTextField.setText(cursor_right_position);
+		if (inputTextField.getText().equals(cursorRightPositionedWithZero) && !numberZeroEnteredByUser) {
+			inputTextField.setText(cursorRightPositioned);
 		}
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
@@ -439,7 +441,7 @@ public class App implements ActionListener, KeyListener {
 		switch (e.getKeyChar()) {
 		case KeyEvent.VK_0:
 			inputTextField.setText(inputTextField.getText() + "0");
-			zeroEnteredByUser = true;
+			numberZeroEnteredByUser = true;
 			break;
 
 		case KeyEvent.VK_1:
@@ -481,20 +483,20 @@ public class App implements ActionListener, KeyListener {
 		// actions for symbol buttons
 		case KeyEvent.VK_SLASH:
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[0] = true;
 			break;
 
 		// DOESN'T WORK
 		case KeyEvent.VK_PLUS:
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[3] = true;
 			break;
 
 		case KeyEvent.VK_MINUS:
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[2] = true;
 			break;
 
@@ -502,7 +504,7 @@ public class App implements ActionListener, KeyListener {
 		case KeyEvent.VK_EQUALS:
 			// if textField label is blank, then no action has been done by user.
 			// Hence in that scenario equal operation isn't performed
-			if (!inputTextField.getText().equals(cursor_right_position)) {
+			if (!inputTextField.getText().equals(cursorRightPositioned)) {
 				MyCalculator.setNumber(inputTextField.getText());
 
 				// perform computation to make the value
@@ -519,7 +521,7 @@ public class App implements ActionListener, KeyListener {
 				if (MyCalculator.divideByZeroflag) {
 					inputTextField.setText(" Cannot divide by zero");
 				} else {
-					inputTextField.setText(cursor_right_position + value);
+					inputTextField.setText(cursorRightPositioned + value);
 				}
 
 				// re set all array values to 0
@@ -529,7 +531,7 @@ public class App implements ActionListener, KeyListener {
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
 				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
-				zeroEnteredByUser = false;
+				numberZeroEnteredByUser = false;
 			}
 			break; // break statement for case enter key button
 
@@ -544,28 +546,14 @@ public class App implements ActionListener, KeyListener {
 
 		if (e.getKeyChar() == '*') {
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[1] = true;
 		}
 
 		if (e.getKeyChar() == '+') {
 			MyCalculator.setNumber(inputTextField.getText());
-			inputTextField.setText(cursor_right_position);
+			inputTextField.setText(cursorRightPositioned);
 			operatorFlags[3] = true;
 		}
-	}
-
-	/**
-	 * Do nothing because method isn't needed
-	 */
-	@Override
-	public void keyReleased(KeyEvent e) {
-	}
-
-	/**
-	 * Do nothing because method isn't needed
-	 */
-	@Override
-	public void keyTyped(KeyEvent e) {
 	}
 }

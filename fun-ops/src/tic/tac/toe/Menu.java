@@ -15,15 +15,15 @@ import javax.swing.JTextField;
  * @author Brian Perel
  *
  *         Implementation for start window. Prompts for player's 1 and 2's
- *         names.
+ *         names. Comment out log4j2 statements when creating a .jar 
  */
-public class StartMenu implements ActionListener {
+public class Menu implements ActionListener {
 
 	private JFrame frame;
 	JButton startBtn;
 	private JTextField textField;
 	private JTextField textField_1;
-//	private static final Logger logger_ = Logger.getLogger(StartMenu.class);
+	//	private static final Logger logger_ = Logger.getLogger(StartMenu.class);
 
 	/**
 	 * Launch the application.
@@ -33,7 +33,7 @@ public class StartMenu implements ActionListener {
 			@Override
 			public void run() {
 				try {
-					StartMenu window = new StartMenu();
+					Menu window = new Menu();
 					window.frame.setVisible(true);
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
@@ -51,7 +51,7 @@ public class StartMenu implements ActionListener {
 	/**
 	 * Create the application. Build all components
 	 */
-	public StartMenu() {
+	public Menu() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 399, 358);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,8 +88,8 @@ public class StartMenu implements ActionListener {
 		if (ae.getSource() == startBtn && !textField.getText().isEmpty() && !textField_1.getText().isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
-			TicTacToeBoard.playerOne = textField.getText().trim();
-			TicTacToeBoard.playerTwo = textField_1.getText().trim();
+			GameBoard.playerOne = textField.getText().trim();
+			GameBoard.playerTwo = textField_1.getText().trim();
 
 			// if first name field equals the second one
 			if (textField.getText().equals(textField_1.getText())) {
@@ -100,19 +100,19 @@ public class StartMenu implements ActionListener {
 			}
 
 			// if first letter of player one's name is lowercase make upper case
-			if (Character.isLowerCase(TicTacToeBoard.playerOne.charAt(0))) {
-				TicTacToeBoard.playerOne = (TicTacToeBoard.playerOne.charAt(0) + "").toUpperCase()
-						+ TicTacToeBoard.playerOne.substring(1);
+			if (Character.isLowerCase(GameBoard.playerOne.charAt(0))) {
+				GameBoard.playerOne = (GameBoard.playerOne.charAt(0) + "").toUpperCase()
+						+ GameBoard.playerOne.substring(1);
 			}
 
 			// if first letter of player two's name is lowercase make upper case
-			if (Character.isLowerCase(TicTacToeBoard.playerTwo.charAt(0))) {
-				TicTacToeBoard.playerTwo = (TicTacToeBoard.playerTwo.charAt(0) + "").toUpperCase()
-						+ TicTacToeBoard.playerTwo.substring(1);
+			if (Character.isLowerCase(GameBoard.playerTwo.charAt(0))) {
+				GameBoard.playerTwo = (GameBoard.playerTwo.charAt(0) + "").toUpperCase()
+						+ GameBoard.playerTwo.substring(1);
 			}
 
 			frame.dispose();
-			new TicTacToeBoard();
+			new GameBoard();
 
 			// if both name text fields are empty
 		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {

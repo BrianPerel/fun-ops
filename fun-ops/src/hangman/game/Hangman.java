@@ -5,8 +5,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.BasicConfigurator;
 
-public class Hangman implements KeyListener, FocusListener {
+public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
-//	private static final Logger logger_ = Logger.getLogger(Hangman.class);
+	//	private static final Logger logger_ = Logger.getLogger(Hangman.class);
 	private JFormattedTextField letter1TextField;
 	private JFormattedTextField letter2TextField;
 	private JFormattedTextField letter3TextField;
@@ -236,11 +236,6 @@ public class Hangman implements KeyListener, FocusListener {
 		count = 0;
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// Do nothing because method isn't needed
-	}
-
 	/**
 	 * Performs appropriate actions when key pressed
 	 */
@@ -304,12 +299,6 @@ public class Hangman implements KeyListener, FocusListener {
 				resetGame();
 			}
 		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// Do nothing here because method isn't needed but must be overridden due to
-		// interface rule
 	}
 
 	/**
