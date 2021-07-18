@@ -27,7 +27,7 @@ import org.apache.log4j.BasicConfigurator;
 public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
-	//	private static final Logger logger_ = Logger.getLogger(Hangman.class);
+	// private static final Logger logger_ = Logger.getLogger(Hangman.class);
 	private JFormattedTextField letter1TextField;
 	private JFormattedTextField letter2TextField;
 	private JFormattedTextField letter3TextField;

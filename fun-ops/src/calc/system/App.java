@@ -19,9 +19,9 @@ import javax.swing.text.MaskFormatter;
  * Application implementation for the calculator's UI. Builds and displays all
  * GUI components for the calculator. Note: the reason for all this back and
  * forth casting is because textField and all other Swing GUI components are
- * type String class. I extended KeyAdapter abstract class instead of KeyListener 
- * for the purpose of not having to hold override methods that I won't be using 
- * <br>
+ * type String class. I extended KeyAdapter abstract class instead of
+ * KeyListener for the purpose of not having to hold override methods that I
+ * won't be using <br>
  * 
  * @author Brian Perel
  * @created Dec 11, 2020

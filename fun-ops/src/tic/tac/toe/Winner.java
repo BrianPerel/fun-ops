@@ -1,5 +1,6 @@
 package tic.tac.toe;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +19,7 @@ import javax.swing.SwingConstants;
 public class Winner implements ActionListener {
 
 	private JFrame f2 = new JFrame("Tic Tac Toe");
-	JButton btn1 = new JButton("Play again");
+	JButton btnPlayAgain = new JButton("Play again");
 	JLabel lblNewLabel = new JLabel();
 
 	public Winner(String winner) {
@@ -43,17 +44,19 @@ public class Winner implements ActionListener {
 		lblNewLabel.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblNewLabel);
 
-		btn1.setBounds(104, 68, 100, 34);
-		f2.getContentPane().add(btn1);
+		btnPlayAgain.setBounds(104, 68, 100, 34);
+		btnPlayAgain.setBackground(new Color(144, 238, 144));
+		f2.getContentPane().add(btnPlayAgain);
 		f2.setVisible(true);
-		btn1.addActionListener(this);
+		btnPlayAgain.addActionListener(this);
+		btnPlayAgain.setFocusable(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btn1) {
+		if (e.getSource() == btnPlayAgain) {
 			f2.dispose();
-			new GameBoard();
+			new GameBoard(false, false, true);
 		}
 	}
 }
