@@ -1,5 +1,6 @@
 package calc.system;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -72,23 +73,27 @@ public class App extends KeyAdapter implements ActionListener {
 		cursorRightPositionedWithZero = String.valueOf(spaces) + "0";
 
 		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setBounds(100, 100, 400, 436);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JButton btnTurnToFraction = new JButton("1/x");
+		btnTurnToFraction.setBackground(Color.WHITE);
 		btnTurnToFraction.setBounds(31, 141, 80, 40);
 		frame.getContentPane().add(btnTurnToFraction);
 		btnTurnToFraction.addActionListener(this);
 		btnTurnToFraction.addKeyListener(this);
 
 		JButton btnClearCE = new JButton("CE");
+		btnClearCE.setBackground(Color.WHITE);
 		btnClearCE.setBounds(110, 100, 80, 40);
 		frame.getContentPane().add(btnClearCE);
 		btnClearCE.addActionListener(this);
 		btnClearCE.addKeyListener(this);
 
 		JButton btnClearC = new JButton("C");
+		btnClearC.setBackground(Color.WHITE);
 		btnClearC.setBounds(189, 100, 80, 40);
 		frame.getContentPane().add(btnClearC);
 		btnClearC.addActionListener(this);
@@ -96,12 +101,14 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
+		btnBackspace.setBackground(Color.WHITE);
 		btnBackspace.setBounds(268, 100, 80, 40);
 		frame.getContentPane().add(btnBackspace);
 		btnBackspace.addActionListener(this);
 		btnBackspace.addKeyListener(this);
 
 		JButton btnPercent = new JButton("%");
+		btnPercent.setBackground(Color.WHITE);
 		btnPercent.setBounds(31, 100, 80, 40);
 		frame.getContentPane().add(btnPercent);
 		btnPercent.addActionListener(this);
@@ -117,6 +124,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// Unicode for X^2
 		JButton btnSquare = new JButton("x\u00B2");
+		btnSquare.setBackground(Color.WHITE);
 		btnSquare.setBounds(110, 141, 80, 40);
 		frame.getContentPane().add(btnSquare);
 		btnSquare.addActionListener(this);
@@ -124,6 +132,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// 2 square root x symbol
 		JButton btnSquareRoot = new JButton("2\u221Ax");
+		btnSquareRoot.setBackground(Color.WHITE);
 		btnSquareRoot.setBounds(189, 141, 80, 40);
 		frame.getContentPane().add(btnSquareRoot);
 		btnSquareRoot.addActionListener(this);
@@ -131,101 +140,118 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// division symbol
 		JButton btnDivision = new JButton("\u00F7");
+		btnDivision.setBackground(Color.WHITE);
 		btnDivision.setBounds(268, 141, 80, 40);
 		frame.getContentPane().add(btnDivision);
 		btnDivision.addActionListener(this);
 		btnDivision.addKeyListener(this);
 
 		JButton btnMultiply = new JButton("*");
+		btnMultiply.setBackground(Color.WHITE);
 		btnMultiply.setBounds(268, 182, 80, 40);
 		frame.getContentPane().add(btnMultiply);
 		btnMultiply.addActionListener(this);
 		btnMultiply.addKeyListener(this);
 
 		JButton btnNumberZero = new JButton("0");
+		btnNumberZero.setBackground(Color.WHITE);
 		btnNumberZero.setBounds(110, 300, 80, 40);
 		frame.getContentPane().add(btnNumberZero);
 		btnNumberZero.addActionListener(this);
 		btnNumberZero.addKeyListener(this);
 
 		JButton btnNumberOne = new JButton("1");
+		btnNumberOne.setBackground(Color.WHITE);
 		btnNumberOne.setBounds(31, 263, 80, 40);
 		frame.getContentPane().add(btnNumberOne);
 		btnNumberOne.addActionListener(this);
 		btnNumberOne.addKeyListener(this);
 
 		JButton btnNumberTwo = new JButton("2");
+		btnNumberTwo.setBackground(Color.WHITE);
 		btnNumberTwo.setBounds(110, 263, 80, 40);
 		frame.getContentPane().add(btnNumberTwo);
 		btnNumberTwo.addActionListener(this);
 		btnNumberTwo.addKeyListener(this);
 
 		JButton btnNumberThree = new JButton("3");
+		btnNumberThree.setBackground(Color.WHITE);
 		btnNumberThree.setBounds(189, 263, 80, 40);
 		frame.getContentPane().add(btnNumberThree);
 		btnNumberThree.addActionListener(this);
 
 		JButton btnNumberFour = new JButton("4");
+		btnNumberFour.setBackground(Color.WHITE);
 		btnNumberFour.setBounds(31, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFour);
 		btnNumberFour.addActionListener(this);
 		btnNumberFour.addKeyListener(this);
 
 		JButton btnNumberFive = new JButton("5");
+		btnNumberFive.setBackground(Color.WHITE);
 		btnNumberFive.setBounds(110, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFive);
 		btnNumberFive.addActionListener(this);
 		btnNumberFive.addKeyListener(this);
 
 		JButton btnNumberSix = new JButton("6");
+		btnNumberSix.setBackground(Color.WHITE);
 		btnNumberSix.setBounds(189, 222, 80, 40);
 		frame.getContentPane().add(btnNumberSix);
 		btnNumberSix.addActionListener(this);
 		btnNumberSix.addKeyListener(this);
 
 		JButton btnNumberSeven = new JButton("7");
+		btnNumberSeven.setBackground(Color.WHITE);
 		btnNumberSeven.setBounds(31, 182, 80, 40);
 		frame.getContentPane().add(btnNumberSeven);
 		btnNumberSeven.addActionListener(this);
 		btnNumberSeven.addKeyListener(this);
 
 		JButton btnNumberEight = new JButton("8");
+		btnNumberEight.setBackground(Color.WHITE);
 		btnNumberEight.setBounds(110, 182, 80, 40);
 		frame.getContentPane().add(btnNumberEight);
 		btnNumberEight.addActionListener(this);
 		btnNumberEight.addKeyListener(this);
 
 		JButton btnNumberNine = new JButton("9");
+		btnNumberNine.setBackground(Color.WHITE);
 		btnNumberNine.setBounds(189, 182, 80, 40);
 		frame.getContentPane().add(btnNumberNine);
 		btnNumberNine.addActionListener(this);
 		btnNumberNine.addKeyListener(this);
 
 		JButton btnSubtract = new JButton("-");
+		btnSubtract.setBackground(Color.WHITE);
 		btnSubtract.setBounds(268, 222, 80, 40);
 		frame.getContentPane().add(btnSubtract);
 		btnSubtract.addActionListener(this);
 		btnSubtract.addKeyListener(this);
 
 		JButton btnAdd = new JButton("+");
+		btnAdd.setBackground(Color.WHITE);
 		btnAdd.setBounds(268, 263, 80, 40);
 		frame.getContentPane().add(btnAdd);
 		btnAdd.addActionListener(this);
 		btnAdd.addKeyListener(this);
 
 		JButton btnPlusMinus = new JButton("+/-");
+		btnPlusMinus.setBackground(Color.WHITE);
 		btnPlusMinus.setBounds(31, 300, 80, 40);
 		frame.getContentPane().add(btnPlusMinus);
 		btnPlusMinus.addActionListener(this);
 		btnPlusMinus.addKeyListener(this);
 
 		JButton btnDecimalPoint = new JButton(".");
+		btnDecimalPoint.setBackground(Color.WHITE);
 		btnDecimalPoint.setBounds(189, 300, 80, 40);
 		frame.getContentPane().add(btnDecimalPoint);
 		btnDecimalPoint.addActionListener(this);
 		btnDecimalPoint.addKeyListener(this);
 
 		JButton btnEquals = new JButton("=");
+		btnEquals.setBackground(Color.WHITE);
 		btnEquals.setBounds(268, 300, 80, 40);
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);

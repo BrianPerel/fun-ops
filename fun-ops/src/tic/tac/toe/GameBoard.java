@@ -41,7 +41,6 @@ public class GameBoard implements ActionListener {
 	static final String PLAYER_ONE_SHAPE = "O";
 	static final String PLAYER_TWO_SHAPE = "X";
 	static boolean start;
-	private final JSeparator separator_3 = new JSeparator();
 
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 		
@@ -104,22 +103,27 @@ public class GameBoard implements ActionListener {
 		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(LABEL_PLAYER_TURN);
 		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(63, 138, 260, 11);
-		f.getContentPane().add(separator);
-		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(63, 221, 260, 11);
+		separator_1.setBounds(63, 138, 260, 11);
+		separator_1.setBackground(Color.blue);
 		f.getContentPane().add(separator_1);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setOrientation(SwingConstants.VERTICAL);
-		separator_2.setBounds(148, 64, 7, 232);
+		separator_2.setBounds(63, 221, 260, 11);
+		separator_2.setBackground(Color.blue);
 		f.getContentPane().add(separator_2);
-		separator_3.setOrientation(SwingConstants.VERTICAL);
-		separator_3.setBounds(237, 64, 7, 232);
 		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setOrientation(SwingConstants.VERTICAL);
+		separator_3.setBounds(148, 64, 7, 232);
+		separator_3.setBackground(Color.blue);
 		f.getContentPane().add(separator_3);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setOrientation(SwingConstants.VERTICAL);
+		separator_4.setBounds(237, 64, 7, 232);
+		separator_4.setBackground(Color.blue);
+		f.getContentPane().add(separator_4);
 	}
 
 	@Override
