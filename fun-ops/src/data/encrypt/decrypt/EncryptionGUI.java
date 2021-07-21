@@ -1,5 +1,6 @@
 package data.encrypt.decrypt;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -71,6 +72,7 @@ public class EncryptionGUI implements ActionListener {
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
+		btnLoadFile.setBackground(new Color(135,206,250));
 
 		loadingTextField = new JTextField();
 		loadingTextField.setBounds(234, 57, 86, 20);
@@ -80,6 +82,7 @@ public class EncryptionGUI implements ActionListener {
 		btnEncrypt.setBounds(80, 132, 89, 23);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
+		btnEncrypt.setBackground(new Color(135,206,250));
 
 		btnDecrypt.setBounds(231, 131, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
@@ -88,6 +91,7 @@ public class EncryptionGUI implements ActionListener {
 		separator.setBounds(41, 105, 307, 2);
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
+		btnDecrypt.setBackground(new Color(135,206,250));
 	}
 
 	@Override
@@ -95,16 +99,21 @@ public class EncryptionGUI implements ActionListener {
 
 		// if filename isn't empty or file hasn't yet been loaded
 		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
-
+			
 			Scanner read = null;
+			
+			String fileToLoad = loadingTextField.getText();
+			
+			if(!loadingTextField.getText().contains(".txt")) {
+				fileToLoad = loadingTextField.getText() + ".txt";
+			}
 
 			try {
-				// File f1 = new File(loadingTextField.getText());
-				File f1 = new File("secret.txt");
+				File f1 = new File(fileToLoad);
 				read = new Scanner(f1);
 
 				while (read.hasNextLine()) {
-					data = read.nextLine();
+					data += read.nextLine();
 				}
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
