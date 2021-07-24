@@ -31,8 +31,8 @@ public class Winner implements ActionListener {
 		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
-		
-		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg")); 
+
+		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
 		JLabel backgroundLabel = new JLabel(image);
 		f2.setContentPane(backgroundLabel);
 

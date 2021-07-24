@@ -106,23 +106,23 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangString.add("\n |       /   \\ \n |");
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 313);
+		frame.setBounds(100, 100, 529, 326);
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		ImageIcon image = new ImageIcon(getClass().getResource("gameBackground.jpg")); 
+
+		ImageIcon image = new ImageIcon(getClass().getResource("gameBackground.jpg"));
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(223, 158, 171, 7);
+		separator.setBounds(272, 168, 171, 7);
 		frame.getContentPane().add(separator);
 
 		hangmanTextField = new JTextArea();
 		hangmanTextField.setBackground(Color.LIGHT_GRAY);
 		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		hangmanTextField.setBounds(36, 11, 142, 239);
+		hangmanTextField.setBounds(59, 21, 142, 239);
 		frame.getContentPane().add(hangmanTextField);
 		hangmanTextField.setColumns(10);
 		hangmanTextField.setEditable(false);
@@ -130,7 +130,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setToolTipText("Your health");
 
 		hangmanWordTextField = new JTextField();
-		hangmanWordTextField.setBounds(289, 72, 86, 20);
+		hangmanWordTextField.setBounds(338, 82, 86, 20);
 		frame.getContentPane().add(hangmanWordTextField);
 		hangmanWordTextField.setColumns(10);
 		hangmanWordTextField.setEditable(false);
@@ -138,7 +138,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanWordTextField.setToolTipText("Secret Word");
 
 		letter1TextField = new JFormattedTextField(createFormatter("U"));
-		letter1TextField.setBounds(257, 176, 17, 20);
+		letter1TextField.setBounds(306, 186, 17, 20);
 		frame.getContentPane().add(letter1TextField);
 		letter1TextField.setColumns(10);
 		letter1TextField.addKeyListener(this);
@@ -146,31 +146,31 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		letter2TextField = new JFormattedTextField(createFormatter("U"));
 		letter2TextField.setColumns(10);
-		letter2TextField.setBounds(284, 176, 17, 20);
+		letter2TextField.setBounds(333, 186, 17, 20);
 		frame.getContentPane().add(letter2TextField);
 		letter2TextField.addKeyListener(this);
 		letter2TextField.addFocusListener(this);
 
 		letter3TextField = new JFormattedTextField(createFormatter("U"));
 		letter3TextField.setColumns(10);
-		letter3TextField.setBounds(311, 176, 17, 20);
+		letter3TextField.setBounds(360, 186, 17, 20);
 		frame.getContentPane().add(letter3TextField);
 		letter3TextField.addKeyListener(this);
 		letter3TextField.addFocusListener(this);
 
 		letter4TextField = new JFormattedTextField(createFormatter("U"));
 		letter4TextField.setColumns(10);
-		letter4TextField.setBounds(338, 176, 17, 20);
+		letter4TextField.setBounds(387, 186, 17, 20);
 		frame.getContentPane().add(letter4TextField);
 		letter4TextField.addKeyListener(this);
 		letter4TextField.addFocusListener(this);
 
 		JLabel lblWordText = new JLabel("WORD:");
-		lblWordText.setBounds(239, 75, 46, 14);
+		lblWordText.setBounds(288, 85, 46, 14);
 		frame.getContentPane().add(lblWordText);
 
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
-		lblHangmanTheme.setBounds(243, 31, 151, 14);
+		lblHangmanTheme.setBounds(292, 41, 151, 14);
 		frame.getContentPane().add(lblHangmanTheme);
 
 		try {

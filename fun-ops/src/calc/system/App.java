@@ -242,7 +242,6 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnPlusMinus);
 		btnPlusMinus.addActionListener(this);
 		btnPlusMinus.addKeyListener(this);
-		
 
 		JButton btnDecimalPoint = new JButton(".");
 		btnDecimalPoint.setBackground(Color.WHITE);

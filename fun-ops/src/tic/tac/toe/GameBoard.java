@@ -44,7 +44,7 @@ public class GameBoard implements ActionListener {
 	static boolean start;
 
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
-		
+
 		start = s;
 		playerOnesTurn = pOnesTurn;
 		playerTwosTurn = pTwosTurn;
@@ -55,7 +55,7 @@ public class GameBoard implements ActionListener {
 		f.getContentPane().setLayout(null);
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
-		
+
 		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
 		JLabel backgroundLabel = new JLabel(image);
 		f.setContentPane(backgroundLabel);
@@ -107,23 +107,23 @@ public class GameBoard implements ActionListener {
 
 		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(LABEL_PLAYER_TURN);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(63, 138, 260, 11);
 		separator_1.setBackground(Color.blue);
 		f.getContentPane().add(separator_1);
-		
+
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(63, 221, 260, 11);
 		separator_2.setBackground(Color.blue);
 		f.getContentPane().add(separator_2);
-		
+
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setOrientation(SwingConstants.VERTICAL);
 		separator_3.setBounds(148, 64, 7, 232);
 		separator_3.setBackground(Color.blue);
 		f.getContentPane().add(separator_3);
-		
+
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setOrientation(SwingConstants.VERTICAL);
 		separator_4.setBounds(237, 64, 7, 232);

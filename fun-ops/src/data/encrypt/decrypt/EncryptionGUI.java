@@ -10,8 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -70,30 +72,34 @@ public class EncryptionGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		btnLoadFile.setBounds(80, 57, 89, 23);
+		ImageIcon image = new ImageIcon(getClass().getResource("mainImage.jpg"));
+		JLabel backgroundLabel = new JLabel(image);
+		frame.setContentPane(backgroundLabel);
+
+		btnLoadFile.setBounds(80, 45, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
-		btnLoadFile.setBackground(new Color(135,206,250));
+		btnLoadFile.setBackground(new Color(135, 206, 250));
 
 		loadingTextField = new JTextField();
-		loadingTextField.setBounds(234, 57, 86, 20);
+		loadingTextField.setBounds(234, 45, 86, 20);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
 
-		btnEncrypt.setBounds(80, 132, 89, 23);
+		btnEncrypt.setBounds(80, 148, 89, 23);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
-		btnEncrypt.setBackground(new Color(135,206,250));
+		btnEncrypt.setBackground(new Color(135, 206, 250));
 
-		btnDecrypt.setBounds(231, 131, 89, 23);
+		btnDecrypt.setBounds(231, 147, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(41, 105, 307, 2);
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
-		btnDecrypt.setBackground(new Color(135,206,250));
+		btnDecrypt.setBackground(new Color(135, 206, 250));
 	}
 
 	@Override
@@ -101,12 +107,12 @@ public class EncryptionGUI implements ActionListener {
 
 		// if filename isn't empty or file hasn't yet been loaded
 		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
-			
+
 			Scanner read = null;
-			
+
 			String fileToLoad = loadingTextField.getText();
-			
-			if(!loadingTextField.getText().contains(".txt")) {
+
+			if (!loadingTextField.getText().contains(".txt")) {
 				fileToLoad = loadingTextField.getText() + ".txt";
 			}
 
@@ -143,14 +149,15 @@ public class EncryptionGUI implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			read.close();
 
 		}
 
 		// if file load textfield is empty while load file btn is pushed
 		else if (ae.getSource() == btnLoadFile && loadingTextField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 		// if loaded file isn't blank, allow encryption op
@@ -177,16 +184,19 @@ public class EncryptionGUI implements ActionListener {
 
 		// if loaded file is blank or decrypt btn pushed
 		else if (data.isBlank() && ae.getSource() == btnEncrypt && ae.getSource() == btnDecrypt) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 		// if file has been already been loaded and load file btn pushed
 		else if (ae.getSource() == btnLoadFile && fileLoaded) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

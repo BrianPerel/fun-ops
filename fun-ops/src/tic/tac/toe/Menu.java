@@ -52,7 +52,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 			}
 		});
 	}
-	
+
 	/**
 	 * Create the application. Build all components
 	 */
@@ -61,11 +61,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.setBounds(100, 100, 399, 358);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg")); 
+
+		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
-		  
+
 		JLabel lblPlayer1 = new JLabel("Player 1:");
 		lblPlayer1.setBounds(107, 59, 83, 25);
 		frame.getContentPane().add(lblPlayer1);
@@ -92,41 +92,42 @@ public class Menu extends KeyAdapter implements ActionListener {
 		textField_1.setBounds(190, 112, 130, 35);
 		frame.getContentPane().add(textField_1);
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ENTER && !textField.getText().isEmpty() &&
-				 !textField_1.getText().isEmpty())  {
-			
-				// remove whitespace from name textfields before proceeding
-				GameBoard.playerOne = textField.getText().trim();
-				GameBoard.playerTwo = textField_1.getText().trim();
-				
-				// if first letter of player one's name is lowercase make upper case
-				if (Character.isLowerCase(GameBoard.playerOne.charAt(0))) {
-					GameBoard.playerOne = (GameBoard.playerOne.charAt(0) + "").toUpperCase()
-							+ GameBoard.playerOne.substring(1);
-				}
+		if (e.getKeyChar() == KeyEvent.VK_ENTER && !textField.getText().isEmpty() && !textField_1.getText().isEmpty()) {
 
-				// if first letter of player two's name is lowercase make upper case
-				if (Character.isLowerCase(GameBoard.playerTwo.charAt(0))) {
-					GameBoard.playerTwo = (GameBoard.playerTwo.charAt(0) + "").toUpperCase()
-							+ GameBoard.playerTwo.substring(1);
-				}
-			
-				frame.dispose();
-				new GameBoard(true, true, false);
+			// remove whitespace from name textfields before proceeding
+			GameBoard.playerOne = textField.getText().trim();
+			GameBoard.playerTwo = textField_1.getText().trim();
 
-		// if one of the 2 textfields doesn't get a name 
-		} else if(textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players");
+			// if first letter of player one's name is lowercase make upper case
+			if (Character.isLowerCase(GameBoard.playerOne.charAt(0))) {
+				GameBoard.playerOne = (GameBoard.playerOne.charAt(0) + "").toUpperCase()
+						+ GameBoard.playerOne.substring(1);
+			}
+
+			// if first letter of player two's name is lowercase make upper case
+			if (Character.isLowerCase(GameBoard.playerTwo.charAt(0))) {
+				GameBoard.playerTwo = (GameBoard.playerTwo.charAt(0) + "").toUpperCase()
+						+ GameBoard.playerTwo.substring(1);
+			}
+
+			frame.dispose();
+			new GameBoard(true, true, false);
+
+			// if one of the 2 textfields doesn't get a name
+		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} // if first name field equals the second one
 		else if (textField.getText().equals(textField_1.getText())) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			textField.setText("");
 			textField_1.setText("");
-		} 
-	} 
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -143,7 +144,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
 				textField.setText("");
 				textField_1.setText("");
-				// return statement prevents bottom of method statements from being executed (frame.dispose() and new GameBoard()) 
+				// return statement prevents bottom of method statements from being executed
+				// (frame.dispose() and new GameBoard())
 				return;
 			}
 
@@ -164,7 +166,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 			// if both name text fields are empty
 		} else if (textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
