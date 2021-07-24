@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,10 +61,14 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.setBounds(100, 100, 399, 358);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Player 1:");
-		lblNewLabel.setBounds(107, 59, 83, 25);
-		frame.getContentPane().add(lblNewLabel);
+		
+		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg")); 
+		JLabel backgroundLabel = new JLabel(image);
+		frame.setContentPane(backgroundLabel);
+		  
+		JLabel lblPlayer1 = new JLabel("Player 1:");
+		lblPlayer1.setBounds(107, 59, 83, 25);
+		frame.getContentPane().add(lblPlayer1);
 
 		btnStart = new JButton("Start");
 		btnStart.setBounds(145, 192, 107, 35);
@@ -78,9 +83,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
-		JLabel lblPlayer = new JLabel("Player 2:");
-		lblPlayer.setBounds(107, 122, 64, 14);
-		frame.getContentPane().add(lblPlayer);
+		JLabel lblPlayer2 = new JLabel("Player 2:");
+		lblPlayer2.setBounds(107, 122, 64, 14);
+		frame.getContentPane().add(lblPlayer2);
 
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,10 +31,14 @@ public class Winner implements ActionListener {
 		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
+		
+		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg")); 
+		JLabel backgroundLabel = new JLabel(image);
+		f2.setContentPane(backgroundLabel);
 
-		if (!winner.equals("Game Over!")) {
+		if (!winner.equals("Game Over!") && !winner.equals("Game Over! Tie")) {
 			lblNewLabel.setText(winner + " wins!");
-		} else if (winner.equals("Game Over! Tie, no one wins")) {
+		} else if (winner.equals("Game Over! Tie")) {
 			lblNewLabel.setText(winner);
 		} else {
 			lblNewLabel.setText("Game Over!");

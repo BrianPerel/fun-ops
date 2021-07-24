@@ -55,12 +55,17 @@ public class GuessingGame implements ActionListener {
 	 * Create the application - Build the GUI
 	 */
 	public GuessingGame() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 526, 352);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
+		ImageIcon image = new ImageIcon(getClass().getResource("bgImage.jpg")); 
+		JLabel backgroundLabel = new JLabel(image);
+		frame.setContentPane(backgroundLabel);
 
 		JLabel lblScore = new JLabel("Score");
 		lblScore.setBounds(21, 24, 34, 17);
@@ -84,8 +89,8 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		ImageIcon image = new ImageIcon(getClass().getResource("question.jpg"));
-		JLabel lblImage = new JLabel(image);
+		ImageIcon imageTwo = new ImageIcon(getClass().getResource("question.jpg"));
+		JLabel lblImage = new JLabel(imageTwo);
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
 

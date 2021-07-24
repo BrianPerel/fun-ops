@@ -155,7 +155,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		JButton btnNumberZero = new JButton("0");
 		btnNumberZero.setBackground(Color.WHITE);
-		btnNumberZero.setBounds(110, 300, 80, 40);
+		btnNumberZero.setBounds(110, 304, 80, 40);
 		frame.getContentPane().add(btnNumberZero);
 		btnNumberZero.addActionListener(this);
 		btnNumberZero.addKeyListener(this);
@@ -238,21 +238,22 @@ public class App extends KeyAdapter implements ActionListener {
 
 		JButton btnPlusMinus = new JButton("+/-");
 		btnPlusMinus.setBackground(Color.WHITE);
-		btnPlusMinus.setBounds(31, 300, 80, 40);
+		btnPlusMinus.setBounds(31, 304, 80, 40);
 		frame.getContentPane().add(btnPlusMinus);
 		btnPlusMinus.addActionListener(this);
 		btnPlusMinus.addKeyListener(this);
+		
 
 		JButton btnDecimalPoint = new JButton(".");
 		btnDecimalPoint.setBackground(Color.WHITE);
-		btnDecimalPoint.setBounds(189, 300, 80, 40);
+		btnDecimalPoint.setBounds(189, 304, 80, 40);
 		frame.getContentPane().add(btnDecimalPoint);
 		btnDecimalPoint.addActionListener(this);
 		btnDecimalPoint.addKeyListener(this);
 
 		JButton btnEquals = new JButton("=");
 		btnEquals.setBackground(Color.WHITE);
-		btnEquals.setBounds(268, 300, 80, 40);
+		btnEquals.setBounds(268, 304, 80, 40);
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);
 		btnEquals.addKeyListener(this);

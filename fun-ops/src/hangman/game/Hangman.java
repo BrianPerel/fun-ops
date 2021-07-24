@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -95,19 +97,23 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		// add drawing components to list
 		hangString.add("  ___________");
 		hangString.add("\n |         |");
-		hangString.add("\n |         0");
-		hangString.add("\n |         |");
-		hangString.add("\n |      /  |  \\");
-		hangString.add("\n |     /   |   \\");
+		hangString.add("\n |         O");
+		hangString.add("\n |         | ");
+		hangString.add("\n |        /|\\");
+		hangString.add("\n |       / | \\");
 		hangString.add("\n |         |");
 		hangString.add("\n |        / \\");
-		hangString.add("\n |       /   \\");
+		hangString.add("\n |       /   \\ \n |");
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 313);
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		ImageIcon image = new ImageIcon(getClass().getResource("gameBackground.jpg")); 
+		JLabel backgroundLabel = new JLabel(image);
+		frame.setContentPane(backgroundLabel);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(223, 158, 171, 7);
@@ -116,7 +122,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField = new JTextArea();
 		hangmanTextField.setBackground(Color.LIGHT_GRAY);
 		hangmanTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		hangmanTextField.setBounds(36, 22, 142, 213);
+		hangmanTextField.setBounds(36, 11, 142, 239);
 		frame.getContentPane().add(hangmanTextField);
 		hangmanTextField.setColumns(10);
 		hangmanTextField.setEditable(false);
@@ -159,13 +165,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letter4TextField.addKeyListener(this);
 		letter4TextField.addFocusListener(this);
 
-		JLabel lblNewLabel = new JLabel("WORD:");
-		lblNewLabel.setBounds(239, 75, 46, 14);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblWordText = new JLabel("WORD:");
+		lblWordText.setBounds(239, 75, 46, 14);
+		frame.getContentPane().add(lblWordText);
 
-		JLabel lblNewLabel_1 = new JLabel("4-LETTER CAR BRANDS");
-		lblNewLabel_1.setBounds(243, 31, 151, 14);
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
+		lblHangmanTheme.setBounds(243, 31, 151, 14);
+		frame.getContentPane().add(lblHangmanTheme);
 
 		try {
 			// read file of random hangman words
@@ -309,18 +315,34 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void focusGained(FocusEvent e) {
 
 		if (letter1TextField.hasFocus()) {
+			letter1TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t1 = true;
 		}
 
 		else if (letter2TextField.hasFocus()) {
+			letter2TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t2 = true;
 		}
 
 		else if (letter3TextField.hasFocus()) {
+			letter3TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t3 = true;
 		}
 
 		else if (letter4TextField.hasFocus()) {
+			letter4TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t4 = true;
 		}
 	}

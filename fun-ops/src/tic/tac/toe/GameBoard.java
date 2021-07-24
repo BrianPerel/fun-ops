@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,6 +55,10 @@ public class GameBoard implements ActionListener {
 		f.getContentPane().setLayout(null);
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
+		
+		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
+		JLabel backgroundLabel = new JLabel(image);
+		f.setContentPane(backgroundLabel);
 
 		btnOne.setBounds(63, 64, 80, 70);
 		f.getContentPane().add(btnOne);
@@ -198,7 +203,7 @@ public class GameBoard implements ActionListener {
 				&& !btnFour.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSix.getText().isEmpty()
 				&& !btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			f.dispose();
-			new Winner("Game Over! Tie, no one wins");
+			new Winner("Game Over! Tie");
 		}
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {

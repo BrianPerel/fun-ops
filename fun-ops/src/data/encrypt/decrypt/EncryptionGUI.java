@@ -35,6 +35,7 @@ public class EncryptionGUI implements ActionListener {
 	String data = "";
 	static String fileName;
 	boolean fileLoaded;
+	static EncryptionGUI window;
 
 	/**
 	 * Launch the application.
@@ -44,10 +45,11 @@ public class EncryptionGUI implements ActionListener {
 			@Override
 			public void run() {
 				try {
-					EncryptionGUI window = new EncryptionGUI();
+					window = new EncryptionGUI();
 					window.frame.setVisible(true);
 					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 					window.frame.setResizable(false);
+					window.frame.setAlwaysOnTop(true);
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -131,7 +133,6 @@ public class EncryptionGUI implements ActionListener {
 
 				// check if this file exists
 				if (f1.exists()) {
-					// open the specified file
 					Desktop.getDesktop().open(f1);
 				}
 
@@ -142,7 +143,7 @@ public class EncryptionGUI implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			
 			read.close();
 
 		}
@@ -154,6 +155,8 @@ public class EncryptionGUI implements ActionListener {
 
 		// if loaded file isn't blank, allow encryption op
 		else if (ae.getSource() == btnEncrypt && !data.isBlank()) {
+			window.frame.setAlwaysOnTop(false);
+
 			try {
 				dataSet1.encrypt();
 			} catch (IOException e) {
