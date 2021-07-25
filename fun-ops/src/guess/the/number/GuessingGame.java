@@ -1,4 +1,4 @@
-package guess.remainder;
+package guess.the.number;
 
 import java.awt.Color;
 import java.awt.EventQueue;
