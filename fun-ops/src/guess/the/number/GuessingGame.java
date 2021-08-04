@@ -1,10 +1,13 @@
 package guess.the.number;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -26,8 +29,9 @@ public class GuessingGame implements ActionListener {
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
 	Random ran = new Random();
+	static AudioClip sound;
 	// random number will be between 10 and 99
-	int randomNumber = ran.nextInt(99) + 10;
+	int randomNumber = ran.nextInt(89) + 10;
 	int guesses = 0;
 	int score = 0;
 
@@ -162,12 +166,33 @@ public class GuessingGame implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
 				guessesTextField.setText(Integer.toString(guesses));
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
+				try {
+					File wavFile = new File(
+							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\tada.wav");
+					sound = Applet.newAudioClip(wavFile.toURL());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				sound.play();
+
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 				guessesTextField.setText(Integer.toString(guesses));
 				randomNumber = ran.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
 				score += 10;
+
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
+				try {
+					File wavFile = new File(
+							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\Fail.wav");
+					sound = Applet.newAudioClip(wavFile.toURL());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				sound.play();
+
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
 				guessesTextField.setText(Integer.toString(guesses));
 				if (score != 0) {

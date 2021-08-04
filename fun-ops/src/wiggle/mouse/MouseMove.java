@@ -26,9 +26,10 @@ public class MouseMove implements ActionListener {
 	JButton btnStart;
 	JButton btnStop;
 	static boolean performAction = false;
-	private static final int SIX_HUNDRED = 600;
+	static final int SIX_HUNDRED = 600;
 	static Random random = new Random();
 	static int timeToWait;
+	static Robot rb;
 	final JComboBox<String> comboBox;
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes", "10 minutes" };
 
@@ -48,6 +49,7 @@ public class MouseMove implements ActionListener {
 					window.frame.setTitle("Mouse move by B. Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
+					rb = new Robot();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -127,8 +129,6 @@ public class MouseMove implements ActionListener {
 	}
 
 	public static void moveMouse() throws AWTException, InterruptedException {
-		Robot rb = new Robot();
-
 		while (performAction) {
 			Thread.sleep(timeToWait);
 			rb.mouseMove(random.nextInt(SIX_HUNDRED), random.nextInt(SIX_HUNDRED));

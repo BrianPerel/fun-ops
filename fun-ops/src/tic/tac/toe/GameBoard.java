@@ -56,6 +56,7 @@ public class GameBoard implements ActionListener {
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
 
+		// assigning a background image to the app
 		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
 		JLabel backgroundLabel = new JLabel(image);
 		f.setContentPane(backgroundLabel);

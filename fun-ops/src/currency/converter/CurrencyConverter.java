@@ -77,7 +77,7 @@ public class CurrencyConverter {
 		textField.setBounds(32, 94, 117, 25);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
-		
+
 		String[] choices = { "US Dollar (USD)", "", "", "", "" };
 		JComboBox comboBox = new JComboBox(choices);
 		comboBox.setBounds(182, 92, 159, 27);
