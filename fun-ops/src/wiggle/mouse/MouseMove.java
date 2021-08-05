@@ -7,10 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * Mouse move program. Moves the mouse to random coordinate points on the screen
@@ -87,6 +89,11 @@ public class MouseMove implements ActionListener {
 		lblNewLabel.setBounds(23, 23, 264, 23);
 		frame.getContentPane().add(lblNewLabel);
 
+		ImageIcon icon = new ImageIcon(getClass().getResource("icon.jpg"));
+		JLabel lblWithIcon = new JLabel(icon);
+		lblWithIcon.setBounds(336, 69, 55, 49);
+		frame.getContentPane().add(lblWithIcon);
+
 		// JComboBox comboBox = new JComboBox(); // use this when switching to
 		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
 		// choice for component creation"
@@ -130,7 +137,9 @@ public class MouseMove implements ActionListener {
 
 	public static void moveMouse() throws AWTException, InterruptedException {
 		while (performAction) {
+			// time to wait before next mouse move
 			Thread.sleep(timeToWait);
+			// move the mouse to specified random x,y coordinates
 			rb.mouseMove(random.nextInt(SIX_HUNDRED), random.nextInt(SIX_HUNDRED));
 		}
 	}

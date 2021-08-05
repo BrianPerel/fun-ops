@@ -35,8 +35,7 @@ public class MyCalculator {
 		// that code must remove % before this step) or if string
 		// includes a character
 		if (!num.contains("%")) {
-			num = num.trim();
-			nums.add(arrayPosNum, num);
+			nums.add(arrayPosNum, num.trim());
 			arrayPosNum++;
 			arrayNumsFilled++;
 		}
@@ -161,6 +160,7 @@ public class MyCalculator {
 			return df.format(add());
 		}
 
+		// return "0" value if none of the above conditions are triggered 
 		return "0";
 	}
 

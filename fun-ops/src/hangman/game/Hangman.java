@@ -175,7 +175,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		try {
 			// read file of random hangman words
-			File myObj = new File("WordsForHangman.txt");
+			File myObj = new File("Hangman.txt");
 			Scanner myReader = new Scanner(myObj);
 
 			while (myReader.hasNext()) {
@@ -247,10 +247,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-		if (e.getKeyChar() == KeyEvent.VK_3) {
-			System.out.println("I");
-		}
 
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
@@ -353,7 +349,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-
+		
 		if (!letter1TextField.hasFocus()) {
 			t1 = false;
 		}

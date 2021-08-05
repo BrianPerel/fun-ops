@@ -45,7 +45,6 @@ public class Winner implements ActionListener {
 		}
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
 		lblNewLabel.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblNewLabel);
 

@@ -20,15 +20,8 @@ import javax.swing.SwingConstants;
 public class GameBoard implements ActionListener {
 
 	private JFrame f = new JFrame("Tic Tac Toe");
-	JButton btnOne = new JButton("");
-	JButton btnTwo = new JButton("");
-	JButton btnThree = new JButton("");
-	JButton btnFour = new JButton("");
-	JButton btnFive = new JButton("");
-	JButton btnSix = new JButton("");
-	JButton btnSeven = new JButton("");
-	JButton btnEight = new JButton("");
-	JButton btnNine = new JButton("");
+	JButton btnOne, btnTwo, btnThree, btnFour, btnFive;
+	JButton btnSix, btnSeven, btnEight, btnNine;
 	static String playerOne;
 	static String playerTwo;
 	boolean playerOnesTurn;
@@ -61,46 +54,55 @@ public class GameBoard implements ActionListener {
 		JLabel backgroundLabel = new JLabel(image);
 		f.setContentPane(backgroundLabel);
 
+		btnOne = new JButton("");
 		btnOne.setBounds(63, 64, 80, 70);
 		f.getContentPane().add(btnOne);
 		btnOne.addActionListener(this);
 		btnOne.setBackground(new Color(244, 164, 96));
 
+		btnTwo = new JButton("");
 		btnTwo.setBounds(63, 145, 80, 70);
 		f.getContentPane().add(btnTwo);
 		btnTwo.addActionListener(this);
 		btnTwo.setBackground(new Color(244, 164, 96));
 
+		btnThree = new JButton("");
 		btnThree.setBounds(63, 226, 80, 70);
 		f.getContentPane().add(btnThree);
 		btnThree.addActionListener(this);
 		btnThree.setBackground(new Color(244, 164, 96));
 
+		btnFour = new JButton();
 		btnFour.setBounds(153, 64, 80, 70);
 		f.getContentPane().add(btnFour);
 		btnFour.addActionListener(this);
 		btnFour.setBackground(new Color(244, 164, 96));
 
+		btnFive = new JButton();
 		btnFive.setBounds(153, 145, 80, 70);
 		f.getContentPane().add(btnFive);
 		btnFive.addActionListener(this);
 		btnFive.setBackground(new Color(244, 164, 96));
 
+		btnSix = new JButton();
 		btnSix.setBounds(153, 226, 80, 70);
 		f.getContentPane().add(btnSix);
 		btnSix.addActionListener(this);
 		btnSix.setBackground(new Color(244, 164, 96));
 
+		btnSeven = new JButton();
 		btnSeven.setBounds(243, 64, 80, 70);
 		f.getContentPane().add(btnSeven);
 		btnSeven.addActionListener(this);
 		btnSeven.setBackground(new Color(244, 164, 96));
 
+		btnEight = new JButton();
 		btnEight.setBounds(243, 145, 80, 70);
 		f.getContentPane().add(btnEight);
 		btnEight.addActionListener(this);
 		btnEight.setBackground(new Color(244, 164, 96));
 
+		btnNine = new JButton();
 		btnNine.setBounds(243, 226, 80, 70);
 		f.getContentPane().add(btnNine);
 		btnNine.addActionListener(this);

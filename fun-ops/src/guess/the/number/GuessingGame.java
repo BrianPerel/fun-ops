@@ -120,7 +120,7 @@ public class GuessingGame implements ActionListener {
 		btnGuess.setBackground(Color.green);
 		frame.getContentPane().add(btnGuess);
 
-		textFieldGuessTheNumber = new JFormattedTextField(createFormatter("##"));
+		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
@@ -134,24 +134,7 @@ public class GuessingGame implements ActionListener {
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.setBackground(Color.ORANGE);
 		frame.getContentPane().add(btnPlayAgain);
-	}
-
-	/**
-	 * MaskFormatter is used to specify/create the format of a text field
-	 * 
-	 * @param s is the text field's user input area (the box)
-	 * @return the formatted text field
-	 */
-	protected MaskFormatter createFormatter(String s) {
-		MaskFormatter formatter = null;
-		try {
-			formatter = new MaskFormatter(s);
-		} catch (java.text.ParseException exc) {
-			System.err.println("formatter is bad: " + exc.getMessage());
-			System.exit(-1);
-		}
-		return formatter;
-	}
+	}	
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -168,7 +151,7 @@ public class GuessingGame implements ActionListener {
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				try {
 					File wavFile = new File(
-							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\tada.wav");
+							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\win.wav");
 					sound = Applet.newAudioClip(wavFile.toURL());
 				} catch (Exception e) {
 					e.printStackTrace();
