@@ -56,7 +56,6 @@ public class EncryptDecrypt {
 			}
 
 			myWriter.close();
-
 			encrypted = true;
 		}
 	}

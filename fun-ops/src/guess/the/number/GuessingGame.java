@@ -17,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
 
 public class GuessingGame implements ActionListener {
 
@@ -32,8 +31,7 @@ public class GuessingGame implements ActionListener {
 	static AudioClip sound;
 	// random number will be between 10 and 99
 	int randomNumber = ran.nextInt(89) + 10;
-	int guesses = 0;
-	int score = 0;
+	int guesses, score = 0;
 
 	/**
 	 * Launch the application.
@@ -195,8 +193,7 @@ public class GuessingGame implements ActionListener {
 			randomNumber = ran.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
-			score = 0;
-			guesses = 0;
+			score = guesses = 0;
 		}
 
 		// if guess btn is pushed and input is empty

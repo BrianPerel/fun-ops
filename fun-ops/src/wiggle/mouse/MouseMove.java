@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  * Mouse move program. Moves the mouse to random coordinate points on the screen
@@ -135,7 +134,7 @@ public class MouseMove implements ActionListener {
 		}
 	}
 
-	public static void moveMouse() throws AWTException, InterruptedException {
+	public static void moveMouse() throws InterruptedException {
 		while (performAction) {
 			// time to wait before next mouse move
 			Thread.sleep(timeToWait);
