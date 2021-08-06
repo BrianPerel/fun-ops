@@ -86,7 +86,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					// logger_.error("Error: " + e.toString());
 				}
 			}
-		});
+		});		
 	}
 
 	/**

@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -84,7 +85,7 @@ public class GuessingGame implements ActionListener {
 		lblGuesses.setBounds(144, 24, 84, 17);
 		frame.getContentPane().add(lblGuesses);
 
-		guessesTextField = new JTextField(Integer.toString(guesses));
+		guessesTextField = new JTextField("0");
 		guessesTextField.setEditable(false);
 		guessesTextField.setColumns(10);
 		guessesTextField.setBounds(238, 22, 52, 20);
@@ -145,7 +146,6 @@ public class GuessingGame implements ActionListener {
 			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
 					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
-				guessesTextField.setText(Integer.toString(guesses));
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				try {
 					File wavFile = new File(
@@ -158,7 +158,6 @@ public class GuessingGame implements ActionListener {
 				sound.play();
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
-				guessesTextField.setText(Integer.toString(guesses));
 				randomNumber = ran.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
 				score += 10;
@@ -175,7 +174,6 @@ public class GuessingGame implements ActionListener {
 				sound.play();
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
-				guessesTextField.setText(Integer.toString(guesses));
 				if (score != 0) {
 					score -= 10;
 				}
@@ -183,6 +181,7 @@ public class GuessingGame implements ActionListener {
 
 			// set score after action is completed
 			textFieldScore.setText(Integer.toString(score));
+			guessesTextField.setText(Integer.toString(guesses));
 
 		}
 

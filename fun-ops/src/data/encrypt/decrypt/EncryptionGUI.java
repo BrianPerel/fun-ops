@@ -5,13 +5,16 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,6 +36,7 @@ public class EncryptionGUI implements ActionListener {
 	JButton btnLoadFile = new JButton("Load file");
 	JButton btnEncrypt = new JButton("Encrypt");
 	JButton btnDecrypt = new JButton("Decrypt");
+	JButton btnBrowse;
 	EncryptDecrypt dataSet1;
 	String data = "";
 	static String fileName;
@@ -52,7 +56,6 @@ public class EncryptionGUI implements ActionListener {
 					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setAlwaysOnTop(true);
-					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +71,7 @@ public class EncryptionGUI implements ActionListener {
 	public EncryptionGUI() throws FileNotFoundException {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 412, 272);
+		frame.setBounds(100, 100, 414, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -76,14 +79,14 @@ public class EncryptionGUI implements ActionListener {
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
 
-		btnLoadFile.setBounds(80, 45, 89, 23);
+		btnLoadFile.setBounds(41, 44, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
 		btnLoadFile.setBackground(new Color(135, 206, 250));
 
 		loadingTextField = new JTextField();
-		loadingTextField.setBounds(234, 45, 86, 20);
+		loadingTextField.setBounds(157, 45, 86, 20);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
 
@@ -100,6 +103,26 @@ public class EncryptionGUI implements ActionListener {
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
 		btnDecrypt.setBackground(new Color(135, 206, 250));
+
+		btnBrowse = new JButton("Browse");
+		btnBrowse.setBounds(269, 44, 86, 23);
+		frame.getContentPane().add(btnBrowse);
+		btnBrowse.addActionListener(this);
+		btnBrowse.setBackground(new Color(135, 206, 250));
+	}
+
+	/**
+	 * JFileChooser browse menu
+	 */
+	public void fileBrowse() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(fileChooser);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			// Path to secret.txt file C:\Users\_____\git\fun-ops\fun-ops\secret.txt
+			loadingTextField.setText(selectedFile.getName());
+		}
 	}
 
 	@Override
@@ -118,6 +141,25 @@ public class EncryptionGUI implements ActionListener {
 
 			try {
 				File f1 = new File(fileToLoad);
+				
+				// count total number of words in the file to insert new line for every 20 words 
+				String[] words = null; // Intialize the word Array
+				int wc = 0; // Intialize word count to zero
+				FileReader fr = new FileReader(f1); // Creation of File Reader object
+				BufferedReader br = new BufferedReader(fr); // Creation of BufferedReader object
+				String sentence;
+				while ((sentence = br.readLine()) != null) // Reading Content from the file
+				{
+					words = sentence.split(" "); // Split the word using space
+					wc += words.length; // increase the word count for each word
+					System.out.println(words[20]);
+					if(words.length == 20 || words.length == 40) {
+
+					}
+				}
+				fr.close();
+				System.out.println("Number of words in the file: " + wc); // Print the word count
+				
 				read = new Scanner(f1);
 
 				while (read.hasNextLine()) {
@@ -197,6 +239,10 @@ public class EncryptionGUI implements ActionListener {
 		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", "Error",
 					JOptionPane.ERROR_MESSAGE);
+		}
+
+		else if (ae.getSource() == btnBrowse) {
+			fileBrowse();
 		}
 	}
 }

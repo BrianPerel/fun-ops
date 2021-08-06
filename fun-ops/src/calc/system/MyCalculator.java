@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class MyCalculator {
 
-	static int arrayPosNum; // used to place every user calculator operand value in a separate location
+	static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
 	DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	static int arrayNumsFilled; // container to tell what array subscripts are free or taken
 	static boolean divideByZeroflag; // if user divides by 0, raise flag
@@ -35,8 +35,8 @@ public class MyCalculator {
 		// that code must remove % before this step) or if string
 		// includes a character
 		if (!num.contains("%")) {
-			nums.add(arrayPosNum, num.trim());
-			arrayPosNum++;
+			nums.add(arrayPositionNumber, num.trim());
+			arrayPositionNumber++;
 			arrayNumsFilled++;
 		}
 	}

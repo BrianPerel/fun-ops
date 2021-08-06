@@ -4,3 +4,4 @@
 *.jar
 *.log
 build.xml
+org.eclipse.jdt.core.prefs

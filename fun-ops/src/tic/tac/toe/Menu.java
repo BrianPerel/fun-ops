@@ -94,7 +94,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && !NameOneTextField.getText().isEmpty() && !NameTwoTextField.getText().isEmpty()) {
 
-			// remove whitespace from name textfields before proceeding
+			// remove extra whitespace from name textfields before proceeding
 			GameBoard.playerOne = NameOneTextField.getText().trim();
 			GameBoard.playerTwo = NameTwoTextField.getText().trim();
 

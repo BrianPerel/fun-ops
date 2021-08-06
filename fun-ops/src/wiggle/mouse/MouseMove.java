@@ -26,7 +26,10 @@ public class MouseMove implements ActionListener {
 	private JFrame frame;
 	JButton btnStart;
 	JButton btnStop;
+	// performAction will be used to indicate whether or not to perform mouse move. 
+	// Only if start btn is pushed will this be set to true
 	static boolean performAction = false;
+	// coordinate points will be between 0 and 600
 	static final int SIX_HUNDRED = 600;
 	static Random random = new Random();
 	static int timeToWait;

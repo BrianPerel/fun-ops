@@ -22,10 +22,8 @@ public class GameBoard implements ActionListener {
 	private JFrame f = new JFrame("Tic Tac Toe");
 	JButton btnOne, btnTwo, btnThree, btnFour, btnFive;
 	JButton btnSix, btnSeven, btnEight, btnNine;
-	static String playerOne;
-	static String playerTwo;
-	boolean playerOnesTurn;
-	boolean playerTwosTurn;
+	static String playerOne, playerTwo;
+	boolean playerOnesTurn, playerTwosTurn;
 	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
 	// private static final Logger logger_ = Logger.getLogger(TicTacToeBoard.class);
 	final String P1WINS = "Player 1 wins!";
@@ -142,7 +140,8 @@ public class GameBoard implements ActionListener {
 			playerTwosTurn = !playerTwosTurn;
 			start = false;
 		}
-
+		
+		
 		if (ae.getSource() == btnOne && btnOne.getText().isEmpty()) {
 			if (playerOnesTurn) {
 				playerOnesTurn(btnOne);

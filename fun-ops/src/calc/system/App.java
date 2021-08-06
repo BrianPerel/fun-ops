@@ -401,7 +401,7 @@ public class App extends KeyAdapter implements ActionListener {
 				Collections.fill(MyCalculator.doubleNums, 0.0);
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
-				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
+				MyCalculator.arrayNumsFilled = MyCalculator.arrayPositionNumber = 0;
 				numberZeroEnteredByUser = false;
 			}
 			break; // break statement for case equals button
@@ -416,7 +416,7 @@ public class App extends KeyAdapter implements ActionListener {
 			MyCalculator.nums.clear();
 			MyCalculator.doubleNums.clear();
 			MyCalculator.divideByZeroflag = false;
-			MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
+			MyCalculator.arrayNumsFilled = MyCalculator.arrayPositionNumber = 0;
 			break;
 
 		case ".":
@@ -572,7 +572,7 @@ public class App extends KeyAdapter implements ActionListener {
 				Collections.fill(MyCalculator.doubleNums, 0.0);
 				MyCalculator.nums.clear();
 				MyCalculator.doubleNums.clear();
-				MyCalculator.arrayNumsFilled = MyCalculator.arrayPosNum = 0;
+				MyCalculator.arrayNumsFilled = MyCalculator.arrayPositionNumber = 0;
 				numberZeroEnteredByUser = false;
 			}
 			break; // break statement for case enter key button
