@@ -5,10 +5,8 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -141,24 +139,6 @@ public class EncryptionGUI implements ActionListener {
 
 			try {
 				File f1 = new File(fileToLoad);
-				
-				// count total number of words in the file to insert new line for every 20 words 
-				String[] words = null; // Intialize the word Array
-				int wc = 0; // Intialize word count to zero
-				FileReader fr = new FileReader(f1); // Creation of File Reader object
-				BufferedReader br = new BufferedReader(fr); // Creation of BufferedReader object
-				String sentence;
-				while ((sentence = br.readLine()) != null) // Reading Content from the file
-				{
-					words = sentence.split(" "); // Split the word using space
-					wc += words.length; // increase the word count for each word
-					System.out.println(words[20]);
-					if(words.length == 20 || words.length == 40) {
-
-					}
-				}
-				fr.close();
-				System.out.println("Number of words in the file: " + wc); // Print the word count
 				
 				read = new Scanner(f1);
 
