@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.BasicConfigurator;
@@ -30,10 +31,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
 	// private static final Logger logger_ = Logger.getLogger(Hangman.class);
-	private JFormattedTextField letter1TextField;
-	private JFormattedTextField letter2TextField;
-	private JFormattedTextField letter3TextField;
-	private JFormattedTextField letter4TextField;
+	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
 	private Random rand = new Random();
@@ -128,6 +126,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setEditable(false);
 		hangmanTextField.setFocusable(false);
 		hangmanTextField.setToolTipText("Your health");
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 2);
+		hangmanTextField.setBorder(border);
 
 		hangmanWordTextField = new JTextField();
 		hangmanWordTextField.setBounds(338, 82, 86, 20);
@@ -217,6 +217,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void getHangmanWord() {
 		// choose random word from txt file
 		word = line.get(rand.nextInt(6));
+		// this line is revealing the word to the console 
+		// be sure to remove before doing a build
 		System.out.println(word);
 	}
 

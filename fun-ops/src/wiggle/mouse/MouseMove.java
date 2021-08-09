@@ -2,6 +2,8 @@ package wiggle.mouse;
 
 import java.awt.AWTException;
 import java.awt.EventQueue;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +34,7 @@ public class MouseMove implements ActionListener {
 	static final int SIX_HUNDRED = 600;
 	static Random random = new Random();
 	static int timeToWait;
-	static Robot rb;
+	static Robot robot;
 	final JComboBox<String> comboBox;
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes", "10 minutes" };
 
@@ -52,7 +54,7 @@ public class MouseMove implements ActionListener {
 					window.frame.setTitle("Mouse move by B. Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-					rb = new Robot();
+					robot = new Robot();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -90,10 +92,11 @@ public class MouseMove implements ActionListener {
 		lblNewLabel.setBounds(23, 23, 264, 23);
 		frame.getContentPane().add(lblNewLabel);
 
-		ImageIcon icon = new ImageIcon(getClass().getResource("icon.jpg"));
-		JLabel lblWithIcon = new JLabel(icon);
-		lblWithIcon.setBounds(336, 69, 55, 49);
-		frame.getContentPane().add(lblWithIcon);
+		/*
+		 * ImageIcon icon = new ImageIcon(getClass().getResource("icon.jpg")); JLabel
+		 * lblWithIcon = new JLabel(icon); lblWithIcon.setBounds(336, 69, 55, 49);
+		 * frame.getContentPane().add(lblWithIcon);
+		 */
 
 		// JComboBox comboBox = new JComboBox(); // use this when switching to
 		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
@@ -138,10 +141,17 @@ public class MouseMove implements ActionListener {
 
 	public static void moveMouse() throws InterruptedException {
 		while (performAction) {
+			Point point = MouseInfo.getPointerInfo().getLocation();
+			int x = (int) point.getX();
+			int y = (int) point.getY();
+			
+			// move the mouse to specified random x,y coordinates
+			robot.mouseMove(x, y + 1);
+			
 			// time to wait before next mouse move
 			Thread.sleep(timeToWait);
-			// move the mouse to specified random x,y coordinates
-			rb.mouseMove(random.nextInt(SIX_HUNDRED), random.nextInt(SIX_HUNDRED));
+			
+			robot.mouseMove(x, y - 1);
 		}
 	}
 }
