@@ -6,3 +6,4 @@ List of apps:
 -Guessing game
 -Hangman
 -Tic tac toe
+-Wiggle Mouse
