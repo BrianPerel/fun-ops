@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,8 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
- * Mouse move program. Moves the mouse to random coordinate points on the screen
- * every 4 seconds until STOP button is pressed. Useful for when you want to be
+ * Mouse wiggle program. Useful for when you want to be
  * away from your computer however appear to be available
  * 
  * @author Brian Perel
