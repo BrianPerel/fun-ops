@@ -104,7 +104,7 @@ public class WiggleMouse implements ActionListener {
 
 			switch ((String) comboBox.getSelectedItem()) {
 			case "1/2 minute":
-				timeToWait = 2000;
+				timeToWait = 30000;
 				break;
 
 			case "1 minute":
