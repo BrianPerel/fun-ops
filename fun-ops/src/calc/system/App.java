@@ -589,20 +589,31 @@ public class App extends KeyAdapter implements ActionListener {
 		}
 
 		/**
-		 * use e.getKeyChar() here for "*" and "+" because KeyEvent.VK_MULTIPLY and
-		 * KeyEvent.VK_ADD don't work
+		 * use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY,
+		 * KeyEvent.VK_ADD, and KeyEvent.C don't work
 		 */
-
-		if (e.getKeyChar() == '*') {
-			MyCalculator.setNumber(userInputTextField.getText());
-			userInputTextField.setText(cursorRightPositioned);
-			operatorFlags[1] = true;
+		
+		if(Character.toUpperCase(e.getKeyChar()) == 'C') { 
+			userInputTextField.setText(cursorRightPositionedWithZero);
+			Arrays.fill(operatorFlags, Boolean.FALSE);
+			numberZeroEnteredByUser = false;
+			Collections.fill(MyCalculator.nums, null);
+			Collections.fill(MyCalculator.doubleNums, 0.0);
+			MyCalculator.nums.clear();
+			MyCalculator.doubleNums.clear();
+			MyCalculator.divideByZeroflag = false;
+			MyCalculator.arrayNumsFilled = MyCalculator.arrayPositionNumber = 0;
 		}
 
-		if (e.getKeyChar() == '+') {
+		if (e.getKeyChar() == '*' || e.getKeyChar() == '+') {
 			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
-			operatorFlags[3] = true;
+
+			if(e.getKeyChar() == '*') {
+				operatorFlags[1] = true;
+			} else {
+				operatorFlags[3] = true;
+			}
 		}
 	}
 }
