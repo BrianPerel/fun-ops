@@ -92,7 +92,7 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		ImageIcon imageTwo = new ImageIcon(getClass().getResource("questionFigure.jpg"));
+		ImageIcon imageTwo = new ImageIcon(getClass().getResource("figure.jpg"));
 		JLabel lblImage = new JLabel(imageTwo);
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
