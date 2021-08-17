@@ -148,8 +148,8 @@ public class GuessingGame implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				try {
-					File wavFile = new File(
-							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\win.wav");
+					URL url = getClass().getResource("win.wav");
+					File wavFile = new File(url.getPath());
 					sound = Applet.newAudioClip(wavFile.toURL());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -164,8 +164,8 @@ public class GuessingGame implements ActionListener {
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
 				try {
-					File wavFile = new File(
-							"C:\\Users\\brian\\git\\fun-ops\\fun-ops\\src\\guess\\the\\number\\Fail.wav");
+					URL url = getClass().getResource("fail.wav");
+					File wavFile = new File(url.getPath());
 					sound = Applet.newAudioClip(wavFile.toURL());
 				} catch (Exception e) {
 					e.printStackTrace();
