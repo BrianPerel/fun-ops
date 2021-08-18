@@ -1,4 +1,4 @@
-package encryption;
+package data.encrypt.decrypt;
 
 import java.awt.Color;
 import java.awt.Desktop;
