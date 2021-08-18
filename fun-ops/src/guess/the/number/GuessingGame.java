@@ -66,7 +66,8 @@ public class GuessingGame implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		ImageIcon image = new ImageIcon(getClass().getResource("bgImage.jpg"));
+		File bgImageFile = new File("res/graphics/bgImage.jpg");
+		ImageIcon image = new ImageIcon(bgImageFile.toString());
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
 
@@ -92,7 +93,8 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		ImageIcon imageTwo = new ImageIcon(getClass().getResource("questionFigure.jpg"));
+		File imageFile = new File("res/graphics/figure.jpg");
+		ImageIcon imageTwo = new ImageIcon(imageFile.toString());
 		JLabel lblImage = new JLabel(imageTwo);
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
