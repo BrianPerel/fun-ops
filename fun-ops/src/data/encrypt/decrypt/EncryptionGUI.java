@@ -1,4 +1,4 @@
-package data.encrypt.decrypt;
+package encryption;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -73,7 +73,8 @@ public class EncryptionGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		ImageIcon image = new ImageIcon(getClass().getResource("mainImage.jpg"));
+		File bgImageFile = new File("res/graphics/bgImageEncrypt.jpg");
+		ImageIcon image = new ImageIcon(bgImageFile.toString());
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
 
