@@ -92,7 +92,7 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		ImageIcon imageTwo = new ImageIcon(getClass().getResource("figure.jpg"));
+		ImageIcon imageTwo = new ImageIcon(getClass().getResource("questionFigure.jpg"));
 		JLabel lblImage = new JLabel(imageTwo);
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
@@ -144,12 +144,13 @@ public class GuessingGame implements ActionListener {
 
 			// if input remainder entered is outside of range 1-99
 			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
-					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
+					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {				
+				
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
+
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				try {
-					URL url = getClass().getResource("win.wav");
-					File wavFile = new File(url.getPath());
+					File wavFile = new File("res/audio/win.wav");
 					sound = Applet.newAudioClip(wavFile.toURL());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -164,8 +165,7 @@ public class GuessingGame implements ActionListener {
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
 				try {
-					URL url = getClass().getResource("fail.wav");
-					File wavFile = new File(url.getPath());
+					File wavFile = new File("res/audio/fail.wav");
 					sound = Applet.newAudioClip(wavFile.toURL());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -187,6 +187,15 @@ public class GuessingGame implements ActionListener {
 
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
+			try {
+				File wavFile = new File("res/audio/chimes.wav");
+				sound = Applet.newAudioClip(wavFile.toURL());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			sound.play();
+			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
 			randomNumber = ran.nextInt(100);
@@ -197,6 +206,15 @@ public class GuessingGame implements ActionListener {
 
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
+			try {
+				File wavFile = new File("res/audio/fail.wav");
+				sound = Applet.newAudioClip(wavFile.toURL());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			sound.play();
+			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 
