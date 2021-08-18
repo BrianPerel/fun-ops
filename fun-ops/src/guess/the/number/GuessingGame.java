@@ -66,7 +66,7 @@ public class GuessingGame implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		File bgImageFile = new File("res/graphics/bgImage.jpg");
+		File bgImageFile = new File("res/graphics/bgImageGuess.jpg");
 		ImageIcon image = new ImageIcon(bgImageFile.toString());
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
