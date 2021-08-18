@@ -109,7 +109,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		ImageIcon image = new ImageIcon(getClass().getResource("gameBackground.jpg"));
+		
+		File bgImageFile = new File("res/graphics/bgImageHangman.jpg");
+		ImageIcon image = new ImageIcon(bgImageFile.toString());
 		JLabel backgroundLabel = new JLabel(image);
 		frame.setContentPane(backgroundLabel);
 
