@@ -3,6 +3,7 @@ package tic.tac.toe;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +33,8 @@ public class Winner implements ActionListener {
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
 
-		ImageIcon image = new ImageIcon(getClass().getResource("bg.jpg"));
+		File bgImageFile = new File("res/graphics/bgImageToe.jpg");
+		ImageIcon image = new ImageIcon(bgImageFile.toString());
 		JLabel backgroundLabel = new JLabel(image);
 		f2.setContentPane(backgroundLabel);
 
