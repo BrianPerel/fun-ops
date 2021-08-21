@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Main-Class: hangman.Hangman
+Resource: res/graphics/bgImageHangman
+
+Main-Class: wiggle.mouse.WiggleMouse 
+Main-Class: calculator.App
+
+Main-Class: number.guessing.GuessingGame
+Resource: res/audio/chimes.wav
+Resource2: res/audio/fail.wav
+Resource3: res/audio/win.wav
+Resource4: res/graphics/figure
+Resource5: res/graphics/bgImageGuess
+
+Main-Class: encryption.EncryptionGUI
+Resource: res/graphics/bgImageEncrypt
+
+Main-Class: tic.tac.toe.Menu
+Resource: res/graphics/bgImageToe
