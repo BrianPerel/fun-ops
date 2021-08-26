@@ -1,108 +1,112 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="clean">
+<project name="brians-apps" default="clean" basedir=".">
 
 	<property name="version.num" value="v1.0" />
-	<property name="build" value="build" />
-	<property name="classes" value="classes"/>
-		
-	 <target name="clean" >
-		<delete dir="${build}" />	
-	 </target>
-	
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+
+	<echo message="${ant.version}" level="info" />
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
 	<!-- compile, jar, run TARGETS -->
-	
+
 	<target name="compile-jar-run-hangman" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/hangman" destdir="${build}/${classes}" />
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/hangman-${version.num}.jar" basedir="${build}/${classes}">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="hangman.Hangman" />
 				<attribute name="Resource" value="res/graphics/bgImageHangman" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/hangman-${version.num}.jar" fork="true" />
+		<java jar="${jar.dir}/hangman-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<target name="compile-jar-run-guessing game" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/number/guessing" destdir="${build}/${classes}"/>
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/guessingGame-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
-				<attribute name="Main-Class" value="number.guessing.GuessingGame"/> 
+				<attribute name="Main-Class" value="number.guessing.GuessingGame" />
 				<attribute name="Resource" value="res/audio/chimes.wav" />
 				<attribute name="Resource2" value="res/audio/fail.wav" />
 				<attribute name="Resource3" value="res/audio/win.wav" />
 				<attribute name="Resource4" value="res/graphics/figure" />
-				<attribute name="Resource5" value="res/graphics/bgImageGuess" />	
+				<attribute name="Resource5" value="res/graphics/bgImageGuess" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/guessingGame-${version.num}.jar" fork="true"/> 
-	</target>	
-	
+		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
+	</target>
+
 	<target name="compile-jar-run-wiggle mouse" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/wiggle/mouse" destdir="${build}/${classes}"/>
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/wigglemouse-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
-				<attribute name="Main-Class" value="wiggle.mouse.WiggleMouse"/> 
+				<attribute name="Main-Class" value="wiggle.mouse.WiggleMouse" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/wigglemouse-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<target name="compile-jar-run-calculator" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/calculator" destdir="${build}/${classes}"/>
-		<mkdir dir="${build}/jar" />
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/calculator-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/calculator" destdir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
-				<attribute name="Main-Class" value="calculator.App"/> 
+				<attribute name="Main-Class" value="calculator.App" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/calculator-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/calculator-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<target name="compile-jar-run-encryption program" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/encryption" destdir="${build}/${classes}" />
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/encryptDecrypt-${version.num}.jar" basedir="${build}/${classes}">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/encryption" destdir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="encryption.EncryptionGUI" />
 				<attribute name="Resource" value="res/graphics/bgImageEncrypt" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/encryptDecrypt-${version.num}.jar" fork="true" />
+		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<target name="compile-jar-run-tic tac toe" description="compile, create jar, and run the program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/tic/tac/toe" destdir="${build}/${classes}" />
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/tic_tac_toe-${version.num}.jar" basedir="${build}/${classes}">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="tic.tac.toe.Menu" />
 				<attribute name="Resource" value="res/graphics/bgImageToe" />
 			</manifest>
 		</jar>
-		<java jar="${build}/jar/tic_tac_toe-${version.num}.jar" fork="true" />
+		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
 	</target>
-	
-	
+
+
 	<!-- TARGETS FOR HANGMAN -->
 
 	<target name="compile-hangman" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/hangman" destdir="${build}/${classes}" />
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/hangman" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/hangman-${version.num}.jar" basedir="${build}/${classes}">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="hangman.Hangman" />
 				<attribute name="Resource" value="res/graphics/bgImageHangman" />
@@ -111,118 +115,118 @@
 	</target>
 
 	<target name="run-hangman" depends="jar-hangman" description="run the program">
-		<java jar="${build}/jar/hangman-${version.num}.jar" fork="true" />
+		<java jar="${jar.dir}/hangman-${version.num}.jar" fork="true" />
 	</target>
-	
+
 
 	<!-- TARGETS FOR WIGGLE MOUSE -->
 
 	<target name="compile-wiggle mouse" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/wiggle/mouse" destdir="${build}/${classes}"/>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/wigglemouse-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="wiggle.mouse.WiggleMouse"/> 
+				<attribute name="Main-Class" value="wiggle.mouse.WiggleMouse" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-wiggle mouse" depends="jar-wiggle mouse" description="run the program">
-		<java jar="${build}/jar/wigglemouse-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
 
-	
+
 	<!-- TARGETS FOR CALCULATOR -->
-	
+
 	<target name="compile-calculator" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/calculator" destdir="${build}/${classes}"/>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/calculator" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/calculator-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="calculator.App"/> 
+				<attribute name="Main-Class" value="calculator.App" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-calculator" depends="jar-calculator" description="run the program">
-		<java jar="${build}/jar/calculator-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/calculator-${version.num}.jar" fork="true" />
 	</target>
 
-	
+
 	<!-- TARGETS FOR GUESSING GAME -->
-	
+
 	<target name="compile-guessing game" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/number/guessing" destdir="${build}/${classes}"/>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/guessingGame-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="number.guessing.GuessingGame"/> 
+				<attribute name="Main-Class" value="number.guessing.GuessingGame" />
 				<attribute name="Resource" value="res/audio/chimes.wav" />
 				<attribute name="Resource2" value="res/audio/fail.wav" />
 				<attribute name="Resource3" value="res/audio/win.wav" />
 				<attribute name="Resource4" value="res/graphics/figure" />
-				<attribute name="Resource5" value="res/graphics/bgImageGuess" />	
+				<attribute name="Resource5" value="res/graphics/bgImageGuess" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-guessing game" depends="jar-guessing game" description="run the program">
-		<java jar="${build}/jar/guessingGame-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- TARGETS FOR ENCRYPTION PROGRAM -->
 
 	<target name="compile-encryption program" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/encryption" destdir="${build}/${classes}"/>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/encryption" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-encryption program" depends="compile-encryption program" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/encyptDecrypt-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/encyptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="encryption.EncryptionGUI"/> 
+				<attribute name="Main-Class" value="encryption.EncryptionGUI" />
 				<attribute name="Resource" value="res/graphics/bgImageEncrypt" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-encryption program" depends="jar-encryption program" description="run the program">
-		<java jar="${build}/jar/encryptDecrypt-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
 	</target>
-	
-	
+
+
 	<!-- TARGETS FOR TIC TAC TOE -->
-	
+
 	<target name="compile-tic tac toe" description="compile program">
-		<mkdir dir="${build}/${classes}" />
-		<javac srcdir="src/tic/tac/toe" destdir="${build}/${classes}"/>
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" />
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="create associated .jar file">
-		<mkdir dir="${build}/jar" />
-		<jar destfile="${build}/jar/tic_tac_toe-${version.num}.jar" basedir="${build}/${classes}"> 
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="tic.tac.toe.Menu"/> 
+				<attribute name="Main-Class" value="tic.tac.toe.Menu" />
 				<attribute name="Resource" value="res/graphics/bgImageToe" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-tic tac toe" depends="jar-tic tac toe" description="run the program">
-		<java jar="${build}/jar/tic_tac_toe-${version.num}.jar" fork="true"/> 
+		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
 	</target>
-	
+
 </project>
