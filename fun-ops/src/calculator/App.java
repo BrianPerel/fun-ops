@@ -406,8 +406,7 @@ public class App extends KeyAdapter implements ActionListener {
 			}
 			break; // break statement for case equals button
 
-		case "CE":
-		case "C":
+		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
 			numberZeroEnteredByUser = false;
@@ -542,8 +541,7 @@ public class App extends KeyAdapter implements ActionListener {
 			operatorFlags[2] = true;
 			break;
 
-		case KeyEvent.VK_ENTER:
-		case KeyEvent.VK_EQUALS:
+		case KeyEvent.VK_ENTER, KeyEvent.VK_EQUALS:
 			// if textField label is blank, then no action has been done by user.
 			// Hence in that scenario equal operation isn't performed
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
