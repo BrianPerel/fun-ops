@@ -1,4 +1,6 @@
 Manifest-Version: 1.0
+Created-By: Brian Perel
+
 Main-Class: hangman.Hangman
 Resource: res/graphics/bgImageHangman
 
