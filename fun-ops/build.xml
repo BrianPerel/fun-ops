@@ -17,7 +17,7 @@
 
 	<target name="compile-jar-run-hangman" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
@@ -30,7 +30,7 @@
 
 	<target name="compile-jar-run-guessing game" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
@@ -47,7 +47,7 @@
 
 	<target name="compile-jar-run-wiggle mouse" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
@@ -59,7 +59,7 @@
 
 	<target name="compile-jar-run-calculator" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/calculator" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}" update="true">
@@ -72,7 +72,7 @@
 
 	<target name="compile-jar-run-encryption program" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/encryption" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/encryption" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
@@ -85,7 +85,7 @@
 
 	<target name="compile-jar-run-tic tac toe" description="compile, create jar, and run the program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
@@ -101,7 +101,7 @@
 
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/hangman" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="create associated .jar file">
@@ -123,7 +123,7 @@
 
 	<target name="compile-wiggle mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="create associated .jar file">
@@ -144,7 +144,7 @@
 
 	<target name="compile-calculator" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/calculator" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="create associated .jar file">
@@ -165,7 +165,7 @@
 
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="create associated .jar file">
@@ -190,7 +190,7 @@
 
 	<target name="compile-encryption program" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/encryption" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/encryption" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-encryption program" depends="compile-encryption program" description="create associated .jar file">
@@ -212,7 +212,7 @@
 
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="create associated .jar file">
