@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE xml>
 <project name="brians-apps" default="clean" basedir=".">
 
 	<property name="version.num" value="v1.0" />
@@ -6,12 +7,19 @@
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+	<property name="res-graphics.dir" value="res/graphics" />
+	<property name="res-audio.dir" value="res/audio" />
 
 	<echo message="${ant.version}" level="info" />
+
+
+	<!-- clean -->
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>
+
 
 	<!-- compile, jar, run TARGETS -->
 
@@ -22,7 +30,7 @@
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="hangman.Hangman" />
-				<attribute name="Resource" value="res/graphics/bgImageHangman" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageHangman" />
 			</manifest>
 		</jar>
 		<java jar="${jar.dir}/hangman-${version.num}.jar" fork="true" />
@@ -38,8 +46,8 @@
 				<attribute name="Resource" value="res/audio/chimes.wav" />
 				<attribute name="Resource2" value="res/audio/fail.wav" />
 				<attribute name="Resource3" value="res/audio/win.wav" />
-				<attribute name="Resource4" value="res/graphics/figure" />
-				<attribute name="Resource5" value="res/graphics/bgImageGuess" />
+				<attribute name="Resource4" value="${res-graphics.dir}/figure" />
+				<attribute name="Resource5" value="${res-graphics.dir}/bgImageGuess" />
 			</manifest>
 		</jar>
 		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
@@ -77,7 +85,7 @@
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="encryption.EncryptionGUI" />
-				<attribute name="Resource" value="res/graphics/bgImageEncrypt" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageEncrypt" />
 			</manifest>
 		</jar>
 		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
@@ -90,7 +98,7 @@
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="tic.tac.toe.Menu" />
-				<attribute name="Resource" value="res/graphics/bgImageToe" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageToe" />
 			</manifest>
 		</jar>
 		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
@@ -109,7 +117,7 @@
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="hangman.Hangman" />
-				<attribute name="Resource" value="res/graphics/bgImageHangman" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageHangman" />
 			</manifest>
 		</jar>
 	</target>
@@ -176,8 +184,8 @@
 				<attribute name="Resource" value="res/audio/chimes.wav" />
 				<attribute name="Resource2" value="res/audio/fail.wav" />
 				<attribute name="Resource3" value="res/audio/win.wav" />
-				<attribute name="Resource4" value="res/graphics/figure" />
-				<attribute name="Resource5" value="res/graphics/bgImageGuess" />
+				<attribute name="Resource4" value="${res-graphics.dir}/figure" />
+				<attribute name="Resource5" value="${res-graphics.dir}/bgImageGuess" />
 			</manifest>
 		</jar>
 	</target>
@@ -195,10 +203,10 @@
 
 	<target name="jar-encryption program" depends="compile-encryption program" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/encyptDecrypt-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="encryption.EncryptionGUI" />
-				<attribute name="Resource" value="res/graphics/bgImageEncrypt" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageEncrypt" />
 			</manifest>
 		</jar>
 	</target>
@@ -220,13 +228,123 @@
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="tic.tac.toe.Menu" />
-				<attribute name="Resource" value="res/graphics/bgImageToe" />
+				<attribute name="Resource" value="${res-graphics.dir}/bgImageToe" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-tic tac toe" depends="jar-tic tac toe" description="run the program">
 		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
+	</target>
+
+
+	<!-- zip hangman -->
+
+	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
+		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+
+		<copy todir="${dist.dir}">
+			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
+		</copy>
+
+		<copy todir="${dist.dir}/${res-graphics.dir}">
+			<fileset dir="${res-graphics.dir}" includes="bgImageHangman.jpg" />
+		</copy>
+
+		<copy file="hangman.txt" todir="${dist.dir}" />
+
+		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}" update="true" />
+
+		<delete dir="${dist.dir}/res" />
+
+		<delete>
+			<fileset dir="${dist.dir}">
+				<include name="*.jar" />
+				<include name="*.txt" />
+				<exclude name="hangman.zip" />
+			</fileset>
+		</delete>
+	</target>
+
+	<!-- zip guessing game -->
+
+	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
+		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+
+		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}" />
+
+		<copy todir="${dist.dir}/${res-graphics.dir}">
+			<fileset dir="${res-graphics.dir}" includes="bgImageGuess.jpg" />
+		</copy>
+		
+		<copy todir="${dist.dir}/${res-audio.dir}">
+			<fileset dir="${res-audio.dir}" includes="*.wav" />
+		</copy>
+
+		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}" update="true" />
+
+		<delete dir="${dist.dir}/res" />
+
+		<delete>
+			<fileset dir="${dist.dir}">
+				<include name="*.jar" />
+				<exclude name="guessingGame.zip" />
+			</fileset>
+		</delete>
+	</target>
+	
+	<!-- zip encryption program -->
+	
+	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
+		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+
+		<copy todir="${dist.dir}">
+			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
+		</copy>
+
+		<copy todir="${dist.dir}/${res-graphics.dir}">
+			<fileset dir="${res-graphics.dir}" includes="bgImageEncrypt.jpg" />
+		</copy>
+
+		<copy file="secret.txt" todir="${dist.dir}" />
+
+		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}" update="true" />
+
+		<delete dir="${dist.dir}/res" />
+
+		<delete>
+			<fileset dir="${dist.dir}">
+				<include name="*.jar" />
+				<include name="*.txt" />
+				<exclude name="encryption.zip" />
+			</fileset>
+		</delete>
+	</target>
+	
+	<!-- zip tic tac toe program -->
+	
+	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
+		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+
+		<copy todir="${dist.dir}">
+			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
+		</copy>
+
+		<copy todir="${dist.dir}/${res-graphics.dir}">
+			<fileset dir="${res-graphics.dir}" includes="bgImageToe.jpg" />
+		</copy>
+
+		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}" update="true" />
+
+		<delete dir="${dist.dir}/res" />
+
+		<delete>
+			<fileset dir="${dist.dir}">
+				<include name="*.jar" />
+				<include name="*.txt" />
+				<exclude name="ticTacToe.zip" />
+			</fileset>
+		</delete>
 	</target>
 
 </project>
