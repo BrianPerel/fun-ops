@@ -69,7 +69,6 @@
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
 		<mkdir dir="${jar.dir}" />
-		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="calculator.App" />
@@ -241,110 +240,79 @@
 	<!-- zip hangman -->
 
 	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
-		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+		<mkdir dir="${dist.dir}/hangman/${res-graphics.dir}" />
 
-		<copy todir="${dist.dir}">
+		<copy todir="${dist.dir}/hangman">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
 		</copy>
 
-		<copy todir="${dist.dir}/${res-graphics.dir}">
+		<copy todir="${dist.dir}/hangman/${res-graphics.dir}">
 			<fileset dir="${res-graphics.dir}" includes="bgImageHangman.jpg" />
 		</copy>
 
-		<copy file="hangman.txt" todir="${dist.dir}" />
+		<copy file="hangman.txt" todir="${dist.dir}/hangman" />
 
-		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}" update="true" />
+		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
 
-		<delete dir="${dist.dir}/res" />
-
-		<delete>
-			<fileset dir="${dist.dir}">
-				<include name="*.jar" />
-				<include name="*.txt" />
-				<exclude name="hangman.zip" />
-			</fileset>
-		</delete>
+		<delete dir="${dist.dir}/hangman" />
 	</target>
 
 	<!-- zip guessing game -->
 
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
-		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
+		<mkdir dir="${dist.dir}/guessingGame/${res-graphics.dir}" />
 
-		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}" />
+		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
 
-		<copy todir="${dist.dir}/${res-graphics.dir}">
+		<copy todir="${dist.dir}/guessingGame/${res-graphics.dir}">
 			<fileset dir="${res-graphics.dir}" includes="bgImageGuess.jpg" />
 		</copy>
-		
-		<copy todir="${dist.dir}/${res-audio.dir}">
+
+		<copy todir="${dist.dir}/guessingGame/${res-audio.dir}">
 			<fileset dir="${res-audio.dir}" includes="*.wav" />
 		</copy>
 
-		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}" update="true" />
+		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame" update="true" />
 
-		<delete dir="${dist.dir}/res" />
-
-		<delete>
-			<fileset dir="${dist.dir}">
-				<include name="*.jar" />
-				<exclude name="guessingGame.zip" />
-			</fileset>
-		</delete>
+		<delete dir="${dist.dir}/guessingGame" />
 	</target>
-	
-	<!-- zip encryption program -->
-	
-	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
-		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
 
-		<copy todir="${dist.dir}">
+	<!-- zip encryption program -->
+
+	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
+		<mkdir dir="${dist.dir}/encryption/${res-graphics.dir}" />
+
+		<copy todir="${dist.dir}/encryption">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
 		</copy>
 
-		<copy todir="${dist.dir}/${res-graphics.dir}">
+		<copy todir="${dist.dir}/encryption/${res-graphics.dir}">
 			<fileset dir="${res-graphics.dir}" includes="bgImageEncrypt.jpg" />
 		</copy>
 
-		<copy file="secret.txt" todir="${dist.dir}" />
+		<copy file="secret.txt" todir="${dist.dir}/encryption" />
 
-		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}" update="true" />
+		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
 
-		<delete dir="${dist.dir}/res" />
-
-		<delete>
-			<fileset dir="${dist.dir}">
-				<include name="*.jar" />
-				<include name="*.txt" />
-				<exclude name="encryption.zip" />
-			</fileset>
-		</delete>
+		<delete dir="${dist.dir}/encryption" />
 	</target>
-	
-	<!-- zip tic tac toe program -->
-	
-	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
-		<mkdir dir="${dist.dir}/${res-graphics.dir}" />
 
-		<copy todir="${dist.dir}">
+	<!-- zip tic tac toe program -->
+
+	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
+		<mkdir dir="${dist.dir}/ticTacToe/${res-graphics.dir}" />
+
+		<copy todir="${dist.dir}/ticTacToe">
 			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
 		</copy>
 
-		<copy todir="${dist.dir}/${res-graphics.dir}">
+		<copy todir="${dist.dir}/ticTacToe/${res-graphics.dir}">
 			<fileset dir="${res-graphics.dir}" includes="bgImageToe.jpg" />
 		</copy>
 
-		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}" update="true" />
+		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
 
-		<delete dir="${dist.dir}/res" />
-
-		<delete>
-			<fileset dir="${dist.dir}">
-				<include name="*.jar" />
-				<include name="*.txt" />
-				<exclude name="ticTacToe.zip" />
-			</fileset>
-		</delete>
+		<delete dir="${dist.dir}/ticTacToe" />
 	</target>
 
 </project>
