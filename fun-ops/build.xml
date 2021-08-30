@@ -18,6 +18,7 @@
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
+		<delete dir="docs" />
 	</target>
 
 
@@ -313,6 +314,17 @@
 		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
 
 		<delete dir="${dist.dir}/ticTacToe" />
+	</target>
+	
+	<!-- Javadoc target -->
+	
+	<target name="javadoc" description="generate javadoc for applications">
+		<javadoc packagenames="calculator" sourcepath="src" destdir="docs/api/calculator" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="encryption" sourcepath="src" destdir="docs/api/encryption" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="hangman" sourcepath="src" destdir="docs/api/hangman" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="number.guessing" sourcepath="src" destdir="docs/api/numberGame" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="tic.tac.toe" sourcepath="src" destdir="docs/api/ticTacToe" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="wiggle.mouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
 	</target>
 
 </project>
