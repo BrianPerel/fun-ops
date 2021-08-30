@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+@SuppressWarnings("deprecation")
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
