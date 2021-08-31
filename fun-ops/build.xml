@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE xml>
-<project name="brians-apps" default="clean" basedir=".">
+<project name="fun-ops" default="clean" basedir=".">
 
 	<property name="version.num" value="v1.0" />
 	<property name="src.dir" value="src" />
