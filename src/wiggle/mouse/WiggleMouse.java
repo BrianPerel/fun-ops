@@ -71,28 +71,28 @@ public class WiggleMouse implements ActionListener {
 	 */
 	private WiggleMouse() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 430, 182);
+		frame.setBounds(100, 100, 485, 182);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		btnStart = new JButton("START");
-		btnStart.setBounds(88, 82, 91, 23);
+		btnStart.setBounds(120, 82, 91, 23);
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 
 		btnStop = new JButton("STOP");
-		btnStop.setBounds(220, 82, 91, 23);
+		btnStop.setBounds(260, 82, 91, 23);
 		frame.getContentPane().add(btnStop);
 
-		JLabel lblNewLabel = new JLabel("Time to wait before mouse move (in minutes)");
-		lblNewLabel.setBounds(23, 23, 264, 23);
+		JLabel lblNewLabel = new JLabel("Time to wait before wiggling your mouse (in minutes):");
+		lblNewLabel.setBounds(23, 23, 344, 23);
 		frame.getContentPane().add(lblNewLabel);
 
 		// JComboBox comboBox = new JComboBox(); // use this when switching to
 		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
 		// choice for component creation"
 		comboBox = new JComboBox<>(choices);
-		comboBox.setBounds(297, 23, 83, 22);
+		comboBox.setBounds(340, 23, 93, 22);
 		frame.getContentPane().add(comboBox);
 		btnStop.addActionListener(this);
 	}
@@ -102,27 +102,18 @@ public class WiggleMouse implements ActionListener {
 		if (ae.getSource() == btnStart) {
 			performAction = true;
 
-			switch ((String) comboBox.getSelectedItem()) {
-			case "1/2 minute":
-				timeToWait = 30000;
-				break;
-
-			case "1 minute":
-				timeToWait = 60000;
-				break;
-
-			case "3 minutes":
-				timeToWait = 180000;
-				break;
-
-			case "5 minutes":
-				timeToWait = 300000;
-				break;
-
-			case "10 minutes":
-				timeToWait = 600000;
-				break;
-			}
+			
+			  switch ((String) comboBox.getSelectedItem()) { case "1/2 minute": timeToWait
+			  = 30000; break;
+			  
+			  case "1 minute": timeToWait = 60000; break;
+			  
+			  case "3 minutes": timeToWait = 180000; break;
+			  
+			  case "5 minutes": timeToWait = 300000; break;
+			  
+			  case "10 minutes": timeToWait = 600000; break; }
+			 
 
 		} else if (ae.getSource() == btnStop) {
 			performAction = false;
