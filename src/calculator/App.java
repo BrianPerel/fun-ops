@@ -14,7 +14,6 @@ import java.util.Collections;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.text.MaskFormatter;
 
 /**
  * Application implementation for the calculator's UI. Builds and displays all
@@ -61,7 +60,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the frame, building the gui.
 	 */
 	public App() {
 
@@ -96,7 +95,7 @@ public class App extends KeyAdapter implements ActionListener {
 		btnClearC.addActionListener(this);
 		btnClearC.addKeyListener(this);
 
-		// backspace symbol
+		// unicode for backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
 		btnBackspace.setBackground(Color.WHITE);
 		btnBackspace.setBounds(268, 100, 80, 40);
@@ -119,7 +118,7 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setEditable(false);
 		userInputTextField.addKeyListener(this);
 
-		// Unicode for X^2
+		// unicode for X^2 (x squared)
 		JButton btnSquare = new JButton("x\u00B2");
 		btnSquare.setBackground(Color.WHITE);
 		btnSquare.setBounds(110, 141, 80, 40);
@@ -127,7 +126,7 @@ public class App extends KeyAdapter implements ActionListener {
 		btnSquare.addActionListener(this);
 		btnSquare.addKeyListener(this);
 
-		// 2 square root x symbol
+		// unicode for 2 square root x symbol
 		JButton btnSquareRoot = new JButton("2\u221Ax");
 		btnSquareRoot.setBackground(Color.WHITE);
 		btnSquareRoot.setBounds(189, 141, 80, 40);
@@ -135,7 +134,7 @@ public class App extends KeyAdapter implements ActionListener {
 		btnSquareRoot.addActionListener(this);
 		btnSquareRoot.addKeyListener(this);
 
-		// division symbol
+		// unicode for division symbol
 		JButton btnDivision = new JButton("\u00F7");
 		btnDivision.setBackground(Color.WHITE);
 		btnDivision.setBounds(268, 141, 80, 40);
@@ -256,29 +255,10 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * MaskFormatter is used to specify/create the format of a text field
-	 * 
-	 * @param s is the text field's user input area (the box)
-	 * @return the formatted text field
-	 */
-	protected MaskFormatter createFormatter(String s) {
-		MaskFormatter formatter = null;
-		try {
-			formatter = new MaskFormatter(s);
-		} catch (java.text.ParseException exc) {
-			System.err.println("formatter is bad: " + exc.getMessage());
-			System.exit(-1);
-		}
-		return formatter;
-	}
-
-	/**
 	 * This is responsible for listening to when buttons are clicked
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		String action = ae.getActionCommand();
-
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
@@ -286,9 +266,8 @@ public class App extends KeyAdapter implements ActionListener {
 			userInputTextField.setText(cursorRightPositioned);
 		}
 
-		// actions for numbers 0-9 buttons. No need for default case since all buttons
-		// are utilized as a case
-		switch (action) {
+		// actions for numbers 0-9 buttons and all calculator operands
+		switch (ae.getActionCommand()) {
 		case "0":
 			if (!userInputTextField.getText().equals(cursorRightPositionedWithZero)) {
 				userInputTextField.setText(userInputTextField.getText() + "0");
@@ -360,15 +339,16 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// backspace symbol
 		case "\u232B":
-			userInputTextField.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
+			userInputTextField
+					.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
 			break;
 
 		case "1/x":
 			// validate that the current text in textField isn't blank
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				// need to cast below multiple times in order to perform 1/x operation
-				userInputTextField
-						.setText(cursorRightPositioned + Double.toString(1 / Double.valueOf(userInputTextField.getText())));
+				userInputTextField.setText(
+						cursorRightPositioned + Double.toString(1 / Double.valueOf(userInputTextField.getText())));
 			}
 			break;
 
@@ -388,14 +368,11 @@ public class App extends KeyAdapter implements ActionListener {
 					value = df.format(v); // removes zero's after decimal point
 				}
 
-				// check for division by zero. Avoid exception being flagged
-				if (Calculator.divideByZeroflag) {
-					userInputTextField.setText(" Cannot divide by zero");
-				} else {
-					userInputTextField.setText(cursorRightPositioned + value);
-				}
+				// check for division by zero. Avoids exception being flagged
+				userInputTextField.setText(
+						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
 
-				// re set all array values to 0
+				// reset all array values to 0
 				Arrays.fill(operatorFlags, Boolean.FALSE);
 				Collections.fill(Calculator.nums, "");
 				Collections.fill(Calculator.doubleNums, 0.0);
@@ -442,23 +419,23 @@ public class App extends KeyAdapter implements ActionListener {
 		// 2\u221Ax -> 2 square root x symbol
 		case "2\u221Ax":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(userInputTextField.getText())));
+				userInputTextField
+						.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(userInputTextField.getText())));
 			}
 			break;
 
 		case "+/-":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				// if current number is a positive number, number becomes negative (minus is
-				// prepended)
-				if (!userInputTextField.getText().trim().substring(0, 1).equals("-")) {
-					userInputTextField.setText(cursorRightPositioned + ("-" + userInputTextField.getText().trim()));
-				}
-				// if current number is a negative number, number becomes positive (minus is
+				// if current number is positive, number becomes negative (minus is
+				// prepended) else if number is negative, number becomes positive (minues is
 				// removed)
-				else if (userInputTextField.getText().trim().substring(0, 1).equals("-")) {
-					userInputTextField.setText(cursorRightPositioned + userInputTextField.getText().replace("-", ""));
-				}
+				userInputTextField.setText(userInputTextField.getText().trim().substring(0, 1).equals("-")
+						? cursorRightPositioned + userInputTextField.getText().replace("-", "")
+						: cursorRightPositioned + ("-" + userInputTextField.getText().trim()));
 			}
+			break;
+
+		default:
 			break;
 		} // end switch
 	}
@@ -527,7 +504,8 @@ public class App extends KeyAdapter implements ActionListener {
 			operatorFlags[0] = true;
 			break;
 
-		// DOESN'T WORK - left just for reference to see what it would look like in
+		// KeyEvent.VK_PLUS DOESN'T WORK - it was left for reference to see what it
+		// would look like in
 		// KeyEvent code
 		case KeyEvent.VK_PLUS:
 			Calculator.setNumber(userInputTextField.getText());
@@ -557,12 +535,9 @@ public class App extends KeyAdapter implements ActionListener {
 					value = df.format(v); // removes zero's after decimal point
 				}
 
-				// check for division by zero. Avoid exception being flagged
-				if (Calculator.divideByZeroflag) {
-					userInputTextField.setText(" Cannot divide by zero");
-				} else {
-					userInputTextField.setText(cursorRightPositioned + value);
-				}
+				// check for division by zero. Avoids exception being flagged
+				userInputTextField.setText(
+						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
 
 				// reset all array values to 0
 				Arrays.fill(operatorFlags, Boolean.FALSE);
@@ -576,7 +551,8 @@ public class App extends KeyAdapter implements ActionListener {
 			break; // break statement for case enter key button
 
 		case KeyEvent.VK_BACK_SPACE:
-			userInputTextField.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
+			userInputTextField
+					.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
 			break;
 
 		case KeyEvent.VK_PERIOD:
@@ -584,14 +560,17 @@ public class App extends KeyAdapter implements ActionListener {
 				userInputTextField.setText(userInputTextField.getText() + ".");
 			}
 			break;
+
+		default:
+			break;
 		}
 
 		/**
 		 * use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY,
 		 * KeyEvent.VK_ADD, and KeyEvent.C don't work
 		 */
-		
-		if(Character.toUpperCase(e.getKeyChar()) == 'C') { 
+
+		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
 			userInputTextField.setText(cursorRightPositionedWithZero);
 			Arrays.fill(operatorFlags, Boolean.FALSE);
 			numberZeroEnteredByUser = false;
@@ -607,7 +586,7 @@ public class App extends KeyAdapter implements ActionListener {
 			Calculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 
-			if(e.getKeyChar() == '*') {
+			if (e.getKeyChar() == '*') {
 				operatorFlags[1] = true;
 			} else {
 				operatorFlags[3] = true;
