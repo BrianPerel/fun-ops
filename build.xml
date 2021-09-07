@@ -9,8 +9,9 @@
 	<property name="dist.dir" value="${build.dir}/dist" />
 	<property name="res-graphics.dir" value="res/graphics" />
 	<property name="res-audio.dir" value="res/audio" />
-	<property name="launch4j.dir" value="Launch4j" />
+	<property name="res-graphics-icons.dir" value="${res-graphics.dir}/icons" />
 	<property name="release.dir" value="${build.dir}/release" />
+	<property name="launch4j.dir" value="Launch4j" />
 	
 	<taskdef name="launch4j"
 	    classname="net.sf.launch4j.ant.Launch4jTask"
@@ -48,9 +49,9 @@
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}" update="true">
 			<manifest>
 				<attribute name="Main-Class" value="number.guessing.GuessingGame" />
-				<attribute name="Resource" value="res/audio/chimes.wav" />
-				<attribute name="Resource2" value="res/audio/fail.wav" />
-				<attribute name="Resource3" value="res/audio/win.wav" />
+				<attribute name="Resource" value="${res-audio.dir}/chimes.wav" />
+				<attribute name="Resource2" value="${res-audio.dir}/fail.wav" />
+				<attribute name="Resource3" value="${res-audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res-graphics.dir}/figure" />
 				<attribute name="Resource5" value="${res-graphics.dir}/bgImageGuess" />
 			</manifest>
@@ -182,9 +183,9 @@
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="number.guessing.GuessingGame" />
-				<attribute name="Resource" value="res/audio/chimes.wav" />
-				<attribute name="Resource2" value="res/audio/fail.wav" />
-				<attribute name="Resource3" value="res/audio/win.wav" />
+				<attribute name="Resource" value="${res-audio.dir}/chimes.wav" />
+				<attribute name="Resource2" value="${res-audio.dir}/fail.wav" />
+				<attribute name="Resource3" value="${res-audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res-graphics.dir}/figure" />
 				<attribute name="Resource5" value="${res-graphics.dir}/bgImageGuess" />
 			</manifest>
@@ -323,8 +324,9 @@
 	<target name="create calculator.exe" description="create .exe file for calculator program" depends="jar-calculator">
 		<launch4j>
 		  <config headerType="gui" outfile="calculator.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		      dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" 
+		  	  icon="${res-graphics-icons.dir}/calculator.ico">
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -336,11 +338,11 @@
 	
 	<!-- create encryption.exe target --> 
 		
-	<target name="create encryption.exe" description="create .exe file for encryption program" depends="jar-encryption program">
+	<target name="create and zip encryption.exe" description="create .exe file for encryption program" depends="jar-encryption program">
 		<launch4j>
 		  <config headerType="gui" outfile="encryption.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -362,11 +364,11 @@
 	
 	<!-- create hangman.exe target -->
 	
-	<target name="create hangman.exe" description="create .exe file for hangman program" depends="jar-hangman">
+	<target name="create and zip hangman.exe" description="create .exe file for hangman program" depends="jar-hangman">
 		<launch4j>
 		  <config headerType="gui" outfile="hangman.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -388,35 +390,39 @@
 	
 	<!-- create number game.exe target -->
 	
-	<target name="create number_game.exe" description="create .exe file for number game" depends="jar-guessing game">
+	<target name="create and zip number_game.exe" description="create .exe file for number game" depends="jar-guessing game">
 		<launch4j>
 		  <config headerType="gui" outfile="number_game.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		      dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" >
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
 		  </config>
 		</launch4j>
 		
-		<move file="number_game.exe" todir="${release.dir}/number game" />				
+		<move file="number_game.exe" todir="${release.dir}/number_game" />				
 
-		<copy todir="${release.dir}/number game/${res-graphics.dir}">
-			<fileset dir="${res-graphics.dir}" includes="bgImageGuess.jpg" />
+		<copy todir="${release.dir}/number_game/${res-graphics.dir}">
+			<fileset dir="${res-graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
+		</copy>
+		
+		<copy todir="${release.dir}/number_game/${res-audio.dir}">
+			<fileset dir="${res-audio.dir}" includes="*" />
 		</copy>
 
-		<zip destfile="${release.dir}/number game.zip" basedir="${release.dir}/number game" update="true" />
+		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
 
-		<delete dir="${release.dir}/number game" />
+		<delete dir="${release.dir}/number_game" />
 	</target>
 	
 	<!-- create tic-tac-toe.exe target -->
 	
-	<target name="create tic-tac-toe.exe" description="create .exe file for tic tac toe game" depends="jar-tic tac toe">
+	<target name="create tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
 		<launch4j>
 		  <config headerType="gui" outfile="tic-tac-toe.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -440,7 +446,7 @@
 		<launch4j>
 		  <config headerType="gui" outfile="wigglemouse.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" >
-		    <jre minVersion="1.4.0">
+		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
