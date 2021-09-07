@@ -346,7 +346,8 @@
 	<target name="create and zip encryption.exe" description="create .exe file for encryption program" depends="jar-encryption program">
 		<launch4j>
 		  <config headerType="gui" outfile="encryption.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" >
+		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar"
+		  	  icon="${res-graphics-icons.dir}/encryption.ico">
 		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -372,7 +373,8 @@
 	<target name="create and zip hangman.exe" description="create .exe file for hangman program" depends="jar-hangman">
 		<launch4j>
 		  <config headerType="gui" outfile="hangman.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" >
+		      dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" 
+			  icon="${res-graphics-icons.dir}/hangman.ico">
 		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -398,7 +400,8 @@
 	<target name="create and zip number_game.exe" description="create .exe file for number game" depends="jar-guessing game">
 		<launch4j>
 		  <config headerType="gui" outfile="number_game.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" >
+		      dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar"
+		  	  icon="${res-graphics-icons.dir}/guessing_game.ico">
 		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -426,7 +429,8 @@
 	<target name="create tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
 		<launch4j>
 		  <config headerType="gui" outfile="tic-tac-toe.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" >
+		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar"
+		  	  icon="${res-graphics-icons.dir}/ticTacToe.ico">
 		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -450,7 +454,8 @@
 	<target name="create wigglemouse.exe" description="create .exe file for wiggle mouse program" depends="jar-wiggle mouse">
 		<launch4j>
 		  <config headerType="gui" outfile="wigglemouse.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" >
+		      dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar"
+		  	  icon="${res-graphics-icons.dir}/mouse.ico">
 		    <jre minVersion="1.2.0">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
