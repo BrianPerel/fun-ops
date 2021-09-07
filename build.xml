@@ -17,7 +17,12 @@
 	    classname="net.sf.launch4j.ant.Launch4jTask"
 	    classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
-
+	
+	<tstamp>
+	  <format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US"/>
+	</tstamp>
+	
+	<echo message="Current date and time: ${TODAY_US}" level="info" />
 	<echo message="${ant.version}" level="info" />
 
 	<!-- clean -->
