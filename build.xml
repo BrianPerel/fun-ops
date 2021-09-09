@@ -365,4 +365,26 @@
 		<javadoc packagenames="wiggle.mouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
 	</target>
 	
+	<!-- unjar target -->
+	<target name="unjar all jars" description="unjar all existing program jars">
+		<unjar dest="${build.dir}/unjar-classes">
+			<fileset file="${jar.dir}/calculator-${version.num}.jar" />
+		</unjar>
+		<unjar dest="${build.dir}">
+			<fileset file="${jar.dir}/encryptDecrypt-${version.num}.jar" />
+		</unjar>
+		<unjar dest="${build.dir}">
+			<fileset file="${jar.dir}/guessingGame-${version.num}.jar" />
+		</unjar>
+		<unjar dest="${build.dir}">
+			<fileset file="${jar.dir}/hangman-${version.num}.jar" />
+		</unjar>
+		<unjar dest="${build.dir}">
+			<fileset file="${jar.dir}/tic_tac_toe-${version.num}.jar" />
+		</unjar>
+		<unjar dest="${build.dir}">
+			<fileset file="${jar.dir}/wigglemouse-${version.num}.jar" />
+		</unjar>
+	</target>
+	
 </project>
