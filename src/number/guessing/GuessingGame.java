@@ -18,6 +18,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+/**
+ * A guessing number game in which the user receives a randomly generated number between 1-99 and he/she 
+ * must guess what the remainder is. Every correct guess equates to 10 points, every incorrect guess
+ * equates to -10 points. Score is kept for every session. <br>
+ * 
+ * @author Brian Perel
+ *
+ */
 @SuppressWarnings("deprecation")
 public class GuessingGame implements ActionListener {
 
