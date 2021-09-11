@@ -36,10 +36,9 @@ public class WiggleMouse implements ActionListener {
 	/**
 	 * Launch the application.
 	 * 
-	 * @throws InterruptedException
-	 * @throws AWTException
+	 * @throws InterruptedException	thrown if thread is interrupted during execution
 	 */
-	public static void main(String[] args) throws AWTException, InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
