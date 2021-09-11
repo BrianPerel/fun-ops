@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
  * 
  * @author Brian Perel
  *
- *         Implementation for tic tac toe game board. Initiates the game.
+ * Implementation for tic tac toe game board. Initiates the game.
  */
 public class GameBoard implements ActionListener {
 
@@ -35,6 +35,12 @@ public class GameBoard implements ActionListener {
 	static final String PLAYER_TWO_SHAPE = "X";
 	static boolean start;
 
+	/**
+	 * Builds the game's GUI board
+	 * @param s boolean flag indicating whether or not the game has just begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
+	 */
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 
 		start = s;
