@@ -1,6 +1,5 @@
 package wiggle.mouse;
 
-import java.awt.AWTException;
 import java.awt.EventQueue;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -35,8 +34,7 @@ public class WiggleMouse implements ActionListener {
 
 	/**
 	 * Launch the application.
-	 * 
-	 * @throws InterruptedException	thrown if thread is interrupted during execution
+	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		EventQueue.invokeLater(new Runnable() {
@@ -61,9 +59,6 @@ public class WiggleMouse implements ActionListener {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * 
-	 * @throws InterruptedException
-	 * @throws AWTException
 	 */
 	private WiggleMouse() {
 		frame = new JFrame();
@@ -86,7 +81,6 @@ public class WiggleMouse implements ActionListener {
 		comboBox = new JComboBox<>(choices);
 		comboBox.setBounds(340, 23, 93, 22);
 		frame.getContentPane().add(comboBox);
-
 	}
 
 	@Override
@@ -120,6 +114,10 @@ public class WiggleMouse implements ActionListener {
 		}
 	}
 
+	/**
+	 * performs mouse movement action
+	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
+	 */
 	public static void moveMouse() throws InterruptedException {
 		while (performAction) {
 			// get current mouse pointer coordinates and set them. This needs to be done
@@ -138,6 +136,7 @@ public class WiggleMouse implements ActionListener {
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle
 			// Mouse action
+			System.out.println("custom message");
 			robot.mouseMove(x, y + 1);
 			Thread.sleep(50);
 			robot.mouseMove(x, y - 1);
@@ -146,6 +145,9 @@ public class WiggleMouse implements ActionListener {
 		}
 	}
 
+	/**
+	 * sets the current mouse's position into variables (x, y)
+	 */
 	public static void setMouseLocation() {
 		point = MouseInfo.getPointerInfo().getLocation();
 		x = (int) point.getX();
