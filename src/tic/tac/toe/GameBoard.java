@@ -42,7 +42,6 @@ public class GameBoard implements ActionListener {
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
 	 */
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
-
 		start = s;
 		playerOnesTurn = pOnesTurn;
 		playerTwosTurn = pTwosTurn;
@@ -310,6 +309,10 @@ public class GameBoard implements ActionListener {
 		}
 	}
 
+	/**
+	 * Performs actions after player one's turn
+	 * @param button_ button that was just pressed by player one
+	 */
 	public void playerOnesTurn(JButton button_) {
 		button_.setText(PLAYER_ONE_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerOne + "'s turn:");
@@ -317,6 +320,10 @@ public class GameBoard implements ActionListener {
 		playerTwosTurn = !playerTwosTurn;
 	}
 
+	/**
+	 * Performs actions after player two's turn
+	 * @param button_ button that was just pressed by player two
+	 */
 	public void playerTwosTurn(JButton button_) {
 		button_.setText(PLAYER_TWO_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
