@@ -26,7 +26,8 @@ import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 
 /**
- * App simulating a traditional hangman game with a 4-letter car theme
+ * App simulating a traditional hangman game with a 4-letter car theme. <br>
+ * 
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
