@@ -13,10 +13,10 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 /**
+ * Implementation for tic tac toe game board. Initiates the game. <br>
  * 
  * @author Brian Perel
  *
- * Implementation for tic tac toe game board. Initiates the game.
  */
 public class GameBoard implements ActionListener {
 
