@@ -12,6 +12,7 @@
 	<property name="res.graphics.icons.dir" value="${res.graphics.dir}/icons" />
 	<property name="release.dir" value="${build.dir}/release" />
 	<property name="launch4j.dir" value="Launch4j" />
+	<property name="unjar.dir" value="${build.dir}/unjar-classes" />
 	
 	<!-- creates the launch4j task --> 
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
@@ -366,23 +367,25 @@
 	</target>
 	
 	<!-- unjar target -->
-	<target name="unjar all jars" description="unjar all existing program jars">
-		<unjar dest="${build.dir}/unjar-classes">
+	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program, 
+		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
+		
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/calculator-${version.num}.jar" />
 		</unjar>
-		<unjar dest="${build.dir}">
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/encryptDecrypt-${version.num}.jar" />
 		</unjar>
-		<unjar dest="${build.dir}">
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/guessingGame-${version.num}.jar" />
 		</unjar>
-		<unjar dest="${build.dir}">
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/hangman-${version.num}.jar" />
 		</unjar>
-		<unjar dest="${build.dir}">
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/tic_tac_toe-${version.num}.jar" />
 		</unjar>
-		<unjar dest="${build.dir}">
+		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/wigglemouse-${version.num}.jar" />
 		</unjar>
 	</target>
