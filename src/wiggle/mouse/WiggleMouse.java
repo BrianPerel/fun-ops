@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 
 /**
  * Mouse wiggle program. Useful for when you want to be away from your computer
- * however appear to be available
+ * however appear to be available. <br>
  * 
  * @author Brian Perel
  *
