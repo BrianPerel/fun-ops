@@ -63,7 +63,6 @@ public class EncryptionGUI implements ActionListener {
 
 	/**
 	 * Create the application.
-	 * 
 	 * @throws FileNotFoundException
 	 */
 	public EncryptionGUI() throws FileNotFoundException {
