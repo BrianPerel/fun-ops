@@ -12,11 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
+ * Implementation for winner window. When a player wins, this window is displayed. <br>
  * 
  * @author Brian Perel
- *
- *         Implementation for winner window. When a player wins, this window is
- *         displayed.
+ *         
  */
 public class Winner implements ActionListener {
 
@@ -24,8 +23,11 @@ public class Winner implements ActionListener {
 	JButton btnPlayAgain = new JButton("Play again");
 	JLabel lblNewLabel = new JLabel();
 
-	public Winner(String winner) {
-
+	/**
+	 * Builds GUI window to be displayed when a player wins
+	 * @param gameResult holds the result of the game - winner's name or game over message
+	 */
+	public Winner(String gameResult) {
 		lblNewLabel.setText("Label");
 		f2.setResizable(false);
 		f2.setBounds(100, 100, 315, 167);
@@ -38,13 +40,11 @@ public class Winner implements ActionListener {
 		JLabel backgroundLabel = new JLabel(image);
 		f2.setContentPane(backgroundLabel);
 
-		if (!winner.equals("Game Over!") && !winner.equals("Game Over! Tie")) {
-			lblNewLabel.setText(winner + " wins!");
-		} else if (winner.equals("Game Over! Tie")) {
-			lblNewLabel.setText(winner);
-		} else {
-			lblNewLabel.setText("Game Over!");
-		}
+		if (!gameResult.equals("Game Over! Tie")) {
+			lblNewLabel.setText(gameResult + " wins!");
+		} else if (gameResult.equals("Game Over! Tie")) {
+			lblNewLabel.setText(gameResult);
+		} 
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(0, 0, 310, 57);
