@@ -15,6 +15,10 @@ public class EncryptDecrypt {
 	private String data; // field to hold data from file provided by user
 	private boolean encrypted; // flag to tell if encryption has already occurred or not
 
+	/**
+	 * Constructor sets data being passed in and assumes encryption process has not occurred
+	 * @param data the user data to be encrypted/decrypted
+	 */
 	public EncryptDecrypt(String data) {
 		this.data = data;
 		encrypted = false;
@@ -27,7 +31,7 @@ public class EncryptDecrypt {
 	 * index + a random number, casting to char type, and appending to blank
 	 * variable. Write new line of data to file
 	 * 
-	 * @throws IOException
+	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public void encrypt() throws IOException {
 		if (!encrypted) { // checks if encryption process has already occurred. Since you can't encrypt
@@ -66,8 +70,8 @@ public class EncryptDecrypt {
 	 * - random number, cast to char type, and append to blank variable. Write new
 	 * random character filled txt line to file
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @return data returns the unmasked/decrypted data string
+	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public String decrypt() throws IOException {
 
