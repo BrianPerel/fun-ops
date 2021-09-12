@@ -16,11 +16,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
+ * Implementation for start window. Prompts for player's 1 and 2's names. 
+ * Comment out log4j2 statements when creating a .jar <br>
  * 
  * @author Brian Perel
  *
- *         Implementation for start window. Prompts for player's 1 and 2's
- *         names. Comment out log4j2 statements when creating a .jar
  */
 public class Menu extends KeyAdapter implements ActionListener {
 
