@@ -3,6 +3,8 @@ package tic.tac.toe;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -17,7 +19,7 @@ import javax.swing.SwingConstants;
  * @author Brian Perel
  *         
  */
-public class Winner implements ActionListener {
+public class Winner extends KeyAdapter implements ActionListener {
 
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	JButton btnPlayAgain = new JButton("Play again");
@@ -28,10 +30,21 @@ public class Winner implements ActionListener {
 	 * @param gameResult holds the result of the game - winner's name or game over message
 	 */
 	public Winner(String gameResult) {
+		
+		// if exit button is clicked, dispose of this frame 
+		// and create a new GameBoard frame
+		f2.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		f2.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent e) {
+				GameBoard.f.dispose();
+				new GameBoard(false, false, true);
+		    }
+		});
+		
 		lblNewLabel.setText("Label");
 		f2.setResizable(false);
 		f2.setBounds(100, 100, 315, 167);
-		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
 
@@ -54,13 +67,24 @@ public class Winner implements ActionListener {
 		btnPlayAgain.setBackground(new Color(144, 238, 144));
 		f2.getContentPane().add(btnPlayAgain);
 		f2.setVisible(true);
+		btnPlayAgain.setSelected(true);
 		btnPlayAgain.addActionListener(this);
-		btnPlayAgain.setFocusable(false);
+		btnPlayAgain.addKeyListener(this);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {		
 		if (e.getSource() == btnPlayAgain) {
+			GameBoard.f.dispose();
+			f2.dispose();
+			new GameBoard(false, false, true);
+		} 
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
+			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);
 		}
