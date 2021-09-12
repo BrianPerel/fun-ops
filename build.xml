@@ -13,6 +13,7 @@
 	<property name="release.dir" value="${build.dir}/release" />
 	<property name="launch4j.dir" value="Launch4j" />
 	<property name="unjar.dir" value="${build.dir}/unjar-classes" />
+	<property name="min.jre.version" value="1.8.0" />
 	
 	<!-- creates the launch4j task --> 
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
@@ -56,7 +57,7 @@
 		  <config headerType="gui" outfile="calculator.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" 
 		  	  icon="${res.graphics.icons.dir}/calculator.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -109,7 +110,7 @@
 		  <config headerType="gui" outfile="encryption.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar"
 		  	  icon="${res.graphics.icons.dir}/encryption.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -172,7 +173,7 @@
 		  <config headerType="gui" outfile="hangman.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" 
 			  icon="${res.graphics.icons.dir}/hangman.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -239,7 +240,7 @@
 		  <config headerType="gui" outfile="number_game.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar"
 		  	  icon="${res.graphics.icons.dir}/guessing_game.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -302,7 +303,7 @@
 		  <config headerType="gui" outfile="tic-tac-toe.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar"
 		  	  icon="${res.graphics.icons.dir}/ticTacToe.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
@@ -346,7 +347,7 @@
 		  <config headerType="gui" outfile="wigglemouse.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar"
 		  	  icon="${res.graphics.icons.dir}/mouse.ico">
-		    <jre minVersion="1.2.0">
+		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
 		    </jre>
