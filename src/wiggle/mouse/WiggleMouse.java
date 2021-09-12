@@ -136,7 +136,6 @@ public class WiggleMouse implements ActionListener {
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle
 			// Mouse action
-			System.out.println("custom message");
 			robot.mouseMove(x, y + 1);
 			Thread.sleep(50);
 			robot.mouseMove(x, y - 1);
