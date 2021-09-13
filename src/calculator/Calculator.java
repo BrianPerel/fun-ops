@@ -8,7 +8,6 @@ import java.util.List;
  * Performs all calculator operations. <br>
  * 
  * @author Brian Perel
- * @created Dec 11, 2020
  */
 public class Calculator {
 
