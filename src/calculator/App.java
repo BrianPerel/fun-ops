@@ -24,7 +24,6 @@ import javax.swing.JFrame;
  * won't be using <br>
  * 
  * @author Brian Perel
- * @created Dec 11, 2020
  */
 public class App extends KeyAdapter implements ActionListener {
 
