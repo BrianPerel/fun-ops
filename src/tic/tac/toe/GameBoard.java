@@ -26,7 +26,7 @@ public class GameBoard implements ActionListener {
 	static String playerOne, playerTwo;
 	boolean playerOnesTurn, playerTwosTurn;
 	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
-	// private static final Logger logger_ = Logger.getLogger(TicTacToeBoard.class);
+	// private static final Logger logger_ = Logger.getLogger(GameBoard.class);
 	final String P1WINS = "Player 1 wins!";
 	final String P2WINS = "Player 2 wins!";
 
