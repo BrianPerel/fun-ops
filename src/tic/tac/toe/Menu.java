@@ -28,7 +28,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private JFrame frame = new JFrame();
 	static boolean startButtonSelected;
 	private JTextField NameOneTextField, NameTwoTextField;
-	// private static final Logger logger_ = Logger.getLogger(StartMenu.class);
+	// private static final Logger logger_ = Logger.getLogger(Menu.class);
 
 	/**
 	 * Launch the application.
