@@ -30,7 +30,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private JFrame frame = new JFrame();
 	static boolean startButtonSelected;
 	private JTextField NameOneTextField, NameTwoTextField;
-	private static final Logger logger_ = Logger.getLogger(Menu.class);
+	private static final Logger logger = Logger.getLogger(Menu.class);
 
 	/**
 	 * Launch the application.
@@ -45,9 +45,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-					logger_.info("Starting tic tac toe log");
+					logger.info("Starting tic tac toe log");
 				} catch (Exception e) {
-					logger_.error("Error: " + e.toString());
+					logger.error("Error: " + e.toString());
 					e.printStackTrace();
 				}
 			}
