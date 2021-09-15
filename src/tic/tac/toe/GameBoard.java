@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
+
 /**
  * Implementation for tic tac toe game board. Initiates the game. <br>
  * 
@@ -26,7 +28,7 @@ public class GameBoard implements ActionListener {
 	static String playerOne, playerTwo;
 	boolean playerOnesTurn, playerTwosTurn;
 	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
-	// private static final Logger logger_ = Logger.getLogger(GameBoard.class);
+	private static final Logger logger = Logger.getLogger(GameBoard.class);
 	final String P1WINS = "Player 1 wins!";
 	final String P2WINS = "Player 2 wins!";
 
@@ -204,7 +206,7 @@ public class GameBoard implements ActionListener {
 				playerTwosTurn(btnNine);
 			}
 		} else {
-			// logger_.warn("Invalid Move!");
+			logger.warn("Invalid Move!");
 		}
 
 		// game rules: Need 3 in a row in any direction
@@ -215,78 +217,78 @@ public class GameBoard implements ActionListener {
 		}
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnFour.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSix.getText().isEmpty()) {
 			if (btnFour.getText().equals("X") && btnFive.getText().equals("X") && btnSix.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnFour.getText().equals("O") && btnFive.getText().equals("O") && btnSix.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnSeven.getText().equals("X") && btnEight.getText().equals("X") && btnNine.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnSeven.getText().equals("O") && btnEight.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFour.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFour.getText().equals("X") && btnSeven.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnFour.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnTwo.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnEight.getText().isEmpty()) {
 			if (btnTwo.getText().equals("X") && btnFive.getText().equals("X") && btnEight.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnTwo.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnEight.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnSix.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnSix.getText().equals("X") && btnNine.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnThree.getText().equals("O") && btnSix.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFive.getText().equals("X") && btnNine.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnFive.getText().equals("O") && btnNine.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnFive.getText().equals("X") && btnSeven.getText().equals("X")) {
-				// logger_.info(P1WINS);
+				logger.info(P1WINS);
 				new Winner(playerOne);
 			} else if (btnThree.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
-				// logger_.info(P2WINS);
+				logger.info(P2WINS);
 				new Winner(playerTwo);
 			}
 		}
