@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 /**
  * Implementation for start window. Prompts for player's 1 and 2's names. 
  * Comment out log4j2 statements when creating a .jar <br>
@@ -28,7 +30,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private JFrame frame = new JFrame();
 	static boolean startButtonSelected;
 	private JTextField NameOneTextField, NameTwoTextField;
-	// private static final Logger logger_ = Logger.getLogger(Menu.class);
+	private static final Logger logger_ = Logger.getLogger(Menu.class);
 
 	/**
 	 * Launch the application.
@@ -43,10 +45,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-					// BasicConfigurator.configure();
-					// logger_.info("Starting tic tac toe log");
+					logger_.info("Starting tic tac toe log");
 				} catch (Exception e) {
-					// logger_.error("Error: " + e.toString());
+					logger_.error("Error: " + e.toString());
 					e.printStackTrace();
 				}
 			}
