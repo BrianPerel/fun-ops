@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 
+import org.apache.log4j.Logger;
+
 /**
  * App simulating a traditional hangman game with a 4-letter car theme. <br>
  * 
@@ -33,7 +35,7 @@ import javax.swing.text.MaskFormatter;
 public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
-	// private static final Logger logger_ = Logger.getLogger(Hangman.class);
+	private static final Logger logger = Logger.getLogger(Hangman.class);
 	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
@@ -83,7 +85,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
-					// logger_.error("Error: " + e.toString());
+					logger.error("Error: " + e.toString());
 				}
 			}
 		});		
@@ -190,7 +192,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			myReader.close();
 
 		} catch (FileNotFoundException e) {
-			// logger_.error("Error: File not found." + e.toString());
+			logger.error("Error: File not found." + e.toString());
 		}
 
 		getHangmanWord();
@@ -208,7 +210,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		try {
 			formatter = new MaskFormatter(s);
 		} catch (java.text.ParseException exc) {
-			// logger_.error("formatter is bad: " + exc.getMessage());
+			logger.error("formatter is bad: " + exc.getMessage());
 			System.exit(-1);
 		}
 		return formatter;
