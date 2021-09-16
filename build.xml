@@ -93,15 +93,11 @@
 		<copy todir="${dist.dir}/encryption">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
 		</copy>
-
 		<copy todir="${dist.dir}/encryption/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
 		</copy>
-
 		<copy file="secret.txt" todir="${dist.dir}/encryption" />
-
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
-
 		<delete dir="${dist.dir}/encryption" />
 	</target>
 	
@@ -119,22 +115,22 @@
 		</launch4j>
 		
 		<move file="encryption.exe" todir="${release.dir}/encryption" />				
-
 		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
 		</copy>
-
 		<copy file="secret.txt" todir="${release.dir}/encryption" />
-
 		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
-
 		<delete dir="${release.dir}/encryption" />
 	</target>
 
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern">
+			<classpath>
+			    <pathelement path="log4j/log4j-1.2.17.jar"/>
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="create associated .jar file">
@@ -156,15 +152,11 @@
 		<copy todir="${dist.dir}/hangman">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
 		</copy>
-
 		<copy todir="${dist.dir}/hangman/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
 		</copy>
-
 		<copy file="hangman.txt" todir="${dist.dir}/hangman" />
-
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
-
 		<delete dir="${dist.dir}/hangman" />
 	</target>
 	
@@ -182,15 +174,11 @@
 		</launch4j>
 		
 		<move file="hangman.exe" todir="${release.dir}/hangman" />				
-
 		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
 		</copy>
-
 		<copy file="hangman.txt" todir="${release.dir}/hangman" />
-
 		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
-
 		<delete dir="${release.dir}/hangman" />
 	</target>
 
@@ -221,17 +209,13 @@
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
-
 		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg" />
 		</copy>
-
 		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
-
 		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame" update="true" />
-
 		<delete dir="${dist.dir}/guessingGame" />
 	</target>
 	
@@ -249,24 +233,24 @@
 		</launch4j>
 		
 		<move file="number_game.exe" todir="${release.dir}/number_game" />				
-
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
 		</copy>
-		
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
 		</copy>
-
 		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
-
 		<delete dir="${release.dir}/number_game" />
 	</target>
 
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern">
+			<classpath>
+			    <pathelement path="log4j/log4j-1.2.17.jar"/>
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="create associated .jar file">
@@ -288,18 +272,15 @@
 		<copy todir="${dist.dir}/ticTacToe">
 			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
 		</copy>
-
 		<copy todir="${dist.dir}/ticTacToe/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
 		</copy>
-
 		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
-
 		<delete dir="${dist.dir}/ticTacToe" />
 	</target>
 	
 	<!-- create tic-tac-toe.exe target -->
-	<target name="create tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
+	<target name="create and zip tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
 		<launch4j>
 		  <config headerType="gui" outfile="tic-tac-toe.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar"
@@ -312,13 +293,10 @@
 		</launch4j>
 		
 		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />				
-
 		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
 		</copy>
-
 		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
-
 		<delete dir="${release.dir}/tic_tac_toe" />
 	</target>
 	
@@ -354,7 +332,7 @@
 		    </jre>
 		  </config>
 		</launch4j>
-		
+	
 		<move file="wigglemouse.exe" todir="${release.dir}" />				
 	</target>
 	
@@ -391,5 +369,4 @@
 			<fileset file="${jar.dir}/wigglemouse-${version.num}.jar" />
 		</unjar>
 	</target>
-	
 </project>
