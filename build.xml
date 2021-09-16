@@ -30,6 +30,7 @@
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" />
 		<delete dir="docs" />
+		<delete dir="log" />
 	</target>
 	
 	<!-- targets for calculator -->
