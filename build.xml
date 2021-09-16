@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE xml><project name="fun-ops" default="clean" basedir=".">
+	
+	<description>
+		My Custom Ant Build Script for all 6 projects. Includes compile, jar, 
+		run, create exe, javadoc, unjar tasks for all projects
+	</description>
 
 	<property name="version.num" value="v1.0" />
 	<property name="src.dir" value="src" />
@@ -25,7 +30,16 @@
 	</tstamp>	
 	<echo message="Current date and time: ${TODAY_US}" level="info" />
 	<echo message="${ant.version}" level="info" />
+	
+	<!-- reference id for classpath holding references to all 3rd party jars in project
+	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
+	<path id="classpath-entries">
+	    <fileset dir="log4j">
+	        <include name="*.jar" />
+	    </fileset>
+	</path>
 
+	
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" />
@@ -127,9 +141,7 @@
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern">
-			<classpath>
-			    <pathelement path="log4j/log4j-1.2.17.jar"/>
-			</classpath>
+			<classpath refid="classpath-entries" />
 		</javac>
 	</target>
 
@@ -247,9 +259,7 @@
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern">
-			<classpath>
-			    <pathelement path="log4j/log4j-1.2.17.jar"/>
-			</classpath>
+			<classpath refid="classpath-entries" />
 		</javac>
 	</target>
 
