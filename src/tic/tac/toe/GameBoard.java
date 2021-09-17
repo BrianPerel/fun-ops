@@ -150,7 +150,6 @@ public class GameBoard implements ActionListener {
 			start = false;
 		}
 		
-		
 		if (ae.getSource() == btnOne && btnOne.getText().isEmpty()) {
 			if (playerOnesTurn) {
 				playerOnesTurn(btnOne);
@@ -296,10 +295,10 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player one's turn
-	 * @param button_ button that was just pressed by player one
+	 * @param button button that was just pressed by player one
 	 */
-	public void playerOnesTurn(JButton button_) {
-		button_.setText(PLAYER_ONE_SHAPE);
+	public void playerOnesTurn(JButton button) {
+		button.setText(PLAYER_ONE_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerOne + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
 		playerTwosTurn = !playerTwosTurn;
@@ -307,10 +306,10 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player two's turn
-	 * @param button_ button that was just pressed by player two
+	 * @param button button that was just pressed by player two
 	 */
-	public void playerTwosTurn(JButton button_) {
-		button_.setText(PLAYER_TWO_SHAPE);
+	public void playerTwosTurn(JButton button) {
+		button.setText(PLAYER_TWO_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
 		playerTwosTurn = !playerTwosTurn;
