@@ -16,9 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+import java.awt.Font;
 
 /**
- * Implementation for start window. Prompts for player's 1 and 2's names. 
+ * Implementation for start window. Prompts for player's 1 and 2's names.
  * Comment out log4j2 statements when creating a .jar <br>
  * 
  * @author Brian Perel
@@ -27,6 +28,7 @@ import org.apache.log4j.Logger;
 public class Menu extends KeyAdapter implements ActionListener {
 
 	JButton btnStart;
+	static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
 	static boolean startButtonSelected;
 	private JTextField NameOneTextField, NameTwoTextField;
@@ -68,7 +70,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.setContentPane(backgroundLabel);
 
 		JLabel lblPlayer1 = new JLabel("Player 1:");
-		lblPlayer1.setBounds(107, 59, 83, 25);
+		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));
+		lblPlayer1.setBounds(87, 56, 83, 25);
 		frame.getContentPane().add(lblPlayer1);
 
 		btnStart = new JButton("Start");
@@ -84,7 +87,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		NameOneTextField.setColumns(10);
 
 		JLabel lblPlayer2 = new JLabel("Player 2:");
-		lblPlayer2.setBounds(107, 122, 64, 14);
+		lblPlayer2.setFont(new Font("MV Boli", Font.PLAIN, 20));
+		lblPlayer2.setBounds(87, 114, 98, 25);
 		frame.getContentPane().add(lblPlayer2);
 
 		NameTwoTextField = new JTextField();
@@ -95,7 +99,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ENTER && !NameOneTextField.getText().isEmpty() && !NameTwoTextField.getText().isEmpty()) {
+		if (e.getKeyChar() == KeyEvent.VK_ENTER && !NameOneTextField.getText().isEmpty()
+				&& !NameTwoTextField.getText().isEmpty()) {
 
 			// remove extra whitespace from name textfields before proceeding
 			GameBoard.playerOne = NameOneTextField.getText().trim();
@@ -118,11 +123,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 			// if one of the 2 textfields doesn't get a name
 		} else if (NameOneTextField.getText().isEmpty() || NameTwoTextField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} // if first name field equals the second one
 		else if (NameOneTextField.getText().equals(NameTwoTextField.getText())) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			NameOneTextField.setText("");
 			NameTwoTextField.setText("");
@@ -133,7 +138,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		// if start button is pushed and both name fields arn't empty
-		if (ae.getSource() == btnStart && !NameOneTextField.getText().isEmpty() && !NameTwoTextField.getText().isEmpty()) {
+		if (ae.getSource() == btnStart && !NameOneTextField.getText().isEmpty()
+				&& !NameTwoTextField.getText().isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
 			GameBoard.playerOne = NameOneTextField.getText().trim();
@@ -166,7 +172,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 			// if both name text fields are empty
 		} else if (NameOneTextField.getText().isEmpty() || NameTwoTextField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
