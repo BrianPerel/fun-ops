@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
  * Implementation for winner window. When a player wins, this window is displayed. <br>
  * 
  * @author Brian Perel
- *         
+ *       
  */
 public class Winner extends KeyAdapter implements ActionListener {
 
