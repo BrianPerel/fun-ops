@@ -29,13 +29,27 @@ public class GameBoard implements ActionListener {
 	boolean playerOnesTurn, playerTwosTurn;
 	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
-	final String P1WINS = "Player 1 wins!";
-	final String P2WINS = "Player 2 wins!";
+	static String pOneWins, pTwoWins;
 
 	// needed to invert these to fix a window2 symbol problem
 	static final String PLAYER_ONE_SHAPE = "O";
 	static final String PLAYER_TWO_SHAPE = "X";
 	static boolean start;
+	
+	/**
+	 * Setups the current game: makes decision on who's turn it is and assigns player entered names
+	 * @param s boolean flag indicating whether or not the game has just begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
+	 */
+	public void gameSetup(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
+		start = s;
+		playerOnesTurn = pOnesTurn;
+		playerTwosTurn = pTwosTurn;
+		
+		pOneWins = "Player 1 (" + playerOne + ") wins!";
+		pTwoWins = "Player 2 (" + playerTwo + ") wins!";
+	}
 
 	/**
 	 * Builds the game's GUI board
@@ -44,10 +58,9 @@ public class GameBoard implements ActionListener {
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
 	 */
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
-		start = s;
-		playerOnesTurn = pOnesTurn;
-		playerTwosTurn = pTwosTurn;
-
+		
+		gameSetup(s, pOnesTurn, pTwosTurn);
+		
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -216,78 +229,78 @@ public class GameBoard implements ActionListener {
 		}
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnFour.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSix.getText().isEmpty()) {
 			if (btnFour.getText().equals("X") && btnFive.getText().equals("X") && btnSix.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnFour.getText().equals("O") && btnFive.getText().equals("O") && btnSix.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnSeven.getText().equals("X") && btnEight.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnSeven.getText().equals("O") && btnEight.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFour.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFour.getText().equals("X") && btnSeven.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnFour.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnTwo.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnEight.getText().isEmpty()) {
 			if (btnTwo.getText().equals("X") && btnFive.getText().equals("X") && btnEight.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnTwo.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnEight.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnSix.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnSix.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnThree.getText().equals("O") && btnSix.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFive.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnFive.getText().equals("O") && btnNine.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnFive.getText().equals("X") && btnSeven.getText().equals("X")) {
-				logger.info(P1WINS);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnThree.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
-				logger.info(P2WINS);
+				logger.info(pTwoWins);
 				new Winner(playerTwo);
 			}
 		}
@@ -306,10 +319,10 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player two's turn
-	 * @param button button that was just pressed by player two
+	 * @param buttonPressed button that was just pressed by player two
 	 */
-	public void playerTwosTurn(JButton button) {
-		button.setText(PLAYER_TWO_SHAPE);
+	public void playerTwosTurn(JButton buttonPressed) {
+		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
 		playerTwosTurn = !playerTwosTurn;
