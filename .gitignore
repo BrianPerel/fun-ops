@@ -1,6 +1,8 @@
 /bin/
-/build/
+build/
 *.class
-/jar/
+jar/
 *.jar
 *.log
+Launch4j/
+docs/
