@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Created-By: Brian Perel
 
+Main-Class: calculator.App
+
 Main-Class: hangman.Hangman
 Resource: res/graphics/bgImageHangman
 
 Main-Class: wiggle.mouse.WiggleMouse 
-Main-Class: calculator.App
 
 Main-Class: number.guessing.GuessingGame
 Resource: res/audio/chimes.wav
