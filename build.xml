@@ -34,12 +34,12 @@
 	
 	<!-- reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
-	<path id="classpath-entries">
+	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
 	    <fileset dir="log4j">
 	        <include name="*.jar" />
 	    </fileset>
 	</path>
-
+	
 	
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
@@ -49,12 +49,12 @@
 	</target>
 	
 	<!-- targets for calculator -->
-	<target name="compile-calculator" description="compile program">
+	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
-	<target name="jar-calculator" depends="compile-calculator" description="create associated .jar file">
+	<target name="jar-calculator" depends="compile-calculator" description="create associated .jar file for the specified application">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -142,7 +142,7 @@
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern">
-			<classpath refid="classpath-entries" />
+			<classpath refid="build.classpath" />
 		</javac>
 	</target>
 
@@ -260,7 +260,7 @@
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern">
-			<classpath refid="classpath-entries" />
+			<classpath refid="build.classpath" />
 		</javac>
 	</target>
 
