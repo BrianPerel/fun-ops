@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE xml><project name="fun-ops" default="clean" basedir=".">
+<!DOCTYPE xml>
+<project name="fun-ops" default="clean" basedir=".">
 	
 	<description>
 		My Custom Ant Build Script for all 6 projects. Includes compile, jar, 
