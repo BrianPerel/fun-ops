@@ -74,10 +74,7 @@ public class GuessingGame implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		File bgImageFile = new File("res/graphics/bgImageGuess.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		frame.setContentPane(backgroundLabel);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageGuess.jpg")));
 
 		JLabel lblScore = new JLabel("Score");
 		lblScore.setBounds(21, 24, 34, 17);
@@ -101,9 +98,7 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		File imageFile = new File("res/graphics/figure.jpg");
-		ImageIcon imageTwo = new ImageIcon(imageFile.toString());
-		JLabel lblImage = new JLabel(imageTwo);
+		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/figure.jpg"));
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
 
@@ -160,13 +155,10 @@ public class GuessingGame implements ActionListener {
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
 				try {
-					File wavFile = new File("res/audio/win.wav");
-					sound = Applet.newAudioClip(wavFile.toURL());
+					Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
-				sound.play();
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 				randomNumber = ran.nextInt(100);
@@ -175,13 +167,10 @@ public class GuessingGame implements ActionListener {
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
 				try {
-					File wavFile = new File("res/audio/fail.wav");
-					sound = Applet.newAudioClip(wavFile.toURL());
+					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
-				sound.play();
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
 				if (score != 0) {
@@ -198,13 +187,10 @@ public class GuessingGame implements ActionListener {
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
 			try {
-				File wavFile = new File("res/audio/chimes.wav");
-				sound = Applet.newAudioClip(wavFile.toURL());
+				Applet.newAudioClip(new File("res/audio/chimes.wav").toURL()).play();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			sound.play();
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
@@ -217,14 +203,11 @@ public class GuessingGame implements ActionListener {
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
 			try {
-				File wavFile = new File("res/audio/fail.wav");
-				sound = Applet.newAudioClip(wavFile.toURL());
+				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			sound.play();
-			
+						
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 

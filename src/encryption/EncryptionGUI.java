@@ -29,17 +29,17 @@ import javax.swing.JTextField;
  */
 public class EncryptionGUI implements ActionListener {
 
+	String data = "";
+	JButton btnBrowse;
+	boolean fileLoaded;
 	private JFrame frame;
+	static String fileName;
+	EncryptDecrypt dataSet1;
+	static EncryptionGUI window;
 	private JTextField loadingTextField;
-	JButton btnLoadFile = new JButton("Load file");
 	JButton btnEncrypt = new JButton("Encrypt");
 	JButton btnDecrypt = new JButton("Decrypt");
-	JButton btnBrowse;
-	EncryptDecrypt dataSet1;
-	String data = "";
-	static String fileName;
-	boolean fileLoaded;
-	static EncryptionGUI window;
+	JButton btnLoadFile = new JButton("Load file");
 
 	/**
 	 * Launch the application.
@@ -72,10 +72,7 @@ public class EncryptionGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		File bgImageFile = new File("res/graphics/bgImageEncrypt.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		frame.setContentPane(backgroundLabel);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageEncrypt.jpg")));
 
 		btnLoadFile.setBounds(41, 44, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
@@ -115,11 +112,9 @@ public class EncryptionGUI implements ActionListener {
 	public void fileBrowse() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		int result = fileChooser.showOpenDialog(fileChooser);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			// Path to secret.txt file C:\Users\_____\git\fun-ops\fun-ops\secret.txt
-			loadingTextField.setText(selectedFile.getName());
+
+		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+			loadingTextField.setText(fileChooser.getSelectedFile().getName());
 		}
 	}
 
@@ -191,6 +186,7 @@ public class EncryptionGUI implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
 		}
 
@@ -201,6 +197,7 @@ public class EncryptionGUI implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
 

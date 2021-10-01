@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,10 +63,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		File bgImageFile = new File("res/graphics/bgImageToe.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		frame.setContentPane(backgroundLabel);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 
 		JLabel lblPlayer1 = new JLabel("Player 1:");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));

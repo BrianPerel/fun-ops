@@ -99,9 +99,7 @@ public class EncryptDecrypt {
 		}
 
 		myWriter.close();
-
 		encrypted = false;
-
 		return data;
 	}
 

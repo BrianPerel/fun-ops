@@ -419,7 +419,7 @@ public class App extends KeyAdapter implements ActionListener {
 		case "2\u221Ax":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				userInputTextField
-						.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(userInputTextField.getText())));
+					.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(userInputTextField.getText())));
 			}
 			break;
 

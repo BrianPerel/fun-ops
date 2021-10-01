@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,16 +47,13 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
 
-		File bgImageFile = new File("res/graphics/bgImageToe.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		f2.setContentPane(backgroundLabel);
-
-		if (!gameResult.equals("Game Over! Tie")) {
-			lblNewLabel.setText(gameResult + " wins!");
-		} else if (gameResult.equals("Game Over! Tie")) {
+		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
+		
+		if (gameResult.equals("Game Over! Tie")) {
 			lblNewLabel.setText(gameResult);
-		} 
+		} else {
+			lblNewLabel.setText(gameResult + " wins!");
+		}
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(0, 0, 310, 57);
@@ -66,10 +62,11 @@ public class Winner extends KeyAdapter implements ActionListener {
 		btnPlayAgain.setBounds(104, 68, 100, 34);
 		btnPlayAgain.setBackground(new Color(144, 238, 144));
 		f2.getContentPane().add(btnPlayAgain);
-		f2.setVisible(true);
-		btnPlayAgain.setSelected(true);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
+		btnPlayAgain.setSelected(true);
+		f2.setVisible(true);
+
 	}
 
 	@Override

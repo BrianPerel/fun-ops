@@ -3,7 +3,6 @@ package tic.tac.toe;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -69,10 +68,7 @@ public class GameBoard implements ActionListener {
 		f.setLocationRelativeTo(null);
 
 		// assigning a background image to the app
-		File bgImageFile = new File("res/graphics/bgImageToe.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		f.setContentPane(backgroundLabel);
+		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 
 		btnOne = new JButton("");
 		btnOne.setBounds(63, 64, 80, 70);

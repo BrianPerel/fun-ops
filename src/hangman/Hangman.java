@@ -39,7 +39,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
-	private Random rand = new Random();
+	private Random randomGenerator = new Random();
 
 	// chosen hangman word
 	String word = "";
@@ -50,7 +50,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	// store hangman drawing in arraylist, each part to be displayed is in separate
 	// space of arraylist
-	ArrayList<String> hangString = new ArrayList<String>();
+	ArrayList<String> hangString = new ArrayList<>();
 
 	// placeholder for a counter
 	int count = 0;
@@ -109,14 +109,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 529, 326);
+		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 
-		File bgImageFile = new File("res/graphics/bgImageHangman.jpg");
-		ImageIcon image = new ImageIcon(bgImageFile.toString());
-		JLabel backgroundLabel = new JLabel(image);
-		frame.setContentPane(backgroundLabel);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageHangman.jpg")));
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(272, 168, 171, 7);
@@ -180,8 +177,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		try {
 			// read file of random hangman words
-			File myObj = new File("Hangman.txt");
-			Scanner myReader = new Scanner(myObj);
+			Scanner myReader = new Scanner(new File("Hangman.txt"));
 
 			while (myReader.hasNext()) {
 				// store every line in arraylist
@@ -192,7 +188,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			myReader.close();
 
 		} catch (FileNotFoundException e) {
-			logger.error("Error: File not found." + e.toString());
+			logger.error("Error: File not found. " + e.toString());
 		}
 
 		getHangmanWord();
@@ -221,7 +217,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	public void getHangmanWord() {
 		// choose random word from txt file
-		word = line.get(rand.nextInt(6));
+		word = line.get(randomGenerator.nextInt(6));
+		
 		// this line is revealing the word to the console 
 		// be sure to remove before doing a build
 		System.out.println(word);
