@@ -132,7 +132,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setBorder(border);
 
 		hangmanWordTextField = new JTextField();
-		hangmanWordTextField.setBounds(338, 82, 86, 20);
+		hangmanWordTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
+		hangmanWordTextField.setBounds(356, 99, 70, 27);
 		frame.getContentPane().add(hangmanWordTextField);
 		hangmanWordTextField.setColumns(10);
 		hangmanWordTextField.setEditable(false);
@@ -140,6 +141,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanWordTextField.setToolTipText("Secret Word");
 
 		letter1TextField = new JFormattedTextField(createFormatter("U"));
+		letter1TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
 		letter1TextField.setBounds(306, 186, 17, 20);
 		frame.getContentPane().add(letter1TextField);
 		letter1TextField.setColumns(10);
@@ -147,6 +149,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letter1TextField.addFocusListener(this);
 
 		letter2TextField = new JFormattedTextField(createFormatter("U"));
+		letter2TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
 		letter2TextField.setColumns(10);
 		letter2TextField.setBounds(333, 186, 17, 20);
 		frame.getContentPane().add(letter2TextField);
@@ -154,6 +157,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letter2TextField.addFocusListener(this);
 
 		letter3TextField = new JFormattedTextField(createFormatter("U"));
+		letter3TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
 		letter3TextField.setColumns(10);
 		letter3TextField.setBounds(360, 186, 17, 20);
 		frame.getContentPane().add(letter3TextField);
@@ -161,6 +165,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letter3TextField.addFocusListener(this);
 
 		letter4TextField = new JFormattedTextField(createFormatter("U"));
+		letter4TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
 		letter4TextField.setColumns(10);
 		letter4TextField.setBounds(387, 186, 17, 20);
 		frame.getContentPane().add(letter4TextField);
@@ -168,11 +173,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letter4TextField.addFocusListener(this);
 
 		JLabel lblWordText = new JLabel("WORD:");
-		lblWordText.setBounds(288, 85, 46, 14);
+		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 13));
+		lblWordText.setForeground(Color.WHITE);
+		lblWordText.setBounds(300, 102, 126, 24);
 		frame.getContentPane().add(lblWordText);
 
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
-		lblHangmanTheme.setBounds(292, 41, 151, 14);
+		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
+		lblHangmanTheme.setForeground(Color.WHITE);
+		lblHangmanTheme.setBounds(273, 44, 183, 29);
 		frame.getContentPane().add(lblHangmanTheme);
 
 		try {

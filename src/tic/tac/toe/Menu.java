@@ -70,13 +70,6 @@ public class Menu extends KeyAdapter implements ActionListener {
 		lblPlayer1.setBounds(87, 56, 83, 25);
 		frame.getContentPane().add(lblPlayer1);
 
-		btnStart = new JButton("Start");
-		btnStart.setBounds(145, 192, 107, 35);
-		frame.getContentPane().add(btnStart);
-		btnStart.addActionListener(this);
-		btnStart.addKeyListener(this);
-		btnStart.setBackground(new Color(144, 238, 144));
-
 		NameOneTextField = new JTextField();
 		NameOneTextField.setBounds(190, 54, 130, 35);
 		frame.getContentPane().add(NameOneTextField);
@@ -91,12 +84,20 @@ public class Menu extends KeyAdapter implements ActionListener {
 		NameTwoTextField.setColumns(10);
 		NameTwoTextField.setBounds(190, 112, 130, 35);
 		frame.getContentPane().add(NameTwoTextField);
+		
+		btnStart = new JButton("Start");
+		btnStart.setFont(new Font("Lucida Fax", Font.BOLD, 14));
+		btnStart.setBounds(145, 192, 107, 35);
+		frame.getContentPane().add(btnStart);
+		btnStart.addActionListener(this);
+		btnStart.addKeyListener(this);
+		btnStart.setBackground(new Color(144, 238, 144));
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && !NameOneTextField.getText().isEmpty()
-				&& !NameTwoTextField.getText().isEmpty()) {
+				&& !NameTwoTextField.getText().isEmpty() && !NameOneTextField.getText().equalsIgnoreCase(NameTwoTextField.getText())) {
 
 			// remove extra whitespace from name textfields before proceeding
 			GameBoard.playerOne = NameOneTextField.getText().trim();
@@ -114,6 +115,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 						+ GameBoard.playerTwo.substring(1);
 			}
 
+			logger.info("Player 1: " + GameBoard.playerOne);
+			logger.info("Player 2: " + GameBoard.playerTwo);
+
 			frame.dispose();
 			new GameBoard(true, true, false);
 
@@ -122,17 +126,17 @@ public class Menu extends KeyAdapter implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} // if first name field equals the second one
-		else if (NameOneTextField.getText().equals(NameTwoTextField.getText())) {
+		else if (NameOneTextField.getText().equalsIgnoreCase(NameTwoTextField.getText())) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			NameOneTextField.setText("");
 			NameTwoTextField.setText("");
+			NameOneTextField.requestFocus();
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
 		// if start button is pushed and both name fields arn't empty
 		if (ae.getSource() == btnStart && !NameOneTextField.getText().isEmpty()
 				&& !NameTwoTextField.getText().isEmpty()) {
@@ -142,7 +146,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 			GameBoard.playerTwo = NameTwoTextField.getText().trim();
 
 			// if first name field equals the second one
-			if (NameOneTextField.getText().equals(NameTwoTextField.getText())) {
+			if (NameOneTextField.getText().equalsIgnoreCase(NameTwoTextField.getText())) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
 				NameOneTextField.setText("");
 				NameTwoTextField.setText("");
@@ -162,6 +166,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 				GameBoard.playerTwo = (GameBoard.playerTwo.charAt(0) + "").toUpperCase()
 						+ GameBoard.playerTwo.substring(1);
 			}
+			
+			logger.info("Player 1: " + GameBoard.playerOne);
+			logger.info("Player 2: " + GameBoard.playerTwo);
 
 			frame.dispose();
 			new GameBoard(true, true, false);

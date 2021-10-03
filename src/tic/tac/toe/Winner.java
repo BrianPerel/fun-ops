@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 /**
  * Implementation for winner window. When a player wins, this window is displayed. <br>
@@ -22,6 +23,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	JButton btnPlayAgain = new JButton("Play again");
+	JButton btnQuit = new JButton("Quit");
 	JLabel lblNewLabel = new JLabel();
 
 	/**
@@ -40,12 +42,14 @@ public class Winner extends KeyAdapter implements ActionListener {
 				new GameBoard(false, false, true);
 		    }
 		});
+		lblNewLabel.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
 		lblNewLabel.setText("Label");
 		f2.setResizable(false);
 		f2.setBounds(100, 100, 315, 167);
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
+		f2.setVisible(true);
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 		
@@ -58,15 +62,22 @@ public class Winner extends KeyAdapter implements ActionListener {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblNewLabel);
+		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 
-		btnPlayAgain.setBounds(104, 68, 100, 34);
+		btnPlayAgain.setBounds(39, 68, 100, 34);
 		btnPlayAgain.setBackground(new Color(144, 238, 144));
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		btnPlayAgain.setSelected(true);
-		f2.setVisible(true);
-
+		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
+		
+		btnQuit.setSelected(true);
+		btnQuit.setBackground(new Color(144, 238, 144));
+		f2.getContentPane().add(btnQuit);
+		btnQuit.setBounds(169, 68, 100, 34);
+		btnQuit.addActionListener(this);
+		btnQuit.addKeyListener(this);
 	}
 
 	@Override
@@ -75,12 +86,15 @@ public class Winner extends KeyAdapter implements ActionListener {
 			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);
-		} 
+		} else if (e.getSource() == btnQuit) {
+			GameBoard.f.dispose();
+			f2.dispose();
+		}
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
+		if (btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);

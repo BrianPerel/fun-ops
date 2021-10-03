@@ -12,6 +12,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
+import java.awt.Font;
 
 /**
  * Implementation for tic tac toe game board. Initiates the game. <br>
@@ -123,6 +124,7 @@ public class GameBoard implements ActionListener {
 		f.getContentPane().add(btnNine);
 		btnNine.addActionListener(this);
 		btnNine.setBackground(new Color(244, 164, 96));
+		LABEL_PLAYER_TURN.setFont(new Font("Bookman Old Style", Font.PLAIN, 13));
 
 		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(LABEL_PLAYER_TURN);

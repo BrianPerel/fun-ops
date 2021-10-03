@@ -7,10 +7,12 @@ import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
  * Mouse wiggle program. Useful for when you want to be away from your computer
@@ -29,8 +31,11 @@ public class WiggleMouse implements ActionListener {
 	static Robot robot;
 	static Point point;
 	static int x, y, timeToWait;
-	final JComboBox<String> comboBox;
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
+	
+	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
+	DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<>(choices);
+	final JComboBox<String> comboBox = new JComboBox<>(comboModel);
 
 	/**
 	 * Launch the application.
@@ -62,24 +67,26 @@ public class WiggleMouse implements ActionListener {
 	 */
 	private WiggleMouse() {
 		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 485, 182);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		btnStart = new JButton("SET TIME");
-		btnStart.setBounds(206, 78, 91, 23);
+		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
+		btnStart.setBounds(198, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 
 		JLabel lblNewLabel = new JLabel("Time to wait before wiggling your mouse (in minutes):");
-		lblNewLabel.setBounds(23, 23, 344, 23);
+		lblNewLabel.setFont(new Font("Narkisim", Font.ITALIC, 15));
+		lblNewLabel.setBounds(22, 23, 344, 23);
 		frame.getContentPane().add(lblNewLabel);
 
 		// JComboBox comboBox = new JComboBox(); // use this when switching to
 		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
 		// choice for component creation"
-		comboBox = new JComboBox<>(choices);
-		comboBox.setBounds(340, 23, 93, 22);
+		comboBox.setBounds(351, 23, 93, 22);
 		frame.getContentPane().add(comboBox);
 	}
 
@@ -121,8 +128,7 @@ public class WiggleMouse implements ActionListener {
 	public static void moveMouse() throws InterruptedException {
 		while (performAction) {
 			// get current mouse pointer coordinates and set them. This needs to be done
-			// twice in loop so that if user moves mouse the pointer doesn't jump back to
-			// original point
+			// twice in loop so that if user moves mouse the pointer doesn't jump back to original point
 			setMouseLocation();
 			// time to wait before next mouse move
 			Thread.sleep(timeToWait);
