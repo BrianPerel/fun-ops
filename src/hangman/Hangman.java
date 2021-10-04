@@ -39,7 +39,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
-	private Random randomGenerator = new Random();
 
 	// chosen hangman word
 	String word = "";
@@ -226,7 +225,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	public void getHangmanWord() {
 		// choose random word from txt file
-		word = line.get(randomGenerator.nextInt(6));
+		word = line.get(new Random().nextInt(6));
 		
 		// this line is revealing the word to the console 
 		// be sure to remove before doing a build

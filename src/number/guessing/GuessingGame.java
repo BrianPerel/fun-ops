@@ -1,7 +1,6 @@
 package number.guessing;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -36,10 +35,10 @@ public class GuessingGame implements ActionListener {
 	private JTextField textFieldRandomNumber;
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
-	Random ran = new Random();
-	static AudioClip sound;
-	// random number will be between 10 and 99
-	int randomNumber = ran.nextInt(89) + 10;
+	Random randomGenerator = new Random();
+	// random number will be between 10 and 99 
+	// (the + 10 code below ensures that random number is at least 10)
+	int randomNumber = randomGenerator.nextInt(89) + 10;
 	int guesses, score = 0;
 
 	/**
@@ -161,7 +160,7 @@ public class GuessingGame implements ActionListener {
 				}
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
-				randomNumber = ran.nextInt(100);
+				randomNumber = randomGenerator.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
 				score += 10;
 
@@ -194,7 +193,7 @@ public class GuessingGame implements ActionListener {
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
-			randomNumber = ran.nextInt(100);
+			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
 			score = guesses = 0;

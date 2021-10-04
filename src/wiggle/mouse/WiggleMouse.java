@@ -34,8 +34,7 @@ public class WiggleMouse implements ActionListener {
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
 	
 	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
-	DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<>(choices);
-	final JComboBox<String> comboBox = new JComboBox<>(comboModel);
+	final JComboBox<String> comboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
 	 * Launch the application.
@@ -79,7 +78,7 @@ public class WiggleMouse implements ActionListener {
 		btnStart.addActionListener(this);
 
 		JLabel lblNewLabel = new JLabel("Time to wait before wiggling your mouse (in minutes):");
-		lblNewLabel.setFont(new Font("Narkisim", Font.ITALIC, 15));
+		lblNewLabel.setFont(new Font("Narkisim", Font.PLAIN, 15));
 		lblNewLabel.setBounds(22, 23, 344, 23);
 		frame.getContentPane().add(lblNewLabel);
 

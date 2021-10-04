@@ -30,9 +30,9 @@ public class App extends KeyAdapter implements ActionListener {
 	private JFrame frame;
 	private JFormattedTextField userInputTextField;
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
-	static boolean operatorFlags[] = new boolean[4]; // array to hold flags to be raised if a calculator operator is
+	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	char spaces[] = new char[29];
+	char[] spaces = new char[29];
 	static String cursorRightPositionedWithZero;
 	static String cursorRightPositioned;
 	Calculator system = new Calculator();

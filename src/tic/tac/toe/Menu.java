@@ -29,7 +29,6 @@ public class Menu extends KeyAdapter implements ActionListener {
 	JButton btnStart;
 	static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
-	static boolean startButtonSelected;
 	private JTextField NameOneTextField, NameTwoTextField;
 	private static final Logger logger = Logger.getLogger(Menu.class);
 
