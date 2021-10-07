@@ -7,7 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,9 +35,9 @@ public class GuessingGame implements ActionListener {
 	private JTextField textFieldRandomNumber;
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
-	Random randomGenerator = new Random();
+	SecureRandom randomGenerator = new SecureRandom();
 	// random number will be between 10 and 99 
-	// (the + 10 code below ensures that random number is at least 10)
+	// (the '+ 10' code below ensures that random number is at least 10)
 	int randomNumber = randomGenerator.nextInt(89) + 10;
 	int guesses, score = 0;
 

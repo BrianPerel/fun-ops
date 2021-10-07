@@ -68,13 +68,13 @@ public class EncryptionGUI implements ActionListener {
 	public EncryptionGUI() throws FileNotFoundException {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 414, 264);
+		frame.setBounds(100, 100, 421, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageEncrypt.jpg")));
 
-		btnLoadFile.setBounds(41, 44, 89, 23);
+		btnLoadFile.setBounds(49, 43, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
@@ -92,11 +92,11 @@ public class EncryptionGUI implements ActionListener {
 		});
 
 		loadingTextField = new JTextField();
-		loadingTextField.setBounds(157, 45, 86, 20);
+		loadingTextField.setBounds(148, 44, 112, 22);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
 
-		btnEncrypt.setBounds(80, 148, 89, 23);
+		btnEncrypt.setBounds(88, 147, 89, 23);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
 		btnEncrypt.setBackground(new Color(135, 206, 250));
@@ -112,11 +112,11 @@ public class EncryptionGUI implements ActionListener {
 		    }
 		});
 
-		btnDecrypt.setBounds(231, 147, 89, 23);
+		btnDecrypt.setBounds(239, 146, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(41, 105, 307, 2);
+		separator.setBounds(49, 104, 307, 2);
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
 		btnDecrypt.setBackground(new Color(135, 206, 250));
@@ -133,7 +133,7 @@ public class EncryptionGUI implements ActionListener {
 		});
 
 		btnBrowse = new JButton("Browse");
-		btnBrowse.setBounds(269, 44, 86, 23);
+		btnBrowse.setBounds(270, 43, 86, 23);
 		frame.getContentPane().add(btnBrowse);
 		btnBrowse.addActionListener(this);
 		btnBrowse.setBackground(new Color(135, 206, 250));

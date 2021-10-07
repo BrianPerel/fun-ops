@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
@@ -39,9 +39,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
-
+	
 	// chosen hangman word
-	String word = "";
+	static String word = "";
+	private static String asterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
@@ -68,6 +69,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// flags to indicate this particular letter has been discovered by user and
 	// printed
 	boolean w, o, r, d = false;
+	
+	SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Launch the application.
@@ -225,11 +228,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	public void getHangmanWord() {
 		// choose random word from txt file
-		word = line.get(new Random().nextInt(6));
+		word = line.get(randomGenerator.nextInt(6));
+		asterisk = new String(new char[word.length()]).replace("\0", "*");
 		
 		// this line is revealing the word to the console 
 		// be sure to remove before doing a build
-		System.out.println(word);
+		System.out.println(word);		
 	}
 
 	/**
@@ -253,6 +257,24 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		getHangmanWord();
 		count = 0;
 	}
+	
+	// performs actions to display correct placements of * while user is guessing
+	public static String hang(char guess) {
+		String newasterisk = "";
+		for (int i = 0; i < word.length(); i++) {
+			if (word.charAt(i) == Character.toUpperCase(guess)) {
+				newasterisk += Character.toUpperCase(guess);
+			} else if (asterisk.charAt(i) != '*') {
+				newasterisk += word.charAt(i);
+			} else {
+				newasterisk += "*";
+			}
+		}			
+
+		asterisk = newasterisk;
+				
+		return newasterisk;
+	}
 
 	/**
 	 * Performs appropriate actions when key pressed
@@ -266,23 +288,23 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// text field 1 chosen + letter entered matches first char of
 			// hangman word + the letter hasn't been guessed yet
 			if (t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) {
-				hangmanWordTextField.setText(String.valueOf(word.charAt(0))); // x000
+				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // x000
 				w = true;
 			}
 
 			else if (t2 && Character.toUpperCase(e.getKeyChar()) == word.charAt(1) && !o) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(1))); // 0x00
+				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 0x00
 				o = true;
 			}
 
 			else if (t3 && Character.toUpperCase(e.getKeyChar()) == word.charAt(2) && !r) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(2))); // 00x0
+				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 00x0
 				r = true;
 			}
 
 			else if (t4 && Character.toUpperCase(e.getKeyChar()) == word.charAt(3) && !d) {
-				hangmanWordTextField.setText(hangmanWordTextField.getText() + String.valueOf(word.charAt(3))); // 000x
-				// below line of code will force set/display final letter if correct before
+				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 000x
+				// below line is a code fix: will force set/display final letter if correct before
 				// trigger of winner message appears
 				letter4TextField.setText(letter4TextField.getText());
 				d = true;
@@ -301,7 +323,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				count++;
 
 				if (count == hangString.size()) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "YOU LOOSE.");
+					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word was: " + word);
 					resetGame();
 				}
 
@@ -309,8 +331,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			}
 
 			if (w && o && r && d) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "YOU WIN! The random word was: " + word);
-				resetGame();
+				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word was: " + word);
+				resetGame();	
 			}
 		}
 	}
