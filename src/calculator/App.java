@@ -28,13 +28,12 @@ import javax.swing.JFrame;
 public class App extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
+	static String cursorRightPositionedWithZero, cursorRightPositioned;
 	private JFormattedTextField userInputTextField;
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	char[] spaces = new char[29];
-	static String cursorRightPositionedWithZero;
-	static String cursorRightPositioned;
 	Calculator system = new Calculator();
 	boolean numberZeroEnteredByUser;
 
@@ -79,6 +78,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnTurnToFraction);
 		btnTurnToFraction.addActionListener(this);
 		btnTurnToFraction.addKeyListener(this);
+		btnTurnToFraction.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnTurnToFraction.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnTurnToFraction.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnClearCE = new JButton("CE");
 		btnClearCE.setBackground(Color.WHITE);
@@ -86,6 +96,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnClearCE);
 		btnClearCE.addActionListener(this);
 		btnClearCE.addKeyListener(this);
+		btnClearCE.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnClearCE.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnClearCE.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnClearC = new JButton("C");
 		btnClearC.setBackground(Color.WHITE);
@@ -93,6 +114,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnClearC);
 		btnClearC.addActionListener(this);
 		btnClearC.addKeyListener(this);
+		btnClearC.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnClearC.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnClearC.setBackground(Color.WHITE);
+		    }
+		});
 
 		// unicode for backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
@@ -101,6 +133,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnBackspace);
 		btnBackspace.addActionListener(this);
 		btnBackspace.addKeyListener(this);
+		btnBackspace.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnBackspace.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnBackspace.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnPercent = new JButton("%");
 		btnPercent.setBackground(Color.WHITE);
@@ -108,6 +151,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnPercent);
 		btnPercent.addActionListener(this);
 		btnPercent.addKeyListener(this);
+		btnPercent.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnPercent.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnPercent.setBackground(Color.WHITE);
+		    }
+		});
 
 		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
 		userInputTextField.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -124,6 +178,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnSquare);
 		btnSquare.addActionListener(this);
 		btnSquare.addKeyListener(this);
+		btnSquare.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnSquare.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnSquare.setBackground(Color.WHITE);
+		    }
+		});
 
 		// unicode for 2 square root x symbol
 		JButton btnSquareRoot = new JButton("2\u221Ax");
@@ -132,6 +197,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnSquareRoot);
 		btnSquareRoot.addActionListener(this);
 		btnSquareRoot.addKeyListener(this);
+		btnSquareRoot.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnSquareRoot.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnSquareRoot.setBackground(Color.WHITE);
+		    }
+		});
 
 		// unicode for division symbol
 		JButton btnDivision = new JButton("\u00F7");
@@ -140,6 +216,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnDivision);
 		btnDivision.addActionListener(this);
 		btnDivision.addKeyListener(this);
+		btnDivision.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnDivision.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnDivision.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnMultiply = new JButton("*");
 		btnMultiply.setBackground(Color.WHITE);
@@ -147,6 +234,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnMultiply);
 		btnMultiply.addActionListener(this);
 		btnMultiply.addKeyListener(this);
+		btnMultiply.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnMultiply.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnMultiply.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberZero = new JButton("0");
 		btnNumberZero.setBackground(Color.WHITE);
@@ -154,6 +252,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberZero);
 		btnNumberZero.addActionListener(this);
 		btnNumberZero.addKeyListener(this);
+		btnNumberZero.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberZero.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberZero.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberOne = new JButton("1");
 		btnNumberOne.setBackground(Color.WHITE);
@@ -161,6 +270,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberOne);
 		btnNumberOne.addActionListener(this);
 		btnNumberOne.addKeyListener(this);
+		btnNumberOne.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberOne.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberOne.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberTwo = new JButton("2");
 		btnNumberTwo.setBackground(Color.WHITE);
@@ -168,12 +288,34 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberTwo);
 		btnNumberTwo.addActionListener(this);
 		btnNumberTwo.addKeyListener(this);
+		btnNumberTwo.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberTwo.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberTwo.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberThree = new JButton("3");
 		btnNumberThree.setBackground(Color.WHITE);
 		btnNumberThree.setBounds(189, 263, 80, 40);
 		frame.getContentPane().add(btnNumberThree);
 		btnNumberThree.addActionListener(this);
+		btnNumberThree.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberThree.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberThree.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberFour = new JButton("4");
 		btnNumberFour.setBackground(Color.WHITE);
@@ -181,6 +323,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberFour);
 		btnNumberFour.addActionListener(this);
 		btnNumberFour.addKeyListener(this);
+		btnNumberFour.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberFour.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberFour.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberFive = new JButton("5");
 		btnNumberFive.setBackground(Color.WHITE);
@@ -188,6 +341,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberFive);
 		btnNumberFive.addActionListener(this);
 		btnNumberFive.addKeyListener(this);
+		btnNumberFive.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberFive.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberFive.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberSix = new JButton("6");
 		btnNumberSix.setBackground(Color.WHITE);
@@ -195,6 +359,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberSix);
 		btnNumberSix.addActionListener(this);
 		btnNumberSix.addKeyListener(this);
+		btnNumberSix.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberSix.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberSix.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberSeven = new JButton("7");
 		btnNumberSeven.setBackground(Color.WHITE);
@@ -202,6 +377,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberSeven);
 		btnNumberSeven.addActionListener(this);
 		btnNumberSeven.addKeyListener(this);
+		btnNumberSeven.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberSeven.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberSeven.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberEight = new JButton("8");
 		btnNumberEight.setBackground(Color.WHITE);
@@ -209,6 +395,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberEight);
 		btnNumberEight.addActionListener(this);
 		btnNumberEight.addKeyListener(this);
+		btnNumberEight.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberEight.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberEight.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnNumberNine = new JButton("9");
 		btnNumberNine.setBackground(Color.WHITE);
@@ -216,6 +413,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnNumberNine);
 		btnNumberNine.addActionListener(this);
 		btnNumberNine.addKeyListener(this);
+		btnNumberNine.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNumberNine.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNumberNine.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnSubtract = new JButton("-");
 		btnSubtract.setBackground(Color.WHITE);
@@ -223,6 +431,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnSubtract);
 		btnSubtract.addActionListener(this);
 		btnSubtract.addKeyListener(this);
+		btnSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnSubtract.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnSubtract.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnAdd = new JButton("+");
 		btnAdd.setBackground(Color.WHITE);
@@ -230,6 +449,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnAdd);
 		btnAdd.addActionListener(this);
 		btnAdd.addKeyListener(this);
+		btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnAdd.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnAdd.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnPlusMinus = new JButton("+/-");
 		btnPlusMinus.setBackground(Color.WHITE);
@@ -237,6 +467,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnPlusMinus);
 		btnPlusMinus.addActionListener(this);
 		btnPlusMinus.addKeyListener(this);
+		btnPlusMinus.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnPlusMinus.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnPlusMinus.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnDecimalPoint = new JButton(".");
 		btnDecimalPoint.setBackground(Color.WHITE);
@@ -244,6 +485,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnDecimalPoint);
 		btnDecimalPoint.addActionListener(this);
 		btnDecimalPoint.addKeyListener(this);
+		btnDecimalPoint.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnDecimalPoint.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnDecimalPoint.setBackground(Color.WHITE);
+		    }
+		});
 
 		JButton btnEquals = new JButton("=");
 		btnEquals.setBackground(Color.WHITE);
@@ -251,6 +503,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnEquals);
 		btnEquals.addActionListener(this);
 		btnEquals.addKeyListener(this);
+		btnEquals.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnEquals.setBackground(new Color(225, 225, 225));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnEquals.setBackground(Color.WHITE);
+		    }
+		});
 	}
 
 	/**
@@ -589,7 +852,7 @@ public class App extends KeyAdapter implements ActionListener {
 				operatorFlags[1] = true;
 			} else {
 				operatorFlags[3] = true;
-			}
+			}			
 		}
 	}
 }

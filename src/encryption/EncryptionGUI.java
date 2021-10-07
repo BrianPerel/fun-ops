@@ -79,6 +79,17 @@ public class EncryptionGUI implements ActionListener {
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
 		btnLoadFile.setBackground(new Color(135, 206, 250));
+		btnLoadFile.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnLoadFile.setBackground(new Color(102, 178, 255));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnLoadFile.setBackground(new Color(135, 206, 250));
+		    }
+		});
 
 		loadingTextField = new JTextField();
 		loadingTextField.setBounds(157, 45, 86, 20);
@@ -89,6 +100,17 @@ public class EncryptionGUI implements ActionListener {
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
 		btnEncrypt.setBackground(new Color(135, 206, 250));
+		btnEncrypt.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnEncrypt.setBackground(new Color(102, 178, 255));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnEncrypt.setBackground(new Color(135, 206, 250));
+		    }
+		});
 
 		btnDecrypt.setBounds(231, 147, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
@@ -98,12 +120,34 @@ public class EncryptionGUI implements ActionListener {
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
 		btnDecrypt.setBackground(new Color(135, 206, 250));
+		btnDecrypt.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnDecrypt.setBackground(new Color(102, 178, 255));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnDecrypt.setBackground(new Color(135, 206, 250));
+		    }
+		});
 
 		btnBrowse = new JButton("Browse");
 		btnBrowse.setBounds(269, 44, 86, 23);
 		frame.getContentPane().add(btnBrowse);
 		btnBrowse.addActionListener(this);
 		btnBrowse.setBackground(new Color(135, 206, 250));
+		btnBrowse.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnBrowse.setBackground(new Color(102, 178, 255));
+		    }
+			
+			@Override
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnBrowse.setBackground(new Color(135, 206, 250));
+		    }
+		});
 	}
 
 	/**
@@ -168,7 +212,6 @@ public class EncryptionGUI implements ActionListener {
 			}
 
 			read.close();
-
 		}
 
 		// if file load textfield is empty while load file btn is pushed
