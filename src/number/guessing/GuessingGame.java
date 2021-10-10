@@ -29,17 +29,13 @@ import javax.swing.JTextField;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
-	private JTextField textFieldScore;
-	private JTextField guessesTextField;
+	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
-	private JTextField textFieldRandomNumber;
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
 	SecureRandom randomGenerator = new SecureRandom();
-	// random number will be between 10 and 99 
-	// (the '+ 10' code below ensures that random number is at least 10)
-	int randomNumber = randomGenerator.nextInt(89) + 10;
 	int guesses, score = 0;
+	int randomNumber;
 
 	/**
 	 * Launch the application.
@@ -106,6 +102,7 @@ public class GuessingGame implements ActionListener {
 		lblNumberIs.setBounds(302, 80, 102, 37);
 		frame.getContentPane().add(lblNumberIs);
 
+		randomNumber = randomGenerator.nextInt(89) + 10;
 		textFieldRandomNumber = new JTextField(Integer.toString(randomNumber));
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);

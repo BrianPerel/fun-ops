@@ -26,8 +26,8 @@ public class GameBoard implements ActionListener {
 	JButton btnOne, btnTwo, btnThree, btnFour, btnFive;
 	JButton btnSix, btnSeven, btnEight, btnNine;
 	static String playerOne, playerTwo;
-	boolean playerOnesTurn, playerTwosTurn;
-	private final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
+	static boolean playerOnesTurn, playerTwosTurn;
+	private static final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
 	static String pOneWins, pTwoWins;
 
@@ -42,7 +42,7 @@ public class GameBoard implements ActionListener {
 	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the game
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
 	 */
-	public void gameSetup(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
+	public static void gameSetup(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 		start = s;
 		playerOnesTurn = pOnesTurn;
 		playerTwosTurn = pTwosTurn;
@@ -308,7 +308,7 @@ public class GameBoard implements ActionListener {
 	 * Performs actions after player one's turn
 	 * @param button button that was just pressed by player one
 	 */
-	public void playerOnesTurn(JButton button) {
+	public static void playerOnesTurn(JButton button) {
 		button.setText(PLAYER_ONE_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerOne + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
@@ -319,7 +319,7 @@ public class GameBoard implements ActionListener {
 	 * Performs actions after player two's turn
 	 * @param buttonPressed button that was just pressed by player two
 	 */
-	public void playerTwosTurn(JButton buttonPressed) {
+	public static void playerTwosTurn(JButton buttonPressed) {
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
 		playerOnesTurn = !playerOnesTurn;
