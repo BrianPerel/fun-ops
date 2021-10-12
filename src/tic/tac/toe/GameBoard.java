@@ -1,6 +1,7 @@
 package tic.tac.toe;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,7 +13,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
-import java.awt.Font;
 
 /**
  * Implementation for tic tac toe game board. Initiates the game. <br>
@@ -65,8 +65,8 @@ public class GameBoard implements ActionListener {
 		f.setBounds(100, 100, 399, 358);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.getContentPane().setLayout(null);
-		f.setVisible(true);
 		f.setLocationRelativeTo(null);
+		f.setVisible(true);
 
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));

@@ -58,7 +58,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Initialize the contents of the frame, building the gui.
+	 * Constructor: Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
 

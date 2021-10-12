@@ -1,6 +1,7 @@
 package wiggle.mouse;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
@@ -12,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
 
 /**
  * Mouse wiggle program. Useful for when you want to be away from your computer
@@ -65,6 +65,7 @@ public class WiggleMouse implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	private WiggleMouse() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 485, 182);

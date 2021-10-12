@@ -2,6 +2,7 @@ package tic.tac.toe;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import java.awt.Font;
 
 /**
  * Implementation for start window. Prompts for player's 1 and 2's names.
@@ -70,6 +70,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(lblPlayer1);
 
 		NameOneTextField = new JTextField();
+		NameOneTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
 		NameOneTextField.setBounds(190, 54, 130, 35);
 		frame.getContentPane().add(NameOneTextField);
 		NameOneTextField.setColumns(10);
@@ -80,6 +81,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(lblPlayer2);
 
 		NameTwoTextField = new JTextField();
+		NameTwoTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
 		NameTwoTextField.setColumns(10);
 		NameTwoTextField.setBounds(190, 112, 130, 35);
 		frame.getContentPane().add(NameTwoTextField);
