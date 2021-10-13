@@ -33,6 +33,7 @@ import javax.swing.JCheckBox;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
+	boolean outOfTimeFlag;
 	JCheckBox closeTimerCheckBox;
 	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
@@ -64,8 +65,9 @@ public class GuessingGame implements ActionListener {
 
 	/**
 	 * Create the application - Build the GUI
+	 * @throws InterruptedException 
 	 */
-	public GuessingGame() {
+	public GuessingGame() throws InterruptedException {
 
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
@@ -149,17 +151,32 @@ public class GuessingGame implements ActionListener {
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
 		StopWatchPanel.btnReset.setVisible(false);
-		StopWatchPanel.btnStart.doClick();
-	}	
-
+		StopWatchPanel.btnStart.doClick();	
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-				
-		if(closeTimerCheckBox.isSelected()) {
-			StopWatchPanel.btnStart.setEnabled(false);
-			closeTimerCheckBox.setEnabled(false);
+		
+		outOfTimeFlag = false;
+		
+		// if when user guesses the timer is greater than 10 seconds
+		if(StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
+			StopWatchPanel.btnStop.doClick();
+			outOfTimeFlag = true;
+			
+			try {
+				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
+			
+			if (score != 0) {
+				score -= 10;
+			}
 		}
-
+		
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			guesses++;
@@ -181,7 +198,9 @@ public class GuessingGame implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 				randomNumber = randomGenerator.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
-				score += 10;
+				if(!outOfTimeFlag) {
+					score += 10;
+				}
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
 				StopWatchPanel.btnStop.doClick();
@@ -232,8 +251,16 @@ public class GuessingGame implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 		
-		// reset and start the timer from 0
+		// reset the timer 
 		StopWatchPanel.btnReset.doClick();
+		
+		if(closeTimerCheckBox.isSelected()) {
+			StopWatchPanel.btnStart.setEnabled(false);
+			closeTimerCheckBox.setEnabled(false);
+			StopWatchPanel.watch.setEnabled(false);
+		}
+		
+		// start the timer from 0
 		StopWatchPanel.btnStart.doClick();
 
 		// set guess text field to blank
