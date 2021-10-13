@@ -40,11 +40,9 @@ public class StopWatch extends JFrame {
 		/** btns - start, stop, reset */
 		public static JButton btnStart, btnStop, btnReset;
 		/** Show the timer. */
-		private JLabel watch;
+		public static JLabel watch;
 		/** Timer to be used for watch. */
 		private Timer timer;
-		/** Timer delay. */
-		private int delay = 10;
 		/** Button listener. */
 		private ActionListener b = new ButtonListener();
 
@@ -69,7 +67,7 @@ public class StopWatch extends JFrame {
 			buttonPanel.add(btnStop);
 			buttonPanel.add(btnReset);
 			add(buttonPanel, BorderLayout.CENTER);
-			timer = new Timer(delay, b);
+			timer = new Timer(10, b);
 		}
 
 		/**
@@ -85,6 +83,7 @@ public class StopWatch extends JFrame {
 				final int timebase = 60;
 				final int centsecbase = 99;
 				final int showbase = 10;
+				
 				if (hour == timebase && minute == timebase && second == timebase && centisec == centsecbase) {
 					hour = minute = second = centisec = 0;
 				}

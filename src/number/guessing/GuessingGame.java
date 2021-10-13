@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
+import javax.swing.JCheckBox;
 
 /**
  * A guessing number game in which the user receives a randomly generated number between 1-99 and he/she 
@@ -32,6 +33,7 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
+	JCheckBox closeTimerCheckBox;
 	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
 	JButton btnPlayAgain = new JButton("Play again?");
@@ -138,6 +140,11 @@ public class GuessingGame implements ActionListener {
 		btnPlayAgain.setBackground(Color.ORANGE);
 		frame.getContentPane().add(btnPlayAgain);
 		
+		closeTimerCheckBox = new JCheckBox("Play without the timer");
+		closeTimerCheckBox.setBackground(Color.WHITE);
+		closeTimerCheckBox.setBounds(296, 260, 158, 23);
+		frame.getContentPane().add(closeTimerCheckBox);
+		
 		new StopWatch(300, 110); // launch the stopwatch
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
@@ -147,6 +154,11 @@ public class GuessingGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+				
+		if(closeTimerCheckBox.isSelected()) {
+			StopWatchPanel.btnStart.setEnabled(false);
+			closeTimerCheckBox.setEnabled(false);
+		}
 
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
@@ -155,10 +167,11 @@ public class GuessingGame implements ActionListener {
 			// if input remainder entered is outside of range 1-99
 			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
 					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {				
-				
+				StopWatchPanel.btnStop.doClick();
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
-
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
+				StopWatchPanel.btnStop.doClick();
+
 				try {
 					Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
 				} catch (Exception e) {
@@ -171,6 +184,8 @@ public class GuessingGame implements ActionListener {
 				score += 10;
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
+				StopWatchPanel.btnStop.doClick();
+				
 				try {
 					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 				} catch (Exception e) {
@@ -186,11 +201,11 @@ public class GuessingGame implements ActionListener {
 			// set score after action is completed
 			textFieldScore.setText(Integer.toString(score));
 			guessesTextField.setText(Integer.toString(guesses));
-
 		}
-
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
+			StopWatchPanel.btnStop.doClick();
+			
 			try {
 				Applet.newAudioClip(new File("res/audio/chimes.wav").toURL()).play();
 			} catch (Exception e) {
@@ -204,9 +219,10 @@ public class GuessingGame implements ActionListener {
 			textFieldScore.setText("0");
 			score = guesses = 0;
 		}
-
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
+			StopWatchPanel.btnStop.doClick();
+			
 			try {
 				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 			} catch (Exception e) {
@@ -215,6 +231,10 @@ public class GuessingGame implements ActionListener {
 						
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
+		
+		// reset and start the timer from 0
+		StopWatchPanel.btnReset.doClick();
+		StopWatchPanel.btnStart.doClick();
 
 		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
