@@ -1,7 +1,6 @@
 package stopwatch;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,25 +18,29 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class StopWatch extends JFrame {
 
-	public StopWatch() {
+	/**
+	 * Creates the GUI frame (box)
+	 */
+	public StopWatch(int x, int y) {
 		super("Brian Perel - Stopwatch");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
 		setResizable(false);
-		setSize(300, 150);
+		setSize(x, y);
 		setVisible(true);
+		setLocation(390, 345); // position the gui on the screen at custom location (x, y)
 	}
 
 	/**
-	 * Represents the stop-watch panel for this program.
+	 * Represents the stop-watch panel for this program. Will update the time here
 	 */
-	private class StopWatchPanel extends JPanel {
+	public class StopWatchPanel extends JPanel {
 		/** represent the minute in the watch. */
 		private int hour, minute, second, centisec;
+		/** btns - start, stop, reset */
+		public static JButton btnStart, btnStop, btnReset;
 		/** Show the timer. */
 		private JLabel watch;
-
-		private JButton btnStart, btnStop, btnReset;
 		/** Timer to be used for watch. */
 		private Timer timer;
 		/** Timer delay. */
@@ -50,7 +53,6 @@ public class StopWatch extends JFrame {
 		 */
 		public StopWatchPanel() {
 			setLayout(new BorderLayout());
-			setBackground(Color.white);
 			JPanel watchPanel = new JPanel();
 			watch = new JLabel("00:00:00", JLabel.CENTER);
 			watch.setFont(new Font("Helvetica", Font.PLAIN, 36));
@@ -73,7 +75,7 @@ public class StopWatch extends JFrame {
 		/**
 		 * Represents a listener for button push (action) events.
 		 */
-		private class ButtonListener implements ActionListener {
+		public class ButtonListener implements ActionListener {
 			/**
 			 * Updates the watch label when button is pushed.
 			 * 
@@ -104,7 +106,7 @@ public class StopWatch extends JFrame {
 				} else if (event.getSource() == btnStop) {
 					centisec--;
 					timer.stop();
-				} else {
+				} else { // if event.getSource() == btnReset
 					if (!timer.isRunning()) {
 						timer.stop();
 						hour = minute = second = centisec = 0;
@@ -118,6 +120,6 @@ public class StopWatch extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new StopWatch();
+		new StopWatch(300, 160);
 	}
 }

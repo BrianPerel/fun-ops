@@ -54,6 +54,7 @@ public class EncryptionGUI implements ActionListener {
 					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setAlwaysOnTop(true);
+					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

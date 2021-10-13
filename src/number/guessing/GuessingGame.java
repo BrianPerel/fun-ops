@@ -17,6 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import stopwatch.StopWatch;
+import stopwatch.StopWatch.StopWatchPanel;
+
 /**
  * A guessing number game in which the user receives a randomly generated number between 1-99 and he/she 
  * must guess what the remainder is. Every correct guess equates to 10 points, every incorrect guess
@@ -134,6 +137,12 @@ public class GuessingGame implements ActionListener {
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.setBackground(Color.ORANGE);
 		frame.getContentPane().add(btnPlayAgain);
+		
+		new StopWatch(300, 110); // launch the stopwatch
+		StopWatchPanel.btnStart.setVisible(false);
+		StopWatchPanel.btnStop.setVisible(false);
+		StopWatchPanel.btnReset.setVisible(false);
+		StopWatchPanel.btnStart.doClick();
 	}	
 
 	@Override
