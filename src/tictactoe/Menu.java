@@ -1,4 +1,4 @@
-package tic.tac.toe;
+package tictactoe;
 
 import java.awt.Color;
 import java.awt.EventQueue;

@@ -1,4 +1,4 @@
-package number.guessing;
+package numbergame;
 
 import java.applet.Applet;
 import java.awt.Color;
@@ -11,6 +11,7 @@ import java.security.SecureRandom;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,7 +20,6 @@ import javax.swing.JTextField;
 
 import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
-import javax.swing.JCheckBox;
 
 /**
  * A guessing number game in which the user receives a randomly generated number between 1-99 and he/she 

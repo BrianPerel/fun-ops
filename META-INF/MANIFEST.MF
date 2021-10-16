@@ -1,14 +1,18 @@
+# jar file specifications
 Manifest-Version: 1.0
 Created-By: Brian Perel
+Class-Path: log4j/log4j-1.2.17.jar
 
 Main-Class: calculator.App
+
+Main-Class: stopwatch.StopWatch
 
 Main-Class: hangman.Hangman
 Resource: res/graphics/bgImageHangman
 
-Main-Class: wiggle.mouse.WiggleMouse 
+Main-Class: wigglemouse.WiggleMouse 
 
-Main-Class: number.guessing.GuessingGame
+Main-Class: numberguessing.GuessingGame
 Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
@@ -18,5 +22,5 @@ Resource5: res/graphics/bgImageGuess
 Main-Class: encryption.EncryptionGUI
 Resource: res/graphics/bgImageEncrypt
 
-Main-Class: tic.tac.toe.Menu
+Main-Class: tictactoe.Menu
 Resource: res/graphics/bgImageToe

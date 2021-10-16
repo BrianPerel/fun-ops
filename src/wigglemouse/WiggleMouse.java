@@ -1,4 +1,4 @@
-package wiggle.mouse;
+package wigglemouse;
 
 import java.awt.EventQueue;
 import java.awt.Font;

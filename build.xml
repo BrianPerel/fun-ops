@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE xml>
 <project name="fun-ops" default="clean" basedir=".">
-	
+
 	<description>
 		My Custom Ant Build Script for all 6 projects. Includes compile, jar, 
 		run, create exe, javadoc, unjar tasks for all projects
@@ -20,34 +20,34 @@
 	<property name="launch4j.dir" value="Launch4j" />
 	<property name="unjar.dir" value="${build.dir}/unjar-classes" />
 	<property name="min.jre.version" value="1.8.0" />
-	
-	<!-- creates the launch4j task --> 
+
+	<!-- creates the launch4j task -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
-	
+
 	<!-- dump some basic environment-related info -->
 	<tstamp>
-	  <format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US"/>
-	</tstamp>	
+		<format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US" />
+	</tstamp>
 	<echo message="Current date and time: ${TODAY_US}" level="info" />
 	<echo message="${ant.version}" level="info" />
-	
+
 	<!-- reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
-	    <fileset dir="log4j">
-	        <include name="*.jar" />
-	    </fileset>
+		<fileset dir="log4j">
+			<include name="*.jar" />
+		</fileset>
 	</path>
-	
-	
+
+
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" />
 		<delete dir="docs" />
 		<delete dir="log" />
 	</target>
-	
+
 	<!-- targets for calculator -->
 	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
@@ -62,27 +62,25 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="run-calculator" depends="jar-calculator" description="run the program">
 		<java jar="${jar.dir}/calculator-${version.num}.jar" fork="true" />
 	</target>
-	
-	<!-- create calculator.exe target --> 
+
+	<!-- create calculator.exe target -->
 	<target name="create calculator.exe" description="create .exe file for calculator program" depends="jar-calculator">
 		<launch4j>
-		  <config headerType="gui" outfile="calculator.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" 
-		  	  icon="${res.graphics.icons.dir}/calculator.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="calculator.exe" dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-		
+
 		<move file="calculator.exe" todir="${release.dir}" />
 	</target>
-	
+
 	<!-- targets for encryption program -->
 	<target name="compile-encryption program" description="compile program">
 		<mkdir dir="${classes.dir}" />
@@ -102,7 +100,7 @@
 	<target name="run-encryption program" depends="jar-encryption program" description="run the program">
 		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- zip encryption program -->
 	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
 		<copy todir="${dist.dir}/encryption">
@@ -115,21 +113,19 @@
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
 		<delete dir="${dist.dir}/encryption" />
 	</target>
-	
-	<!-- create encryption.exe target --> 
+
+	<!-- create encryption.exe target -->
 	<target name="create and zip encryption.exe" description="create .exe file for encryption program" depends="jar-encryption program">
 		<launch4j>
-		  <config headerType="gui" outfile="encryption.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar"
-		  	  icon="${res.graphics.icons.dir}/encryption.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="encryption.exe" dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-		
-		<move file="encryption.exe" todir="${release.dir}/encryption" />				
+
+		<move file="encryption.exe" todir="${release.dir}/encryption" />
 		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
 		</copy>
@@ -159,7 +155,7 @@
 	<target name="run-hangman" depends="jar-hangman" description="run the program">
 		<java jar="${jar.dir}/hangman-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- zip hangman -->
 	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
 		<copy todir="${dist.dir}/hangman">
@@ -172,21 +168,19 @@
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
 		<delete dir="${dist.dir}/hangman" />
 	</target>
-	
+
 	<!-- create hangman.exe target -->
 	<target name="create and zip hangman.exe" description="create .exe file for hangman program" depends="jar-hangman">
 		<launch4j>
-		  <config headerType="gui" outfile="hangman.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" 
-			  icon="${res.graphics.icons.dir}/hangman.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="hangman.exe" dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-		
-		<move file="hangman.exe" todir="${release.dir}/hangman" />				
+
+		<move file="hangman.exe" todir="${release.dir}/hangman" />
 		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
 		</copy>
@@ -198,14 +192,21 @@
 	<!-- targets for guessing game -->
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/number/guessing" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/numbergame" destdir="${classes.dir}" compiler="modern" />
+		<move todir="${classes.dir}/numbergame">
+			<fileset dir="${classes.dir}/stopwatch">
+				<include name="**/*.class" />
+			</fileset>
+		</move>
+		<delete dir="${classes.dir}/stopwatch" />
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="number.guessing.GuessingGame" />
+				<attribute name="Main-Class" value="numbergame.GuessingGame" />
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
@@ -214,11 +215,11 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="run-guessing game" depends="jar-guessing game" description="run the program">
 		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
@@ -231,21 +232,19 @@
 		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame" update="true" />
 		<delete dir="${dist.dir}/guessingGame" />
 	</target>
-	
+
 	<!-- create number game.exe target -->
 	<target name="create and zip number_game.exe" description="create .exe file for number game" depends="jar-guessing game">
 		<launch4j>
-		  <config headerType="gui" outfile="number_game.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar"
-		  	  icon="${res.graphics.icons.dir}/guessing_game.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing_game.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-		
-		<move file="number_game.exe" todir="${release.dir}/number_game" />				
+
+		<move file="number_game.exe" todir="${release.dir}/number_game" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
 		</copy>
@@ -256,10 +255,49 @@
 		<delete dir="${release.dir}/number_game" />
 	</target>
 
+	<!-- targets for stopwatch -->
+	<target name="compile-stopwatch" description="compile program">
+		<mkdir dir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
+	</target>
+
+	<target name="jar-stopwatch" depends="compile-stopwatch" description="create associated .jar file">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/stopwatch-${version.num}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="stopwatch.StopWatch" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run-stopwatch" depends="jar-stopwatch" description="run the program">
+		<java jar="${jar.dir}/stopwatch-${version.num}.jar" fork="true" />
+	</target>
+
+	<target name="create stopwatch.exe" description="create .exe file for stopwatch program" depends="jar-stopwatch">
+		<launch4j>
+			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
+		</launch4j>
+
+		<move file="stopwatch.exe" todir="${release.dir}" />
+	</target>
+	
+	<target name="testing">
+		<mkdir dir="${unjar.dir}"/>
+		<unjar dest="${unjar.dir}">
+			<fileset file="log4j/log4j-1.2.17.jar" />
+		</unjar>
+	</target>
+
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/tic/tac/toe" destdir="${classes.dir}" compiler="modern">
+		<javac includeantruntime="false" srcdir="${src.dir}/tictactoe" destdir="${classes.dir}" compiler="modern">
 			<classpath refid="build.classpath" />
 		</javac>
 	</target>
@@ -268,15 +306,16 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="tic.tac.toe.Menu" />
+				<attribute name="Main-Class" value="tictactoe.Menu" />
 				<attribute name="Resource" value="${res.graphics.dir}/bgImageToe" />
+				<attribute name="Class-Path" value="log4j/log4j-1.2.17.jar" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-tic tac toe" depends="jar-tic tac toe" description="run the program">
-		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
-	</target>	
+		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" classpathref="build.classpath" fork="true" />
+	</target>
 
 	<!-- zip tic tac toe program -->
 	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
@@ -289,40 +328,38 @@
 		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
 		<delete dir="${dist.dir}/ticTacToe" />
 	</target>
-	
+
 	<!-- create tic-tac-toe.exe target -->
 	<target name="create and zip tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
 		<launch4j>
-		  <config headerType="gui" outfile="tic-tac-toe.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar"
-		  	  icon="${res.graphics.icons.dir}/ticTacToe.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/ticTacToe.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-		
-		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />				
+
+		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />
 		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
 		</copy>
 		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
 		<delete dir="${release.dir}/tic_tac_toe" />
 	</target>
-	
-	
+
+
 	<!-- targets for wiggle mouse -->
 	<target name="compile-wiggle mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/wiggle/mouse" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/wigglemouse" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="wiggle.mouse.WiggleMouse" />
+				<attribute name="Main-Class" value="wigglemouse.WiggleMouse" />
 			</manifest>
 		</jar>
 	</target>
@@ -330,37 +367,35 @@
 	<target name="run-wiggle mouse" depends="jar-wiggle mouse" description="run the program">
 		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- create wiggle mouse.exe target -->
 	<target name="create wigglemouse.exe" description="create .exe file for wiggle mouse program" depends="jar-wiggle mouse">
 		<launch4j>
-		  <config headerType="gui" outfile="wigglemouse.exe" 
-		      dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar"
-		  	  icon="${res.graphics.icons.dir}/mouse.ico">
-		    <jre minVersion="${min.jre.version}">
-		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-		    </jre>
-		  </config>
+			<config headerType="gui" outfile="wigglemouse.exe" dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
 		</launch4j>
-	
-		<move file="wigglemouse.exe" todir="${release.dir}" />				
+
+		<move file="wigglemouse.exe" todir="${release.dir}" />
 	</target>
-	
+
 	<!-- javadoc target -->
 	<target name="create javadoc for all programs" description="generate javadoc for applications">
 		<javadoc packagenames="calculator" sourcepath="src" destdir="docs/api/calculator" author="false" version="true" windowtitle="My API Page" />
 		<javadoc packagenames="encryption" sourcepath="src" destdir="docs/api/encryption" author="false" version="true" windowtitle="My API Page" />
 		<javadoc packagenames="hangman" sourcepath="src" destdir="docs/api/hangman" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="number.guessing" sourcepath="src" destdir="docs/api/numberGame" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="tic.tac.toe" sourcepath="src" destdir="docs/api/ticTacToe" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="wiggle.mouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="numbergame" sourcepath="src" destdir="docs/api/numberGame" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="tictactoe" sourcepath="src" destdir="docs/api/ticTacToe" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="wigglemouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
 	</target>
-	
+
 	<!-- unjar target -->
 	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program, 
 		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
-		
+
 		<unjar dest="${unjar.dir}">
 			<fileset file="${jar.dir}/calculator-${version.num}.jar" />
 		</unjar>

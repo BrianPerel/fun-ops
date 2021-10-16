@@ -1,4 +1,4 @@
-package tic.tac.toe;
+package tictactoe;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,7 +27,7 @@ public class GameBoard implements ActionListener {
 	JButton btnSix, btnSeven, btnEight, btnNine;
 	static String playerOne, playerTwo;
 	static boolean playerOnesTurn, playerTwosTurn;
-	private static final JLabel LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
+	private static JLabel LABEL_PLAYER_TURN;
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
 	static String pOneWins, pTwoWins;
 
@@ -60,6 +60,8 @@ public class GameBoard implements ActionListener {
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 		
 		gameSetup(s, pOnesTurn, pTwosTurn);
+		
+		LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
 		
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
@@ -216,7 +218,7 @@ public class GameBoard implements ActionListener {
 				playerTwosTurn(btnNine);
 			}
 		} else {
-			logger.warn("Invalid Move!");
+			// logger.warn("Invalid Move!");
 		}
 
 		// game rules: Need 3 in a row in any direction
@@ -227,7 +229,7 @@ public class GameBoard implements ActionListener {
 		}
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
-				logger.info(pOneWins);
+				// logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
 				logger.info(pTwoWins);
