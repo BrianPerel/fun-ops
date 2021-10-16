@@ -35,34 +35,43 @@ public class GameBoard implements ActionListener {
 	static final String PLAYER_ONE_SHAPE = "O";
 	static final String PLAYER_TWO_SHAPE = "X";
 	static boolean start;
-	
+
 	/**
-	 * Setups the current game: makes decision on who's turn it is and assigns player entered names
-	 * @param s boolean flag indicating whether or not the game has just begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
+	 * Setups the current game: makes decision on who's turn it is and assigns
+	 * player entered names
+	 * 
+	 * @param s         boolean flag indicating whether or not the game has just
+	 *                  begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 *                  game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 *                  game
 	 */
 	public static void gameSetup(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 		start = s;
 		playerOnesTurn = pOnesTurn;
 		playerTwosTurn = pTwosTurn;
-		
+
 		pOneWins = "Player 1 (" + playerOne + ") wins!";
 		pTwoWins = "Player 2 (" + playerTwo + ") wins!";
 	}
 
 	/**
 	 * Builds the game's GUI board
-	 * @param s boolean flag indicating whether or not the game has just begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the game
+	 * 
+	 * @param s         boolean flag indicating whether or not the game has just
+	 *                  begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 *                  game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 *                  game
 	 */
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
-		
+
 		gameSetup(s, pOnesTurn, pTwosTurn);
-		
+
 		LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
-		
+
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,12 +166,13 @@ public class GameBoard implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
+		// enforces player1 to always start first and then swap roles every match
 		if (start) {
 			playerOnesTurn = !playerOnesTurn;
 			playerTwosTurn = !playerTwosTurn;
 			start = false;
 		}
-		
+
 		if (ae.getSource() == btnOne && btnOne.getText().isEmpty()) {
 			if (playerOnesTurn) {
 				playerOnesTurn(btnOne);
@@ -218,7 +228,7 @@ public class GameBoard implements ActionListener {
 				playerTwosTurn(btnNine);
 			}
 		} else {
-			// logger.warn("Invalid Move!");
+			 logger.warn("Invalid Move!");
 		}
 
 		// game rules: Need 3 in a row in any direction
@@ -229,7 +239,7 @@ public class GameBoard implements ActionListener {
 		}
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
-				// logger.info(pOneWins);
+				logger.info(pOneWins);
 				new Winner(playerOne);
 			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
 				logger.info(pTwoWins);
@@ -308,6 +318,7 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player one's turn
+	 * 
 	 * @param button button that was just pressed by player one
 	 */
 	public static void playerOnesTurn(JButton button) {
@@ -319,6 +330,7 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player two's turn
+	 * 
 	 * @param buttonPressed button that was just pressed by player two
 	 */
 	public static void playerTwosTurn(JButton buttonPressed) {

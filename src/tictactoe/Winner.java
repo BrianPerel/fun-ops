@@ -53,7 +53,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 		
-		if (gameResult.equals("Game Over! Tie")) {
+		if (gameResult.equals("Game Over! Draw")) {
 			lblNewLabel.setText(gameResult);
 		} else {
 			lblNewLabel.setText(gameResult + " wins!");
@@ -94,10 +94,18 @@ public class Winner extends KeyAdapter implements ActionListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		// btnPlayAgain deselect when btnQuit is selected - problem fix
+		if(btnQuit.isSelected()) {
+			btnPlayAgain.setSelected(false);
+		}
+		
 		if (btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);
+		} else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
+			GameBoard.f.dispose();
+			f2.dispose();
 		}
 	}
 }

@@ -272,7 +272,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}			
 
 		asterisk = newasterisk;
-				
 		return newasterisk;
 	}
 
@@ -284,7 +283,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
-
+			
 			// text field 1 chosen + letter entered matches first char of
 			// hangman word + the letter hasn't been guessed yet
 			if (t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) {
@@ -318,9 +317,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				// pressed more than once
 				if (e.getKeyChar() != tmp) {
 					hangmanTextField.append(hangString.get(count));
-				}
-
-				count++;
+					count++;
+				} 
 
 				if (count == hangString.size()) {
 					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word was: " + word);
@@ -383,7 +381,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-		
+
 		if (!letter1TextField.hasFocus()) {
 			t1 = false;
 		}

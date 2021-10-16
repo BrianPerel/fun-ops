@@ -80,9 +80,7 @@ public class StopWatch extends JFrame {
 			 * @param event Indicates a button is pushed
 			 */
 			public void actionPerformed(ActionEvent event) {
-				final int timebase = 60;
-				final int centsecbase = 99;
-				final int showbase = 10;
+				final int timebase = 60, centsecbase = 99, showbase = 10;
 				
 				if (hour == timebase && minute == timebase && second == timebase && centisec == centsecbase) {
 					hour = minute = second = centisec = 0;
@@ -119,6 +117,7 @@ public class StopWatch extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		// default requested window measurements
 		new StopWatch(300, 160);
 	}
 }

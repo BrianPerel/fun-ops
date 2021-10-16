@@ -116,8 +116,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 						+ GameBoard.playerTwo.substring(1);
 			}
 
-			logger.info("Player 1: " + GameBoard.playerOne);
-			logger.info("Player 2: " + GameBoard.playerTwo);
+			logger.info("Player 1: " + GameBoard.playerOne + "\n" + "Player 2: " + GameBoard.playerTwo);
 
 			frame.dispose();
 			new GameBoard(true, true, false);

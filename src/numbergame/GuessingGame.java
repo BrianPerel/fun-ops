@@ -22,9 +22,10 @@ import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
 
 /**
- * A guessing number game in which the user receives a randomly generated number between 1-99 and he/she 
- * must guess what the remainder is. Every correct guess equates to 10 points, every incorrect guess
- * equates to -10 points. Score is kept for every session. <br>
+ * A guessing number game in which the user receives a randomly generated number
+ * between 1-99 and he/she must guess what the remainder is. Every correct guess
+ * equates to 10 points, every incorrect guess equates to -10 points. Score is
+ * kept for every session. <br>
  * 
  * @author Brian Perel
  *
@@ -65,7 +66,8 @@ public class GuessingGame implements ActionListener {
 
 	/**
 	 * Create the application - Build the GUI
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
 	public GuessingGame() throws InterruptedException {
 
@@ -141,53 +143,61 @@ public class GuessingGame implements ActionListener {
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.setBackground(Color.ORANGE);
 		frame.getContentPane().add(btnPlayAgain);
-		
+
 		closeTimerCheckBox = new JCheckBox("Play without the timer");
 		closeTimerCheckBox.setBackground(Color.WHITE);
 		closeTimerCheckBox.setBounds(296, 260, 158, 23);
 		frame.getContentPane().add(closeTimerCheckBox);
-		
+
 		new StopWatch(300, 110); // launch the stopwatch
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
 		StopWatchPanel.btnReset.setVisible(false);
-		StopWatchPanel.btnStart.doClick();	
+		StopWatchPanel.btnStart.doClick();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
+
+		// user gets 10 seconds to make a guess (if timer is on)
 		outOfTimeFlag = false;
 		
+		StopWatchPanel.btnStop.doClick();
+
 		// if when user guesses the timer is greater than 10 seconds
-		if(StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
-			StopWatchPanel.btnStop.doClick();
+		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
 			outOfTimeFlag = true;
-			
+
 			try {
 				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
-			
+
 			if (score != 0) {
 				score -= 10;
 			}
 		}
-		
+
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			guesses++;
 
 			// if input remainder entered is outside of range 1-99
 			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
-					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {				
-				StopWatchPanel.btnStop.doClick();
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number");
+					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
+
+				try {
+					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
+
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
-				StopWatchPanel.btnStop.doClick();
 
 				try {
 					Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
@@ -198,13 +208,12 @@ public class GuessingGame implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 				randomNumber = randomGenerator.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
-				if(!outOfTimeFlag) {
+				if (!outOfTimeFlag) {
 					score += 10;
 				}
 
 			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
-				StopWatchPanel.btnStop.doClick();
-				
+
 				try {
 					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 				} catch (Exception e) {
@@ -223,14 +232,13 @@ public class GuessingGame implements ActionListener {
 		}
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
-			StopWatchPanel.btnStop.doClick();
-			
+
 			try {
 				Applet.newAudioClip(new File("res/audio/chimes.wav").toURL()).play();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
 			randomNumber = randomGenerator.nextInt(100);
@@ -240,26 +248,25 @@ public class GuessingGame implements ActionListener {
 		}
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
-			StopWatchPanel.btnStop.doClick();
-			
+
 			try {
 				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-						
+
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
-		
-		// reset the timer 
+
+		// reset the timer
 		StopWatchPanel.btnReset.doClick();
-		
-		if(closeTimerCheckBox.isSelected()) {
+
+		if (closeTimerCheckBox.isSelected()) {
 			StopWatchPanel.btnStart.setEnabled(false);
 			closeTimerCheckBox.setEnabled(false);
 			StopWatchPanel.watch.setEnabled(false);
 		}
-		
+
 		// start the timer from 0
 		StopWatchPanel.btnStart.doClick();
 
