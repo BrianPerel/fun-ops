@@ -262,8 +262,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public static String hang(char guess) {
 		String newasterisk = "";
 		for (int i = 0; i < word.length(); i++) {
-			if (word.charAt(i) == Character.toUpperCase(guess)) {
-				newasterisk += Character.toUpperCase(guess);
+			if (word.charAt(i) == guess) {
+				newasterisk += guess;
 			} else if (asterisk.charAt(i) != '*') {
 				newasterisk += word.charAt(i);
 			} else {
@@ -284,34 +284,36 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
 			
+			char charGuessed = Character.toUpperCase(e.getKeyChar());
+			
 			// text field 1 chosen + letter entered matches first char of
 			// hangman word + the letter hasn't been guessed yet
-			if (t1 && Character.toUpperCase(e.getKeyChar()) == word.charAt(0) && !w) {
-				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // x000
+			if (t1 && (charGuessed == word.charAt(0)) && !w) {
+				hangmanWordTextField.setText(hang(charGuessed)); // x000
 				w = true;
 			}
 
-			else if (t2 && Character.toUpperCase(e.getKeyChar()) == word.charAt(1) && !o) {
-				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 0x00
+			else if (t2 && (charGuessed == word.charAt(1)) && !o) {
+				hangmanWordTextField.setText(hang(charGuessed)); // 0x00
 				o = true;
 			}
 
-			else if (t3 && Character.toUpperCase(e.getKeyChar()) == word.charAt(2) && !r) {
-				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 00x0
+			else if (t3 && (charGuessed == word.charAt(2)) && !r) {
+				hangmanWordTextField.setText(hang(charGuessed)); // 00x0
 				r = true;
 			}
 
-			else if (t4 && Character.toUpperCase(e.getKeyChar()) == word.charAt(3) && !d) {
-				hangmanWordTextField.setText(hang(Character.toUpperCase(e.getKeyChar()))); // 000x
+			else if (t4 && (charGuessed == word.charAt(3)) && !d) {
+				hangmanWordTextField.setText(hang(charGuessed)); // 000x
 				// below line is a code fix: will force set/display final letter if correct before
 				// trigger of winner message appears
 				letter4TextField.setText(letter4TextField.getText());
 				d = true;
 			}
 
-			else if (letter1TextField.getText().length() <= 1 && Character.toUpperCase(e.getKeyChar()) != word.charAt(0)
-					&& Character.toUpperCase(e.getKeyChar()) != word.charAt(1)
-					&& Character.toUpperCase(e.getKeyChar()) != word.charAt(2)) {
+			else if (letter1TextField.getText().length() <= 1 && (charGuessed != word.charAt(0))
+					&& (charGuessed != word.charAt(1))
+					&& (charGuessed != word.charAt(2))) {
 
 				// defect fix - prevent character from loosing health if same wrong letter was
 				// pressed more than once
@@ -341,36 +343,29 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
+		
+		letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 
 		if (letter1TextField.hasFocus()) {
 			letter1TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t1 = true;
 		}
 
 		else if (letter2TextField.hasFocus()) {
 			letter2TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t2 = true;
 		}
 
 		else if (letter3TextField.hasFocus()) {
 			letter3TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t3 = true;
 		}
 
 		else if (letter4TextField.hasFocus()) {
 			letter4TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-			letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			t4 = true;
 		}
 	}

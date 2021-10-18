@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,10 +23,10 @@ import javax.swing.JLabel;
  * @author Brian Perel
  *
  */
-public class WiggleMouse implements ActionListener {
+public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
-	JButton btnStart, btnStop;
+	JButton btnStart;
 	// performAction will be used to indicate whether or not to perform mouse move.
 	// Only if start btn is pushed will this be set to true
 	static boolean performAction = true;
@@ -77,6 +79,7 @@ public class WiggleMouse implements ActionListener {
 		btnStart.setBounds(198, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
+		btnStart.addKeyListener(this);
 
 		JLabel lblNewLabel = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblNewLabel.setFont(new Font("Narkisim", Font.PLAIN, 15));
@@ -115,9 +118,37 @@ public class WiggleMouse implements ActionListener {
 			default:
 				break;
 			}
+		}
+	}
+	
+	/**
+	 * This is responsible for listening to all keyboard keys input
+	 */
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getSource() == btnStart) {
+			performAction = true;
 
-		} else if (ae.getSource() == btnStop) {
-			performAction = false;
+			switch ((String) comboBox.getSelectedItem()) {
+			case "1/2 minute":
+				timeToWait = 30000;
+				break;
+
+			case "1 minute":
+				timeToWait = 60000;
+				break;
+
+			case "3 minutes":
+				timeToWait = 180000;
+				break;
+
+			case "5 minutes":
+				timeToWait = 300000;
+				break;
+			
+			default:
+				break;
+			}
 		}
 	}
 

@@ -35,7 +35,7 @@ public class App extends KeyAdapter implements ActionListener {
 														// clicked
 	char[] spaces = new char[29];
 	Calculator system = new Calculator();
-	boolean numberZeroEnteredByUser;
+	static boolean numberZeroEnteredByUser;
 
 	/**
 	 * Launch the application.
@@ -61,7 +61,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 * Constructor: Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
-
+		
 		Arrays.fill(spaces, ' ');
 		cursorRightPositioned = String.valueOf(spaces);
 		cursorRightPositionedWithZero = String.valueOf(spaces) + "0";
@@ -635,26 +635,17 @@ public class App extends KeyAdapter implements ActionListener {
 						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
 
 				// reset all array values to 0
-				Arrays.fill(operatorFlags, Boolean.FALSE);
 				Collections.fill(Calculator.nums, "");
-				Collections.fill(Calculator.doubleNums, 0.0);
-				Calculator.nums.clear();
-				Calculator.doubleNums.clear();
-				Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
 				numberZeroEnteredByUser = false;
+				resetValues();
 			}
 			break; // break statement for case equals button
 
 		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			Arrays.fill(operatorFlags, Boolean.FALSE);
-			numberZeroEnteredByUser = false;
 			Collections.fill(Calculator.nums, null);
-			Collections.fill(Calculator.doubleNums, 0.0);
-			Calculator.nums.clear();
-			Calculator.doubleNums.clear();
 			Calculator.divideByZeroflag = false;
-			Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
+			resetValues();
 			break;
 
 		case ".":
@@ -802,13 +793,8 @@ public class App extends KeyAdapter implements ActionListener {
 						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
 
 				// reset all array values to 0
-				Arrays.fill(operatorFlags, Boolean.FALSE);
 				Collections.fill(Calculator.nums, "");
-				Collections.fill(Calculator.doubleNums, 0.0);
-				Calculator.nums.clear();
-				Calculator.doubleNums.clear();
-				Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
-				numberZeroEnteredByUser = false;
+				resetValues();
 			}
 			break; // break statement for case enter key button
 
@@ -834,14 +820,9 @@ public class App extends KeyAdapter implements ActionListener {
 
 		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			Arrays.fill(operatorFlags, Boolean.FALSE);
-			numberZeroEnteredByUser = false;
-			Collections.fill(Calculator.nums, null);
-			Collections.fill(Calculator.doubleNums, 0.0);
-			Calculator.nums.clear();
-			Calculator.doubleNums.clear();
-			Calculator.divideByZeroflag = false;
-			Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
+			
+			
+			resetValues();
 		}
 
 		if (e.getKeyChar() == '*' || e.getKeyChar() == '+') {
@@ -854,5 +835,15 @@ public class App extends KeyAdapter implements ActionListener {
 				operatorFlags[3] = true;
 			}
 		}
+	}
+	
+	// method will reset all arrays 
+	public static void resetValues() {
+		Arrays.fill(operatorFlags, Boolean.FALSE);
+		numberZeroEnteredByUser = false;
+		Collections.fill(Calculator.doubleNums, 0.0);
+		Calculator.nums.clear();
+		Calculator.doubleNums.clear();
+		Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
 	}
 }

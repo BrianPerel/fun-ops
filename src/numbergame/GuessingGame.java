@@ -163,6 +163,8 @@ public class GuessingGame implements ActionListener {
 		outOfTimeFlag = false;
 		
 		StopWatchPanel.btnStop.doClick();
+		
+		int textFieldGuessTheNumberInt;
 
 		// if when user guesses the timer is greater than 10 seconds
 		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
@@ -184,10 +186,12 @@ public class GuessingGame implements ActionListener {
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			guesses++;
+			
+			textFieldGuessTheNumberInt = Integer.valueOf(textFieldGuessTheNumber.getText());
 
 			// if input remainder entered is outside of range 1-99
-			if (Integer.valueOf(textFieldGuessTheNumber.getText()) >= 100
-					|| Integer.valueOf(textFieldGuessTheNumber.getText()) <= 0) {
+			if (textFieldGuessTheNumberInt >= 100
+					|| textFieldGuessTheNumberInt <= 0) {
 
 				try {
 					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
@@ -197,7 +201,7 @@ public class GuessingGame implements ActionListener {
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
 
-			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber == 100) {
+			} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
 
 				try {
 					Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
@@ -212,7 +216,7 @@ public class GuessingGame implements ActionListener {
 					score += 10;
 				}
 
-			} else if (Integer.valueOf(textFieldGuessTheNumber.getText()) + randomNumber != 100) {
+			} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
 
 				try {
 					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
