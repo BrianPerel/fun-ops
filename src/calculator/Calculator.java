@@ -12,8 +12,8 @@ import java.util.List;
 public class Calculator {
 
 	static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
-	DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	static int arrayNumsFilled; // container to tell what array subscripts are free or taken
+	static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
@@ -67,7 +67,7 @@ public class Calculator {
 	 * 
 	 * @return the product
 	 */
-	public double mult() {
+	public static double mult() {
 		double ans = doubleNums.get(0);
 
 		/*
@@ -95,7 +95,7 @@ public class Calculator {
 	 * 
 	 * @return the difference
 	 */
-	public double sub() {
+	public static double sub() {
 		double ans = doubleNums.get(0);
 
 		for (int i = 1; i < doubleNums.size(); i++) {
@@ -110,7 +110,7 @@ public class Calculator {
 	 * 
 	 * @return the sum
 	 */
-	public double add() {
+	public static double add() {
 		double ans = doubleNums.get(0);
 
 		for (int i = 1; i < doubleNums.size(); i++) {
@@ -126,7 +126,7 @@ public class Calculator {
 	 * @param n the value positioned before the % sign in user input
 	 * @return the percent result
 	 */
-	public double percent(double n) {
+	public static double percent(double n) {
 		return n / 100;
 	}
 
@@ -134,7 +134,7 @@ public class Calculator {
 	 * Fills up the double array with String array values after being casted to
 	 * double. This is performed when equals operator is hit
 	 */
-	public void stringToDoubleConv() {
+	public static void stringToDoubleConv() {
 		for (int i = 0; i < nums.size(); i++) {
 			doubleNums.add(i, Double.parseDouble(nums.get(i)));
 		}
@@ -146,7 +146,7 @@ public class Calculator {
 	 * 
 	 * @return formatted result value after performing operation
 	 */
-	public String compute() {
+	public static String compute() {
 		stringToDoubleConv();
 
 		if (App.operatorFlags[0]) {

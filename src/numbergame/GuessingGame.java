@@ -148,6 +148,7 @@ public class GuessingGame implements ActionListener {
 		closeTimerCheckBox.setBackground(Color.WHITE);
 		closeTimerCheckBox.setBounds(296, 260, 158, 23);
 		frame.getContentPane().add(closeTimerCheckBox);
+		closeTimerCheckBox.addActionListener(this);
 
 		new StopWatch(300, 110); // launch the stopwatch
 		StopWatchPanel.btnStart.setVisible(false);

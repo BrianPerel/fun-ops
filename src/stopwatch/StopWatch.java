@@ -81,7 +81,7 @@ public class StopWatch extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent event) {
 				final int timebase = 60, centsecbase = 99, showbase = 10;
-				
+
 				if (hour == timebase && minute == timebase && second == timebase && centisec == centsecbase) {
 					hour = minute = second = centisec = 0;
 				}
@@ -103,12 +103,10 @@ public class StopWatch extends JFrame {
 				} else if (event.getSource() == btnStop) {
 					centisec--;
 					timer.stop();
-				} else { // if event.getSource() == btnReset
-					if (!timer.isRunning()) {
-						timer.stop();
-						hour = minute = second = centisec = 0;
-						watch.setText("00:00:00");
-					}
+				} else if (event.getSource() == btnReset) { 
+					timer.stop();
+					hour = minute = second = centisec = 0;
+					watch.setText("00:00:00");
 				}
 				watch.setText(((hour < showbase) ? "0" : "") + hour + ":" + ((minute < showbase) ? "0" : "") + minute
 						+ ":" + ((second < showbase) ? "0" : "") + second);

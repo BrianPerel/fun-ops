@@ -87,48 +87,136 @@ public class GameBoard implements ActionListener {
 		f.getContentPane().add(btnOne);
 		btnOne.addActionListener(this);
 		btnOne.setBackground(new Color(244, 164, 96));
+		btnOne.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnOne.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnOne.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnTwo = new JButton("");
 		btnTwo.setBounds(63, 145, 80, 70);
 		f.getContentPane().add(btnTwo);
 		btnTwo.addActionListener(this);
 		btnTwo.setBackground(new Color(244, 164, 96));
+		btnTwo.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnTwo.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnTwo.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnThree = new JButton("");
 		btnThree.setBounds(63, 226, 80, 70);
 		f.getContentPane().add(btnThree);
 		btnThree.addActionListener(this);
 		btnThree.setBackground(new Color(244, 164, 96));
+		btnThree.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnThree.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnThree.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnFour = new JButton();
 		btnFour.setBounds(153, 64, 80, 70);
 		f.getContentPane().add(btnFour);
 		btnFour.addActionListener(this);
 		btnFour.setBackground(new Color(244, 164, 96));
+		btnFour.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnFour.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnFour.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnFive = new JButton();
 		btnFive.setBounds(153, 145, 80, 70);
 		f.getContentPane().add(btnFive);
 		btnFive.addActionListener(this);
 		btnFive.setBackground(new Color(244, 164, 96));
+		btnFive.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnFive.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnFive.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnSix = new JButton();
 		btnSix.setBounds(153, 226, 80, 70);
 		f.getContentPane().add(btnSix);
 		btnSix.addActionListener(this);
 		btnSix.setBackground(new Color(244, 164, 96));
+		btnSix.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnSix.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnSix.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnSeven = new JButton();
 		btnSeven.setBounds(243, 64, 80, 70);
 		f.getContentPane().add(btnSeven);
 		btnSeven.addActionListener(this);
 		btnSeven.setBackground(new Color(244, 164, 96));
+		btnSeven.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnSeven.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnSeven.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnEight = new JButton();
 		btnEight.setBounds(243, 145, 80, 70);
 		f.getContentPane().add(btnEight);
 		btnEight.addActionListener(this);
 		btnEight.setBackground(new Color(244, 164, 96));
+		btnEight.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnEight.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnEight.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		btnNine = new JButton();
 		btnNine.setBounds(243, 226, 80, 70);
@@ -136,6 +224,17 @@ public class GameBoard implements ActionListener {
 		btnNine.addActionListener(this);
 		btnNine.setBackground(new Color(244, 164, 96));
 		LABEL_PLAYER_TURN.setFont(new Font("Bookman Old Style", Font.PLAIN, 13));
+		btnNine.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				btnNine.setBackground(new Color(222, 126, 0));
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				btnNine.setBackground(new Color(244, 164, 96));
+			}
+		});
 
 		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(LABEL_PLAYER_TURN);

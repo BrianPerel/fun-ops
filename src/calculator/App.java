@@ -34,7 +34,6 @@ public class App extends KeyAdapter implements ActionListener {
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	char[] spaces = new char[29];
-	Calculator system = new Calculator();
 	static boolean numberZeroEnteredByUser;
 
 	/**
@@ -621,7 +620,7 @@ public class App extends KeyAdapter implements ActionListener {
 				Calculator.setNumber(userInputTextField.getText());
 
 				// perform computation to make the value
-				String value = system.compute();
+				String value = Calculator.compute();
 
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
 				// display 25
@@ -656,7 +655,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				Calculator.setNumber(String.valueOf(system.percent(Double.parseDouble(userInputTextField.getText()))));
+				Calculator.setNumber(String.valueOf(Calculator.percent(Double.parseDouble(userInputTextField.getText()))));
 				userInputTextField.setText(userInputTextField.getText() + "%");
 				// x\u00B2 -> X^2 symbol
 			}
@@ -779,7 +778,7 @@ public class App extends KeyAdapter implements ActionListener {
 				Calculator.setNumber(userInputTextField.getText());
 
 				// perform computation to make the value
-				String value = system.compute();
+				String value = Calculator.compute();
 
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
 				// display 25
