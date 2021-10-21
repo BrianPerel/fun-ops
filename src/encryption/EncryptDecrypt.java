@@ -13,15 +13,15 @@ import java.io.IOException;
 public class EncryptDecrypt {
 
 	private String data; // field to hold data from file provided by user
-	private boolean encrypted; // flag to tell if encryption has already occurred or not
+	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
-	 * @param data the user data to be encrypted/decrypted
+	 * @param argData the user data to be encrypted/decrypted
 	 */
-	public EncryptDecrypt(String data) {
-		this.data = data;
-		encrypted = false;
+	public EncryptDecrypt(String argData) {
+		this.data = argData;
+		isEncrypted = false;
 	}
 
 	/**
@@ -34,9 +34,9 @@ public class EncryptDecrypt {
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public void encrypt() throws IOException {
-		if (!encrypted) { // checks if encryption process has already occurred. Since you can't encrypt
+		if (!isEncrypted) { // checks if encryption process has already occurred. Since you can't encrypt
 							// encrypted data
-			StringBuilder masked = new StringBuilder(""); // create variable that will store a line of random characters
+			StringBuilder maskedData = new StringBuilder(""); // create variable that will store a line of random characters
 															// of same length as original sentence in the file
 
 			// loop to traverse data String provided by user, in order to replace every
@@ -45,11 +45,11 @@ public class EncryptDecrypt {
 			for (int index = 0; index < data.length(); index++) {
 				// example: 'a' is replaced with ('a' + 14) then cast a14 (which is type int)
 				// into a char which is 'o'
-				masked.append((char) (data.charAt(index) + 5));
+				maskedData.append((char) (data.charAt(index) + 5));
 			}
 
 			// cast the StringBuilder into a String
-			data = masked.toString();
+			data = maskedData.toString();
 
 			FileWriter myWriter = new FileWriter(EncryptionGUI.fileName); // access the existing txt file
 
@@ -60,7 +60,7 @@ public class EncryptDecrypt {
 			}
 
 			myWriter.close();
-			encrypted = true;
+			isEncrypted = true;
 		}
 	}
 
@@ -75,7 +75,7 @@ public class EncryptDecrypt {
 	 */
 	public String decrypt() throws IOException {
 
-		StringBuilder unmasked = new StringBuilder();
+		StringBuilder unmaskedData = new StringBuilder();
 
 		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
 		// values from data variable
@@ -83,11 +83,11 @@ public class EncryptDecrypt {
 		for (int index = 0; index < data.length(); index++) {
 			// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
 			// into a char which is 'a'
-			unmasked.append((char) (data.charAt(index) - 5));
+			unmaskedData.append((char) (data.charAt(index) - 5));
 		}
 
 		// cast the StringBuilder into a String
-		data = unmasked.toString();
+		data = unmaskedData.toString();
 
 		FileWriter myWriter = new FileWriter(EncryptionGUI.fileName);
 
@@ -99,7 +99,7 @@ public class EncryptDecrypt {
 		}
 
 		myWriter.close();
-		encrypted = false;
+		isEncrypted = false;
 		return data;
 	}
 

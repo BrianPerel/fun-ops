@@ -31,10 +31,10 @@ public class EncryptionGUI implements ActionListener {
 
 	String data = "";
 	JButton btnBrowse;
-	boolean fileLoaded;
+	boolean isFileLoaded;
 	private JFrame frame;
 	static String fileName;
-	EncryptDecrypt dataSet1;
+	EncryptDecrypt dataSet;
 	static EncryptionGUI window;
 	private JTextField loadingTextField;
 	JButton btnEncrypt = new JButton("Encrypt");
@@ -166,7 +166,7 @@ public class EncryptionGUI implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		// if filename isn't empty or file hasn't yet been loaded
-		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !fileLoaded) {
+		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !isFileLoaded) {
 
 			Scanner read = null;
 
@@ -187,8 +187,8 @@ public class EncryptionGUI implements ActionListener {
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
 				fileName = f1.toString();
-				dataSet1 = new EncryptDecrypt(data);
-				fileLoaded = true;
+				dataSet = new EncryptDecrypt(data);
+				isFileLoaded = true;
 
 				// check if Desktop is supported by Platform or not
 				if (!Desktop.isDesktopSupported()) {
@@ -225,7 +225,7 @@ public class EncryptionGUI implements ActionListener {
 			window.frame.setAlwaysOnTop(false);
 
 			try {
-				dataSet1.encrypt();
+				dataSet.encrypt();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -236,7 +236,7 @@ public class EncryptionGUI implements ActionListener {
 		// if loaded file isn't blank, allow decryption op
 		else if (ae.getSource() == btnDecrypt && !data.isBlank()) {
 			try {
-				dataSet1.decrypt();
+				dataSet.decrypt();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -251,12 +251,12 @@ public class EncryptionGUI implements ActionListener {
 		}
 
 		// if file has been already been loaded and load file btn pushed
-		else if (ae.getSource() == btnLoadFile && fileLoaded) {
+		else if (ae.getSource() == btnLoadFile && isFileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 
-		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !fileLoaded) {
+		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !isFileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}

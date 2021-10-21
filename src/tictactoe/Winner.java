@@ -24,13 +24,13 @@ public class Winner extends KeyAdapter implements ActionListener {
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	JButton btnPlayAgain = new JButton("Play again");
 	JButton btnQuit = new JButton("Quit");
-	JLabel lblNewLabel = new JLabel();
+	JLabel lblGameResult = new JLabel();
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
-	 * @param gameResult holds the result of the game - winner's name or game over message
+	 * @param argGameResult holds the result of the game - winner's name or game over message
 	 */
-	public Winner(String gameResult) {
+	public Winner(String argGameResult) {
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
@@ -42,9 +42,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 				new GameBoard(false, false, true);
 		    }
 		});
-		lblNewLabel.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
+		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
-		lblNewLabel.setText("Label");
 		f2.setResizable(false);
 		f2.setBounds(100, 100, 315, 167);
 		f2.getContentPane().setLayout(null);
@@ -53,15 +52,15 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 		
-		if (gameResult.equals("Game Over! Draw")) {
-			lblNewLabel.setText(gameResult);
+		if (argGameResult.equals("Game Over! Draw")) {
+			lblGameResult.setText(argGameResult);
 		} else {
-			lblNewLabel.setText(gameResult + " wins!");
+			lblGameResult.setText(argGameResult + " wins!");
 		}
 
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 0, 310, 57);
-		f2.getContentPane().add(lblNewLabel);
+		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGameResult.setBounds(0, 0, 310, 57);
+		f2.getContentPane().add(lblGameResult);
 		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 
 		btnPlayAgain.setBounds(39, 68, 100, 34);

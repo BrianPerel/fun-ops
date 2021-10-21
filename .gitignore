@@ -6,3 +6,5 @@ jar/
 *.log
 Launch4j/
 docs/
+/target/
+secret.txt

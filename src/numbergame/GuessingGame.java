@@ -41,7 +41,7 @@ public class GuessingGame implements ActionListener {
 	JButton btnPlayAgain = new JButton("Play again?");
 	JButton btnGuess = new JButton("Guess");
 	SecureRandom randomGenerator = new SecureRandom();
-	int guesses, score = 0;
+	int totalGuessesMade, totalGameScore = 0;
 	int randomNumber;
 
 	/**
@@ -84,7 +84,7 @@ public class GuessingGame implements ActionListener {
 		lblScore.setBounds(21, 24, 34, 17);
 		frame.getContentPane().add(lblScore);
 
-		textFieldScore = new JTextField(Integer.toString(score));
+		textFieldScore = new JTextField(Integer.toString(totalGameScore));
 		textFieldScore.setEditable(false);
 		textFieldScore.setBounds(64, 22, 52, 20);
 		textFieldScore.setColumns(10);
@@ -179,14 +179,14 @@ public class GuessingGame implements ActionListener {
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
 
-			if (score != 0) {
-				score -= 10;
+			if (totalGameScore != 0) {
+				totalGameScore -= 10;
 			}
 		}
 
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			guesses++;
+			totalGuessesMade++;
 			
 			textFieldGuessTheNumberInt = Integer.valueOf(textFieldGuessTheNumber.getText());
 
@@ -214,7 +214,7 @@ public class GuessingGame implements ActionListener {
 				randomNumber = randomGenerator.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
 				if (!outOfTimeFlag) {
-					score += 10;
+					totalGameScore += 10;
 				}
 
 			} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
@@ -226,14 +226,14 @@ public class GuessingGame implements ActionListener {
 				}
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
-				if (score != 0) {
-					score -= 10;
+				if (totalGameScore != 0) {
+					totalGameScore -= 10;
 				}
 			}
 
 			// set score after action is completed
-			textFieldScore.setText(Integer.toString(score));
-			guessesTextField.setText(Integer.toString(guesses));
+			textFieldScore.setText(Integer.toString(totalGameScore));
+			guessesTextField.setText(Integer.toString(totalGuessesMade));
 		}
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
@@ -249,7 +249,7 @@ public class GuessingGame implements ActionListener {
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
-			score = guesses = 0;
+			totalGameScore = totalGuessesMade = 0;
 		}
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {

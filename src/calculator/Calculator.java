@@ -26,15 +26,15 @@ public class Calculator {
 	 * sets the number (contained as the argument) in the numbers array. This will
 	 * allow the user to perform operations with more than just 2 numbers.
 	 * 
-	 * @param num number to be set
+	 * @param argNumber number to be set
 	 */
-	public static void setNumber(String num) {
+	public static void setNumber(String argNumber) {
 
 		// do not set number in memory if % is still attached to number (enforces fact
 		// that code must remove % before this step) or if string
 		// includes a character
-		if (!num.contains("%")) {
-			nums.add(arrayPositionNumber, num.trim());
+		if (!argNumber.contains("%")) {
+			nums.add(arrayPositionNumber, argNumber.trim());
 			arrayPositionNumber++;
 			arrayNumsFilled++;
 		}
@@ -45,7 +45,7 @@ public class Calculator {
 	 * 
 	 * @return the quotient
 	 */
-	public static double div() {
+	public static double division() {
 		double ans = doubleNums.get(0);
 
 		for (int i = 1; i < arrayNumsFilled; i++) {
@@ -67,7 +67,7 @@ public class Calculator {
 	 * 
 	 * @return the product
 	 */
-	public static double mult() {
+	public static double multiply() {
 		double ans = doubleNums.get(0);
 
 		/*
@@ -95,7 +95,7 @@ public class Calculator {
 	 * 
 	 * @return the difference
 	 */
-	public static double sub() {
+	public static double subtract() {
 		double ans = doubleNums.get(0);
 
 		for (int i = 1; i < doubleNums.size(); i++) {
@@ -123,18 +123,18 @@ public class Calculator {
 	/**
 	 * Calculator % operation
 	 * 
-	 * @param n the value positioned before the % sign in user input
+	 * @param argNumber the value positioned before the % sign in user input
 	 * @return the percent result
 	 */
-	public static double percent(double n) {
-		return n / 100;
+	public static double percent(double argNumber) {
+		return argNumber / 100;
 	}
 
 	/**
 	 * Fills up the double array with String array values after being casted to
 	 * double. This is performed when equals operator is hit
 	 */
-	public static void stringToDoubleConv() {
+	public static void applyStringToDoubleConversion() {
 		for (int i = 0; i < nums.size(); i++) {
 			doubleNums.add(i, Double.parseDouble(nums.get(i)));
 		}
@@ -147,19 +147,18 @@ public class Calculator {
 	 * @return formatted result value after performing operation
 	 */
 	public static String compute() {
-		stringToDoubleConv();
+		applyStringToDoubleConversion();
 
 		if (App.operatorFlags[0]) {
-			return df.format(div());
+			return df.format(division());
 		} else if (App.operatorFlags[1]) {
-			return df.format(mult());
+			return df.format(multiply());
 		} else if (App.operatorFlags[2]) {
-			return df.format(sub());
+			return df.format(subtract());
 		} else if (App.operatorFlags[3]) {
 			return df.format(add());
 		}
 
-		// return "0" value if none of the above conditions are triggered 
 		return "0";
 	}
 }

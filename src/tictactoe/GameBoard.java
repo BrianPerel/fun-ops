@@ -25,9 +25,9 @@ public class GameBoard implements ActionListener {
 	static JFrame f = new JFrame("Tic Tac Toe");
 	JButton btnOne, btnTwo, btnThree, btnFour, btnFive;
 	JButton btnSix, btnSeven, btnEight, btnNine;
-	static String playerOne, playerTwo;
-	static boolean playerOnesTurn, playerTwosTurn;
-	private static JLabel LABEL_PLAYER_TURN;
+	static String playerOnesName, playerTwosName;
+	static boolean isPlayerOnesTurn, isPlayerTwosTurn;
+	private static JLabel PLAYERS_TURN_LABEL;
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
 	static String pOneWins, pTwoWins;
 
@@ -47,13 +47,13 @@ public class GameBoard implements ActionListener {
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public static void gameSetup(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
+	public static void initializeGame(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 		start = s;
-		playerOnesTurn = pOnesTurn;
-		playerTwosTurn = pTwosTurn;
+		isPlayerOnesTurn = pOnesTurn;
+		isPlayerTwosTurn = pTwosTurn;
 
-		pOneWins = "Player 1 (" + playerOne + ") wins!";
-		pTwoWins = "Player 2 (" + playerTwo + ") wins!";
+		pOneWins = "Player 1 (" + playerOnesName + ") wins!";
+		pTwoWins = "Player 2 (" + playerTwosName + ") wins!";
 	}
 
 	/**
@@ -68,9 +68,9 @@ public class GameBoard implements ActionListener {
 	 */
 	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
 
-		gameSetup(s, pOnesTurn, pTwosTurn);
+		initializeGame(s, pOnesTurn, pTwosTurn);
 
-		LABEL_PLAYER_TURN = new JLabel(playerOne + "'s turn:");
+		PLAYERS_TURN_LABEL = new JLabel(playerOnesName + "'s turn:");
 
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
@@ -223,7 +223,7 @@ public class GameBoard implements ActionListener {
 		f.getContentPane().add(btnNine);
 		btnNine.addActionListener(this);
 		btnNine.setBackground(new Color(244, 164, 96));
-		LABEL_PLAYER_TURN.setFont(new Font("Bookman Old Style", Font.PLAIN, 13));
+		PLAYERS_TURN_LABEL.setFont(new Font("Bookman Old Style", Font.PLAIN, 13));
 		btnNine.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -236,8 +236,8 @@ public class GameBoard implements ActionListener {
 			}
 		});
 
-		LABEL_PLAYER_TURN.setBounds(63, 15, 260, 38);
-		f.getContentPane().add(LABEL_PLAYER_TURN);
+		PLAYERS_TURN_LABEL.setBounds(63, 15, 260, 38);
+		f.getContentPane().add(PLAYERS_TURN_LABEL);
 
 		JSeparator separatorOne = new JSeparator();
 		separatorOne.setBounds(63, 138, 260, 11);
@@ -267,67 +267,67 @@ public class GameBoard implements ActionListener {
 
 		// enforces player1 to always start first and then swap roles every match
 		if (start) {
-			playerOnesTurn = !playerOnesTurn;
-			playerTwosTurn = !playerTwosTurn;
+			isPlayerOnesTurn = !isPlayerOnesTurn;
+			isPlayerTwosTurn = !isPlayerTwosTurn;
 			start = false;
 		}
 
 		if (ae.getSource() == btnOne && btnOne.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnOne);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnOne);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnOne);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnOne);
 			}
 		} else if (ae.getSource() == btnTwo && btnTwo.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnTwo);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnTwo);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnTwo);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnTwo);
 			}
 		} else if (ae.getSource() == btnThree && btnThree.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnThree);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnThree);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnThree);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnThree);
 			}
 		} else if (ae.getSource() == btnFour && btnFour.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnFour);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnFour);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnFour);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnFour);
 			}
 		} else if (ae.getSource() == btnFive && btnFive.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnFive);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnFive);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnFive);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnFive);
 			}
 		} else if (ae.getSource() == btnSix && btnSix.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnSix);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnSix);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnSix);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnSix);
 			}
 		} else if (ae.getSource() == btnSeven && btnSeven.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnSeven);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnSeven);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnSeven);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnSeven);
 			}
 		} else if (ae.getSource() == btnEight && btnEight.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnEight);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnEight);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnEight);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnEight);
 			}
 		} else if (ae.getSource() == btnNine && btnNine.getText().isEmpty()) {
-			if (playerOnesTurn) {
-				playerOnesTurn(btnNine);
-			} else if (playerTwosTurn) {
-				playerTwosTurn(btnNine);
+			if (isPlayerOnesTurn) {
+				playerOnesTurnComplete(btnNine);
+			} else if (isPlayerTwosTurn) {
+				playerTwosTurnComplete(btnNine);
 			}
 		} else {
-			 logger.warn("Invalid Move!");
+			logger.warn("Invalid Move!");
 		}
 
 		// game rules: Need 3 in a row in any direction
@@ -339,78 +339,78 @@ public class GameBoard implements ActionListener {
 		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnFour.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSix.getText().isEmpty()) {
 			if (btnFour.getText().equals("X") && btnFive.getText().equals("X") && btnSix.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnFour.getText().equals("O") && btnFive.getText().equals("O") && btnSix.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnSeven.getText().equals("X") && btnEight.getText().equals("X") && btnNine.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnSeven.getText().equals("O") && btnEight.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFour.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFour.getText().equals("X") && btnSeven.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnOne.getText().equals("O") && btnFour.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnTwo.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnEight.getText().isEmpty()) {
 			if (btnTwo.getText().equals("X") && btnFive.getText().equals("X") && btnEight.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnTwo.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnEight.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnSix.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnSix.getText().equals("X") && btnNine.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnThree.getText().equals("O") && btnSix.getText().equals("O")
 					&& btnNine.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnOne.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			if (btnOne.getText().equals("X") && btnFive.getText().equals("X") && btnNine.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnOne.getText().equals("O") && btnFive.getText().equals("O") && btnNine.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 		if (!btnThree.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
 			if (btnThree.getText().equals("X") && btnFive.getText().equals("X") && btnSeven.getText().equals("X")) {
 				logger.info(pOneWins);
-				new Winner(playerOne);
+				new Winner(playerOnesName);
 			} else if (btnThree.getText().equals("O") && btnFive.getText().equals("O")
 					&& btnSeven.getText().equals("O")) {
 				logger.info(pTwoWins);
-				new Winner(playerTwo);
+				new Winner(playerTwosName);
 			}
 		}
 	}
@@ -418,13 +418,13 @@ public class GameBoard implements ActionListener {
 	/**
 	 * Performs actions after player one's turn
 	 * 
-	 * @param button button that was just pressed by player one
+	 * @param buttonPressed button that was just pressed by player one
 	 */
-	public static void playerOnesTurn(JButton button) {
-		button.setText(PLAYER_ONE_SHAPE);
-		LABEL_PLAYER_TURN.setText(playerOne + "'s turn:");
-		playerOnesTurn = !playerOnesTurn;
-		playerTwosTurn = !playerTwosTurn;
+	public static void playerOnesTurnComplete(JButton buttonPressed) {
+		buttonPressed.setText(PLAYER_ONE_SHAPE);
+		PLAYERS_TURN_LABEL.setText(playerOnesName + "'s turn:");
+		isPlayerOnesTurn = !isPlayerOnesTurn;
+		isPlayerTwosTurn = !isPlayerTwosTurn;
 	}
 
 	/**
@@ -432,10 +432,10 @@ public class GameBoard implements ActionListener {
 	 * 
 	 * @param buttonPressed button that was just pressed by player two
 	 */
-	public static void playerTwosTurn(JButton buttonPressed) {
+	public static void playerTwosTurnComplete(JButton buttonPressed) {
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
-		LABEL_PLAYER_TURN.setText(playerTwo + "'s turn:");
-		playerOnesTurn = !playerOnesTurn;
-		playerTwosTurn = !playerTwosTurn;
+		PLAYERS_TURN_LABEL.setText(playerTwosName + "'s turn:");
+		isPlayerOnesTurn = !isPlayerOnesTurn;
+		isPlayerTwosTurn = !isPlayerTwosTurn;
 	}
 }

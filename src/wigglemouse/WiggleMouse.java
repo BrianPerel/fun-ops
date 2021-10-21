@@ -36,7 +36,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
 	
 	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
-	final JComboBox<String> comboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
+	final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
 	 * Launch the application.
@@ -81,16 +81,16 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 
-		JLabel lblNewLabel = new JLabel("Time to wait before wiggling your mouse (in minutes):");
-		lblNewLabel.setFont(new Font("Narkisim", Font.PLAIN, 15));
-		lblNewLabel.setBounds(22, 23, 344, 23);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
+		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
+		lblDisplayMessage.setBounds(22, 23, 344, 23);
+		frame.getContentPane().add(lblDisplayMessage);
 
 		// JComboBox comboBox = new JComboBox(); // use this when switching to
 		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
 		// choice for component creation"
-		comboBox.setBounds(351, 23, 93, 22);
-		frame.getContentPane().add(comboBox);
+		timeOptionsComboBox.setBounds(351, 23, 93, 22);
+		frame.getContentPane().add(timeOptionsComboBox);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		if (ae.getSource() == btnStart) {
 			performAction = true;
 
-			switch ((String) comboBox.getSelectedItem()) {
+			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
 				timeToWait = 30000;
 				break;
@@ -129,7 +129,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		if(e.getSource() == btnStart) {
 			performAction = true;
 
-			switch ((String) comboBox.getSelectedItem()) {
+			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
 				timeToWait = 30000;
 				break;
