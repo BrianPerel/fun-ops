@@ -33,7 +33,7 @@ public class App extends KeyAdapter implements ActionListener {
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	char[] spaces = new char[29];
+	char[] spacesForMainTextField = new char[29];
 	static boolean numberZeroEnteredByUser;
 
 	/**
@@ -61,9 +61,9 @@ public class App extends KeyAdapter implements ActionListener {
 	 */
 	public App() {
 		
-		Arrays.fill(spaces, ' ');
-		cursorRightPositioned = String.valueOf(spaces);
-		cursorRightPositionedWithZero = String.valueOf(spaces) + "0";
+		Arrays.fill(spacesForMainTextField, ' ');
+		cursorRightPositioned = String.valueOf(spacesForMainTextField);
+		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField) + "0";
 
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.DARK_GRAY);

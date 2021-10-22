@@ -27,9 +27,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
 	JButton btnStart;
-	// performAction will be used to indicate whether or not to perform mouse move.
-	// Only if start btn is pushed will this be set to true
-	static boolean performAction = true;
 	static Robot robot;
 	static Point point;
 	static int x, y, timeToWait;
@@ -59,7 +56,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 			}
 		});
 
-		timeToWait = 30000;
+		timeToWait = 3000;
 		moveMouse();
 	}
 
@@ -86,9 +83,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		lblDisplayMessage.setBounds(22, 23, 344, 23);
 		frame.getContentPane().add(lblDisplayMessage);
 
-		// JComboBox comboBox = new JComboBox(); // use this when switching to
-		// WindowBuilder editor's design tab since "new JComboBox<>() is not valid
-		// choice for component creation"
 		timeOptionsComboBox.setBounds(351, 23, 93, 22);
 		frame.getContentPane().add(timeOptionsComboBox);
 	}
@@ -96,11 +90,9 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == btnStart) {
-			performAction = true;
-
 			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
-				timeToWait = 30000;
+				timeToWait = 3000;
 				break;
 
 			case "1 minute":
@@ -127,11 +119,9 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getSource() == btnStart) {
-			performAction = true;
-
 			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
-				timeToWait = 30000;
+				timeToWait = 3000;
 				break;
 
 			case "1 minute":
@@ -157,19 +147,13 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
 	 */
 	public static void moveMouse() throws InterruptedException {
-		while (performAction) {
+		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done
 			// twice in loop so that if user moves mouse the pointer doesn't jump back to original point
 			setMouseLocation();
 			// time to wait before next mouse move
 			Thread.sleep(timeToWait);
 			setMouseLocation();
-
-			// defect fix: after clicking stop btn wiggle mouse still occurs once, however
-			// this prevents that action from happening
-			if (!performAction) {
-				break;
-			}
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle
 			// Mouse action
