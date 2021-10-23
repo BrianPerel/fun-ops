@@ -212,15 +212,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * @return the formatted text field
 	 */
 	protected MaskFormatter createFormatter(String argString) {
-		MaskFormatter formatter = null;
 
 		try {
-			formatter = new MaskFormatter(argString);
+			return new MaskFormatter(argString);
 		} catch (java.text.ParseException exc) {
 			logger.error("formatter is bad: " + exc.getMessage());
 			System.exit(-1);
 		}
-		return formatter;
+		
+		return null;
 	}
 
 	/**

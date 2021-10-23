@@ -17,11 +17,15 @@ import javax.swing.Timer;
  */
 @SuppressWarnings("serial")
 public class StopWatch extends JFrame {
+	
+	public static void main(String[] args) {
+		// default requested window measurements
+		new StopWatch(300, 160);
+	}
 
 	/**
 	 * Creates the GUI frame (box)
-	 */
-	public StopWatch(int x, int y) {
+	 */	public StopWatch(int x, int y) {
 		super("Brian Perel - Stopwatch");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
@@ -112,10 +116,5 @@ public class StopWatch extends JFrame {
 						+ ":" + ((second < showbase) ? "0" : "") + second);
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		// default requested window measurements
-		new StopWatch(300, 160);
 	}
 }

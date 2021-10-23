@@ -33,7 +33,7 @@ public class App extends KeyAdapter implements ActionListener {
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	char[] spacesForMainTextField = new char[29];
+	char[] spacesForMainTextField = new char[31];
 	static boolean numberZeroEnteredByUser;
 
 	/**
@@ -63,7 +63,7 @@ public class App extends KeyAdapter implements ActionListener {
 		
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
-		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField) + "0";
+		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField).concat("0");
 
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
@@ -72,6 +72,7 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().setLayout(null);
 
 		JButton btnTurnToFraction = new JButton("1/x");
+		btnTurnToFraction.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnTurnToFraction.setBackground(Color.WHITE);
 		btnTurnToFraction.setBounds(31, 141, 80, 40);
 		frame.getContentPane().add(btnTurnToFraction);
@@ -90,6 +91,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnClearCE = new JButton("CE");
+		btnClearCE.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnClearCE.setBackground(Color.WHITE);
 		btnClearCE.setBounds(110, 100, 80, 40);
 		frame.getContentPane().add(btnClearCE);
@@ -108,6 +110,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnClearC = new JButton("C");
+		btnClearC.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnClearC.setBackground(Color.WHITE);
 		btnClearC.setBounds(189, 100, 80, 40);
 		frame.getContentPane().add(btnClearC);
@@ -145,6 +148,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnPercent = new JButton("%");
+		btnPercent.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnPercent.setBackground(Color.WHITE);
 		btnPercent.setBounds(31, 100, 80, 40);
 		frame.getContentPane().add(btnPercent);
@@ -163,7 +167,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
-		userInputTextField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(178, 27, 170, 40);
 		frame.getContentPane().add(userInputTextField);
 		userInputTextField.setColumns(10);
@@ -172,6 +176,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// unicode for X^2 (x squared)
 		JButton btnSquare = new JButton("x\u00B2");
+		btnSquare.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnSquare.setBackground(Color.WHITE);
 		btnSquare.setBounds(110, 141, 80, 40);
 		frame.getContentPane().add(btnSquare);
@@ -191,6 +196,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// unicode for 2 square root x symbol
 		JButton btnSquareRoot = new JButton("2\u221Ax");
+		btnSquareRoot.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnSquareRoot.setBackground(Color.WHITE);
 		btnSquareRoot.setBounds(189, 141, 80, 40);
 		frame.getContentPane().add(btnSquareRoot);
@@ -210,6 +216,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// unicode for division symbol
 		JButton btnDivision = new JButton("\u00F7");
+		btnDivision.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnDivision.setBackground(Color.WHITE);
 		btnDivision.setBounds(268, 141, 80, 40);
 		frame.getContentPane().add(btnDivision);
@@ -228,6 +235,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnMultiply = new JButton("*");
+		btnMultiply.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnMultiply.setBackground(Color.WHITE);
 		btnMultiply.setBounds(268, 182, 80, 40);
 		frame.getContentPane().add(btnMultiply);
@@ -246,6 +254,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberZero = new JButton("0");
+		btnNumberZero.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberZero.setBackground(Color.WHITE);
 		btnNumberZero.setBounds(110, 304, 80, 40);
 		frame.getContentPane().add(btnNumberZero);
@@ -264,6 +273,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberOne = new JButton("1");
+		btnNumberOne.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberOne.setBackground(Color.WHITE);
 		btnNumberOne.setBounds(31, 263, 80, 40);
 		frame.getContentPane().add(btnNumberOne);
@@ -282,6 +292,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberTwo = new JButton("2");
+		btnNumberTwo.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberTwo.setBackground(Color.WHITE);
 		btnNumberTwo.setBounds(110, 263, 80, 40);
 		frame.getContentPane().add(btnNumberTwo);
@@ -300,6 +311,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberThree = new JButton("3");
+		btnNumberThree.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberThree.setBackground(Color.WHITE);
 		btnNumberThree.setBounds(189, 263, 80, 40);
 		frame.getContentPane().add(btnNumberThree);
@@ -317,6 +329,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberFour = new JButton("4");
+		btnNumberFour.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberFour.setBackground(Color.WHITE);
 		btnNumberFour.setBounds(31, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFour);
@@ -335,6 +348,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberFive = new JButton("5");
+		btnNumberFive.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberFive.setBackground(Color.WHITE);
 		btnNumberFive.setBounds(110, 222, 80, 40);
 		frame.getContentPane().add(btnNumberFive);
@@ -353,6 +367,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberSix = new JButton("6");
+		btnNumberSix.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberSix.setBackground(Color.WHITE);
 		btnNumberSix.setBounds(189, 222, 80, 40);
 		frame.getContentPane().add(btnNumberSix);
@@ -371,6 +386,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberSeven = new JButton("7");
+		btnNumberSeven.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberSeven.setBackground(Color.WHITE);
 		btnNumberSeven.setBounds(31, 182, 80, 40);
 		frame.getContentPane().add(btnNumberSeven);
@@ -389,6 +405,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberEight = new JButton("8");
+		btnNumberEight.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberEight.setBackground(Color.WHITE);
 		btnNumberEight.setBounds(110, 182, 80, 40);
 		frame.getContentPane().add(btnNumberEight);
@@ -407,6 +424,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnNumberNine = new JButton("9");
+		btnNumberNine.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnNumberNine.setBackground(Color.WHITE);
 		btnNumberNine.setBounds(189, 182, 80, 40);
 		frame.getContentPane().add(btnNumberNine);
@@ -425,6 +443,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnSubtract = new JButton("-");
+		btnSubtract.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnSubtract.setBackground(Color.WHITE);
 		btnSubtract.setBounds(268, 222, 80, 40);
 		frame.getContentPane().add(btnSubtract);
@@ -443,6 +462,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnAdd = new JButton("+");
+		btnAdd.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnAdd.setBackground(Color.WHITE);
 		btnAdd.setBounds(268, 263, 80, 40);
 		frame.getContentPane().add(btnAdd);
@@ -461,6 +481,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnPlusMinus = new JButton("+/-");
+		btnPlusMinus.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnPlusMinus.setBackground(Color.WHITE);
 		btnPlusMinus.setBounds(31, 304, 80, 40);
 		frame.getContentPane().add(btnPlusMinus);
@@ -479,6 +500,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnDecimalPoint = new JButton(".");
+		btnDecimalPoint.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnDecimalPoint.setBackground(Color.WHITE);
 		btnDecimalPoint.setBounds(189, 304, 80, 40);
 		frame.getContentPane().add(btnDecimalPoint);
@@ -497,6 +519,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		JButton btnEquals = new JButton("=");
+		btnEquals.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 		btnEquals.setBackground(Color.WHITE);
 		btnEquals.setBounds(268, 304, 80, 40);
 		frame.getContentPane().add(btnEquals);
@@ -531,45 +554,45 @@ public class App extends KeyAdapter implements ActionListener {
 		switch (ae.getActionCommand()) {
 		case "0":
 			if (!userInputTextField.getText().equals(cursorRightPositionedWithZero)) {
-				userInputTextField.setText(userInputTextField.getText() + "0");
+				userInputTextField.setText(userInputTextField.getText().concat("0"));
 				numberZeroEnteredByUser = true;
 			}
 			break;
 
 		case "1":
-			userInputTextField.setText(userInputTextField.getText() + "1");
+			userInputTextField.setText(userInputTextField.getText().concat("1"));
 			break;
 
 		case "2":
-			userInputTextField.setText(userInputTextField.getText() + "2");
+			userInputTextField.setText(userInputTextField.getText().concat("2"));
 			break;
 
 		case "3":
-			userInputTextField.setText(userInputTextField.getText() + "3");
+			userInputTextField.setText(userInputTextField.getText().concat("3"));
 			break;
 
 		case "4":
-			userInputTextField.setText(userInputTextField.getText() + "4");
+			userInputTextField.setText(userInputTextField.getText().concat("4"));
 			break;
 
 		case "5":
-			userInputTextField.setText(userInputTextField.getText() + "5");
+			userInputTextField.setText(userInputTextField.getText().concat("5"));
 			break;
 
 		case "6":
-			userInputTextField.setText(userInputTextField.getText() + "6");
+			userInputTextField.setText(userInputTextField.getText().concat("6"));
 			break;
 
 		case "7":
-			userInputTextField.setText(userInputTextField.getText() + "7");
+			userInputTextField.setText(userInputTextField.getText().concat("7"));
 			break;
 
 		case "8":
-			userInputTextField.setText(userInputTextField.getText() + "8");
+			userInputTextField.setText(userInputTextField.getText().concat("8"));
 			break;
 
 		case "9":
-			userInputTextField.setText(userInputTextField.getText() + "9");
+			userInputTextField.setText(userInputTextField.getText().concat("9"));
 			break;
 
 		// actions for symbol buttons
@@ -609,7 +632,7 @@ public class App extends KeyAdapter implements ActionListener {
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				// need to cast below multiple times in order to perform 1/x operation
 				userInputTextField.setText(
-						cursorRightPositioned + Double.toString(1 / Double.valueOf(userInputTextField.getText())));
+						cursorRightPositioned.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText()))));
 			}
 			break;
 
@@ -631,7 +654,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 				// check for division by zero. Avoids exception being flagged
 				userInputTextField.setText(
-						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
+						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
 
 				// reset all array values to 0
 				Collections.fill(Calculator.nums, "");
@@ -649,22 +672,21 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case ".":
 			if (!userInputTextField.getText().contains(".")) {
-				userInputTextField.setText(userInputTextField.getText() + ".");
+				userInputTextField.setText(userInputTextField.getText().concat("."));
 			}
 			break;
 
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				Calculator.setNumber(String.valueOf(Calculator.percent(Double.parseDouble(userInputTextField.getText()))));
-				userInputTextField.setText(userInputTextField.getText() + "%");
+				userInputTextField.setText(userInputTextField.getText().concat("%"));
 				// x\u00B2 -> X^2 symbol
 			}
 			break;
 
 		case "x\u00B2":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField.setText(cursorRightPositioned
-						+ Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2)));
+				userInputTextField.setText(cursorRightPositioned.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2))));
 			}
 			break;
 
@@ -682,8 +704,8 @@ public class App extends KeyAdapter implements ActionListener {
 				// prepended) else if number is negative, number becomes positive (minues is
 				// removed)
 				userInputTextField.setText(userInputTextField.getText().trim().substring(0, 1).equals("-")
-						? cursorRightPositioned + userInputTextField.getText().replace("-", "")
-						: cursorRightPositioned + ("-" + userInputTextField.getText().trim()));
+						? cursorRightPositioned.concat(userInputTextField.getText().replace("-", ""))
+						: cursorRightPositioned.concat(("-".concat(userInputTextField.getText().trim()))));
 			}
 			break;
 
@@ -709,44 +731,44 @@ public class App extends KeyAdapter implements ActionListener {
 		// are utilized as a case
 		switch (e.getKeyChar()) {
 		case KeyEvent.VK_0:
-			userInputTextField.setText(userInputTextField.getText() + "0");
+			userInputTextField.setText(userInputTextField.getText().concat("0"));
 			numberZeroEnteredByUser = true;
 			break;
 
 		case KeyEvent.VK_1:
-			userInputTextField.setText(userInputTextField.getText() + "1");
+			userInputTextField.setText(userInputTextField.getText().concat("1"));
 			break;
 
 		case KeyEvent.VK_2:
-			userInputTextField.setText(userInputTextField.getText() + "2");
+			userInputTextField.setText(userInputTextField.getText().concat("2"));
 			break;
 
 		case KeyEvent.VK_3:
-			userInputTextField.setText(userInputTextField.getText() + "3");
+			userInputTextField.setText(userInputTextField.getText().concat("3"));
 			break;
 
 		case KeyEvent.VK_4:
-			userInputTextField.setText(userInputTextField.getText() + "4");
+			userInputTextField.setText(userInputTextField.getText().concat("4"));
 			break;
 
 		case KeyEvent.VK_5:
-			userInputTextField.setText(userInputTextField.getText() + "5");
+			userInputTextField.setText(userInputTextField.getText().concat("5"));
 			break;
 
 		case KeyEvent.VK_6:
-			userInputTextField.setText(userInputTextField.getText() + "6");
+			userInputTextField.setText(userInputTextField.getText().concat("6"));
 			break;
 
 		case KeyEvent.VK_7:
-			userInputTextField.setText(userInputTextField.getText() + "7");
+			userInputTextField.setText(userInputTextField.getText().concat("7"));
 			break;
 
 		case KeyEvent.VK_8:
-			userInputTextField.setText(userInputTextField.getText() + "8");
+			userInputTextField.setText(userInputTextField.getText().concat("8"));
 			break;
 
 		case KeyEvent.VK_9:
-			userInputTextField.setText(userInputTextField.getText() + "9");
+			userInputTextField.setText(userInputTextField.getText().concat("9"));
 			break;
 
 		// actions for symbol buttons

@@ -11,6 +11,8 @@ import javax.swing.SwingConstants;
 public class Clock {
 
 	JLabel lblClockTime;
+	String time;
+	final String[] arr = {"WHITE", "BLUE", "GREEN", "YELLOW", "GRAY"};
 
 	/**
 	 * Launch the application.
@@ -46,7 +48,12 @@ public class Clock {
 	public void getTime() {
 
 		while (true) {
-			lblClockTime.setText(java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")));
+			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
+			if(time.substring(0, 1).equals("0")) {
+				time = time.substring(1, time.length());
+			}
+			
+			lblClockTime.setText(time);
 
 			try {
 				Thread.sleep(1000);
@@ -55,6 +62,5 @@ public class Clock {
 				System.out.println(e.toString());
 			}
 		}
-
 	}
 }

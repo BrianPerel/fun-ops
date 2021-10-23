@@ -83,6 +83,7 @@ public class GameBoard implements ActionListener {
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 
 		btnOne = new JButton("");
+		btnOne.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnOne.setBounds(63, 64, 80, 70);
 		f.getContentPane().add(btnOne);
 		btnOne.addActionListener(this);
@@ -100,6 +101,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnTwo = new JButton("");
+		btnTwo.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnTwo.setBounds(63, 145, 80, 70);
 		f.getContentPane().add(btnTwo);
 		btnTwo.addActionListener(this);
@@ -117,6 +119,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnThree = new JButton("");
+		btnThree.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnThree.setBounds(63, 226, 80, 70);
 		f.getContentPane().add(btnThree);
 		btnThree.addActionListener(this);
@@ -134,6 +137,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnFour = new JButton();
+		btnFour.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnFour.setBounds(153, 64, 80, 70);
 		f.getContentPane().add(btnFour);
 		btnFour.addActionListener(this);
@@ -151,6 +155,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnFive = new JButton();
+		btnFive.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnFive.setBounds(153, 145, 80, 70);
 		f.getContentPane().add(btnFive);
 		btnFive.addActionListener(this);
@@ -168,6 +173,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnSix = new JButton();
+		btnSix.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnSix.setBounds(153, 226, 80, 70);
 		f.getContentPane().add(btnSix);
 		btnSix.addActionListener(this);
@@ -185,6 +191,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnSeven = new JButton();
+		btnSeven.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnSeven.setBounds(243, 64, 80, 70);
 		f.getContentPane().add(btnSeven);
 		btnSeven.addActionListener(this);
@@ -202,6 +209,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnEight = new JButton();
+		btnEight.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnEight.setBounds(243, 145, 80, 70);
 		f.getContentPane().add(btnEight);
 		btnEight.addActionListener(this);
@@ -219,6 +227,7 @@ public class GameBoard implements ActionListener {
 		});
 
 		btnNine = new JButton();
+		btnNine.setFont(new Font("Magneto", Font.PLAIN, 20));
 		btnNine.setBounds(243, 226, 80, 70);
 		f.getContentPane().add(btnNine);
 		btnNine.addActionListener(this);
