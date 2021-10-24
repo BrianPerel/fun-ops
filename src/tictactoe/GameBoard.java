@@ -148,7 +148,6 @@ public class GameBoard implements ActionListener {
 				} 
 			} else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				logger.warn("Invalid Move!");
-				
 			}
 		}
 

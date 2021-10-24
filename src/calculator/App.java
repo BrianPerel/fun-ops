@@ -35,6 +35,15 @@ public class App extends KeyAdapter implements ActionListener {
 														// clicked
 	char[] spacesForMainTextField = new char[31];
 	static boolean numberZeroEnteredByUser;
+	JButton[] buttons = new JButton[24];
+	/*
+	 * buttons[0] => btnTurnToFraction, buttons[1] => btnClearCE, buttons[2] => btnClearC, buttons[3] => btnBackspace (unicode for backspace symbol = \u232B),
+	 * buttons[4] => btnPercent, buttons[5] => btnSquare (unicode for X^2 (x squared) = x\u00B2), buttons[6] => btnSquareRoot (unicode for 2 square root x symbol = 2\u221Ax),
+	 * buttons[7] => btnDivision (unicode for division symbol = \u00F7), buttons[8] = btnMultiply, buttons[9] = btnNumberZero, buttons[10] = btnNumberOne, buttons[11] = btnNumberTwo
+	 * buttons[12] = btnNumberTwo, buttons[13] = btnNumberThree, buttons[14] = btnNumberFour, buttons[15] = btnNumberFive, buttons[16] = btnNumberSix,
+	 * buttons[17] = btnNumberSeven, buttons[18] = btnNumberEight, buttons[19] = btnNumberNine, buttons[20] = btnSubtract, buttons[21] = btnAdd,
+	 * buttons[22] = btnPlusMinus, buttons[23] = btnPlusMinus, buttons[24] = btnDecimalPoint, buttons[25] = btnEquals, 
+	 */
 
 	/**
 	 * Launch the application.
@@ -60,7 +69,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 * Constructor: Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
-		
+
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField).concat("0");
@@ -71,62 +80,76 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		JButton btnTurnToFraction = new JButton("1/x");
-		btnTurnToFraction.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnTurnToFraction.setBackground(Color.WHITE);
-		btnTurnToFraction.setBounds(31, 141, 80, 40);
-		frame.getContentPane().add(btnTurnToFraction);
-		btnTurnToFraction.addActionListener(this);
-		btnTurnToFraction.addKeyListener(this);
-		btnTurnToFraction.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnTurnToFraction.setBackground(new Color(225, 225, 225));
-			}
+		buttons[0] = new JButton("1/x");
+		buttons[1] = new JButton("CE");
+		buttons[2] = new JButton("C");
+		buttons[3] = new JButton("\u232B");
+		buttons[4] = new JButton("%");
+		buttons[5] = new JButton("x\u00B2");
+		buttons[6] = new JButton("2\u221Ax");
+		buttons[7] = new JButton("\u00F7");
+		buttons[8] = new JButton("*");
+		buttons[9] = new JButton("0");
+		buttons[10] = new JButton("1");
+		buttons[11] = new JButton("2");
+		buttons[12] = new JButton("3");
+		buttons[13] = new JButton("4");
+		buttons[14] = new JButton("5");
+		buttons[15] = new JButton("6");
+		buttons[16] = new JButton("7");
+		buttons[17] = new JButton("8");
+		buttons[18] = new JButton("9");
+		buttons[19] = new JButton("-");
+		buttons[20] = new JButton("+");
+		buttons[21] = new JButton("+/-");
+		buttons[22] = new JButton(".");
+		buttons[23] = new JButton("=");
 
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnTurnToFraction.setBackground(Color.WHITE);
-			}
-		});
+		// SHOULD BE: i < buttons.length
+		for (int i = 0; i < buttons.length; i++) {
+			buttons[i].setFont(new Font("Bookman Old Style", Font.BOLD, 13));
+			buttons[i].setBackground(Color.WHITE);
+			frame.getContentPane().add(buttons[i]);
+			buttons[i].addActionListener(this);
+			buttons[i].addKeyListener(this);
 
-		JButton btnClearCE = new JButton("CE");
-		btnClearCE.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnClearCE.setBackground(Color.WHITE);
-		btnClearCE.setBounds(110, 100, 80, 40);
-		frame.getContentPane().add(btnClearCE);
-		btnClearCE.addActionListener(this);
-		btnClearCE.addKeyListener(this);
-		btnClearCE.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnClearCE.setBackground(new Color(225, 225, 225));
-			}
+			final int x = i;
+			buttons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseEntered(java.awt.event.MouseEvent evt) {
+					buttons[x].setBackground(new Color(225, 225, 225));
+				}
 
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnClearCE.setBackground(Color.WHITE);
-			}
-		});
+				@Override
+				public void mouseExited(java.awt.event.MouseEvent evt) {
+					buttons[x].setBackground(Color.WHITE);
+				}
+			});
+		}
 
-		JButton btnClearC = new JButton("C");
-		btnClearC.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnClearC.setBackground(Color.WHITE);
-		btnClearC.setBounds(189, 100, 80, 40);
-		frame.getContentPane().add(btnClearC);
-		btnClearC.addActionListener(this);
-		btnClearC.addKeyListener(this);
-		btnClearC.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnClearC.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnClearC.setBackground(Color.WHITE);
-			}
-		});
+		buttons[0].setBounds(31, 141, 80, 40);
+		buttons[1].setBounds(110, 100, 80, 40);
+		buttons[2].setBounds(189, 100, 80, 40);
+		buttons[4].setBounds(31, 100, 80, 40);
+		buttons[5].setBounds(110, 141, 80, 40);
+		buttons[6].setBounds(189, 141, 80, 40);
+		buttons[7].setBounds(268, 141, 80, 40);
+		buttons[8].setBounds(268, 182, 80, 40);
+		buttons[9].setBounds(110, 304, 80, 40);
+		buttons[10].setBounds(31, 263, 80, 40);
+		buttons[11].setBounds(110, 263, 80, 40);
+		buttons[12].setBounds(189, 263, 80, 40);
+		buttons[13].setBounds(31, 222, 80, 40);
+		buttons[14].setBounds(110, 222, 80, 40);
+		buttons[15].setBounds(189, 222, 80, 40);
+		buttons[16].setBounds(31, 182, 80, 40);
+		buttons[17].setBounds(110, 182, 80, 40);
+		buttons[18].setBounds(189, 182, 80, 40);
+		buttons[19].setBounds(268, 222, 80, 40);
+		buttons[20].setBounds(268, 263, 80, 40);
+		buttons[21].setBounds(31, 304, 80, 40);
+		buttons[22].setBounds(189, 304, 80, 40);
+		buttons[23].setBounds(268, 304, 80, 40);
 
 		// unicode for backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
@@ -147,25 +170,6 @@ public class App extends KeyAdapter implements ActionListener {
 			}
 		});
 
-		JButton btnPercent = new JButton("%");
-		btnPercent.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnPercent.setBackground(Color.WHITE);
-		btnPercent.setBounds(31, 100, 80, 40);
-		frame.getContentPane().add(btnPercent);
-		btnPercent.addActionListener(this);
-		btnPercent.addKeyListener(this);
-		btnPercent.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnPercent.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnPercent.setBackground(Color.WHITE);
-			}
-		});
-
 		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(178, 27, 170, 40);
@@ -173,369 +177,6 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setColumns(10);
 		userInputTextField.setEditable(false);
 		userInputTextField.addKeyListener(this);
-
-		// unicode for X^2 (x squared)
-		JButton btnSquare = new JButton("x\u00B2");
-		btnSquare.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnSquare.setBackground(Color.WHITE);
-		btnSquare.setBounds(110, 141, 80, 40);
-		frame.getContentPane().add(btnSquare);
-		btnSquare.addActionListener(this);
-		btnSquare.addKeyListener(this);
-		btnSquare.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnSquare.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnSquare.setBackground(Color.WHITE);
-			}
-		});
-
-		// unicode for 2 square root x symbol
-		JButton btnSquareRoot = new JButton("2\u221Ax");
-		btnSquareRoot.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnSquareRoot.setBackground(Color.WHITE);
-		btnSquareRoot.setBounds(189, 141, 80, 40);
-		frame.getContentPane().add(btnSquareRoot);
-		btnSquareRoot.addActionListener(this);
-		btnSquareRoot.addKeyListener(this);
-		btnSquareRoot.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnSquareRoot.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnSquareRoot.setBackground(Color.WHITE);
-			}
-		});
-
-		// unicode for division symbol
-		JButton btnDivision = new JButton("\u00F7");
-		btnDivision.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnDivision.setBackground(Color.WHITE);
-		btnDivision.setBounds(268, 141, 80, 40);
-		frame.getContentPane().add(btnDivision);
-		btnDivision.addActionListener(this);
-		btnDivision.addKeyListener(this);
-		btnDivision.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnDivision.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnDivision.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnMultiply = new JButton("*");
-		btnMultiply.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnMultiply.setBackground(Color.WHITE);
-		btnMultiply.setBounds(268, 182, 80, 40);
-		frame.getContentPane().add(btnMultiply);
-		btnMultiply.addActionListener(this);
-		btnMultiply.addKeyListener(this);
-		btnMultiply.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnMultiply.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnMultiply.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberZero = new JButton("0");
-		btnNumberZero.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberZero.setBackground(Color.WHITE);
-		btnNumberZero.setBounds(110, 304, 80, 40);
-		frame.getContentPane().add(btnNumberZero);
-		btnNumberZero.addActionListener(this);
-		btnNumberZero.addKeyListener(this);
-		btnNumberZero.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberZero.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberZero.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberOne = new JButton("1");
-		btnNumberOne.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberOne.setBackground(Color.WHITE);
-		btnNumberOne.setBounds(31, 263, 80, 40);
-		frame.getContentPane().add(btnNumberOne);
-		btnNumberOne.addActionListener(this);
-		btnNumberOne.addKeyListener(this);
-		btnNumberOne.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberOne.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberOne.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberTwo = new JButton("2");
-		btnNumberTwo.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberTwo.setBackground(Color.WHITE);
-		btnNumberTwo.setBounds(110, 263, 80, 40);
-		frame.getContentPane().add(btnNumberTwo);
-		btnNumberTwo.addActionListener(this);
-		btnNumberTwo.addKeyListener(this);
-		btnNumberTwo.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberTwo.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberTwo.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberThree = new JButton("3");
-		btnNumberThree.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberThree.setBackground(Color.WHITE);
-		btnNumberThree.setBounds(189, 263, 80, 40);
-		frame.getContentPane().add(btnNumberThree);
-		btnNumberThree.addActionListener(this);
-		btnNumberThree.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberThree.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberThree.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberFour = new JButton("4");
-		btnNumberFour.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberFour.setBackground(Color.WHITE);
-		btnNumberFour.setBounds(31, 222, 80, 40);
-		frame.getContentPane().add(btnNumberFour);
-		btnNumberFour.addActionListener(this);
-		btnNumberFour.addKeyListener(this);
-		btnNumberFour.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberFour.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberFour.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberFive = new JButton("5");
-		btnNumberFive.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberFive.setBackground(Color.WHITE);
-		btnNumberFive.setBounds(110, 222, 80, 40);
-		frame.getContentPane().add(btnNumberFive);
-		btnNumberFive.addActionListener(this);
-		btnNumberFive.addKeyListener(this);
-		btnNumberFive.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberFive.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberFive.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberSix = new JButton("6");
-		btnNumberSix.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberSix.setBackground(Color.WHITE);
-		btnNumberSix.setBounds(189, 222, 80, 40);
-		frame.getContentPane().add(btnNumberSix);
-		btnNumberSix.addActionListener(this);
-		btnNumberSix.addKeyListener(this);
-		btnNumberSix.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberSix.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberSix.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberSeven = new JButton("7");
-		btnNumberSeven.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberSeven.setBackground(Color.WHITE);
-		btnNumberSeven.setBounds(31, 182, 80, 40);
-		frame.getContentPane().add(btnNumberSeven);
-		btnNumberSeven.addActionListener(this);
-		btnNumberSeven.addKeyListener(this);
-		btnNumberSeven.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberSeven.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberSeven.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberEight = new JButton("8");
-		btnNumberEight.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberEight.setBackground(Color.WHITE);
-		btnNumberEight.setBounds(110, 182, 80, 40);
-		frame.getContentPane().add(btnNumberEight);
-		btnNumberEight.addActionListener(this);
-		btnNumberEight.addKeyListener(this);
-		btnNumberEight.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberEight.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberEight.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnNumberNine = new JButton("9");
-		btnNumberNine.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnNumberNine.setBackground(Color.WHITE);
-		btnNumberNine.setBounds(189, 182, 80, 40);
-		frame.getContentPane().add(btnNumberNine);
-		btnNumberNine.addActionListener(this);
-		btnNumberNine.addKeyListener(this);
-		btnNumberNine.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnNumberNine.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnNumberNine.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnSubtract = new JButton("-");
-		btnSubtract.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnSubtract.setBackground(Color.WHITE);
-		btnSubtract.setBounds(268, 222, 80, 40);
-		frame.getContentPane().add(btnSubtract);
-		btnSubtract.addActionListener(this);
-		btnSubtract.addKeyListener(this);
-		btnSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnSubtract.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnSubtract.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnAdd = new JButton("+");
-		btnAdd.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnAdd.setBackground(Color.WHITE);
-		btnAdd.setBounds(268, 263, 80, 40);
-		frame.getContentPane().add(btnAdd);
-		btnAdd.addActionListener(this);
-		btnAdd.addKeyListener(this);
-		btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnAdd.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnAdd.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnPlusMinus = new JButton("+/-");
-		btnPlusMinus.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnPlusMinus.setBackground(Color.WHITE);
-		btnPlusMinus.setBounds(31, 304, 80, 40);
-		frame.getContentPane().add(btnPlusMinus);
-		btnPlusMinus.addActionListener(this);
-		btnPlusMinus.addKeyListener(this);
-		btnPlusMinus.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnPlusMinus.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnPlusMinus.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnDecimalPoint = new JButton(".");
-		btnDecimalPoint.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnDecimalPoint.setBackground(Color.WHITE);
-		btnDecimalPoint.setBounds(189, 304, 80, 40);
-		frame.getContentPane().add(btnDecimalPoint);
-		btnDecimalPoint.addActionListener(this);
-		btnDecimalPoint.addKeyListener(this);
-		btnDecimalPoint.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnDecimalPoint.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnDecimalPoint.setBackground(Color.WHITE);
-			}
-		});
-
-		JButton btnEquals = new JButton("=");
-		btnEquals.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-		btnEquals.setBackground(Color.WHITE);
-		btnEquals.setBounds(268, 304, 80, 40);
-		frame.getContentPane().add(btnEquals);
-		btnEquals.addActionListener(this);
-		btnEquals.addKeyListener(this);
-		btnEquals.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnEquals.setBackground(new Color(225, 225, 225));
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnEquals.setBackground(Color.WHITE);
-			}
-		});
 	}
 
 	/**
@@ -631,8 +272,8 @@ public class App extends KeyAdapter implements ActionListener {
 			// validate that the current text in textField isn't blank
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				// need to cast below multiple times in order to perform 1/x operation
-				userInputTextField.setText(
-						cursorRightPositioned.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText()))));
+				userInputTextField.setText(cursorRightPositioned
+						.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText()))));
 			}
 			break;
 
@@ -678,7 +319,8 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				Calculator.setNumber(String.valueOf(Calculator.percent(Double.parseDouble(userInputTextField.getText()))));
+				Calculator.setNumber(
+						String.valueOf(Calculator.percent(Double.parseDouble(userInputTextField.getText()))));
 				userInputTextField.setText(userInputTextField.getText().concat("%"));
 				// x\u00B2 -> X^2 symbol
 			}
@@ -686,7 +328,8 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "x\u00B2":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField.setText(cursorRightPositioned.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2))));
+				userInputTextField.setText(cursorRightPositioned
+						.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2))));
 			}
 			break;
 
@@ -841,8 +484,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			
-			
+
 			resetValues();
 		}
 
@@ -857,8 +499,8 @@ public class App extends KeyAdapter implements ActionListener {
 			}
 		}
 	}
-	
-	// method will reset all arrays 
+
+	// method will reset all arrays
 	public static void resetValues() {
 		Arrays.fill(operatorFlags, Boolean.FALSE);
 		numberZeroEnteredByUser = false;
