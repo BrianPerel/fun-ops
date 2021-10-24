@@ -36,12 +36,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
 	private static final Logger logger = Logger.getLogger(Hangman.class);
-	private JFormattedTextField letter1TextField, letter2TextField, letter3TextField, letter4TextField;
+	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
 	
 	// chosen hangman word
 	static String hangmanWord = "";
+	
 	private static String maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
@@ -141,38 +142,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setFocusable(false);
 		hangmanWordTextField.setToolTipText("Secret Word");
+		
+		for(int x = 0; x < letterTextFields.length; x++) {
+			letterTextFields[x] = new JFormattedTextField(createFormatter("U"));
+			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
+			frame.getContentPane().add(letterTextFields[x]);
+			letterTextFields[x].setColumns(10);
+			letterTextFields[x].addKeyListener(this);
+			letterTextFields[x].addFocusListener(this);
+		}
 
-		letter1TextField = new JFormattedTextField(createFormatter("U"));
-		letter1TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
-		letter1TextField.setBounds(306, 186, 17, 20);
-		frame.getContentPane().add(letter1TextField);
-		letter1TextField.setColumns(10);
-		letter1TextField.addKeyListener(this);
-		letter1TextField.addFocusListener(this);
-
-		letter2TextField = new JFormattedTextField(createFormatter("U"));
-		letter2TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
-		letter2TextField.setColumns(10);
-		letter2TextField.setBounds(333, 186, 17, 20);
-		frame.getContentPane().add(letter2TextField);
-		letter2TextField.addKeyListener(this);
-		letter2TextField.addFocusListener(this);
-
-		letter3TextField = new JFormattedTextField(createFormatter("U"));
-		letter3TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
-		letter3TextField.setColumns(10);
-		letter3TextField.setBounds(360, 186, 17, 20);
-		frame.getContentPane().add(letter3TextField);
-		letter3TextField.addKeyListener(this);
-		letter3TextField.addFocusListener(this);
-
-		letter4TextField = new JFormattedTextField(createFormatter("U"));
-		letter4TextField.setFont(new Font("Papyrus", Font.ITALIC, 11));
-		letter4TextField.setColumns(10);
-		letter4TextField.setBounds(387, 186, 17, 20);
-		frame.getContentPane().add(letter4TextField);
-		letter4TextField.addKeyListener(this);
-		letter4TextField.addFocusListener(this);
+		letterTextFields[0].setBounds(306, 186, 17, 20);
+		letterTextFields[1].setBounds(333, 186, 17, 20);
+		letterTextFields[2].setBounds(360, 186, 17, 20);
+		letterTextFields[3].setBounds(387, 186, 17, 20);
 
 		JLabel lblWordText = new JLabel("WORD:");
 		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 13));
@@ -242,17 +225,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void resetGame() {
 		hangmanTextField.setText("");
 		hangmanWordTextField.setText("");
-		// Needed to use setText() twice for each letter to fix extra space being
-		// entered
-		letter1TextField.setText("");
-		letter1TextField.setText("");
-		letter2TextField.setText("");
-		letter2TextField.setText("");
-		letter3TextField.setText("");
-		letter3TextField.setText("");
-		letter4TextField.setText("");
-		letter4TextField.setText("");
-		letter1TextField.requestFocus();
+		
+		for (int i = 0; i < letterTextFields.length; i++) {
+			// Needed to use setText() twice for each letter to fix extra space being entered
+			letterTextFields[i].setText("");
+			letterTextFields[i].setText("");
+		}
+		
+		letterTextFields[0].requestFocus();
 		w = o = r = d = false;
 		getHangmanWord();
 		count = 0;
@@ -291,27 +271,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			if (t1 && (charGuessed == hangmanWord.charAt(0)) && !w) {
 				hangmanWordTextField.setText(hang(charGuessed)); // x000
 				w = true;
-			}
-
-			else if (t2 && (charGuessed == hangmanWord.charAt(1)) && !o) {
+			} else if (t2 && (charGuessed == hangmanWord.charAt(1)) && !o) {
 				hangmanWordTextField.setText(hang(charGuessed)); // 0x00
 				o = true;
-			}
-
-			else if (t3 && (charGuessed == hangmanWord.charAt(2)) && !r) {
+			} else if (t3 && (charGuessed == hangmanWord.charAt(2)) && !r) {
 				hangmanWordTextField.setText(hang(charGuessed)); // 00x0
 				r = true;
-			}
-
-			else if (t4 && (charGuessed == hangmanWord.charAt(3)) && !d) {
+			} else if (t4 && (charGuessed == hangmanWord.charAt(3)) && !d) {
 				hangmanWordTextField.setText(hang(charGuessed)); // 000x
 				// below line is a code fix: will force set/display final letter if correct before
 				// trigger of winner message appears
-				letter4TextField.setText(letter4TextField.getText());
+				letterTextFields[3].setText(letterTextFields[3].getText());
 				d = true;
-			}
-
-			else if (letter1TextField.getText().length() <= 1 && (charGuessed != hangmanWord.charAt(0))
+			} else if (letterTextFields[0].getText().length() <= 1 && (charGuessed != hangmanWord.charAt(0))
 					&& (charGuessed != hangmanWord.charAt(1))
 					&& (charGuessed != hangmanWord.charAt(2))) {
 
@@ -344,28 +316,21 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 		
-		letter1TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		letter2TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		letter3TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		letter4TextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		for (int i = 0; i < letterTextFields.length; i++) {
+			letterTextFields[i].setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		}
 
-		if (letter1TextField.hasFocus()) {
-			letter1TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+		if (letterTextFields[0].hasFocus()) {
+			letterTextFields[0].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
 			t1 = true;
-		}
-
-		else if (letter2TextField.hasFocus()) {
-			letter2TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+		} else if (letterTextFields[1].hasFocus()) {
+			letterTextFields[1].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
 			t2 = true;
-		}
-
-		else if (letter3TextField.hasFocus()) {
-			letter3TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+		} else if (letterTextFields[2].hasFocus()) {
+			letterTextFields[2].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
 			t3 = true;
-		}
-
-		else if (letter4TextField.hasFocus()) {
-			letter4TextField.setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+		} else if (letterTextFields[3].hasFocus()) {
+			letterTextFields[3].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
 			t4 = true;
 		}
 	}
@@ -377,19 +342,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	@Override
 	public void focusLost(FocusEvent e) {
 
-		if (!letter1TextField.hasFocus()) {
+		if (!letterTextFields[0].hasFocus()) {
 			t1 = false;
 		}
 
-		else if (!letter2TextField.hasFocus()) {
+		else if (!letterTextFields[1].hasFocus()) {
 			t2 = false;
 		}
 
-		else if (!letter3TextField.hasFocus()) {
+		else if (!letterTextFields[2].hasFocus()) {
 			t3 = false;
 		}
 
-		else if (!letter4TextField.hasFocus()) {
+		else if (!letterTextFields[3].hasFocus()) {
 			t4 = false;
 		}
 	}
