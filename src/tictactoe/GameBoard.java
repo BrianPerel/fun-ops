@@ -23,52 +23,50 @@ import org.apache.log4j.Logger;
 public class GameBoard implements ActionListener {
 
 	static JFrame f = new JFrame("Tic Tac Toe");
-	JButton btnOne, btnTwo, btnThree, btnFour, btnFive;
-	JButton btnSix, btnSeven, btnEight, btnNine;
+	JButton btnOne, btnTwo, btnThree, btnFour;
+	JButton btnFive, btnSix, btnSeven, btnEight, btnNine;
 	static String playerOnesName, playerTwosName;
-	static boolean isPlayerOnesTurn, isPlayerTwosTurn;
+	static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
 	private static JLabel PLAYERS_TURN_LABEL;
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
-	static String pOneWins, pTwoWins;
+	static String playerOneWinningMessage, playerTwoWinningMessage;
 
 	// needed to invert these to fix a window2 symbol problem
-	static final String PLAYER_ONE_SHAPE = "O";
-	static final String PLAYER_TWO_SHAPE = "X";
-	static boolean start;
+	static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
 
 	/**
 	 * Setups the current game: makes decision on who's turn it is and assigns
 	 * player entered names
 	 * 
-	 * @param s         boolean flag indicating whether or not the game has just
+	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
 	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public static void initializeGame(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
-		start = s;
-		isPlayerOnesTurn = pOnesTurn;
-		isPlayerTwosTurn = pTwosTurn;
+	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+		start = argIsStart;
+		isPlayerOnesTurn = argIsPlayerOnesTurn;
+		isPlayerTwosTurn = argIsPlayerTwosTurn;
 
-		pOneWins = "Player 1 (" + playerOnesName + ") wins!";
-		pTwoWins = "Player 2 (" + playerTwosName + ") wins!";
+		playerOneWinningMessage = "Player 1 (" + playerOnesName + ") wins!";
+		playerTwoWinningMessage = "Player 2 (" + playerTwosName + ") wins!";
 	}
 
 	/**
 	 * Builds the game's GUI board
 	 * 
-	 * @param s         boolean flag indicating whether or not the game has just
+	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public GameBoard(boolean s, boolean pOnesTurn, boolean pTwosTurn) {
+	public GameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 
-		initializeGame(s, pOnesTurn, pTwosTurn);
+		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 
 		PLAYERS_TURN_LABEL = new JLabel(playerOnesName + "'s turn:");
 
@@ -274,7 +272,7 @@ public class GameBoard implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-		// enforces player1 to always start first and then swap roles every match
+		// enforces player1 to always start first 
 		if (start) {
 			isPlayerOnesTurn = !isPlayerOnesTurn;
 			isPlayerTwosTurn = !isPlayerTwosTurn;
@@ -282,7 +280,7 @@ public class GameBoard implements ActionListener {
 		}
 
 		if (ae.getSource() == btnOne && btnOne.getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
+			if (isPlayerOnesTurn) {				
 				playerOnesTurnComplete(btnOne);
 			} else if (isPlayerTwosTurn) {
 				playerTwosTurnComplete(btnOne);
@@ -345,83 +343,150 @@ public class GameBoard implements ActionListener {
 				&& !btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
 			new Winner("Game Over! Tie");
 		}
-		if (!btnOne.getText().isEmpty() && !btnTwo.getText().isEmpty() && !btnThree.getText().isEmpty()) {
-			if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnOne.getText().equals("X") && btnTwo.getText().equals("X") && btnThree.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnOne, btnTwo, btnThree);
+			new Winner(playerOnesName);
+		} else if (btnOne.getText().equals("O") && btnTwo.getText().equals("O") && btnThree.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnOne, btnTwo, btnThree);
+			new Winner(playerTwosName);
 		}
-		if (!btnFour.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSix.getText().isEmpty()) {
-			if (btnFour.getText().equals("X") && btnFive.getText().equals("X") && btnSix.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnFour.getText().equals("O") && btnFive.getText().equals("O") && btnSix.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+
+		if (btnFour.getText().equals("X") && btnFive.getText().equals("X") && btnSix.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnFour, btnFive, btnSix);
+			new Winner(playerOnesName);
+		} else if (btnFour.getText().equals("O") && btnFive.getText().equals("O") && btnSix.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnFour, btnFive, btnSix);
+			new Winner(playerTwosName);
 		}
-		if (!btnSeven.getText().isEmpty() && !btnEight.getText().isEmpty() && !btnNine.getText().isEmpty()) {
-			if (btnSeven.getText().equals("X") && btnEight.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnSeven.getText().equals("O") && btnEight.getText().equals("O")
-					&& btnNine.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnSeven.getText().equals("X") && btnEight.getText().equals("X") && btnNine.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnSeven, btnEight, btnNine);
+			new Winner(playerOnesName);
+		} else if (btnSeven.getText().equals("O") && btnEight.getText().equals("O")
+				&& btnNine.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnSeven, btnEight, btnNine);
+			new Winner(playerTwosName);
 		}
-		if (!btnOne.getText().isEmpty() && !btnFour.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
-			if (btnOne.getText().equals("X") && btnFour.getText().equals("X") && btnSeven.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnOne.getText().equals("O") && btnFour.getText().equals("O")
-					&& btnSeven.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnOne.getText().equals("X") && btnFour.getText().equals("X") && btnSeven.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnOne, btnFour, btnSeven);
+			new Winner(playerOnesName);
+		} else if (btnOne.getText().equals("O") && btnFour.getText().equals("O")
+				&& btnSeven.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnOne, btnFour, btnSeven);
+			new Winner(playerTwosName);
 		}
-		if (!btnTwo.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnEight.getText().isEmpty()) {
-			if (btnTwo.getText().equals("X") && btnFive.getText().equals("X") && btnEight.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnTwo.getText().equals("O") && btnFive.getText().equals("O")
-					&& btnEight.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+
+		if (btnTwo.getText().equals("X") && btnFive.getText().equals("X") && btnEight.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnTwo, btnFive, btnEight);
+			new Winner(playerOnesName);
+		} else if (btnTwo.getText().equals("O") && btnFive.getText().equals("O")
+				&& btnEight.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnTwo, btnFive, btnEight);
+			new Winner(playerTwosName);
 		}
-		if (!btnThree.getText().isEmpty() && !btnSix.getText().isEmpty() && !btnNine.getText().isEmpty()) {
-			if (btnThree.getText().equals("X") && btnSix.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnThree.getText().equals("O") && btnSix.getText().equals("O")
-					&& btnNine.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnThree.getText().equals("X") && btnSix.getText().equals("X") && btnNine.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnThree, btnSix, btnNine);
+			new Winner(playerOnesName);
+		} else if (btnThree.getText().equals("O") && btnSix.getText().equals("O")
+				&& btnNine.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnThree, btnSix, btnNine);
+			new Winner(playerTwosName);
 		}
-		if (!btnOne.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnNine.getText().isEmpty()) {
-			if (btnOne.getText().equals("X") && btnFive.getText().equals("X") && btnNine.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnOne.getText().equals("O") && btnFive.getText().equals("O") && btnNine.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnOne.getText().equals("X") && btnFive.getText().equals("X") && btnNine.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnOne, btnFive, btnNine);
+			new Winner(playerOnesName);
+		} else if (btnOne.getText().equals("O") && btnFive.getText().equals("O") && btnNine.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnOne, btnFive, btnNine);
+			new Winner(playerTwosName);
 		}
-		if (!btnThree.getText().isEmpty() && !btnFive.getText().isEmpty() && !btnSeven.getText().isEmpty()) {
-			if (btnThree.getText().equals("X") && btnFive.getText().equals("X") && btnSeven.getText().equals("X")) {
-				logger.info(pOneWins);
-				new Winner(playerOnesName);
-			} else if (btnThree.getText().equals("O") && btnFive.getText().equals("O")
-					&& btnSeven.getText().equals("O")) {
-				logger.info(pTwoWins);
-				new Winner(playerTwosName);
-			}
+		
+		if (btnThree.getText().equals("X") && btnFive.getText().equals("X") && btnSeven.getText().equals("X")) {
+			logger.info(playerOneWinningMessage);
+			winnersPattern(btnThree, btnFive, btnSeven);
+			new Winner(playerOnesName);
+		} else if (btnThree.getText().equals("O") && btnFive.getText().equals("O")
+				&& btnSeven.getText().equals("O")) {
+			logger.info(playerTwoWinningMessage);
+			winnersPattern(btnThree, btnFive, btnSeven);
+			new Winner(playerTwosName);
 		}
+	}
+	
+	/**
+	 * Highlights the winning player's selected tiles and disables the tiles
+	 * @param one first tile clicked
+	 * @param two second tile clicked
+	 * @param three third tile clicked 
+	 */
+	public void winnersPattern(JButton one, JButton two, JButton three) {
+		one.setBackground(Color.GREEN);
+		two.setBackground(Color.GREEN);
+		three.setBackground(Color.GREEN);		
+		
+		// this will prevent the program from changing colors when you hover after winning
+		one.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				one.setBackground(Color.GREEN);
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				one.setBackground(Color.GREEN);
+			}
+		});
+		
+		two.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				two.setBackground(Color.GREEN);
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				two.setBackground(Color.GREEN);
+			}
+		});
+		
+		three.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				three.setBackground(Color.GREEN);
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				three.setBackground(Color.GREEN);
+			}
+		});
+		
+		btnOne.setEnabled(false);
+		btnTwo.setEnabled(false);
+		btnThree.setEnabled(false);
+		btnFour.setEnabled(false);
+		btnFive.setEnabled(false);
+		btnSix.setEnabled(false);
+		btnSeven.setEnabled(false);
+		btnEight.setEnabled(false);
+		btnNine.setEnabled(false);
 	}
 
 	/**
@@ -430,6 +495,7 @@ public class GameBoard implements ActionListener {
 	 * @param buttonPressed button that was just pressed by player one
 	 */
 	public static void playerOnesTurnComplete(JButton buttonPressed) {
+		buttonPressed.setForeground(new Color(232, 46, 6));
 		buttonPressed.setText(PLAYER_ONE_SHAPE);
 		PLAYERS_TURN_LABEL.setText(playerOnesName + "'s turn:");
 		isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -442,6 +508,7 @@ public class GameBoard implements ActionListener {
 	 * @param buttonPressed button that was just pressed by player two
 	 */
 	public static void playerTwosTurnComplete(JButton buttonPressed) {
+		buttonPressed.setForeground(new Color(0, 0, 255));
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		PLAYERS_TURN_LABEL.setText(playerTwosName + "'s turn:");
 		isPlayerOnesTurn = !isPlayerOnesTurn;
