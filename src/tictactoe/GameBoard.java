@@ -27,9 +27,10 @@ public class GameBoard implements ActionListener {
 	static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
 	private static JLabel lblPlayersTurn;
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
-	static String playerOneWinningMessage, playerTwoWinningMessage;
-	JButton[] buttons = new JButton[9];
-	JButton[] highlightWinButtons = new JButton[3];
+	static String playerOneWinsMessage, playerTwoWinsMessage;
+	JButton[] gameBoardTiles = new JButton[9];
+	JButton[] highlightTiles = new JButton[3];
+	JSeparator[] gameBoardSeparators = new JSeparator[5];
 
 	// needed to invert these to fix a window2 symbol problem
 	static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
@@ -50,8 +51,8 @@ public class GameBoard implements ActionListener {
 		isPlayerOnesTurn = argIsPlayerOnesTurn;
 		isPlayerTwosTurn = argIsPlayerTwosTurn;
 
-		playerOneWinningMessage = "Player 1 (" + playerOnesName + ") wins!";
-		playerTwoWinningMessage = "Player 2 (" + playerTwosName + ") wins!";
+		playerOneWinsMessage = "Player 1 (" + playerOnesName + ") wins!";
+		playerTwoWinsMessage = "Player 2 (" + playerTwosName + ") wins!";
 	}
 
 	/**
@@ -80,128 +81,75 @@ public class GameBoard implements ActionListener {
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
 		
-		for(int i = 0; i < buttons.length; i++) {
-			buttons[i] = new JButton();
-			f.getContentPane().add(buttons[i]);
-			buttons[i].addActionListener(this);
-			buttons[i].setFont(new Font("Magneto", Font.PLAIN, 20));
-			buttons[i].setBackground(new Color(244, 164, 96));
+		for(int i = 0; i < gameBoardTiles.length; i++) {
+			gameBoardTiles[i] = new JButton();
+			f.getContentPane().add(gameBoardTiles[i]);
+			gameBoardTiles[i].addActionListener(this);
+			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 20));
+			gameBoardTiles[i].setBackground(new Color(244, 164, 96));
 			
 			final int x = i;
-			buttons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					buttons[x].setBackground(new Color(222, 126, 0));
+					gameBoardTiles[x].setBackground(new Color(222, 126, 0));
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					buttons[x].setBackground(new Color(244, 164, 96));
+					gameBoardTiles[x].setBackground(new Color(244, 164, 96));
 				}
 			});
 		}
-		buttons[0].setBounds(63, 64, 80, 70);
-		buttons[1].setBounds(63, 145, 80, 70);
-		buttons[2].setBounds(63, 226, 80, 70);
-		buttons[3].setBounds(153, 64, 80, 70);
-		buttons[4].setBounds(153, 145, 80, 70);
-		buttons[5].setBounds(153, 226, 80, 70);
-		buttons[6].setBounds(243, 64, 80, 70);
-		buttons[7].setBounds(243, 145, 80, 70);
-		buttons[8].setBounds(243, 226, 80, 70);
+		gameBoardTiles[0].setBounds(63, 64, 80, 70);
+		gameBoardTiles[1].setBounds(63, 145, 80, 70);
+		gameBoardTiles[2].setBounds(63, 226, 80, 70);
+		gameBoardTiles[3].setBounds(153, 64, 80, 70);
+		gameBoardTiles[4].setBounds(153, 145, 80, 70);
+		gameBoardTiles[5].setBounds(153, 226, 80, 70);
+		gameBoardTiles[6].setBounds(243, 64, 80, 70);
+		gameBoardTiles[7].setBounds(243, 145, 80, 70);
+		gameBoardTiles[8].setBounds(243, 226, 80, 70);
 
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(lblPlayersTurn);
+		
+		for(int x = 0; x < gameBoardSeparators.length; x++) {
+			gameBoardSeparators[x] = new JSeparator();
+			gameBoardSeparators[x].setBackground(Color.blue);
+			f.getContentPane().add(gameBoardSeparators[x]);
+		}
 
-		JSeparator separatorOne = new JSeparator();
-		separatorOne.setBounds(63, 138, 260, 11);
-		separatorOne.setBackground(Color.blue);
-		f.getContentPane().add(separatorOne);
+		gameBoardSeparators[0].setBounds(63, 138, 260, 11);
+		gameBoardSeparators[1].setBounds(63, 221, 260, 11);
+		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
+		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
 
-		JSeparator separatorTwo = new JSeparator();
-		separatorTwo.setBounds(63, 221, 260, 11);
-		separatorTwo.setBackground(Color.blue);
-		f.getContentPane().add(separatorTwo);
-
-		JSeparator separatorThree = new JSeparator();
-		separatorThree.setOrientation(SwingConstants.VERTICAL);
-		separatorThree.setBounds(148, 64, 7, 232);
-		separatorThree.setBackground(Color.blue);
-		f.getContentPane().add(separatorThree);
-
-		JSeparator separatorFour = new JSeparator();
-		separatorFour.setOrientation(SwingConstants.VERTICAL);
-		separatorFour.setBounds(237, 64, 7, 232);
-		separatorFour.setBackground(Color.blue);
-		f.getContentPane().add(separatorFour);
+		gameBoardSeparators[2].setOrientation(SwingConstants.VERTICAL);
+		gameBoardSeparators[3].setOrientation(SwingConstants.VERTICAL);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-		// enforces player1 to always start first
+		// enforces player1 to always start first: Sets p1 and p2's turns for first round
 		if (start) {
 			isPlayerOnesTurn = !isPlayerOnesTurn;
 			isPlayerTwosTurn = !isPlayerTwosTurn;
 			start = false;
 		}
 
-		if (ae.getSource() == buttons[0] && buttons[0].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[0]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[0]);
+		for(int x = 0; x < gameBoardTiles.length; x++) {
+			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
+				if (isPlayerOnesTurn) {
+					playerOnesTurnComplete(gameBoardTiles[x]);
+				} else if (isPlayerTwosTurn) {
+					playerTwosTurnComplete(gameBoardTiles[x]);
+				} 
+			} else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
+				logger.warn("Invalid Move!");
+				
 			}
-		} else if (ae.getSource() == buttons[1] && buttons[1].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[1]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[1]);
-			}
-		} else if (ae.getSource() == buttons[2] && buttons[2].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[2]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[2]);
-			}
-		} else if (ae.getSource() == buttons[3] && buttons[3].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[3]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[3]);
-			}
-		} else if (ae.getSource() == buttons[4] && buttons[4].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[4]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[4]);
-			}
-		} else if (ae.getSource() == buttons[5] && buttons[5].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[5]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[5]);
-			}
-		} else if (ae.getSource() == buttons[6] && buttons[6].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[6]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[6]);
-			}
-		} else if (ae.getSource() == buttons[7] && buttons[7].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[7]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[7]);
-			}
-		} else if (ae.getSource() == buttons[8] && buttons[8].getText().isEmpty()) {
-			if (isPlayerOnesTurn) {
-				playerOnesTurnComplete(buttons[8]);
-			} else if (isPlayerTwosTurn) {
-				playerTwosTurnComplete(buttons[8]);
-			}
-		} else {
-			logger.warn("Invalid Move!");
 		}
 
 		// game rules: Need 3 in a row in any direction
@@ -213,100 +161,100 @@ public class GameBoard implements ActionListener {
 		 *  3  6  9
 		 */
 		
-		// if all buttons are pressed, default to game over. However if succeeding 'if' condition is triggered this will be ignored
-		if (!buttons[0].getText().isEmpty() && !buttons[1].getText().isEmpty() && !buttons[2].getText().isEmpty()
-				&& !buttons[3].getText().isEmpty() && !buttons[4].getText().isEmpty() && !buttons[5].getText().isEmpty()
-				&& !buttons[6].getText().isEmpty() && !buttons[7].getText().isEmpty() && !buttons[8].getText().isEmpty()) {
+		// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
+		if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
+				&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
+				&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
 			new Winner("Game Over! Tie");
 		}
 
 		// if buttons 1, 2, 3 are triggered
-		if (buttons[0].getText().equals("X") && buttons[1].getText().equals("X") && buttons[2].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[0], buttons[1], buttons[2]);
+		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(playerOnesName);
-		} else if (buttons[0].getText().equals("O") && buttons[1].getText().equals("O")
-				&& buttons[2].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[0], buttons[1], buttons[2]);
+		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
+				&& gameBoardTiles[2].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 4, 5, 6 are triggered
-		if (buttons[3].getText().equals("X") && buttons[4].getText().equals("X") && buttons[5].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[3], buttons[4], buttons[5]);
+		if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(playerOnesName);
-		} else if (buttons[3].getText().equals("O") && buttons[4].getText().equals("O") && buttons[5].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[3], buttons[4], buttons[5]);
+		} else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 7, 8, 9 are triggered
-		if (buttons[6].getText().equals("X") && buttons[7].getText().equals("X") && buttons[8].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[6], buttons[7], buttons[8]);
+		if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(playerOnesName);
-		} else if (buttons[6].getText().equals("O") && buttons[7].getText().equals("O") && buttons[8].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[6], buttons[7], buttons[8]);
+		} else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 1, 4, 7 are triggered
-		if (buttons[0].getText().equals("X") && buttons[3].getText().equals("X") && buttons[6].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[0], buttons[3], buttons[6]);
+		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(playerOnesName);
-		} else if (buttons[0].getText().equals("O") && buttons[3].getText().equals("O")
-				&& buttons[6].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[0], buttons[3], buttons[6]);
+		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
+				&& gameBoardTiles[6].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 2, 5, 8 are triggered
-		if (buttons[1].getText().equals("X") && buttons[4].getText().equals("X") && buttons[7].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[1], buttons[4], buttons[7]);
+		if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(playerOnesName);
-		} else if (buttons[1].getText().equals("O") && buttons[4].getText().equals("O") && buttons[7].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[1], buttons[4], buttons[7]);
+		} else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 3, 6, 9 are triggered
-		if (buttons[2].getText().equals("X") && buttons[5].getText().equals("X") && buttons[8].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[2], buttons[5], buttons[8]);
+		if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(playerOnesName);
-		} else if (buttons[2].getText().equals("O") && buttons[5].getText().equals("O") && buttons[8].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[2], buttons[5], buttons[8]);
+		} else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 1, 5, 9 are triggered
-		if (buttons[0].getText().equals("X") && buttons[4].getText().equals("X") && buttons[8].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[0], buttons[4], buttons[8]);
+		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(playerOnesName);
-		} else if (buttons[0].getText().equals("O") && buttons[4].getText().equals("O") && buttons[8].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[0], buttons[4], buttons[8]);
+		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(playerTwosName);
 		}
 
 		// if buttons 3, 5, 7 are triggered
-		if (buttons[2].getText().equals("X") && buttons[4].getText().equals("X") && buttons[6].getText().equals("X")) {
-			logger.info(playerOneWinningMessage);
-			winnersPattern(buttons[2], buttons[4], buttons[6]);
+		if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+			logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(playerOnesName);
-		} else if (buttons[2].getText().equals("O") && buttons[4].getText().equals("O") && buttons[6].getText().equals("O")) {
-			logger.info(playerTwoWinningMessage);
-			winnersPattern(buttons[2], buttons[4], buttons[6]);
+		} else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
+			logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(playerTwosName);
 		}
 	}
@@ -319,31 +267,31 @@ public class GameBoard implements ActionListener {
 	 * @param three third tile clicked
 	 */
 	public void winnersPattern(JButton one, JButton two, JButton three) {
-		highlightWinButtons[0] = one;
-		highlightWinButtons[1] = two;
-		highlightWinButtons[2] = three;
+		highlightTiles[0] = one;
+		highlightTiles[1] = two;
+		highlightTiles[2] = three;
 		
-		for(int i = 0; i < highlightWinButtons.length; i++) {
-			highlightWinButtons[i].setBackground(Color.GREEN);
+		for(int i = 0; i < highlightTiles.length; i++) {
+			highlightTiles[i].setBackground(Color.GREEN);
 			
 			// this will prevent the program from changing colors when you hover after winning
 			final int x = i;
-			highlightWinButtons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			highlightTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					highlightWinButtons[x].setBackground(Color.GREEN);
+					highlightTiles[x].setBackground(Color.GREEN);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					highlightWinButtons[x].setBackground(Color.GREEN);
+					highlightTiles[x].setBackground(Color.GREEN);
 				}
 			});
 		}
 		
 		// disables all 9 buttons on board after game is over
-		for(int x = 0; x < buttons.length; x++) {
-			buttons[x].setEnabled(false);
+		for(int x = 0; x < gameBoardTiles.length; x++) {
+			gameBoardTiles[x].setEnabled(false);
 		}
 	}
 
