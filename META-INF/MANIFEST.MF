@@ -24,3 +24,5 @@ Resource: res/graphics/bgImageEncrypt
 
 Main-Class: tictactoe.Menu
 Resource: res/graphics/bgImageToe
+
+Main-Class: clock.Clock

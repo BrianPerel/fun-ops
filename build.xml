@@ -192,6 +192,20 @@
 		<delete dir="${release.dir}/hangman" />
 	</target>
 
+	<target name="create stopwatch.exe" description="create .exe file for stopwatch program" depends="jar-stopwatch">
+		<launch4j>
+			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="stopwatch.exe" todir="${release.dir}" />
+	</target>
+
 	<!-- targets for guessing game -->
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
@@ -277,21 +291,6 @@
 	<target name="run-stopwatch" depends="jar-stopwatch" description="run the program">
 		<java jar="${jar.dir}/stopwatch-${version.num}.jar" fork="true" />
 	</target>
-
-	<target name="create stopwatch.exe" description="create .exe file for stopwatch program" depends="jar-stopwatch">
-		<launch4j>
-			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="stopwatch.exe" todir="${release.dir}" />
-	</target>
-
 
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
@@ -381,6 +380,40 @@
 		</launch4j>
 
 		<move file="wigglemouse.exe" todir="${release.dir}" />
+	</target>
+	
+	<!-- create clock.exe target -->
+	<target name="create clock.exe" description="create .exe file for wiggle mouse program" depends="jar-clock">
+		<launch4j>
+			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="clock.exe" todir="${release.dir}" />
+	</target>
+
+	<!-- targets for clock -->
+	<target name="compile-clock" description="compile program">
+		<mkdir dir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/clock" destdir="${classes.dir}" compiler="modern" />
+	</target>
+
+	<target name="jar-clock" depends="compile-clock" description="create associated .jar file">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/clock-${version.num}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="clock.Clock" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run-clock" depends="jar-clock" description="run the program">
+		<java jar="${jar.dir}/clock-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- javadoc target -->
