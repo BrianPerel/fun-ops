@@ -8,28 +8,25 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GameBoard extends JPanel implements Runnable {
 
-	static final int GAME_WIDTH = 1000;
-	static final int GAME_HEIGHT = 556;
-	static final int BALL_DIAMETER = 20;
-	static final int PADDLE_WIDTH = 25;
-	static final int PADDLE_HEIGHT = 100;
+	static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
+	static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
 	Paddle paddleOne, paddleTwo;
 	Image image;
 	Ball pongBall;
 	Score gameScore;
 	Thread gameThread;
 	boolean isGamePaused;
-	boolean gameStart = true;
 
 	/**
 	 * Sets up the game and the GUI
 	 */
-	public GamePanel() {
+	public GameBoard() {
 		gameThread = new Thread(this);
 		gameThread.start();
 		gameScore = new Score();
@@ -40,11 +37,17 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 	}
 
+	/**
+	 * Creates the pong ball
+	 */
 	public void createPongBall() {
 		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2),  new Random().nextInt(GAME_HEIGHT - BALL_DIAMETER),
 				BALL_DIAMETER, BALL_DIAMETER);
 	}
 
+	/**
+	 * Creates the pong game paddles
+	 */
 	public void createPongPaddles() {
 		paddleOne = new Paddle(0, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, "Paddle1");
 		paddleTwo = new Paddle(GAME_WIDTH - PADDLE_WIDTH, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH,
@@ -134,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable {
 			paddleTwo.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
 		
-		// give a player 1 point and creates new paddles & ball
+		// give player 1 a point and create new paddles & ball
 		if (pongBall.x <= 0) {
 			gameScore.playerTwoScore++;
 			createPongBall();
@@ -146,6 +149,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void run() {
+		// launch the gui but waits 1 second
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		// game loop
 		long lastTime = System.nanoTime();
 		double ns = 1000000000 / 60.0;
@@ -167,23 +176,6 @@ public class GamePanel extends JPanel implements Runnable {
 	public class ActionListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// pause the game if enter is pressed
-			if(e.getKeyChar() == KeyEvent.VK_SPACE && !isGamePaused) {
-				isGamePaused = true;
-				synchronized(this) {
-				      try {
-						wait();
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				 }
-			} else if(e.getKeyChar() == KeyEvent.VK_SPACE && isGamePaused) {
-				isGamePaused = false;
-				synchronized(this) {
-					notify();
-				 }	
-			}
-			
 			paddleOne.keyPressed(e);
 			paddleTwo.keyPressed(e);
 		}

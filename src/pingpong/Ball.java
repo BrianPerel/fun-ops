@@ -12,6 +12,13 @@ public class Ball extends Rectangle {
 	Random random;
 	int xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
 
+	/**
+	 * Creates the ball
+	 * @param x-coordinate of the ball
+	 * @param y-coordinate of the ball
+	 * @param width of the ball
+	 * @param height of the ball
+	 */
 	public Ball(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		random = new Random();
@@ -27,10 +34,18 @@ public class Ball extends Rectangle {
 		setYDirection(randomYDirection * initialBallSpeed);
 	}
 
+	/**
+	 * sets the x direction of the ball
+	 * @param randomXDirection indicates a random x direction when the game starts
+	 */
 	public void setXDirection(int randomXDirection) {
 		xVelocityOfBall = randomXDirection;
 	}
 
+	/**
+	 * sets the y direction of the ball
+	 * @param randomYDirection indicates a random y direction when the game starts
+	 */
 	public void setYDirection(int randomYDirection) {
 		yVelocityOfBall = randomYDirection;
 	}

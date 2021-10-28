@@ -2,6 +2,7 @@ package pingpong;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class PingPongGUI extends JFrame {
@@ -10,9 +11,11 @@ public class PingPongGUI extends JFrame {
 		new PingPongGUI();
 	}
 
+	/**
+	 * Setups and creates the GUI
+	 */
 	public PingPongGUI() {
-		GamePanel panel = new GamePanel();
-		this.add(panel);
+		this.add(new GameBoard());
 		this.setTitle("Pong Game");
 		this.setResizable(false);
 		this.setBackground(new Color(0, 91, 33));

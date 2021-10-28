@@ -36,7 +36,9 @@ public class App extends KeyAdapter implements ActionListener {
 	char[] spacesForMainTextField = new char[31];
 	static boolean numberZeroEnteredByUser;
 	JButton[] buttons = new JButton[24];
+	
 	/*
+	 * buttons[]:
 	 * buttons[0] => btnTurnToFraction, buttons[1] => btnClearCE, buttons[2] => btnClearC, buttons[3] => btnBackspace (unicode for backspace symbol = \u232B),
 	 * buttons[4] => btnPercent, buttons[5] => btnSquare (unicode for X^2 (x squared) = x\u00B2), buttons[6] => btnSquareRoot (unicode for 2 square root x symbol = 2\u221Ax),
 	 * buttons[7] => btnDivision (unicode for division symbol = \u00F7), buttons[8] = btnMultiply, buttons[9] = btnNumberZero, buttons[10] = btnNumberOne, buttons[11] = btnNumberTwo
@@ -45,9 +47,6 @@ public class App extends KeyAdapter implements ActionListener {
 	 * buttons[22] = btnPlusMinus, buttons[23] = btnPlusMinus, buttons[24] = btnDecimalPoint, buttons[25] = btnEquals, 
 	 */
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -105,7 +104,6 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
 
-		// SHOULD BE: i < buttons.length
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i].setFont(new Font("Bookman Old Style", Font.BOLD, 13));
 			buttons[i].setBackground(Color.WHITE);
@@ -180,12 +178,12 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to when buttons are clicked
+	 * This is responsible for listening to when buttons are clicked via mouse
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		// remove auto display '0' value from main number entry textField box so that
-		// '0' is not included in calculation
+		// remove the auto display '0' value from the main number entry textField box so that
+		// this '0' is not included in calculations
 		// Since it's only needed for display purposes
 		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !numberZeroEnteredByUser) {
 			userInputTextField.setText(cursorRightPositioned);
@@ -298,7 +296,7 @@ public class App extends KeyAdapter implements ActionListener {
 						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
 
 				// reset all array values to 0
-				Collections.fill(Calculator.nums, "");
+				Collections.fill(Calculator.stringNumbers, "");
 				numberZeroEnteredByUser = false;
 				resetValues();
 			}
@@ -306,7 +304,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			Collections.fill(Calculator.nums, null);
+			Collections.fill(Calculator.stringNumbers, null);
 			Calculator.divideByZeroflag = false;
 			resetValues();
 			break;
@@ -320,7 +318,7 @@ public class App extends KeyAdapter implements ActionListener {
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				Calculator.setNumber(
-						String.valueOf(Calculator.percent(Double.parseDouble(userInputTextField.getText()))));
+						String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
 				userInputTextField.setText(userInputTextField.getText().concat("%"));
 				// x\u00B2 -> X^2 symbol
 			}
@@ -358,7 +356,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to all keyboard keys input
+	 * This is responsible for listening to all keyboard input
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -457,7 +455,7 @@ public class App extends KeyAdapter implements ActionListener {
 						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
 
 				// reset all array values to 0
-				Collections.fill(Calculator.nums, "");
+				Collections.fill(Calculator.stringNumbers, "");
 				resetValues();
 			}
 			break; // break statement for case enter key button
@@ -484,7 +482,6 @@ public class App extends KeyAdapter implements ActionListener {
 
 		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
 			userInputTextField.setText(cursorRightPositionedWithZero);
-
 			resetValues();
 		}
 
@@ -504,9 +501,9 @@ public class App extends KeyAdapter implements ActionListener {
 	public static void resetValues() {
 		Arrays.fill(operatorFlags, Boolean.FALSE);
 		numberZeroEnteredByUser = false;
-		Collections.fill(Calculator.doubleNums, 0.0);
-		Calculator.nums.clear();
-		Calculator.doubleNums.clear();
+		Collections.fill(Calculator.doubleNumbers, 0.0);
+		Calculator.stringNumbers.clear();
+		Calculator.doubleNumbers.clear();
 		Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
 	}
 }

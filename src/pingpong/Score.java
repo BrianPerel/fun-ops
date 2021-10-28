@@ -6,7 +6,6 @@ import java.awt.Graphics;
 
 public class Score {
 
-	static int GAME_WIDTH = 1000, GAME_HEIGHT = 556;
 	int playerOneScore, playerTwoScore;
 
 	/**
@@ -16,11 +15,9 @@ public class Score {
 	public void draw(Graphics g) {
 		g.setColor(Color.white);
 		g.setFont(new Font("Magneto", Font.PLAIN, 40));
-		g.drawLine(GAME_WIDTH / 2, 0, GAME_WIDTH / 2, GAME_HEIGHT);	
-		g.drawLine(0, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT / 2);
-		g.drawString("P1:".concat(String.valueOf(playerOneScore / 10)).concat(String.valueOf(playerOneScore % 10)).substring(0, 3).concat(
-				"P1:".concat(String.valueOf(playerOneScore / 10)).concat(String.valueOf(playerOneScore % 10)).substring(4, 5)), (GAME_WIDTH / 2) - 330, 50);
-		g.drawString("P2:".concat(String.valueOf(playerTwoScore / 10)).concat(String.valueOf(playerTwoScore % 10)).substring(0, 3).concat(
-				"P2:".concat(String.valueOf(playerTwoScore / 10)).concat(String.valueOf(playerTwoScore % 10)).substring(4, 5)), (GAME_WIDTH / 2) + 190, 50);
+		g.drawLine(500, 0, 500, 556);	
+		g.drawLine(0, 278, 1000, 278);
+		g.drawString("P1:".concat(String.valueOf(playerOneScore / 10)).concat(String.valueOf(playerOneScore % 10)), 170, 50);
+		g.drawString("P2:".concat(String.valueOf(playerTwoScore / 10)).concat(String.valueOf(playerTwoScore % 10)), 690, 50);
 	}
 }

@@ -239,7 +239,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 	
 	// performs actions to display correct placements of * while user is guessing
-	public static String hang(char argUsersGuess) {
+	public static String maskRemainingHangmanWord(char argUsersGuess) {
 		String newasterisk = "";
 		for (int i = 0; i < hangmanWord.length(); i++) {
 			if (hangmanWord.charAt(i) == argUsersGuess) {
@@ -269,16 +269,16 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// text field 1 chosen + letter entered matches first char of
 			// hangman word + the letter hasn't been guessed yet
 			if (t1 && (charGuessed == hangmanWord.charAt(0)) && !w) {
-				hangmanWordTextField.setText(hang(charGuessed)); // x000
+				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // x000
 				w = true;
 			} else if (t2 && (charGuessed == hangmanWord.charAt(1)) && !o) {
-				hangmanWordTextField.setText(hang(charGuessed)); // 0x00
+				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 0x00
 				o = true;
 			} else if (t3 && (charGuessed == hangmanWord.charAt(2)) && !r) {
-				hangmanWordTextField.setText(hang(charGuessed)); // 00x0
+				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 00x0
 				r = true;
 			} else if (t4 && (charGuessed == hangmanWord.charAt(3)) && !d) {
-				hangmanWordTextField.setText(hang(charGuessed)); // 000x
+				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 000x
 				// below line is a code fix: will force set/display final letter if correct before
 				// trigger of winner message appears
 				letterTextFields[3].setText(letterTextFields[3].getText());

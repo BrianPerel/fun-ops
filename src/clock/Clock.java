@@ -12,11 +12,7 @@ public class Clock {
 
 	JLabel lblClockTime;
 	String time;
-	final String[] arr = {"WHITE", "BLUE", "GREEN", "YELLOW", "GRAY"};
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		new Clock();
 	}
