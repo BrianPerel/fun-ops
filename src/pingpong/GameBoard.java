@@ -3,13 +3,10 @@ package pingpong;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
@@ -54,6 +51,9 @@ public class GameBoard extends JPanel implements Runnable {
 				PADDLE_HEIGHT, "Paddle2");
 	}
 
+	/**
+	 * Paints the panel/board
+	 */
 	@Override
 	public void paint(Graphics g) {
 		image = createImage(getWidth(), getHeight());
@@ -63,13 +63,13 @@ public class GameBoard extends JPanel implements Runnable {
 
 	/**
 	 * Draws the paddles, ball, and game score
-	 * @param g
+	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {
+		gameScore.draw(g);
 		paddleOne.draw(g);
 		paddleTwo.draw(g);
 		pongBall.draw(g);
-		gameScore.draw(g);
 	}
 
 	/**
@@ -98,7 +98,8 @@ public class GameBoard extends JPanel implements Runnable {
 		// bounce ball off paddles
 		if (pongBall.intersects(paddleOne)) {
 			pongBall.xVelocityOfBall = Math.abs(pongBall.xVelocityOfBall);
-			pongBall.xVelocityOfBall++; // optional for more difficulty
+			pongBall.xVelocityOfBall++; // optional for more difficulty - increases the balls speed
+			
 			if (pongBall.yVelocityOfBall > 0) {
 				pongBall.yVelocityOfBall++; // optional for more difficulty
 			} else {
@@ -149,20 +150,19 @@ public class GameBoard extends JPanel implements Runnable {
 	}
 
 	public void run() {
-		// launch the gui but waits 1 second
+		// launch the gui but wait 1 second
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(800);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		// game loop
 		long lastTime = System.nanoTime();
-		double ns = 1000000000 / 60.0;
 		double delta = 0;
 		// loop keeps the game running
 		while (true) {
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
+			delta += (now - lastTime) / 16666666.66;
 			lastTime = now;
 			if (delta >= 1) {
 				move();

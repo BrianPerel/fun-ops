@@ -2,6 +2,9 @@ package clock;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
@@ -23,7 +26,7 @@ public class Clock {
 	public Clock() {
 		JFrame frame = new JFrame();
 		frame.setTitle("My Clock");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 280);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -34,8 +37,24 @@ public class Clock {
 		lblClockTime = new JLabel();
 		lblClockTime.setForeground(Color.WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
-		lblClockTime.setFont(new Font("Euphemia", Font.PLAIN, 80));
-		lblClockTime.setBounds(37, 32, 365, 197);
+		
+		Font font = null;
+		
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/clock-font.ttf"));
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(font != null) {
+			font = font.deriveFont(Font.BOLD, 110);
+		}
+		
+		lblClockTime.setFont(font); 
+		lblClockTime.setForeground(Color.green);
+		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.add(lblClockTime);
 
 		getTime();
@@ -52,7 +71,7 @@ public class Clock {
 			lblClockTime.setText(time);
 
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1000); // updates the time every second
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.out.println(e.toString());

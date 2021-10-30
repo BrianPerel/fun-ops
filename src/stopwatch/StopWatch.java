@@ -95,7 +95,7 @@ public class StopWatch extends JFrame {
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
-			final int timebase = 60, centsecbase = 99, showbase = 10;
+			final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			/**
 			 * Updates the watch label when button is pushed.
@@ -104,66 +104,64 @@ public class StopWatch extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent event) {
 
-				if (hour == timebase && minute == timebase && second == timebase) {
+				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
 				centisec++;
-				if (minute == timebase) {
+				if (minute == TIMEBASE) {
 					hour++;
 					minute = 0;
 				}
-				if (second == timebase) {
+				if (second == TIMEBASE) {
 					minute++;
 					second = 0;
 				}
-				if (centisec == centsecbase) {
+				if (centisec == CENTSECBASE) {
 					second++;
 					centisec = 0;
 				}
 				if (event.getSource() == btnStart) {
 					timer.start();
 				} else if (event.getSource() == btnStop) {
-					centisec--;
 					timer.stop();
 				} else if (event.getSource() == btnReset) { 
 					timer.stop();
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
-				watch.setText(((hour < showbase) ? "0" : "") + hour + ":" + ((minute < showbase) ? "0" : "") + minute
-						+ ":" + ((second < showbase) ? "0" : "") + second);
+				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
+						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (hour == timebase && minute == timebase && second == timebase) {
+				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
 				centisec++;
-				if (minute == timebase) {
+				if (minute == TIMEBASE) {
 					hour++;
 					minute = 0;
 				}
-				if (second == timebase) {
+				if (second == TIMEBASE) {
 					minute++;
 					second = 0;
 				}
-				if (centisec == centsecbase) {
+				if (centisec == CENTSECBASE) {
 					second++;
 					centisec = 0;
 				}
 				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
-						timer.start();
+					timer.start();
 				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStop) {
-					centisec--;
 					timer.stop();
 				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnReset) { 
 					timer.stop();
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
-				watch.setText(((hour < showbase) ? "0" : "") + hour + ":" + ((minute < showbase) ? "0" : "") + minute
-						+ ":" + ((second < showbase) ? "0" : "") + second);
+				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
+						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}
 		}
 	}

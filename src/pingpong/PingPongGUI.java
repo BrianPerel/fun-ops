@@ -1,9 +1,8 @@
 package pingpong;
 
 import java.awt.Color;
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 public class PingPongGUI extends JFrame {
 	

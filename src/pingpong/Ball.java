@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
-
 public class Ball extends Rectangle {
 
 	Random random;

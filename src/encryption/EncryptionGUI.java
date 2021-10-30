@@ -172,10 +172,6 @@ public class EncryptionGUI implements ActionListener {
 
 			String fileToLoad = loadingTextField.getText();
 
-			if (!loadingTextField.getText().contains(".txt")) {
-				fileToLoad = loadingTextField.getText() + ".txt";
-			}
-
 			try {
 				File f1 = new File(fileToLoad);
 				
@@ -243,9 +239,10 @@ public class EncryptionGUI implements ActionListener {
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
+		
 
 		// if loaded file is blank or decrypt btn pushed
-		else if (data.isBlank() && ae.getSource() == btnEncrypt && ae.getSource() == btnDecrypt) {
+		else if (data.isBlank() && (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}

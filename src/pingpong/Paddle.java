@@ -97,7 +97,7 @@ public class Paddle extends Rectangle {
 		} else {
 			g.setColor(Color.red);
 		}
-		
+				
 		g.fillRect(x, y, width, height);
 	}
 }
