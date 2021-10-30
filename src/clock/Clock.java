@@ -41,7 +41,7 @@ public class Clock {
 		Font font = null;
 		
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/clock-font.ttf"));
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf"));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
