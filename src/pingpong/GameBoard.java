@@ -1,6 +1,8 @@
 package pingpong;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -59,6 +61,8 @@ public class GameBoard extends JPanel implements Runnable {
 		image = createImage(getWidth(), getHeight());
 		draw(image.getGraphics());
 		g.drawImage(image, 0, 0, this);
+		g.setColor(Color.white);
+		g.setFont(new Font("Magneto", Font.PLAIN, 40));
 	}
 
 	/**

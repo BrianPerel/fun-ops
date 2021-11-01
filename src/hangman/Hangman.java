@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 
@@ -135,6 +136,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setBorder(border);
 
 		hangmanWordTextField = new JTextField();
+		hangmanWordTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		hangmanWordTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
 		hangmanWordTextField.setBounds(356, 99, 70, 27);
 		frame.getContentPane().add(hangmanWordTextField);
@@ -149,6 +151,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			frame.getContentPane().add(letterTextFields[x]);
 			letterTextFields[x].setColumns(10);
 			letterTextFields[x].addKeyListener(this);
+			letterTextFields[x].setHorizontalAlignment(SwingConstants.LEFT);
 			letterTextFields[x].addFocusListener(this);
 		}
 

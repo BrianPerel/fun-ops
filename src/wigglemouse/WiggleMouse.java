@@ -3,7 +3,6 @@ package wigglemouse;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +27,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private JFrame frame;
 	JButton btnStart;
 	static Robot robot;
-	static Point point;
 	static int x, y, timeToWait;
 	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
 	
@@ -169,8 +167,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * sets the current mouse's position into variables (x, y)
 	 */
 	public static void setMouseLocation() {
-		point = MouseInfo.getPointerInfo().getLocation();
-		x = (int) point.getX();
-		y = (int) point.getY();
+		x = (int) MouseInfo.getPointerInfo().getLocation().getX();
+		y = (int) MouseInfo.getPointerInfo().getLocation().getY();
 	}
 }

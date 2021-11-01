@@ -96,7 +96,7 @@ public class EncryptionGUI implements ActionListener {
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
 
-		btnEncrypt.setBounds(88, 147, 89, 23);
+		btnEncrypt.setBounds(84, 140, 89, 23);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
 		btnEncrypt.setBackground(new Color(135, 206, 250));
@@ -112,7 +112,7 @@ public class EncryptionGUI implements ActionListener {
 		    }
 		});
 
-		btnDecrypt.setBounds(239, 146, 89, 23);
+		btnDecrypt.setBounds(235, 139, 89, 23);
 		frame.getContentPane().add(btnDecrypt);
 
 		JSeparator separator = new JSeparator();

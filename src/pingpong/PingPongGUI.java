@@ -17,7 +17,7 @@ public class PingPongGUI extends JFrame {
 		this.add(new GameBoard());
 		this.setTitle("Pong Game");
 		this.setResizable(false);
-		this.setBackground(new Color(0, 91, 33));
+		this.setBackground(new Color(0, 78, 3));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);

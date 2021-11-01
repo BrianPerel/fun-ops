@@ -14,6 +14,7 @@ import java.util.Collections;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 
 /**
  * Application implementation for the calculator's UI. Builds and displays all
@@ -74,8 +75,8 @@ public class App extends KeyAdapter implements ActionListener {
 		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField).concat("0");
 
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setBounds(100, 100, 400, 436);
+		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -110,6 +111,7 @@ public class App extends KeyAdapter implements ActionListener {
 			frame.getContentPane().add(buttons[i]);
 			buttons[i].addActionListener(this);
 			buttons[i].addKeyListener(this);
+			buttons[i].setHorizontalAlignment(SwingConstants.CENTER);
 
 			final int x = i;
 			buttons[i].addMouseListener(new java.awt.event.MouseAdapter() {
@@ -169,6 +171,7 @@ public class App extends KeyAdapter implements ActionListener {
 		});
 
 		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
+		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(178, 27, 170, 40);
 		frame.getContentPane().add(userInputTextField);

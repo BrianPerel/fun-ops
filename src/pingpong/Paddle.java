@@ -17,63 +17,54 @@ public class Paddle extends Rectangle {
 
 	/**
 	 * Controls the movement of the paddles when a key is pressed
+	 * 
 	 * @param e
 	 */
 	public void keyPressed(KeyEvent e) {
-		switch (id) {
-			case "Paddle1": {
-				if (e.getKeyCode() == KeyEvent.VK_W) {
-					setYDirection(-speed);
-				}
-	
-				if (e.getKeyCode() == KeyEvent.VK_S) {
-					setYDirection(speed);
-				}
-				break;
+		if (id.equals("Paddle1")) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				setYDirection(-speed);
 			}
-			case "Paddle2": {
-				if (e.getKeyCode() == KeyEvent.VK_UP) {
-					setYDirection(-speed);
-				}
-	
-				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					setYDirection(speed);
-				}
-				break;
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				setYDirection(speed);
+			}
+		} else if (id.equals("Paddle2")) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				setYDirection(-speed);
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				setYDirection(speed);
 			}
 		}
 	}
 
 	/**
 	 * Controls the movement of the paddles when a key is released
+	 * 
 	 * @param e
 	 */
 	public void keyReleased(KeyEvent e) {
-		switch (id) {
-			case "Paddle1": {
-				if (e.getKeyCode() == KeyEvent.VK_W) {
-					setYDirection(0);
-				}
-				if (e.getKeyCode() == KeyEvent.VK_S) {
-					setYDirection(0);
-				}
-				break;
+		if (id.equals("Paddle1")) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				setYDirection(0);
 			}
-	
-			case "Paddle2": {
-				if (e.getKeyCode() == KeyEvent.VK_UP) {
-					setYDirection(0);
-				}
-				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					setYDirection(0);
-				}
-				break;
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				setYDirection(0);
+			}
+		} else if (id.equals("Paddle2")) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				setYDirection(0);
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				setYDirection(0);
 			}
 		}
 	}
 
 	/**
 	 * Sets the y-coordinate direction of specified paddle
+	 * 
 	 * @param yDirection
 	 */
 	public void setYDirection(int yDirection) {
@@ -89,15 +80,15 @@ public class Paddle extends Rectangle {
 
 	/**
 	 * Draws the game paddles
-	 * @param g
+	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {		
+	public void draw(Graphics g) {
 		if (id.equals("Paddle1")) {
 			g.setColor(Color.blue);
 		} else {
 			g.setColor(Color.red);
 		}
-				
+
 		g.fillRect(x, y, width, height);
 	}
 }
