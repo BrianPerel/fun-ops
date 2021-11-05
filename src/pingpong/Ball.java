@@ -7,25 +7,26 @@ import java.util.Random;
 
 public class Ball extends Rectangle {
 
-	Random random;
-	int xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
+	private static final long serialVersionUID = 1L;
+	private int xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
 
 	/**
 	 * Creates the ball
-	 * @param x-coordinate of the ball
-	 * @param y-coordinate of the ball
-	 * @param width of the ball
-	 * @param height of the ball
+	 * @param x the x-coordinate of the ball
+	 * @param y the y-coordinate of the ball
+	 * @param width the width of the ball
+	 * @param height the height of the ball
 	 */
 	public Ball(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		random = new Random();
+		Random random = new Random();
 		int randomXDirection = random.nextInt(2);
 		if (randomXDirection == 0) {
 			randomXDirection--;
 		}
 		setXDirection(randomXDirection * initialBallSpeed);
 		int randomYDirection = random.nextInt(2);
+		
 		if (randomYDirection == 0) {
 			randomYDirection--;
 		}
@@ -37,7 +38,7 @@ public class Ball extends Rectangle {
 	 * @param randomXDirection indicates a random x direction when the game starts
 	 */
 	public void setXDirection(int randomXDirection) {
-		xVelocityOfBall = randomXDirection;
+		setxVelocityOfBall(randomXDirection);
 	}
 
 	/**
@@ -45,15 +46,15 @@ public class Ball extends Rectangle {
 	 * @param randomYDirection indicates a random y direction when the game starts
 	 */
 	public void setYDirection(int randomYDirection) {
-		yVelocityOfBall = randomYDirection;
+		setyVelocityOfBall(randomYDirection);
 	}
 
 	/**
 	 * Move the pong ball
 	 */
 	public void move() {
-		x += xVelocityOfBall;
-		y += yVelocityOfBall;
+		x += getxVelocityOfBall();
+		y += getyVelocityOfBall();
 	}
 
 	/**
@@ -63,5 +64,37 @@ public class Ball extends Rectangle {
 	public void draw(Graphics g) {
 		g.setColor(Color.white);
 		g.fillOval(x, y, height, width);	
+	}
+
+	/**
+	 * Gets the x velocity of the game ball
+	 * @return xVelocityOfBall
+	 */
+	public int getxVelocityOfBall() {
+		return xVelocityOfBall;
+	}
+
+	/**
+	 * Sets the x velocity of the game ball
+	 * @param xVelocityOfBall
+	 */
+	public void setxVelocityOfBall(int xVelocityOfBall) {
+		this.xVelocityOfBall = xVelocityOfBall;
+	}
+
+	/**
+	 * Gets the y velocity of the game ball
+	 * @return
+	 */
+	public int getyVelocityOfBall() {
+		return yVelocityOfBall;
+	}
+
+	/**
+	 * Sets the y velocity of the game ball
+	 * @param yVelocityOfBall
+	 */
+	public void setyVelocityOfBall(int yVelocityOfBall) {
+		this.yVelocityOfBall = yVelocityOfBall;
 	}
 }

@@ -22,9 +22,9 @@ import javax.swing.SwingConstants;
 public class Winner extends KeyAdapter implements ActionListener {
 
 	private JFrame f2 = new JFrame("Tic Tac Toe");
-	JButton btnPlayAgain = new JButton("Play again");
-	JButton btnQuit = new JButton("Quit");
-	JLabel lblGameResult = new JLabel();
+	private JButton btnPlayAgain = new JButton("Play again");
+	private JButton btnQuit = new JButton("Quit");
+	private JLabel lblGameResult = new JLabel();
 
 	/**
 	 * Builds GUI window to be displayed when a player wins

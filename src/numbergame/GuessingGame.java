@@ -34,14 +34,14 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
-	boolean outOfTimeFlag;
-	JCheckBox closeTimerCheckBox;
+	private boolean outOfTimeFlag;
+	private JCheckBox closeTimerCheckBox;
 	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
-	JButton btnPlayAgain = new JButton("Play again?");
-	JButton btnGuess = new JButton("Guess");
+	private JButton btnPlayAgain = new JButton("Play again?");
+	private JButton btnGuess = new JButton("Guess");
 	SecureRandom randomGenerator = new SecureRandom();
-	int totalGuessesMade, totalGameScore, randomNumber = 0;
+	private int totalGuessesMade, totalGameScore, randomNumber = 0;
 
 	/**
 	 * Launch the application.
@@ -58,6 +58,7 @@ public class GuessingGame implements ActionListener {
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 			}
 		});

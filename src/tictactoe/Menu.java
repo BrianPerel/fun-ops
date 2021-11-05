@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
  */
 public class Menu extends KeyAdapter implements ActionListener {
 
-	JButton btnStart;
-	static final String ERROR = "ERROR";
+	private JButton btnStart;
+	private static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
 	private JTextField nameOneTextField, nameTwoTextField;
 	private static final Logger logger = Logger.getLogger(Menu.class);

@@ -7,10 +7,11 @@ import java.awt.event.KeyEvent;
 
 public class Paddle extends Rectangle {
 
-	String id;
-	int yVelocity, speed = 10;
+	private static final long serialVersionUID = -7099975578602496893L;
+	private String id;
+	private int yVelocity, speed = 10;
 
-	public Paddle(int x, int y, int PADDLE_WIDTH, int PADDLE_HEIGHT, String id) {
+	public Paddle(int x, int y, final int PADDLE_WIDTH, final int PADDLE_HEIGHT, String id) {
 		super(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
 		this.id = id;
 	}
@@ -84,11 +85,11 @@ public class Paddle extends Rectangle {
 	 */
 	public void draw(Graphics g) {
 		if (id.equals("Paddle1")) {
-			g.setColor(Color.blue);
-		} else {
 			g.setColor(Color.red);
+		} else {
+			g.setColor(Color.blue);
 		}
 
-		g.fillRect(x, y, width, height);
+		g.fillOval(x, y, width, height);
 	}
 }

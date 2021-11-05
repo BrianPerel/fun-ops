@@ -24,16 +24,16 @@ public class GameBoard implements ActionListener {
 
 	static JFrame f = new JFrame("Tic Tac Toe");
 	static String playerOnesName, playerTwosName;
-	static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
 	private static JLabel lblPlayersTurn;
+	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
 	private static final Logger logger = Logger.getLogger(GameBoard.class);
-	static String playerOneWinsMessage, playerTwoWinsMessage;
-	JButton[] gameBoardTiles = new JButton[9];
-	JButton[] highlightTiles = new JButton[3];
-	JSeparator[] gameBoardSeparators = new JSeparator[5];
+	private static String playerOneWinsMessage, playerTwoWinsMessage;
+	private JButton[] gameBoardTiles = new JButton[9];
+	private JButton[] highlightTiles = new JButton[3];
+	private JSeparator[] gameBoardSeparators = new JSeparator[5];
 
 	// needed to invert these to fix a window2 symbol problem
-	static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
+	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
 
 	/**
 	 * Setups the current game: makes decision on who's turn it is and assigns

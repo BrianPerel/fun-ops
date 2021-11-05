@@ -95,7 +95,7 @@ public class StopWatch extends JFrame {
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
-			final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
+			final static int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			/**
 			 * Updates the watch label when button is pushed.

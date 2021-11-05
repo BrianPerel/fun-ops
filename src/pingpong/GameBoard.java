@@ -13,14 +13,13 @@ import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
 
-	static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
-	static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
-	Paddle paddleOne, paddleTwo;
-	Image image;
-	Ball pongBall;
-	Score gameScore;
-	Thread gameThread;
-	boolean isGamePaused;
+	private static final long serialVersionUID = 1871004171456570750L;
+	private static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
+	private static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
+	private Paddle paddleOne, paddleTwo;
+	private Ball pongBall;
+	private Score gameScore;
+	private Thread gameThread;
 
 	/**
 	 * Sets up the game and the GUI
@@ -58,7 +57,7 @@ public class GameBoard extends JPanel implements Runnable {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		image = createImage(getWidth(), getHeight());
+		Image image = createImage(getWidth(), getHeight());
 		draw(image.getGraphics());
 		g.drawImage(image, 0, 0, this);
 		g.setColor(Color.white);
@@ -92,40 +91,40 @@ public class GameBoard extends JPanel implements Runnable {
 
 		// bounce ball off top & bottom window edges
 		if (pongBall.y <= 0) {
-			pongBall.setYDirection(-pongBall.yVelocityOfBall);
+			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
 		}
 
 		if (pongBall.y >= GAME_HEIGHT - BALL_DIAMETER) {
-			pongBall.setYDirection(-pongBall.yVelocityOfBall);
+			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
 		}
 
 		// bounce ball off paddles
 		if (pongBall.intersects(paddleOne)) {
-			pongBall.xVelocityOfBall = Math.abs(pongBall.xVelocityOfBall);
-			pongBall.xVelocityOfBall++; // optional for more difficulty - increases the balls speed
+			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
+			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty - increases the balls speed
 			
-			if (pongBall.yVelocityOfBall > 0) {
-				pongBall.yVelocityOfBall++; // optional for more difficulty
+			if (pongBall.getyVelocityOfBall() > 0) {
+				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 1); // optional for more difficulty
 			} else {
-				pongBall.yVelocityOfBall--;
+				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
 			}
 
-			pongBall.setXDirection(pongBall.xVelocityOfBall);
-			pongBall.setYDirection(pongBall.yVelocityOfBall);
+			pongBall.setXDirection(pongBall.getxVelocityOfBall());
+			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
 		if (pongBall.intersects(paddleTwo)) {
-			pongBall.xVelocityOfBall = Math.abs(pongBall.xVelocityOfBall);
-			pongBall.xVelocityOfBall++; // optional for more difficulty
+			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
+			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty
 
-			if (pongBall.yVelocityOfBall > 0) {
-				pongBall.yVelocityOfBall++; // optional for more difficulty
+			if (pongBall.getyVelocityOfBall() > 0) {
+				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 1); // optional for more difficulty
 			} else {
-				pongBall.yVelocityOfBall--;
+				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
 			}
 			
-			pongBall.setXDirection(-pongBall.xVelocityOfBall);
-			pongBall.setYDirection(pongBall.yVelocityOfBall);
+			pongBall.setXDirection(-pongBall.getxVelocityOfBall());
+			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
 		// stops paddles at window edges
@@ -144,11 +143,11 @@ public class GameBoard extends JPanel implements Runnable {
 		
 		// give player 1 a point and create new paddles & ball
 		if (pongBall.x <= 0) {
-			gameScore.playerTwoScore++;
+			gameScore.setPlayerTwoScore(gameScore.getPlayerTwoScore() + 1);
 			createPongBall();
 		}
 		if (pongBall.x >= GAME_WIDTH - BALL_DIAMETER) {
-			gameScore.playerOneScore++;
+			gameScore.setPlayerOneScore(gameScore.getPlayerOneScore() + 1);
 			createPongBall();
 		}
 	}
@@ -159,6 +158,7 @@ public class GameBoard extends JPanel implements Runnable {
 			Thread.sleep(800);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 		// game loop
 		long lastTime = System.nanoTime();

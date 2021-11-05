@@ -9,14 +9,11 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class Clock {
 
-	JLabel lblClockTime;
-	String time;
-	private JTextField textField;
+	private JLabel lblClockTime;
 
 	public static void main(String[] args) {
 		new Clock();
@@ -39,20 +36,20 @@ public class Clock {
 		lblClockTime = new JLabel();
 		lblClockTime.setForeground(Color.WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		Font font = null;
-		
+
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf"));
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
 		}
-		
-		if(font != null) {
+
+		if (font != null) {
 			font = font.deriveFont(Font.BOLD, 110);
 		}
-		
-		lblClockTime.setFont(font); 
+
+		lblClockTime.setFont(font);
 		lblClockTime.setForeground(Color.green);
 		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.getContentPane().add(lblClockTime);
@@ -61,13 +58,15 @@ public class Clock {
 	}
 
 	public void getTime() {
+		
+		String time;
 
 		while (true) {
 			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
-			if(time.substring(0, 1).equals("0")) {
+			if (time.substring(0, 1).equals("0")) {
 				time = time.substring(1, time.length());
 			}
-			
+
 			lblClockTime.setText(time);
 
 			try {
@@ -75,6 +74,7 @@ public class Clock {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				System.out.println(e.toString());
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

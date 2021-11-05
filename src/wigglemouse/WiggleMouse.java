@@ -25,10 +25,10 @@ import javax.swing.JLabel;
 public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
-	JButton btnStart;
-	static Robot robot;
-	static int x, y, timeToWait;
-	String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
+	private JButton btnStart;
+	private static Robot robot;
+	private static int x, y, timeToWait;
+	private String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
 	
 	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
 	final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));

@@ -29,17 +29,17 @@ import javax.swing.JTextField;
  */
 public class EncryptionGUI implements ActionListener {
 
-	String data = "";
-	JButton btnBrowse;
+	private String data = "";
+	private JButton btnBrowse;
 	boolean isFileLoaded;
 	private JFrame frame;
 	static String fileName;
-	EncryptDecrypt dataSet;
-	static EncryptionGUI window;
+	private EncryptDecrypt dataSet;
+	private static EncryptionGUI window;
 	private JTextField loadingTextField;
-	JButton btnEncrypt = new JButton("Encrypt");
-	JButton btnDecrypt = new JButton("Decrypt");
-	JButton btnLoadFile = new JButton("Load file");
+	private JButton btnEncrypt = new JButton("Encrypt");
+	private JButton btnDecrypt = new JButton("Decrypt");
+	private JButton btnLoadFile = new JButton("Load file");
 
 	/**
 	 * Launch the application.

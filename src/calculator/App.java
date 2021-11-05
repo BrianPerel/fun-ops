@@ -34,9 +34,9 @@ public class App extends KeyAdapter implements ActionListener {
 	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	char[] spacesForMainTextField = new char[31];
-	static boolean numberZeroEnteredByUser;
-	JButton[] buttons = new JButton[24];
+	private char[] spacesForMainTextField = new char[31];
+	private static boolean numberZeroEnteredByUser;
+	private JButton[] buttons = new JButton[24];
 	
 	/*
 	 * buttons[]:

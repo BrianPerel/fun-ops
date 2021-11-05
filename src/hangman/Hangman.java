@@ -23,7 +23,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.Logger;
@@ -42,35 +41,29 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JTextField hangmanWordTextField;
 	
 	// chosen hangman word
-	static String hangmanWord = "";
+	private static String hangmanWord = "";
 	
 	private static String maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
-	ArrayList<String> line = new ArrayList<>();
+	private ArrayList<String> line = new ArrayList<>();
 
 	// store hangman drawing in arraylist, each part to be displayed is in separate
 	// space of arraylist
-	ArrayList<String> hangmanDrawing = new ArrayList<>();
+	private ArrayList<String> hangmanDrawing = new ArrayList<>();
 
 	// placeholder for a counter
-	int count = 0;
-
-	// placeholder to store letter entered
-	char letterGuessed;
+	private int count = 0;
 
 	// placeholder for defect fix - prevent loosing health when same button is
 	// continuously pressed
-	char tmp = '!';
+	private char tmp = '!';
 
-	// flags to indicate which of the 4 user guessing text fields have the insertion
-	// pointer
-	boolean t1, t2, t3, t4 = false;
-
-	// flags to indicate this particular letter has been discovered by user and
+	// t1-t4: flags to indicate which of the 4 user guessing text fields have the insertion
+	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
-	boolean w, o, r, d = false;
+	private boolean t1, t2, t3, t4, w, o, r, d = false;
 	
 	SecureRandom randomGenerator = new SecureRandom();
 
@@ -132,8 +125,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setEditable(false);
 		hangmanTextField.setFocusable(false);
 		hangmanTextField.setToolTipText("Your health");
-		Border border = BorderFactory.createLineBorder(Color.BLUE, 2);
-		hangmanTextField.setBorder(border);
+		hangmanTextField.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
 		hangmanWordTextField = new JTextField();
 		hangmanWordTextField.setHorizontalAlignment(SwingConstants.LEFT);
@@ -198,15 +190,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * @return the formatted text field
 	 */
 	protected MaskFormatter createFormatter(String argString) {
-
 		try {
 			return new MaskFormatter(argString);
 		} catch (java.text.ParseException exc) {
 			logger.error("formatter is bad: " + exc.getMessage());
 			System.exit(-1);
+			return null;
 		}
-		
-		return null;
 	}
 
 	/**
