@@ -237,6 +237,25 @@
 		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
 	</target>
 
+	<!-- targets for ping pong game -->
+	<target name="compile-pong" description="compile program">
+		<mkdir dir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/pingpong" destdir="${classes.dir}" compiler="modern" />
+	</target>
+
+	<target name="jar-pong" depends="compile-pong" description="create associated .jar file">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/pong-${version.num}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="pingpong.PingPongGUI" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run-pong" depends="jar-pong" description="run the program">
+		<java jar="${jar.dir}/pong-${version.num}.jar" fork="true" />
+	</target>
+
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
@@ -381,7 +400,7 @@
 
 		<move file="wigglemouse.exe" todir="${release.dir}" />
 	</target>
-	
+
 	<!-- create clock.exe target -->
 	<target name="create clock.exe" description="create .exe file for wiggle mouse program" depends="jar-clock">
 		<launch4j>
@@ -395,6 +414,21 @@
 		</launch4j>
 
 		<move file="clock.exe" todir="${release.dir}" />
+	</target>
+
+	<!-- create pong.exe target -->
+	<target name="create pong.exe" description="create .exe file for wiggle mouse program" depends="jar-pong">
+		<launch4j>
+			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pong.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="pong.exe" todir="${release.dir}" />
 	</target>
 
 	<!-- targets for clock -->
