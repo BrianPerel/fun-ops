@@ -82,7 +82,7 @@
 		<delete dir="${release.dir}/encryption" />
 
 		<launch4j>
-			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar">
+			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -542,7 +542,7 @@
 	<!-- create clock.exe target -->
 	<target name="create clock.exe" description="create .exe file for wiggle mouse program" depends="jar-clock">
 		<launch4j>
-			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar">
+			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -551,7 +551,7 @@
 			</config>
 		</launch4j>
 
-		<move file="clock.exe" todir="${release.dir}" />
+		<move file="clock.exe" todir="${release.dir}/clock" />		
 	</target>
 
 	<!-- create pong.exe target -->
@@ -580,6 +580,7 @@
 		<jar destfile="${jar.dir}/clock-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="clock.Clock" />
+				<attribute name="Resource" value="res/fonts/clock-font.tff" />
 			</manifest>
 		</jar>
 	</target>

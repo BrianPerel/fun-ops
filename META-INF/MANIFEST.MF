@@ -26,5 +26,6 @@ Main-Class: tictactoe.Menu
 Resource: res/graphics/bgImageToe
 
 Main-Class: clock.Clock
+Resource: res/fonts/clock-font.tff
 
 Main-Class: pingpong.PingPongGUI
