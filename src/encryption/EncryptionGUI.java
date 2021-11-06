@@ -167,47 +167,7 @@ public class EncryptionGUI implements ActionListener {
 
 		// if filename isn't empty or file hasn't yet been loaded
 		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !isFileLoaded) {
-
-			Scanner read = null;
-
-			String fileToLoad = loadingTextField.getText();
-
-			try {
-				File f1 = new File(fileToLoad);
-				
-				read = new Scanner(f1);
-
-				while (read.hasNextLine()) {
-					data += read.nextLine();
-				}
-
-				JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
-				fileName = f1.toString();
-				dataSet = new EncryptDecrypt(data);
-				isFileLoaded = true;
-
-				// check if Desktop is supported by Platform or not
-				if (!Desktop.isDesktopSupported()) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
-							"Error", JOptionPane.ERROR_MESSAGE);
-					read.close();
-					return;
-				}
-
-				// check if this file exists
-				if (f1.exists()) {
-					Desktop.getDesktop().open(f1);
-				}
-
-			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
-				read = new Scanner("");
-				loadingTextField.setText("");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			read.close();
+			obtainFileData();
 		}
 
 		// if file load textfield is empty while load file btn is pushed
@@ -260,6 +220,54 @@ public class EncryptionGUI implements ActionListener {
 
 		else if (ae.getSource() == btnBrowse) {
 			fileBrowse();
+		}
+	}
+
+	/**
+	 * Loads the desired file and obtains the contents within
+	 */
+	public void obtainFileData() {
+		Scanner read = null;
+
+		String fileToLoad = loadingTextField.getText();
+
+		try {
+			File f1 = new File(fileToLoad);
+			
+			read = new Scanner(f1);
+
+			while (read.hasNextLine()) {
+				data += read.nextLine();
+			}
+
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
+			fileName = f1.toString();
+			dataSet = new EncryptDecrypt(data);
+			isFileLoaded = true;
+
+			// check if Desktop is supported by Platform or not
+			if (!Desktop.isDesktopSupported()) {
+				JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				read.close();
+				return;
+			}
+
+			// check if this file exists
+			if (f1.exists()) {
+				Desktop.getDesktop().open(f1);
+			}
+
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
+			read = new Scanner("");
+			loadingTextField.setText("");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if(read != null) {
+			read.close();
 		}
 	}
 }

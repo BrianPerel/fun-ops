@@ -121,16 +121,21 @@ public class StopWatch extends JFrame {
 					centisec = 0;
 				}
 				if (event.getSource() == btnStart) {
+					btnStart.setEnabled(false);
+					btnStop.setEnabled(true);
 					timer.start();
 				} else if (event.getSource() == btnStop) {
+					btnStart.setEnabled(true);
+					btnStop.setEnabled(false);
 					timer.stop();
 				} else if (event.getSource() == btnReset) { 
+					btnStart.setEnabled(true);
+					btnStop.setEnabled(true);
 					timer.stop();
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
-				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
-						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
+				watchSetText();
 			}
 			
 			@Override
@@ -160,6 +165,13 @@ public class StopWatch extends JFrame {
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
+				watchSetText();
+			}
+
+			/**
+			 * Sets the watch's time
+			 */
+			public void watchSetText() {
 				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
 						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}

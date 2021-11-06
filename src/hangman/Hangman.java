@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * App simulating a traditional hangman game with a 4-letter car theme. <br>
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
-	private static final Logger logger = Logger.getLogger(Hangman.class);
+	// private static final Logger logger = Logger.getLogger(Hangman.class);
 	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
@@ -82,7 +82,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
-					logger.error("Error: " + e.toString());
+					// // logger.error("Error: " + e.toString());
 				}
 			}
 		});		
@@ -177,10 +177,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			myReader.close();
 
 		} catch (FileNotFoundException e) {
-			logger.error("Error: File not found. " + e.toString());
+			// // logger.error("Error: File not found. " + e.toString());
 		}
 
-		getHangmanWord();
+		createHangmanWord();
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		try {
 			return new MaskFormatter(argString);
 		} catch (java.text.ParseException exc) {
-			logger.error("formatter is bad: " + exc.getMessage());
+			// logger.error("formatter is bad: " + exc.getMessage());
 			System.exit(-1);
 			return null;
 		}
@@ -202,7 +202,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * read from list file and randomly select a hangman word
 	 */
-	public void getHangmanWord() {
+	public void createHangmanWord() {
 		// choose random word from txt file
 		hangmanWord = line.get(randomGenerator.nextInt(6));
 		maskingAsterisk = new String(new char[hangmanWord.length()]).replace("\0", "*");
@@ -227,7 +227,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		letterTextFields[0].requestFocus();
 		w = o = r = d = false;
-		getHangmanWord();
+		createHangmanWord();
 		count = 0;
 	}
 	

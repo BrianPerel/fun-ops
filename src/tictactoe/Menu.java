@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * Implementation for start window. Prompts for player's 1 and 2's names.
@@ -30,7 +30,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
 	private JTextField nameOneTextField, nameTwoTextField;
-	private static final Logger logger = Logger.getLogger(Menu.class);
+//	private static final Logger logger = Logger.getLogger(Menu.class);
 
 	/**
 	 * Launch the application.
@@ -45,9 +45,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
-					logger.info("Starting tic tac toe log");
+					// logger.info("Starting tic tac toe log");
 				} catch (Exception e) {
-					logger.error("Error: " + e.toString());
+					// logger.error("Error: " + e.toString());
 					e.printStackTrace();
 				}
 			}
@@ -101,23 +101,23 @@ public class Menu extends KeyAdapter implements ActionListener {
 				&& !nameTwoTextField.getText().isEmpty() && !nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
 
 			// remove extra whitespace from name textfields before proceeding
-			GameBoard.playerOnesName = nameOneTextField.getText().trim();
-			GameBoard.playerTwosName = nameTwoTextField.getText().trim();
+			GameBoard.setPlayerOnesName(nameOneTextField.getText().trim());
+			GameBoard.setPlayerTwosName(nameTwoTextField.getText().trim());
 
 			// if first letter of player one's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.playerOnesName.charAt(0))) {
-				GameBoard.playerOnesName = (GameBoard.playerOnesName.charAt(0) + "").toUpperCase()
-						+ GameBoard.playerOnesName.substring(1);
+			if (Character.isLowerCase(GameBoard.getPlayerOnesName().charAt(0))) {
+				GameBoard.setPlayerOnesName((GameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+						+ GameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.playerTwosName.charAt(0))) {
-				GameBoard.playerTwosName = (GameBoard.playerTwosName.charAt(0) + "").toUpperCase()
-						+ GameBoard.playerTwosName.substring(1);
+			if (Character.isLowerCase(GameBoard.getPlayerTwosName().charAt(0))) {
+				GameBoard.setPlayerTwosName((GameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+						+ GameBoard.getPlayerTwosName().substring(1));
 			}
 
-			logger.info("Player 1: " + GameBoard.playerOnesName);
-			logger.info("Player 2: " + GameBoard.playerTwosName);
+			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
+			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());
 
 			frame.dispose();
 			new GameBoard(true, true, false);
@@ -143,8 +143,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 				&& !nameTwoTextField.getText().isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
-			GameBoard.playerOnesName = nameOneTextField.getText().trim();
-			GameBoard.playerTwosName = nameTwoTextField.getText().trim();
+			GameBoard.setPlayerOnesName(nameOneTextField.getText().trim());
+			GameBoard.setPlayerTwosName(nameTwoTextField.getText().trim());
 
 			// if first name field equals the second one
 			if (nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
@@ -157,19 +157,19 @@ public class Menu extends KeyAdapter implements ActionListener {
 			}
 
 			// if first letter of player one's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.playerOnesName.charAt(0))) {
-				GameBoard.playerOnesName = (GameBoard.playerOnesName.charAt(0) + "").toUpperCase()
-						+ GameBoard.playerOnesName.substring(1);
+			if (Character.isLowerCase(GameBoard.getPlayerOnesName().charAt(0))) {
+				GameBoard.setPlayerOnesName((GameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+						+ GameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.playerTwosName.charAt(0))) {
-				GameBoard.playerTwosName = (GameBoard.playerTwosName.charAt(0) + "").toUpperCase()
-						+ GameBoard.playerTwosName.substring(1);
+			if (Character.isLowerCase(GameBoard.getPlayerTwosName().charAt(0))) {
+				GameBoard.setPlayerTwosName((GameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+						+ GameBoard.getPlayerTwosName().substring(1));
 			}
 			
-			logger.info("Player 1: " + GameBoard.playerOnesName);
-			logger.info("Player 2: " + GameBoard.playerTwosName);
+			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
+			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());
 
 			frame.dispose();
 			new GameBoard(true, true, false);

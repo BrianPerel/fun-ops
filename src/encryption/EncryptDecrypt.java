@@ -70,7 +70,7 @@ public class EncryptDecrypt {
 	 * - random number, cast to char type, and append to blank variable. Write new
 	 * random character filled txt line to file
 	 * 
-	 * @return data returns the unmasked/decrypted data string
+	 * @return returns the unmasked/decrypted data string
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public String decrypt() throws IOException {

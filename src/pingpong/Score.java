@@ -43,7 +43,7 @@ public class Score {
 
 	/**
 	 * Gets the current score for player one
-	 * @return playerOneScore Player one's current score
+	 * @return player one's current score
 	 */
 	public int getPlayerOneScore() {
 		return playerOneScore;
@@ -59,7 +59,7 @@ public class Score {
 
 	/**
 	 * Gets the current score for player two
-	 * @return playerTwoScore Player two's current score
+	 * @return player two's current score
 	 */
 	public int getPlayerTwoScore() {
 		return playerTwoScore;

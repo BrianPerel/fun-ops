@@ -40,7 +40,7 @@ public class GuessingGame implements ActionListener {
 	private JFormattedTextField textFieldGuessTheNumber;
 	private JButton btnPlayAgain = new JButton("Play again?");
 	private JButton btnGuess = new JButton("Guess");
-	SecureRandom randomGenerator = new SecureRandom();
+	private SecureRandom randomGenerator = new SecureRandom();
 	private int totalGuessesMade, totalGameScore, randomNumber = 0;
 
 	/**
@@ -167,7 +167,7 @@ public class GuessingGame implements ActionListener {
 		
 		int textFieldGuessTheNumberInt;
 
-		// if when user guesses the timer is greater than 10 seconds
+		// if the timer is greater than 10 seconds when the user guesses 
 		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
 			outOfTimeFlag = true;
 

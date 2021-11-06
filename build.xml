@@ -40,12 +40,150 @@
 		</fileset>
 	</path>
 
-
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" />
 		<delete dir="docs" />
 		<delete dir="log" />
+	</target>
+
+	<!-- target to create all project executables -->
+	<target name="create ALL project executables" description="create all project executables" depends="jar-calculator, jar-encryption program,
+			jar-clock, jar-guessing game, jar-hangman, jar-pong, jar-stopwatch, jar-tic tac toe, jar-wiggle mouse">
+
+		<launch4j>
+			<config headerType="gui" outfile="calculator.exe" dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="calculator.exe" todir="${release.dir}" />
+
+		<launch4j>
+			<config headerType="gui" outfile="encryption.exe" dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="encryption.exe" todir="${release.dir}/encryption" />
+		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
+		</copy>
+		<copy file="secret.txt" todir="${release.dir}/encryption" />
+		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
+		<delete dir="${release.dir}/encryption" />
+
+		<launch4j>
+			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="clock.exe" todir="${release.dir}" />
+
+		<launch4j>
+			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing_game.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="number_game.exe" todir="${release.dir}/number_game" />
+		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
+		</copy>
+		<copy todir="${release.dir}/number_game/${res.audio.dir}">
+			<fileset dir="${res.audio.dir}" includes="*" />
+		</copy>
+		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
+		<delete dir="${release.dir}/number_game" />
+
+		<launch4j>
+			<config headerType="gui" outfile="hangman.exe" dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="hangman.exe" todir="${release.dir}/hangman" />
+		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
+		</copy>
+		<copy file="hangman.txt" todir="${release.dir}/hangman" />
+		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
+		<delete dir="${release.dir}/hangman" />
+
+		<launch4j>
+			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="pong.exe" todir="${release.dir}" />
+
+		<launch4j>
+			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="stopwatch.exe" todir="${release.dir}" />
+
+		<launch4j>
+			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/ticTacToe.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />
+		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
+		</copy>
+		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
+		<delete dir="${release.dir}/tic_tac_toe" />
+
+		<launch4j>
+			<config headerType="gui" outfile="wigglemouse.exe" dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico">
+				<jre minVersion="${min.jre.version}">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+			</config>
+		</launch4j>
+
+		<move file="wigglemouse.exe" todir="${release.dir}" />
+
 	</target>
 
 	<!-- targets for calculator -->
@@ -419,7 +557,7 @@
 	<!-- create pong.exe target -->
 	<target name="create pong.exe" description="create .exe file for wiggle mouse program" depends="jar-pong">
 		<launch4j>
-			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pong.ico">
+			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
