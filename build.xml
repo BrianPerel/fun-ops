@@ -29,8 +29,7 @@
 	<tstamp>
 		<format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US" />
 	</tstamp>
-	<echo message="Current date and time: ${TODAY_US}" level="info" />
-	<echo message="${ant.version}" level="info" />
+	<echo message="Current date and time: ${TODAY_US}${line.separator}${ant.version}" level="info" />
 
 	<!-- reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
@@ -42,9 +41,9 @@
 
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
-		<delete dir="${build.dir}" />
-		<delete dir="docs" />
-		<delete dir="log" />
+		<delete dir="${build.dir}" verbose="true" />
+		<delete dir="docs" verbose="true" />
+		<delete dir="log" verbose="true" />
 	</target>
 
 	<!-- target to create all project executables -->
@@ -354,12 +353,6 @@
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
 		<javac includeantruntime="false" srcdir="${src.dir}/numbergame" destdir="${classes.dir}" compiler="modern" />
-		<move todir="${classes.dir}/numbergame">
-			<fileset dir="${classes.dir}/stopwatch">
-				<include name="**/*.class" />
-			</fileset>
-		</move>
-		<delete dir="${classes.dir}/stopwatch" />
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="create associated .jar file">

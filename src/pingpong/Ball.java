@@ -8,7 +8,8 @@ import java.util.Random;
 public class Ball extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-	private int xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
+
+	private double xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
 
 	/**
 	 * Creates the ball
@@ -37,7 +38,7 @@ public class Ball extends Rectangle {
 	 * sets the x direction of the ball
 	 * @param randomXDirection indicates a random x direction when the game starts
 	 */
-	public void setXDirection(int randomXDirection) {
+	public void setXDirection(double randomXDirection) {
 		setxVelocityOfBall(randomXDirection);
 	}
 
@@ -45,7 +46,7 @@ public class Ball extends Rectangle {
 	 * sets the y direction of the ball
 	 * @param randomYDirection indicates a random y direction when the game starts
 	 */
-	public void setYDirection(int randomYDirection) {
+	public void setYDirection(double randomYDirection) {
 		setyVelocityOfBall(randomYDirection);
 	}
 
@@ -70,7 +71,7 @@ public class Ball extends Rectangle {
 	 * Gets the x velocity of the game ball
 	 * @return xVelocityOfBall
 	 */
-	public int getxVelocityOfBall() {
+	public double getxVelocityOfBall() {
 		return xVelocityOfBall;
 	}
 
@@ -78,7 +79,7 @@ public class Ball extends Rectangle {
 	 * Sets the x velocity of the game ball
 	 * @param xVelocityOfBall
 	 */
-	public void setxVelocityOfBall(int xVelocityOfBall) {
+	public void setxVelocityOfBall(double xVelocityOfBall) {
 		this.xVelocityOfBall = xVelocityOfBall;
 	}
 
@@ -86,7 +87,7 @@ public class Ball extends Rectangle {
 	 * Gets the y velocity of the game ball
 	 * @return
 	 */
-	public int getyVelocityOfBall() {
+	public double getyVelocityOfBall() {
 		return yVelocityOfBall;
 	}
 
@@ -94,7 +95,7 @@ public class Ball extends Rectangle {
 	 * Sets the y velocity of the game ball
 	 * @param yVelocityOfBall
 	 */
-	public void setyVelocityOfBall(int yVelocityOfBall) {
+	public void setyVelocityOfBall(double yVelocityOfBall) {
 		this.yVelocityOfBall = yVelocityOfBall;
 	}
 }

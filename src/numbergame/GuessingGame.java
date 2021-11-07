@@ -41,7 +41,7 @@ public class GuessingGame implements ActionListener {
 	private JButton btnPlayAgain = new JButton("Play again?");
 	private JButton btnGuess = new JButton("Guess");
 	private SecureRandom randomGenerator = new SecureRandom();
-	private int totalGuessesMade, totalGameScore, randomNumber = 0;
+	private int totalGuessesMade = 0, totalGameScore = 0, randomNumber = 0;
 
 	/**
 	 * Launch the application.

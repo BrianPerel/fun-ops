@@ -47,7 +47,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
-	private ArrayList<String> line = new ArrayList<>();
+	private static ArrayList<String> line = new ArrayList<>();
 
 	// store hangman drawing in arraylist, each part to be displayed is in separate
 	// space of arraylist
@@ -65,7 +65,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// printed
 	private boolean t1, t2, t3, t4, w, o, r, d = false;
 	
-	SecureRandom randomGenerator = new SecureRandom();
+	static SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Launch the application.
@@ -202,7 +202,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * read from list file and randomly select a hangman word
 	 */
-	public void createHangmanWord() {
+	public static void createHangmanWord() {
 		// choose random word from txt file
 		hangmanWord = line.get(randomGenerator.nextInt(6));
 		maskingAsterisk = new String(new char[hangmanWord.length()]).replace("\0", "*");

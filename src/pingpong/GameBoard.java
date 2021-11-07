@@ -101,10 +101,10 @@ public class GameBoard extends JPanel implements Runnable {
 		// bounce ball off paddles
 		if (pongBall.intersects(paddleOne)) {
 			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
-			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty - increases the balls speed
+			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 0.2); // optional for more difficulty - increases the balls speed
 			
 			if (pongBall.getyVelocityOfBall() > 0) {
-				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 1); // optional for more difficulty
+				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 0.2); // optional for more difficulty
 			} else {
 				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
 			}
