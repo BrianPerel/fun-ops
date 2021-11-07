@@ -91,7 +91,12 @@
 			</config>
 		</launch4j>
 
-		<move file="clock.exe" todir="${release.dir}" />
+		<move file="clock.exe" todir="${release.dir}/clock" />
+		<copy todir="build/release/clock/res">
+			<fileset dir="res" includes="fonts/" />
+		</copy>
+		<zip destfile="build/release/clock.zip" basedir="build/release/clock" update="true" />
+		<delete dir="build/release/clock" />
 
 		<launch4j>
 			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing_game.ico">
@@ -539,8 +544,8 @@
 		<move file="wigglemouse.exe" todir="${release.dir}" />
 	</target>
 
-	<!-- create clock.exe target -->
-	<target name="create clock.exe" description="create .exe file for wiggle mouse program" depends="jar-clock">
+	<!-- create and zip clock.exe target -->
+	<target name="create and zip clock.exe" description="create .exe file for wiggle mouse program" depends="jar-clock">
 		<launch4j>
 			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico">
 				<jre minVersion="${min.jre.version}">
@@ -551,7 +556,12 @@
 			</config>
 		</launch4j>
 
-		<move file="clock.exe" todir="${release.dir}/clock" />		
+		<move file="clock.exe" todir="${release.dir}/clock" />
+		<copy todir="build/release/clock/res">
+			<fileset dir="res" includes="fonts/" />
+		</copy>
+		<zip destfile="build/release/clock.zip" basedir="build/release/clock" update="true" />
+		<delete dir="build/release/clock" />
 	</target>
 
 	<!-- create pong.exe target -->
@@ -597,6 +607,8 @@
 		<javadoc packagenames="numbergame" sourcepath="src" destdir="docs/api/numberGame" author="false" version="true" windowtitle="My API Page" />
 		<javadoc packagenames="tictactoe" sourcepath="src" destdir="docs/api/ticTacToe" author="false" version="true" windowtitle="My API Page" />
 		<javadoc packagenames="wigglemouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="clock" sourcepath="src" destdir="docs/api/clock" author="false" version="true" windowtitle="My API Page" />
+		<javadoc packagenames="pingpong" sourcepath="src" destdir="docs/api/pong" author="false" version="true" windowtitle="My API Page" />
 	</target>
 
 	<!-- unjar target -->
@@ -610,6 +622,9 @@
 			<fileset file="${jar.dir}/hangman-${version.num}.jar" />
 			<fileset file="${jar.dir}/tic_tac_toe-${version.num}.jar" />
 			<fileset file="${jar.dir}/wigglemouse-${version.num}.jar" />
+			<fileset file="${jar.dir}/stopwatch-${version.num}.jar" />
+			<fileset file="${jar.dir}/clock-${version.num}.jar" />
+			<fileset file="${jar.dir}/pong-${version.num}.jar" />
 		</unjar>
 	</target>
 </project>
