@@ -3,7 +3,7 @@ package pingpong;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Ball extends Rectangle {
 
@@ -20,7 +20,7 @@ public class Ball extends Rectangle {
 	 */
 	public Ball(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		Random random = new Random();
+		SecureRandom random = new SecureRandom();
 		int randomXDirection = random.nextInt(2);
 		if (randomXDirection == 0) {
 			randomXDirection--;

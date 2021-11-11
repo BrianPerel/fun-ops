@@ -23,8 +23,7 @@ import javax.swing.Timer;
 public class StopWatch extends JFrame {
 	
 	public static void main(String[] args) {
-		// default requested window measurements (width x height)
-		new StopWatch(300, 150);
+		new StopWatch(300, 150); // 300 x 150 = default requested window measurements (width x height)
 	}
 
 	/**
@@ -95,7 +94,7 @@ public class StopWatch extends JFrame {
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
-			final static int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
+			private final static int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			/**
 			 * Updates the watch label when button is pushed.
@@ -103,7 +102,6 @@ public class StopWatch extends JFrame {
 			 * @param event Indicates a button is pushed
 			 */
 			public void actionPerformed(ActionEvent event) {
-
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
@@ -131,6 +129,7 @@ public class StopWatch extends JFrame {
 				} else if (event.getSource() == btnReset) { 
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(true);
+					btnStart.requestFocus();
 					timer.stop();
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
@@ -157,10 +156,17 @@ public class StopWatch extends JFrame {
 					centisec = 0;
 				}
 				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
+					btnStart.setEnabled(false);
+					btnStop.setEnabled(true);
 					timer.start();
 				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStop) {
+					btnStart.setEnabled(true);
+					btnStop.setEnabled(false);
 					timer.stop();
 				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnReset) { 
+					btnStart.setEnabled(true);
+					btnStop.setEnabled(true);
+					btnStart.requestFocus();
 					timer.stop();
 					hour = minute = second = 0;
 					watch.setText("00:00:00");

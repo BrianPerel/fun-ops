@@ -13,7 +13,7 @@ public class Calculator {
 
 	static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
 	static int arrayNumsFilled; // container to tell what array subscripts are free or taken
-	static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
+	private static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
@@ -22,7 +22,7 @@ public class Calculator {
 													// values
 	static List<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
 	
-	static double answer;
+	private static double answer;
 
 	/**
 	 * sets the number (contained as the argument) in the numbers array. This will

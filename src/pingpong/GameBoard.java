@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.swing.JPanel;
 
@@ -39,7 +39,7 @@ public class GameBoard extends JPanel implements Runnable {
 	 * Creates the pong ball
 	 */
 	public void createPongBall() {
-		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2),  new Random().nextInt(GAME_HEIGHT - BALL_DIAMETER),
+		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2),  new SecureRandom().nextInt(GAME_HEIGHT - BALL_DIAMETER),
 				BALL_DIAMETER, BALL_DIAMETER);
 	}
 

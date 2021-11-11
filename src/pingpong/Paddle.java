@@ -2,6 +2,7 @@ package pingpong;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
@@ -89,7 +90,7 @@ public class Paddle extends Rectangle {
 		} else {
 			g.setColor(Color.blue);
 		}
-
+		
 		g.fillOval(x, y, width, height);
 	}
 }
