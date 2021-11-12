@@ -65,7 +65,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// printed
 	private boolean t1, t2, t3, t4, w, o, r, d = false;
 	
-	static SecureRandom randomGenerator = new SecureRandom();
+	private static SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Launch the application.
@@ -82,7 +82,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					window.frame.setResizable(false);
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
-					// // logger.error("Error: " + e.toString());
+					// logger.error("Error: " + e.toString());
 				}
 			}
 		});		
@@ -177,7 +177,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			myReader.close();
 
 		} catch (FileNotFoundException e) {
-			// // logger.error("Error: File not found. " + e.toString());
+			// logger.error("Error: File not found. " + e.toString());
 		}
 
 		createHangmanWord();

@@ -30,7 +30,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
 	private JTextField nameOneTextField, nameTwoTextField;
-//	private static final Logger logger = Logger.getLogger(Menu.class);
+	// private static final Logger logger = Logger.getLogger(Menu.class);
 
 	/**
 	 * Launch the application.

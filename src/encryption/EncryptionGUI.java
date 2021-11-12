@@ -31,7 +31,7 @@ public class EncryptionGUI implements ActionListener {
 
 	private String data = "";
 	private JButton btnBrowse;
-	boolean isFileLoaded;
+	private boolean isFileLoaded;
 	private JFrame frame;
 	static String fileName;
 	private EncryptDecrypt dataSet;

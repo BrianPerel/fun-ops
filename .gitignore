@@ -1,9 +1,9 @@
 /bin/
-build/
-*.class
-jar/
+/build/
+/jar/
+/Launch4j/
+/docs/
+/target/
 *.jar
 *.log
-Launch4j/
-docs/
-/target/
+*.class

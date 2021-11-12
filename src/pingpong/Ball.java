@@ -8,7 +8,6 @@ import java.security.SecureRandom;
 public class Ball extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-
 	private double xVelocityOfBall, yVelocityOfBall, initialBallSpeed = 2;
 
 	/**

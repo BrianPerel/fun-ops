@@ -54,7 +54,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 			}
 		});
 
-		timeToWait = 3000;
+		timeToWait = 30000;
 		moveMouse();
 	}
 
@@ -90,7 +90,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		if (ae.getSource() == btnStart) {
 			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
-				timeToWait = 3000;
+				timeToWait = 30000;
 				break;
 
 			case "1 minute":
@@ -119,7 +119,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		if(e.getSource() == btnStart) {
 			switch ((String) timeOptionsComboBox.getSelectedItem()) {
 			case "1/2 minute":
-				timeToWait = 3000;
+				timeToWait = 30000;
 				break;
 
 			case "1 minute":

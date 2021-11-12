@@ -29,9 +29,9 @@ import javax.swing.SwingConstants;
 public class App extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
-	static String cursorRightPositionedWithZero, cursorRightPositioned;
+	private static String cursorRightPositionedWithZero, cursorRightPositioned;
 	private JFormattedTextField userInputTextField;
-	DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
+	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	private char[] spacesForMainTextField = new char[31];

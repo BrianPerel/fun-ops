@@ -2,15 +2,14 @@ package pingpong;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 public class Paddle extends Rectangle {
 
 	private static final long serialVersionUID = -7099975578602496893L;
-	private String id;
 	private int yVelocity, speed = 10;
+	private String id;
 
 	public Paddle(int x, int y, final int PADDLE_WIDTH, final int PADDLE_HEIGHT, String id) {
 		super(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
