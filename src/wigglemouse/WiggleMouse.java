@@ -31,7 +31,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
 	
 	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
-	final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
+	private final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
 	 * Launch the application.

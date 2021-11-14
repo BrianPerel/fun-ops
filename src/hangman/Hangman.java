@@ -42,7 +42,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	
 	// chosen hangman word
 	private static String hangmanWord = "";
-	
 	private static String maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
@@ -231,7 +230,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		count = 0;
 	}
 	
-	// performs actions to display correct placements of * while user is guessing
+	/**
+	 * Performs actions to display the correct placements of '*' while user is guessing
+	 */
 	public static String maskRemainingHangmanWord(char argUsersGuess) {
 		String newasterisk = "";
 		for (int i = 0; i < hangmanWord.length(); i++) {
@@ -249,7 +250,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Performs appropriate actions when key pressed
+	 * Performs appropriate actions when key pressed 
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {

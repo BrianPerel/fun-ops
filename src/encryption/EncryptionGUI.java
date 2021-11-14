@@ -151,7 +151,7 @@ public class EncryptionGUI implements ActionListener {
 	}
 
 	/**
-	 * JFileChooser browse menu
+	 * JFileChooser file browse menu for GUI
 	 */
 	public void fileBrowse() {
 		JFileChooser fileChooser = new JFileChooser();

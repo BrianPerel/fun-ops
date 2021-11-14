@@ -152,14 +152,17 @@ public class GameBoard extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Wait 0.8 of a second, launches a loop that moves everything and checkes for collision
+	 */
 	public void run() {
-		// launch the gui but wait 1 second
 		try {
 			Thread.sleep(800);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
+		
 		// game loop
 		long lastTime = System.nanoTime();
 		double delta = 0;
@@ -177,6 +180,10 @@ public class GameBoard extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * A action listener class that listens to keys pressed and released
+	 * @author Brian Perel
+	 */
 	public class ActionListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {

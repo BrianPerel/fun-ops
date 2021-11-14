@@ -136,8 +136,8 @@ public class Calculator {
 	}
 
 	/**
-	 * calls appropriate requested operation after converting String to Double and
-	 * then formatting return value
+	 * Converts String to Double values, calls appropriate requested operation, 
+	 * and formats the return value
 	 * 
 	 * @return formatted result value after performing operation
 	 */

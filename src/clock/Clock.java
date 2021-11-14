@@ -20,7 +20,7 @@ public class Clock {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the clock application
 	 */
 	public Clock() {
 		JFrame frame = new JFrame();
@@ -57,6 +57,9 @@ public class Clock {
 		getTime();
 	}
 
+	/**
+	 * Obtains the current time, applies formatting if needed, and repeats action every second
+	 */
 	public void getTime() {
 		
 		String time;

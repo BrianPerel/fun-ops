@@ -181,7 +181,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to when buttons are clicked via mouse
+	 * This is responsible for listening to when buttons are clicked via mouse (actions)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -500,7 +500,9 @@ public class App extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	// method will reset all arrays
+	/**
+	 * Resets all calculator arrays
+	 */
 	public static void resetValues() {
 		Arrays.fill(operatorFlags, Boolean.FALSE);
 		numberZeroEnteredByUser = false;

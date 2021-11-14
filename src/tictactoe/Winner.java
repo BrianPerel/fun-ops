@@ -17,20 +17,20 @@ import javax.swing.SwingConstants;
  * Implementation for winner window. When a player wins, this window is displayed. <br>
  * 
  * @author Brian Perel
- *       
  */
 public class Winner extends KeyAdapter implements ActionListener {
 
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	private JButton btnPlayAgain = new JButton("Play again");
 	private JButton btnQuit = new JButton("Quit");
-	private JLabel lblGameResult = new JLabel();
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
 	 * @param argGameResult holds the result of the game - winner's name or game over message
 	 */
 	public Winner(String argGameResult) {
+		
+		JLabel lblGameResult = new JLabel();
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame

@@ -22,7 +22,6 @@ import javax.swing.SwingConstants;
  */
 public class GameBoard implements ActionListener {
 
-	static JFrame f = new JFrame("Tic Tac Toe");
 	private static String playerOnesName, playerTwosName;
 	private static JLabel lblPlayersTurn;
 	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
@@ -34,6 +33,9 @@ public class GameBoard implements ActionListener {
 
 	// needed to invert these to fix a window2 symbol problem
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
+	
+	static JFrame f = new JFrame("Tic Tac Toe");
+
 
 	/**
 	 * Setups the current game: makes decision on who's turn it is and assigns
@@ -147,7 +149,7 @@ public class GameBoard implements ActionListener {
 					playerTwosTurnComplete(gameBoardTiles[x]);
 				} 
 			} else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
-				// // logger.warn("Invalid Move!");
+				// logger.warn("Invalid Move!");
 			}
 		}
 

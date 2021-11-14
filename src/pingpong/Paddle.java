@@ -19,7 +19,7 @@ public class Paddle extends Rectangle {
 	/**
 	 * Controls the movement of the paddles when a key is pressed
 	 * 
-	 * @param e
+	 * @param e the key event 
 	 */
 	public void keyPressed(KeyEvent e) {
 		if (id.equals("Paddle1")) {
@@ -43,7 +43,7 @@ public class Paddle extends Rectangle {
 	/**
 	 * Controls the movement of the paddles when a key is released
 	 * 
-	 * @param e
+	 * @param e the key event
 	 */
 	public void keyReleased(KeyEvent e) {
 		if (id.equals("Paddle1")) {
