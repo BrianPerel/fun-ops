@@ -182,7 +182,6 @@ public class GameBoard extends JPanel implements Runnable {
 
 	/**
 	 * A action listener class that listens to keys pressed and released
-	 * @author Brian Perel
 	 */
 	public class ActionListener extends KeyAdapter {
 		@Override

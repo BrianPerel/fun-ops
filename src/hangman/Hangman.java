@@ -82,6 +82,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					// logger.error("Error: " + e.toString());
+					e.printStackTrace();
 				}
 			}
 		});		
@@ -177,6 +178,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		} catch (FileNotFoundException e) {
 			// logger.error("Error: File not found. " + e.toString());
+			e.printStackTrace();
 		}
 
 		createHangmanWord();
@@ -193,6 +195,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			return new MaskFormatter(argString);
 		} catch (java.text.ParseException exc) {
 			// logger.error("formatter is bad: " + exc.getMessage());
+			exc.printStackTrace();
 			System.exit(-1);
 			return null;
 		}

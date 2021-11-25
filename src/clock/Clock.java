@@ -76,7 +76,6 @@ public class Clock {
 				Thread.sleep(1000); // updates the time every second
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				System.out.println(e.toString());
 				Thread.currentThread().interrupt();
 			}
 		}
