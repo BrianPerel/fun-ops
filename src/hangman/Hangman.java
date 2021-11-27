@@ -62,7 +62,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// t1-t4: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
-	private boolean t1, t2, t3, t4, w, o, r, d = false;
+	private boolean w, o, r, d = false;
+	
+	private boolean[] t = new boolean[4];
 	
 	private static SecureRandom randomGenerator = new SecureRandom();
 
@@ -180,7 +182,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// logger.error("Error: File not found. " + e.toString());
 			e.printStackTrace();
 		}
-
+		
 		createHangmanWord();
 	}
 
@@ -210,7 +212,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		maskingAsterisk = new String(new char[hangmanWord.length()]).replace("\0", "*");
 		
 		// this line is revealing the word to the console 
-		// be sure to remove before doing a build
 		System.out.println(hangmanWord);		
 	}
 
@@ -237,19 +238,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Performs actions to display the correct placements of '*' while user is guessing
 	 */
 	public static String maskRemainingHangmanWord(char argUsersGuess) {
-		String newasterisk = "";
+		StringBuilder newasterisk = new StringBuilder("");
 		for (int i = 0; i < hangmanWord.length(); i++) {
 			if (hangmanWord.charAt(i) == argUsersGuess) {
-				newasterisk += argUsersGuess;
+				newasterisk.append(argUsersGuess);
 			} else if (maskingAsterisk.charAt(i) != '*') {
-				newasterisk += hangmanWord.charAt(i);
+				newasterisk.append(hangmanWord.charAt(i));
 			} else {
-				newasterisk += "*";
+				newasterisk.append("*");
 			}
 		}			
 
-		maskingAsterisk = newasterisk;
-		return newasterisk;
+		maskingAsterisk = newasterisk.toString();
+		return maskingAsterisk;
 	}
 
 	/**
@@ -265,16 +266,16 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			
 			// text field 1 chosen + letter entered matches first char of
 			// hangman word + the letter hasn't been guessed yet
-			if (t1 && (charGuessed == hangmanWord.charAt(0)) && !w) {
+			if (t[0] && (charGuessed == hangmanWord.charAt(0)) && !w) {
 				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // x000
 				w = true;
-			} else if (t2 && (charGuessed == hangmanWord.charAt(1)) && !o) {
+			} else if (t[1] && (charGuessed == hangmanWord.charAt(1)) && !o) {
 				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 0x00
 				o = true;
-			} else if (t3 && (charGuessed == hangmanWord.charAt(2)) && !r) {
+			} else if (t[2] && (charGuessed == hangmanWord.charAt(2)) && !r) {
 				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 00x0
 				r = true;
-			} else if (t4 && (charGuessed == hangmanWord.charAt(3)) && !d) {
+			} else if (t[3] && (charGuessed == hangmanWord.charAt(3)) && !d) {
 				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 000x
 				// below line is a code fix: will force set/display final letter if correct before
 				// trigger of winner message appears
@@ -316,19 +317,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		for (int i = 0; i < letterTextFields.length; i++) {
 			letterTextFields[i].setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 		}
-
-		if (letterTextFields[0].hasFocus()) {
-			letterTextFields[0].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			t1 = true;
-		} else if (letterTextFields[1].hasFocus()) {
-			letterTextFields[1].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			t2 = true;
-		} else if (letterTextFields[2].hasFocus()) {
-			letterTextFields[2].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			t3 = true;
-		} else if (letterTextFields[3].hasFocus()) {
-			letterTextFields[3].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
-			t4 = true;
+		
+		for (int i = 0; i < letterTextFields.length; i++) {
+			if (letterTextFields[i].hasFocus()) {
+				letterTextFields[i].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
+				t[i] = true;
+			}
 		}
 	}
 
@@ -338,21 +332,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-
-		if (!letterTextFields[0].hasFocus()) {
-			t1 = false;
-		}
-
-		else if (!letterTextFields[1].hasFocus()) {
-			t2 = false;
-		}
-
-		else if (!letterTextFields[2].hasFocus()) {
-			t3 = false;
-		}
-
-		else if (!letterTextFields[3].hasFocus()) {
-			t4 = false;
+		
+		for (int x = 0; x < t.length; x++) {
+			if (!letterTextFields[x].hasFocus()) {
+				t[x] = false;
+			}
 		}
 	}
 }

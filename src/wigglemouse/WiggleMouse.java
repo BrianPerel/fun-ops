@@ -28,9 +28,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private JButton btnStart;
 	private static Robot robot;
 	private static int x, y, timeToWait;
-	private String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };
-	
-	// need to create a combo box in two lines due to SwingBuilder's design tab problem workaround
+	private String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };	
 	private final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
@@ -65,23 +63,23 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
-		frame.setBounds(100, 100, 485, 182);
+		frame.setBounds(100, 100, 550, 182);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		btnStart = new JButton("SET TIME");
 		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
-		btnStart.setBounds(198, 78, 99, 23);
+		btnStart.setBounds(215, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
-		lblDisplayMessage.setBounds(22, 23, 344, 23);
+		lblDisplayMessage.setBounds(35, 23, 370, 23);
 		frame.getContentPane().add(lblDisplayMessage);
 
-		timeOptionsComboBox.setBounds(351, 23, 93, 22);
+		timeOptionsComboBox.setBounds(395, 23, 100, 22);
 		frame.getContentPane().add(timeOptionsComboBox);
 	}
 
