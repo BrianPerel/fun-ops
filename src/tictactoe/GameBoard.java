@@ -81,7 +81,7 @@ public class GameBoard implements ActionListener {
 		f.setVisible(true);
 
 		// assigning a background image to the app
-		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
+		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
 		for(int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();

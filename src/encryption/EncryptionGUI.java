@@ -72,7 +72,7 @@ public class EncryptionGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageEncrypt.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
 
 		btnLoadFile.setBounds(49, 43, 89, 23);
 		frame.getContentPane().add(btnLoadFile);

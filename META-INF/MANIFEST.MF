@@ -8,7 +8,7 @@ Main-Class: calculator.App
 Main-Class: stopwatch.StopWatch
 
 Main-Class: hangman.Hangman
-Resource: res/graphics/bgImageHangman
+Resource: res/graphics/bg-image-hangman
 
 Main-Class: wigglemouse.WiggleMouse 
 
@@ -17,13 +17,13 @@ Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
 Resource4: res/graphics/figure
-Resource5: res/graphics/bgImageGuess
+Resource5: res/graphics/bg-image-guess
 
 Main-Class: encryption.EncryptionGUI
 Resource: res/graphics/bgImageEncrypt
 
 Main-Class: tictactoe.Menu
-Resource: res/graphics/bgImageToe
+Resource: res/graphics/bg-image-tac
 
 Main-Class: clock.Clock
 Resource: res/fonts/clock-font.tff

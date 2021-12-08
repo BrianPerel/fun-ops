@@ -112,7 +112,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageHangman.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-hangman.jpg")));
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(272, 168, 171, 7);

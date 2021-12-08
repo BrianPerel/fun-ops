@@ -50,7 +50,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.setLocationRelativeTo(null);
 		f2.setVisible(true);
 
-		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
+		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
 		if (argGameResult.equals("Game Over! Draw")) {
 			lblGameResult.setText(argGameResult);

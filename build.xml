@@ -74,7 +74,7 @@
 
 		<move file="encryption.exe" todir="${release.dir}/encryption" />
 		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
 		<copy file="secret.txt" todir="${release.dir}/encryption" />
 		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
@@ -98,7 +98,7 @@
 		<delete dir="build/release/clock" />
 
 		<launch4j>
-			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing_game.ico">
+			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -109,7 +109,7 @@
 
 		<move file="number_game.exe" todir="${release.dir}/number_game" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, figure.jpg" />
 		</copy>
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
@@ -129,7 +129,7 @@
 
 		<move file="hangman.exe" todir="${release.dir}/hangman" />
 		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
 		<copy file="hangman.txt" todir="${release.dir}/hangman" />
 		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
@@ -160,7 +160,7 @@
 		<move file="stopwatch.exe" todir="${release.dir}" />
 
 		<launch4j>
-			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/ticTacToe.ico">
+			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -171,7 +171,7 @@
 
 		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />
 		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
 		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
 		<delete dir="${release.dir}/tic_tac_toe" />
@@ -250,7 +250,7 @@
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
 		</copy>
 		<copy todir="${dist.dir}/encryption/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
 		<copy file="secret.txt" todir="${dist.dir}/encryption" />
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
@@ -271,7 +271,7 @@
 
 		<move file="encryption.exe" todir="${release.dir}/encryption" />
 		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageEncrypt.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
 		<copy file="secret.txt" todir="${release.dir}/encryption" />
 		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
@@ -291,7 +291,7 @@
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="hangman.Hangman" />
-				<attribute name="Resource" value="${res.graphics.dir}/bgImageHangman" />
+				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman" />
 			</manifest>
 		</jar>
 	</target>
@@ -306,7 +306,7 @@
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
 		</copy>
 		<copy todir="${dist.dir}/hangman/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
 		<copy file="hangman.txt" todir="${dist.dir}/hangman" />
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
@@ -327,7 +327,7 @@
 
 		<move file="hangman.exe" todir="${release.dir}/hangman" />
 		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageHangman.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
 		<copy file="hangman.txt" todir="${release.dir}/hangman" />
 		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
@@ -364,7 +364,7 @@
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/figure" />
-				<attribute name="Resource5" value="${res.graphics.dir}/bgImageGuess" />
+				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess" />
 			</manifest>
 		</jar>
 	</target>
@@ -396,7 +396,7 @@
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
 		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg" />
 		</copy>
 		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
@@ -408,7 +408,7 @@
 	<!-- create number game.exe target -->
 	<target name="create and zip number_game.exe" description="create .exe file for number game" depends="jar-guessing game">
 		<launch4j>
-			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing_game.ico">
+			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -419,7 +419,7 @@
 
 		<move file="number_game.exe" todir="${release.dir}/number_game" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageGuess.jpg, figure.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, figure.jpg" />
 		</copy>
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
@@ -460,7 +460,7 @@
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="tictactoe.Menu" />
-				<attribute name="Resource" value="${res.graphics.dir}/bgImageToe" />
+				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac" />
 				<attribute name="Class-Path" value="log4j/log4j-1.2.17.jar" />
 			</manifest>
 		</jar>
@@ -476,7 +476,7 @@
 			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
 		</copy>
 		<copy todir="${dist.dir}/ticTacToe/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
 		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
 		<delete dir="${dist.dir}/ticTacToe" />
@@ -485,7 +485,7 @@
 	<!-- create tic-tac-toe.exe target -->
 	<target name="create and zip tic-tac-toe.exe" description="create and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
 		<launch4j>
-			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/ticTacToe.ico">
+			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico">
 				<jre minVersion="${min.jre.version}">
 					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -496,7 +496,7 @@
 
 		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />
 		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bgImageToe.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
 		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
 		<delete dir="${release.dir}/tic_tac_toe" />

@@ -35,7 +35,7 @@ public class App extends KeyAdapter implements ActionListener {
 	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	private char[] spacesForMainTextField = new char[31];
-	private static boolean numberZeroEnteredByUser;
+	private static boolean hasNumberZeroBeenEnteredByUser;
 	private JButton[] buttons = new JButton[24];
 	
 	/*
@@ -188,7 +188,7 @@ public class App extends KeyAdapter implements ActionListener {
 		// remove the auto display '0' value from the main number entry textField box so that
 		// this '0' is not included in calculations
 		// Since it's only needed for display purposes
-		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !numberZeroEnteredByUser) {
+		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !hasNumberZeroBeenEnteredByUser) {
 			userInputTextField.setText(cursorRightPositioned);
 		}
 
@@ -197,7 +197,7 @@ public class App extends KeyAdapter implements ActionListener {
 		case "0":
 			if (!userInputTextField.getText().equals(cursorRightPositionedWithZero)) {
 				userInputTextField.setText(userInputTextField.getText().concat("0"));
-				numberZeroEnteredByUser = true;
+				hasNumberZeroBeenEnteredByUser = true;
 			}
 			break;
 
@@ -300,7 +300,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 				// reset all array values to 0
 				Collections.fill(Calculator.stringNumbers, "");
-				numberZeroEnteredByUser = false;
+				hasNumberZeroBeenEnteredByUser = false;
 				resetValues();
 			}
 			break; // break statement for case equals button
@@ -367,7 +367,7 @@ public class App extends KeyAdapter implements ActionListener {
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
 		// Since it's only needed for display purposes
-		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !numberZeroEnteredByUser) {
+		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !hasNumberZeroBeenEnteredByUser) {
 			userInputTextField.setText(cursorRightPositioned);
 		}
 
@@ -376,7 +376,7 @@ public class App extends KeyAdapter implements ActionListener {
 		switch (e.getKeyChar()) {
 		case KeyEvent.VK_0:
 			userInputTextField.setText(userInputTextField.getText().concat("0"));
-			numberZeroEnteredByUser = true;
+			hasNumberZeroBeenEnteredByUser = true;
 			break;
 
 		case KeyEvent.VK_1:
@@ -505,7 +505,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 */
 	public static void resetValues() {
 		Arrays.fill(operatorFlags, Boolean.FALSE);
-		numberZeroEnteredByUser = false;
+		hasNumberZeroBeenEnteredByUser = false;
 		Collections.fill(Calculator.doubleNumbers, 0.0);
 		Calculator.stringNumbers.clear();
 		Calculator.doubleNumbers.clear();

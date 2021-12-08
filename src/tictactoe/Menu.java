@@ -62,7 +62,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageToe.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		JLabel lblPlayer1 = new JLabel("Player 1:");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));

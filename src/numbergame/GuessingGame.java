@@ -78,7 +78,7 @@ public class GuessingGame implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bgImageGuess.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
 
 		JLabel lblScore = new JLabel("Score");
 		lblScore.setBounds(21, 24, 34, 17);

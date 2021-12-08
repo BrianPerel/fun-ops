@@ -17,7 +17,7 @@
 	   <finalName>tic_tac_toe-v1.0</finalName>
 		<resources>
 			<resource>
-				<directory>res\graphics\bgImageToe</directory>
+				<directory>res\graphics\bg-image-tac</directory>
 			</resource>
 		</resources>
 		<sourceDirectory>src\tictactoe</sourceDirectory>
