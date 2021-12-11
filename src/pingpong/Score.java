@@ -28,13 +28,13 @@ public class Score {
 		g.drawLine(0, 552, 1000, 552); // horizontal line
 		g.drawLine(0, 2, 1000, 2); // horizontal line
 
-		p1 = "P1:".concat(String.valueOf(getPlayerOneScore() / 10)).concat(String.valueOf(getPlayerOneScore() % 10));
-		p2 = "P2:".concat(String.valueOf(getPlayerTwoScore() / 10)).concat(String.valueOf(getPlayerTwoScore() % 10));
+		p1 = "P1: ".concat(String.valueOf(getPlayerOneScore() / 10)).concat(String.valueOf(getPlayerOneScore() % 10));
+		p2 = "P2: ".concat(String.valueOf(getPlayerTwoScore() / 10)).concat(String.valueOf(getPlayerTwoScore() % 10));
 		
 		// if score is below 10 show only single digit for player scores
 		if(getPlayerOneScore() < 10 || getPlayerTwoScore() < 10) {
-			g.drawString(p1.substring(0, 3).concat(p1.substring(4, 5)), 170, 50);
-			g.drawString(p2.substring(0, 3).concat(p2.substring(4, 5)), 690, 50);
+			g.drawString(p1.substring(0, 4).concat(p1.substring(5, 6)), 170, 50);
+			g.drawString(p2.substring(0, 4).concat(p2.substring(5, 6)), 690, 50);
 		} else {
 			g.drawString(p1, 170, 50);
 			g.drawString(p2, 690, 50);

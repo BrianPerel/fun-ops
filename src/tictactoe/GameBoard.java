@@ -36,7 +36,6 @@ public class GameBoard implements ActionListener {
 	
 	static JFrame f = new JFrame("Tic Tac Toe");
 
-
 	/**
 	 * Setups the current game: makes decision on who's turn it is and assigns
 	 * player entered names

@@ -94,7 +94,7 @@ public class StopWatch extends JFrame {
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
-			private final static int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
+			private static final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			/**
 			 * Updates the watch label when button is pushed.
@@ -105,7 +105,9 @@ public class StopWatch extends JFrame {
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
+				
 				centisec++;
+				
 				if (minute == TIMEBASE) {
 					hour++;
 					minute = 0;
@@ -142,7 +144,9 @@ public class StopWatch extends JFrame {
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
+				
 				centisec++;
+				
 				if (minute == TIMEBASE) {
 					hour++;
 					minute = 0;

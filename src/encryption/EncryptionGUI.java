@@ -189,7 +189,7 @@ public class EncryptionGUI implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
 		}
 
-		// if loaded file isn't blank, allow decryption op
+		// if loaded file isn't blank, allow decryption operation
 		else if (ae.getSource() == btnDecrypt && !data.isBlank()) {
 			try {
 				dataSet.decrypt();

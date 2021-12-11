@@ -142,12 +142,24 @@ public class GameBoard extends JPanel implements Runnable {
 		}
 		
 		// give player 1 a point and create new paddles & ball
-		if (pongBall.x <= 0) {
+		if (pongBall.x <= -22) {
 			gameScore.setPlayerTwoScore(gameScore.getPlayerTwoScore() + 1);
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				Thread.currentThread().interrupt();
+			}
 			createPongBall();
 		}
-		if (pongBall.x >= GAME_WIDTH - BALL_DIAMETER) {
+		if (pongBall.x >= (GAME_WIDTH - BALL_DIAMETER) + 22) {
 			gameScore.setPlayerOneScore(gameScore.getPlayerOneScore() + 1);
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				Thread.currentThread().interrupt();
+			}
 			createPongBall();
 		}
 	}

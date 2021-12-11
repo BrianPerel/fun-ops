@@ -34,7 +34,6 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
-	private boolean outOfTimeFlag;
 	private JCheckBox closeTimerCheckBox;
 	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
@@ -161,7 +160,7 @@ public class GuessingGame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		// user gets 10 seconds to make a guess (if timer is on)
-		outOfTimeFlag = false;
+		boolean outOfTimeFlag = false;
 		
 		StopWatchPanel.btnStop.doClick();
 		
