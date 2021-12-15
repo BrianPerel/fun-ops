@@ -165,7 +165,7 @@ public class GameBoard extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Wait 0.8 of a second, launches a loop that moves everything and checkes for collision
+	 * Wait 0.8 of a second, launches a loop that moves everything and checks for collision
 	 */
 	public void run() {
 		try {
