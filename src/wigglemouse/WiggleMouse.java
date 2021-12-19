@@ -28,7 +28,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private JButton btnStart;
 	private static Robot robot;
 	private static int x, y, timeToWait;
-	private String[] choices = { "1/2 minute", "1 minute", "3 minutes", "5 minutes" };	
+	private String[] choices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
@@ -60,7 +60,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	private WiggleMouse() {
-		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 550, 182);
@@ -86,55 +85,40 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == btnStart) {
-			switch ((String) timeOptionsComboBox.getSelectedItem()) {
-			case "1/2 minute":
-				timeToWait = 30000;
-				break;
-
-			case "1 minute":
-				timeToWait = 60000;
-				break;
-
-			case "3 minutes":
-				timeToWait = 180000;
-				break;
-
-			case "5 minutes":
-				timeToWait = 300000;
-				break;
-			
-			default:
-				break;
-			}
+			updateWaitingTime();
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent ae) {
+		if (ae.getSource() == btnStart) {
+			updateWaitingTime();
 		}
 	}
 	
 	/**
-	 * This is responsible for listening to all keyboard keys input
+	 * Updates the time to wait before moving the mouse
 	 */
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if(e.getSource() == btnStart) {
-			switch ((String) timeOptionsComboBox.getSelectedItem()) {
-			case "1/2 minute":
-				timeToWait = 30000;
-				break;
+	public void updateWaitingTime() {
+		switch ((String) timeOptionsComboBox.getSelectedItem()) {
+		case "1/2 minute":
+			timeToWait = 30000;
+			break;
 
-			case "1 minute":
-				timeToWait = 60000;
-				break;
+		case "1 minute":
+			timeToWait = 60000;
+			break;
 
-			case "3 minutes":
-				timeToWait = 180000;
-				break;
+		case "3 minutes":
+			timeToWait = 180000;
+			break;
 
-			case "5 minutes":
-				timeToWait = 300000;
-				break;
-			
-			default:
-				break;
-			}
+		case "5 minutes":
+			timeToWait = 300000;
+			break;
+		
+		default:
+			break;
 		}
 	}
 
@@ -153,9 +137,9 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle
 			// Mouse action
-			robot.mouseMove(x, y + 1);
+			robot.mouseMove(x, y++);
 			Thread.sleep(50);
-			robot.mouseMove(x, y - 1);
+			robot.mouseMove(x, y--);
 			Thread.sleep(50);
 			robot.mouseMove(x, y);
 		}

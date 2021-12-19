@@ -66,7 +66,6 @@ public class EncryptionGUI implements ActionListener {
 	 * @throws FileNotFoundException thrown if file not found
 	 */
 	public EncryptionGUI() throws FileNotFoundException {
-
 		frame = new JFrame();
 		frame.setBounds(100, 100, 421, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -164,7 +163,6 @@ public class EncryptionGUI implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
 		// if filename isn't empty or file hasn't yet been loaded
 		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !isFileLoaded) {
 			obtainFileData();

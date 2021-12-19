@@ -212,6 +212,7 @@ public class GuessingGame implements ActionListener {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 				randomNumber = randomGenerator.nextInt(100);
 				textFieldRandomNumber.setText(Integer.toString(randomNumber));
+				
 				if (!outOfTimeFlag) {
 					totalGameScore += 10;
 				}
