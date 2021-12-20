@@ -41,8 +41,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JTextField hangmanWordTextField;
 	
 	// chosen hangman word
-	private static String hangmanWord = "";
-	private static String maskingAsterisk;
+	private static String hangmanWord = "", maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
@@ -56,8 +55,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private int count = 0;
 
 	// placeholder for defect fix - prevent loosing health when same button is
-	// continuously pressed
-	private char tmp = '!';
+	// continuously pressed. \0 is a special character which represents null
+	private char tmp = '\0';
 
 	// t1-t4: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
@@ -75,7 +74,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-
 				try {
 					Hangman window = new Hangman();
 					window.frame.setVisible(true);
@@ -242,9 +240,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		for (int i = 0; i < hangmanWord.length(); i++) {
 			if (hangmanWord.charAt(i) == argUsersGuess) {
 				newasterisk.append(argUsersGuess);
-			} else if (maskingAsterisk.charAt(i) != '*') {
+			} 
+			else if (maskingAsterisk.charAt(i) != '*') {
 				newasterisk.append(hangmanWord.charAt(i));
-			} else {
+			} 
+			else {
 				newasterisk.append("*");
 			}
 		}			
@@ -313,7 +313,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
-		
 		for (int i = 0; i < letterTextFields.length; i++) {
 			letterTextFields[i].setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 		}
@@ -332,7 +331,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-		
 		for (int x = 0; x < t.length; x++) {
 			if (!letterTextFields[x].hasFocus()) {
 				t[x] = false;

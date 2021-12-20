@@ -52,11 +52,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
-		if (argGameResult.equals("Game Over! Draw")) {
-			lblGameResult.setText(argGameResult);
-		} else {
-			lblGameResult.setText(argGameResult + " wins!");
-		}
+		String message = argGameResult.equals("Game Over! Draw") ? argGameResult : (argGameResult + " wins!");
+		lblGameResult.setText(message);
 
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
@@ -85,7 +82,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);
-		} else if (e.getSource() == btnQuit) {
+		} 
+		else if (e.getSource() == btnQuit) {
 			GameBoard.f.dispose();
 			f2.dispose();
 		}
@@ -102,7 +100,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 			GameBoard.f.dispose();
 			f2.dispose();
 			new GameBoard(false, false, true);
-		} else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
+		} 
+		else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			GameBoard.f.dispose();
 			f2.dispose();
 		}

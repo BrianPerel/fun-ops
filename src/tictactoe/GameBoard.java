@@ -144,15 +144,15 @@ public class GameBoard implements ActionListener {
 			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
 				if (isPlayerOnesTurn) {
 					playerOnesTurnComplete(gameBoardTiles[x]);
-				} else if (isPlayerTwosTurn) {
-					playerTwosTurnComplete(gameBoardTiles[x]);
 				} 
-			} else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
+				else if (isPlayerTwosTurn) {
+					playerTwosTurnComplete(gameBoardTiles[x]);
+				} 				
+			} 
+			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				// logger.warn("Invalid Move!");
 			}
 		}
-
-		// game rules: Need 3 in a row in any direction
 		
 		/*
 		 * Game board reference (button #'s):
@@ -165,7 +165,7 @@ public class GameBoard implements ActionListener {
 		if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
 				&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
 				&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
-			new Winner("Game Over! Tie");
+			new Winner("Game Over! It's a draw");
 		}
 
 		// if buttons 1, 2, 3 are triggered
@@ -173,7 +173,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
 				&& gameBoardTiles[2].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
@@ -185,7 +186,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(getPlayerTwosName());
@@ -196,7 +198,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
@@ -207,7 +210,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
 				&& gameBoardTiles[6].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
@@ -219,7 +223,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(getPlayerTwosName());
@@ -230,7 +235,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
@@ -241,7 +247,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
@@ -252,7 +259,8 @@ public class GameBoard implements ActionListener {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(getPlayerOnesName());
-		} else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
+		} 
+		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(getPlayerTwosName());

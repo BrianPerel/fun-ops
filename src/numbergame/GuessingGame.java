@@ -164,8 +164,6 @@ public class GuessingGame implements ActionListener {
 		
 		StopWatchPanel.btnStop.doClick();
 		
-		int textFieldGuessTheNumberInt;
-
 		// if the timer is greater than 10 seconds when the user guesses 
 		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
 			outOfTimeFlag = true;
@@ -183,6 +181,36 @@ public class GuessingGame implements ActionListener {
 			}
 		}
 
+		evaluateGuessNumber(ae, outOfTimeFlag);
+
+		// reset the timer
+		StopWatchPanel.btnReset.doClick();
+
+		if (closeTimerCheckBox.isSelected()) {
+			StopWatchPanel.btnStart.setEnabled(false);
+			closeTimerCheckBox.setEnabled(false);
+			StopWatchPanel.watch.setEnabled(false);
+		}
+
+		// start the timer from 0
+		StopWatchPanel.btnStart.doClick();
+
+		// set guess text field to blank
+		textFieldGuessTheNumber.setText("");
+
+		// forces focus to jump from button pressed to guessing text field again
+		textFieldGuessTheNumber.requestFocus();
+	}
+	
+	/**
+	 * Examines value user guesses with
+	 * @param ae the action event triggered
+	 * @param outOfTimeFlag boolean keeping track of whether or not timer has hit 10 seconds
+	 */
+	public void evaluateGuessNumber(ActionEvent ae, boolean outOfTimeFlag) {
+		
+		int textFieldGuessTheNumberInt;
+		
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			totalGuessesMade++;
@@ -226,6 +254,7 @@ public class GuessingGame implements ActionListener {
 				}
 
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
+				
 				if (totalGameScore != 0) {
 					totalGameScore -= 10;
 				}
@@ -262,23 +291,5 @@ public class GuessingGame implements ActionListener {
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
-
-		// reset the timer
-		StopWatchPanel.btnReset.doClick();
-
-		if (closeTimerCheckBox.isSelected()) {
-			StopWatchPanel.btnStart.setEnabled(false);
-			closeTimerCheckBox.setEnabled(false);
-			StopWatchPanel.watch.setEnabled(false);
-		}
-
-		// start the timer from 0
-		StopWatchPanel.btnStart.doClick();
-
-		// set guess text field to blank
-		textFieldGuessTheNumber.setText("");
-
-		// forces focus to jump from button pressed to guessing text field again
-		textFieldGuessTheNumber.requestFocus();
 	}
 }

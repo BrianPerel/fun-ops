@@ -123,7 +123,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 			new GameBoard(true, true, false);
 
 			// if one of the 2 textfields doesn't get a name
-		} else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
+		} 
+		else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} // if first name field equals the second one

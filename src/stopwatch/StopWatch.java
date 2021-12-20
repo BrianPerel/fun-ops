@@ -96,11 +96,7 @@ public class StopWatch extends JFrame {
 			
 			private static final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
-			/**
-			 * Updates the watch label when button is pushed.
-			 * 
-			 * @param event Indicates a button is pushed
-			 */
+			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
