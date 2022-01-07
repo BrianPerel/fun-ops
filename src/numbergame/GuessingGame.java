@@ -35,12 +35,11 @@ public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
 	private JCheckBox closeTimerCheckBox;
-	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JFormattedTextField textFieldGuessTheNumber;
-	private JButton btnPlayAgain = new JButton("Play again?");
-	private JButton btnGuess = new JButton("Guess");
 	private SecureRandom randomGenerator = new SecureRandom();
-	private int totalGuessesMade = 0, totalGameScore = 0, randomNumber = 0;
+	private int totalGuessesMade, totalGameScore, randomNumber;
+	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
+	private JButton btnPlayAgain = new JButton("Play again?"), btnGuess = new JButton("Guess");
 
 	/**
 	 * Launch the application.
@@ -181,7 +180,7 @@ public class GuessingGame implements ActionListener {
 			}
 		}
 
-		evaluateGuessNumber(ae, outOfTimeFlag);
+		evaluateGuess(ae, outOfTimeFlag);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -207,15 +206,13 @@ public class GuessingGame implements ActionListener {
 	 * @param ae the action event triggered
 	 * @param outOfTimeFlag boolean keeping track of whether or not timer has hit 10 seconds
 	 */
-	public void evaluateGuessNumber(ActionEvent ae, boolean outOfTimeFlag) {
-		
-		int textFieldGuessTheNumberInt;
-		
+	public void evaluateGuess(ActionEvent ae, boolean outOfTimeFlag) {
+				
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			totalGuessesMade++;
 			
-			textFieldGuessTheNumberInt = Integer.valueOf(textFieldGuessTheNumber.getText());
+			int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
 
 			// if input remainder entered is outside of range 1-99
 			if (textFieldGuessTheNumberInt >= 100

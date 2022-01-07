@@ -25,9 +25,8 @@ public class Calculator {
 	private static double answer;
 
 	/**
-	 * sets the number (contained as the argument) in the numbers array. This will
+	 * Sets the number (contained as the argument) in the numbers array. This will
 	 * allow the user to perform operations with more than just 2 numbers.
-	 * 
 	 * @param argNumber number to be set
 	 */
 	public static void setNumber(String argNumber) {
@@ -43,7 +42,6 @@ public class Calculator {
 
 	/**
 	 * Calculator division operation
-	 * 
 	 * @return the quotient
 	 */
 	public static double divide() {
@@ -63,7 +61,6 @@ public class Calculator {
 
 	/**
 	 * Calculator multiplication operation
-	 * 
 	 * @return the product
 	 */
 	public static double multiply() {
@@ -89,7 +86,6 @@ public class Calculator {
 
 	/**
 	 * Calculator subtraction operation
-	 * 
 	 * @return the difference
 	 */
 	public static double subtract() {
@@ -102,7 +98,6 @@ public class Calculator {
 
 	/**
 	 * Calculator addition operation
-	 * 
 	 * @return the sum
 	 */
 	public static double add() {
@@ -114,8 +109,7 @@ public class Calculator {
 	}
 
 	/**
-	 * Calculator % operation
-	 * 
+	 * Calculator '%' operation
 	 * @param argNumber the value positioned before the % sign in user input
 	 * @return the percent result
 	 */
@@ -138,7 +132,6 @@ public class Calculator {
 	/**
 	 * Converts String to Double values, calls appropriate requested operation, 
 	 * and formats the return value
-	 * 
 	 * @return formatted result value after performing operation
 	 */
 	public static String compute() {

@@ -193,7 +193,7 @@ public class GameBoard extends JPanel implements Runnable {
 	}
 
 	/**
-	 * A action listener class that listens to keys pressed and released
+	 * A action listener class that listens to keys pressed and released on the pong table
 	 */
 	public class ActionListener extends KeyAdapter {
 		@Override

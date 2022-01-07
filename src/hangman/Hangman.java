@@ -29,7 +29,6 @@ import javax.swing.text.MaskFormatter;
 
 /**
  * App simulating a traditional hangman game with a 4-letter car theme. <br>
- * 
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
@@ -41,7 +40,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JTextField hangmanWordTextField;
 	
 	// chosen hangman word
-	private static String hangmanWord = "", maskingAsterisk;
+	private static String hangmanWord, maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
@@ -52,16 +51,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private ArrayList<String> hangmanDrawing = new ArrayList<>();
 
 	// placeholder for a counter
-	private int count = 0;
+	private int count;
 
-	// placeholder for defect fix - prevent loosing health when same button is
-	// continuously pressed. \0 is a special character which represents null
-	private char tmp = '\0';
+	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
+	private char tmp;
 
 	// t1-t4: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
-	private boolean w, o, r, d = false;
+	private boolean w, o, r, d;
 	
 	private boolean[] t = new boolean[4];
 	
@@ -186,7 +184,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	/**
 	 * MaskFormatter is used to specify/create the format of a text field
-	 * 
 	 * @param argString is the text field's user input area (the box)
 	 * @return the formatted text field
 	 */
@@ -202,14 +199,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * read from list file and randomly select a hangman word
+	 * Read from list file and randomly select a hangman word
 	 */
 	public static void createHangmanWord() {
 		// choose random word from txt file
 		hangmanWord = line.get(randomGenerator.nextInt(6));
 		maskingAsterisk = new String(new char[hangmanWord.length()]).replace("\0", "*");
 		
-		// this line is revealing the word to the console 
+		// reveal the hangman word to the console 
 		System.out.println(hangmanWord);		
 	}
 
@@ -236,7 +233,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Performs actions to display the correct placements of '*' while user is guessing
 	 */
 	public static String maskRemainingHangmanWord(char argUsersGuess) {
-		StringBuilder newasterisk = new StringBuilder("");
+		StringBuilder newasterisk = new StringBuilder();
 		for (int i = 0; i < hangmanWord.length(); i++) {
 			if (hangmanWord.charAt(i) == argUsersGuess) {
 				newasterisk.append(argUsersGuess);

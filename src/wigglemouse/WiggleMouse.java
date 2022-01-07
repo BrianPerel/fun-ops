@@ -28,8 +28,8 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private JButton btnStart;
 	private static Robot robot;
 	private static int x, y, timeToWait;
-	private String[] choices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
-	private final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
+	private static String[] choices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
+	private static final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
 
 	/**
 	 * Launch the application.
@@ -99,7 +99,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	/**
 	 * Updates the time to wait before moving the mouse
 	 */
-	public void updateWaitingTime() {
+	public static void updateWaitingTime() {
 		switch ((String) timeOptionsComboBox.getSelectedItem()) {
 		case "1/2 minute":
 			timeToWait = 30000;

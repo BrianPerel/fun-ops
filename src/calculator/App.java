@@ -32,7 +32,7 @@ public class App extends KeyAdapter implements ActionListener {
 	private static String cursorRightPositionedWithZero, cursorRightPositioned;
 	private JFormattedTextField userInputTextField;
 	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
-	static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
+	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	private char[] spacesForMainTextField = new char[31];
 	private static boolean hasNumberZeroBeenEnteredByUser;

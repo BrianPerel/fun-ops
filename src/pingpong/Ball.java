@@ -87,7 +87,7 @@ public class Ball extends Rectangle {
 
 	/**
 	 * Gets the y velocity of the game ball
-	 * @return
+	 * @return y velocity
 	 */
 	public double getyVelocityOfBall() {
 		return yVelocityOfBall;
