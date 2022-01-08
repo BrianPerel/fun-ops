@@ -35,23 +35,18 @@ public class Menu extends KeyAdapter implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Menu window = new Menu();
-					window.frame.setVisible(true);
-					window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-					// logger.info("Starting tic tac toe log");
-				} catch (Exception e) {
-					// logger.error("Error: " + e.toString());
-					e.printStackTrace();
-				}
-			}
-		});
+	public static void main(String[] args) {		
+		try {
+			Menu window = new Menu();
+			window.frame.setVisible(true);
+			window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+			// logger.info("Starting tic tac toe log");
+		} catch (Exception e) {
+			// logger.error("Error: " + e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	/**

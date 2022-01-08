@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * Performs all calculator operations. <br>
- * 
  * @author Brian Perel
  */
 public class Calculator {

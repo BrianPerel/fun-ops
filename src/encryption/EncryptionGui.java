@@ -27,45 +27,37 @@ import javax.swing.JTextField;
  * @author Brian Perel
  *
  */
-public class EncryptionGUI implements ActionListener {
+public class EncryptionGui implements ActionListener {
 
 	private String data = "";
 	private JButton btnBrowse;
 	private boolean isFileLoaded;
 	private JFrame frame;
-	static String fileName;
+	private static String fileName;
 	private EncryptDecrypt dataSet;
-	private static EncryptionGUI window;
+	private static EncryptionGui window;
 	private JTextField loadingTextField;
 	private JButton btnEncrypt = new JButton("Encrypt");
 	private JButton btnDecrypt = new JButton("Decrypt");
 	private JButton btnLoadFile = new JButton("Load file");
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					window = new EncryptionGUI();
-					window.frame.setVisible(true);
-					window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public static void main(String[] args) {	
+		try {
+			window = new EncryptionGui();
+			window.frame.setVisible(true);
+			window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Create the application.
 	 * @throws FileNotFoundException thrown if file not found
 	 */
-	public EncryptionGUI() throws FileNotFoundException {
+	public EncryptionGui() throws FileNotFoundException {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 421, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -239,7 +231,7 @@ public class EncryptionGUI implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
-			fileName = f1.toString();
+			setFileName(f1.toString());
 			dataSet = new EncryptDecrypt(data);
 			isFileLoaded = true;
 
@@ -267,5 +259,21 @@ public class EncryptionGUI implements ActionListener {
 		if(read != null) {
 			read.close();
 		}
+	}
+
+	/**
+	 * Returns name of file to be encrypted
+	 * @return filename to be encrypted
+	 */
+	public static String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * Sets name of file to be encrypted
+	 * @param fileName that will be encrypted
+	 */
+	public static void setFileName(String fileName) {
+		EncryptionGui.fileName = fileName;
 	}
 }

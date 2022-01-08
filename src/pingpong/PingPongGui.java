@@ -4,18 +4,18 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-public class PingPongGUI extends JFrame {
+public class PingPongGui extends JFrame {
 	
 	private static final long serialVersionUID = 8513294011065865486L;
 
 	public static void main(String[] args) {
-		new PingPongGUI();
+		new PingPongGui();
 	}
 
 	/**
 	 * Setups and creates the GUI
 	 */
-	public PingPongGUI() {
+	public PingPongGui() {
 		this.add(new GameBoard());
 		this.setTitle("Pong Game");
 		this.setResizable(false);

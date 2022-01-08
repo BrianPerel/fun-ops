@@ -51,7 +51,7 @@ public class EncryptDecrypt {
 			// cast the StringBuilder into a String
 			data = maskedData.toString();
 
-			FileWriter myWriter = new FileWriter(EncryptionGUI.fileName); // access the existing txt file
+			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName()); // access the existing txt file
 
 			try {
 				myWriter.write(data); // write newly created string of random characters into file
@@ -89,7 +89,7 @@ public class EncryptDecrypt {
 		// cast the StringBuilder into a String
 		data = unmaskedData.toString();
 
-		FileWriter myWriter = new FileWriter(EncryptionGUI.fileName);
+		FileWriter myWriter = new FileWriter(EncryptionGui.getFileName());
 
 		try {
 			// override with decrypted data

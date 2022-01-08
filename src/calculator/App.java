@@ -37,32 +37,17 @@ public class App extends KeyAdapter implements ActionListener {
 	private char[] spacesForMainTextField = new char[31];
 	private static boolean hasNumberZeroBeenEnteredByUser;
 	private JButton[] buttons = new JButton[24];
-	
-	/*
-	 * buttons[]:
-	 * buttons[0] => btnTurnToFraction, buttons[1] => btnClearCE, buttons[2] => btnClearC, buttons[3] => btnBackspace (unicode for backspace symbol = \u232B),
-	 * buttons[4] => btnPercent, buttons[5] => btnSquare (unicode for X^2 (x squared) = x\u00B2), buttons[6] => btnSquareRoot (unicode for 2 square root x symbol = 2\u221Ax),
-	 * buttons[7] => btnDivision (unicode for division symbol = \u00F7), buttons[8] = btnMultiply, buttons[9] = btnNumberZero, buttons[10] = btnNumberOne, buttons[11] = btnNumberTwo
-	 * buttons[12] = btnNumberTwo, buttons[13] = btnNumberThree, buttons[14] = btnNumberFour, buttons[15] = btnNumberFive, buttons[16] = btnNumberSix,
-	 * buttons[17] = btnNumberSeven, buttons[18] = btnNumberEight, buttons[19] = btnNumberNine, buttons[20] = btnSubtract, buttons[21] = btnAdd,
-	 * buttons[22] = btnPlusMinus, buttons[23] = btnPlusMinus, buttons[24] = btnDecimalPoint, buttons[25] = btnEquals, 
-	 */
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					App window = new App();
-					window.frame.setVisible(true);
-					window.frame.setTitle("Calculator App by: Brian Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public static void main(String[] args) {		
+		try {
+			App window = new App();
+			window.frame.setVisible(true);
+			window.frame.setTitle("Calculator App by: Brian Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -83,11 +68,11 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[0] = new JButton("1/x");
 		buttons[1] = new JButton("CE");
 		buttons[2] = new JButton("C");
-		buttons[3] = new JButton("\u232B");
+		buttons[3] = new JButton("\u232B"); // unicode for backspace symbol = \u232B
 		buttons[4] = new JButton("%");
-		buttons[5] = new JButton("x\u00B2");
-		buttons[6] = new JButton("2\u221Ax");
-		buttons[7] = new JButton("\u00F7");
+		buttons[5] = new JButton("x\u00B2"); // unicode for X^2 (x squared) = x\u00B2
+		buttons[6] = new JButton("2\u221Ax"); // unicode for 2 square root x symbol = 2\u221Ax
+		buttons[7] = new JButton("\u00F7"); // unicode for division symbol = \u00F7
 		buttons[8] = new JButton("*");
 		buttons[9] = new JButton("0");
 		buttons[10] = new JButton("1");

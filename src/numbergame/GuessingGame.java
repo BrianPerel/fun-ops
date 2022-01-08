@@ -41,25 +41,17 @@ public class GuessingGame implements ActionListener {
 	private JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
 	private JButton btnPlayAgain = new JButton("Play again?"), btnGuess = new JButton("Guess");
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					GuessingGame window = new GuessingGame();
-					window.frame.setTitle("Number Guessing Game by: Brian Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Thread.currentThread().interrupt();
-				}
-			}
-		});
+		try {
+			GuessingGame window = new GuessingGame();
+			window.frame.setTitle("Number Guessing Game by: Brian Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+			window.frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	/**

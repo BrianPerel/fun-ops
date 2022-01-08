@@ -65,25 +65,17 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	
 	private static SecureRandom randomGenerator = new SecureRandom();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Hangman window = new Hangman();
-					window.frame.setVisible(true);
-					window.frame.setTitle("Hangman App by: Brian Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-				} catch (Exception e) {
-					// logger.error("Error: " + e.toString());
-					e.printStackTrace();
-				}
-			}
-		});		
+		try {
+			Hangman window = new Hangman();
+			window.frame.setVisible(true);
+			window.frame.setTitle("Hangman App by: Brian Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+		} catch (Exception e) {
+			// logger.error("Error: " + e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	/**

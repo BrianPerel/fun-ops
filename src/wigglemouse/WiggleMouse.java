@@ -36,21 +36,16 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					WiggleMouse window = new WiggleMouse();
-					window.frame.setVisible(true);
-					window.frame.setTitle("Mouse move by B. Perel");
-					window.frame.setResizable(false);
-					window.frame.setLocationRelativeTo(null);
-					robot = new Robot();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			WiggleMouse window = new WiggleMouse();
+			window.frame.setVisible(true);
+			window.frame.setTitle("Mouse move by B. Perel");
+			window.frame.setResizable(false);
+			window.frame.setLocationRelativeTo(null);
+			robot = new Robot();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		timeToWait = 30000;
 		moveMouse();
