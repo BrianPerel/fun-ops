@@ -11,8 +11,8 @@ public class Paddle extends Rectangle {
 	private int yVelocity, speed = 10;
 	private String id;
 
-	public Paddle(int x, int y, final int PADDLE_WIDTH, final int PADDLE_HEIGHT, String id) {
-		super(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
+	public Paddle(int xCoordinate, int yCoordinate, final int PADDLE_WIDTH, final int PADDLE_HEIGHT, String id) {
+		super(xCoordinate, yCoordinate, PADDLE_WIDTH, PADDLE_HEIGHT);
 		this.id = id;
 	}
 

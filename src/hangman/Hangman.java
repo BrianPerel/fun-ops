@@ -1,7 +1,6 @@
 package hangman;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -277,12 +276,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				// defect fix - prevent character from loosing health if same wrong letter was
 				// pressed more than once
 				if (e.getKeyChar() != tmp) {
-					hangmanTextField.append(hangmanDrawing.get(count));
-					count++;
+					hangmanTextField.append(hangmanDrawing.get(count++));
 				} 
 
 				if (count == hangmanDrawing.size()) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word was: " + hangmanWord);
+					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + hangmanWord);
 					resetGame();
 				}
 
@@ -290,7 +288,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			}
 
 			if (w && o && r && d) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word was: " + hangmanWord);
+				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word is: " + hangmanWord);
 				resetGame();	
 			}
 		}

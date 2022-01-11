@@ -2,7 +2,6 @@ package encryption;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -191,9 +190,9 @@ public class EncryptionGui implements ActionListener {
 		}
 		
 
-		// if loaded file is blank or decrypt btn pushed
+		// if loaded file is BLANK or encrypt/decrypt btn pushed
 		else if (data.isBlank() && (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt)) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file provided yet", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 
@@ -203,7 +202,8 @@ public class EncryptionGui implements ActionListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 
-		else if (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt && !isFileLoaded) {
+		// if encrypt/decrypt is pushed and file has not been loaded
+		else if ((ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt) && !isFileLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -270,10 +270,10 @@ public class EncryptionGui implements ActionListener {
 	}
 
 	/**
-	 * Sets name of file to be encrypted
-	 * @param fileName that will be encrypted
+	 * Sets the name of the file to be encrypted
+	 * @param argFileName that will be encrypted
 	 */
-	public static void setFileName(String fileName) {
-		EncryptionGui.fileName = fileName;
+	public static void setFileName(String argFileName) {
+		EncryptionGui.fileName = argFileName;
 	}
 }

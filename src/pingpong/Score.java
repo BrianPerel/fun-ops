@@ -51,10 +51,10 @@ public class Score {
 
 	/**
 	 * Sets the current score for player one 
-	 * @param playerOneScore Player one's current score
+	 * @param argPlayerOneScore Player one's current score
 	 */
-	public void setPlayerOneScore(int playerOneScore) {
-		this.playerOneScore = playerOneScore;
+	public void setPlayerOneScore(int argPlayerOneScore) {
+		this.playerOneScore = argPlayerOneScore;
 	}
 
 	/**
@@ -67,9 +67,9 @@ public class Score {
 
 	/**
 	 * Sets the current score for player two
-	 * @param playerTwoScore Player two's current score
+	 * @param argPlayerTwoScore Player two's current score
 	 */
-	public void setPlayerTwoScore(int playerTwoScore) {
-		this.playerTwoScore = playerTwoScore;
+	public void setPlayerTwoScore(int argPlayerTwoScore) {
+		this.playerTwoScore = argPlayerTwoScore;
 	}
 }

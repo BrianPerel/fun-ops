@@ -1,6 +1,5 @@
 package wigglemouse;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;

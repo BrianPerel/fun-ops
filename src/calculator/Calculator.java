@@ -22,6 +22,9 @@ public class Calculator {
 	static List<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
 	
 	private static double answer;
+	
+	// private constructor will hide the implicit public one
+	private Calculator() {}
 
 	/**
 	 * Sets the number (contained as the argument) in the numbers array. This will
