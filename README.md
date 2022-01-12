@@ -11,4 +11,4 @@ for the projects through ANT. In that case make sure to download
 that you want to use run, go to the Dependencies tab, click Classpath entries, advanced, add folder,
 and add the folder that contains the log4j.properties file (currently log4j folder)
 
-- [Check out the project here](https://brianperel.github.io/side_projects.htm)
+- ```[Check out the project here](https://brianperel.github.io/side_projects.htm)```
