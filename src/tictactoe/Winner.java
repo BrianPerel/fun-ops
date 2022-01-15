@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import tictactoe.playercomputer.GameBoardTwo;
+
 /**
  * Implementation for winner window. When a player wins, this window is displayed. <br>
  * 
@@ -23,6 +25,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	private JButton btnPlayAgain = new JButton("Play again");
 	private JButton btnQuit = new JButton("Quit");
+	private String winnersName;
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
@@ -30,11 +33,13 @@ public class Winner extends KeyAdapter implements ActionListener {
 	 */
 	public Winner(String argGameResult) {
 		
+		winnersName = argGameResult;
+		
 		JLabel lblGameResult = new JLabel();
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
-		f2.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -77,15 +82,26 @@ public class Winner extends KeyAdapter implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {		
+	public void actionPerformed(ActionEvent e) {	
+		f2.dispose();
+		
 		if (e.getSource() == btnPlayAgain) {
-			GameBoard.f.dispose();
-			f2.dispose();
-			new GameBoard(false, false, true);
+			if(winnersName.equals("player") || winnersName.equals("computer")) {
+				GameBoardTwo.f.dispose();
+				new GameBoardTwo(false, false, true);
+			}
+			else {
+				GameBoard.f.dispose();
+				new GameBoard(false, false, true);
+			}
 		} 
 		else if (e.getSource() == btnQuit) {
-			GameBoard.f.dispose();
-			f2.dispose();
+			if(winnersName.equals("player") || winnersName.equals("computer")) {
+				GameBoardTwo.f.dispose();
+			} 
+			else {
+				GameBoard.f.dispose();
+			}
 		}
 	}
 	
@@ -96,14 +112,25 @@ public class Winner extends KeyAdapter implements ActionListener {
 			btnPlayAgain.setSelected(false);
 		}
 		
+		f2.dispose();
+		
 		if (btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			GameBoard.f.dispose();
-			f2.dispose();
-			new GameBoard(false, false, true);
+			if(winnersName.equals("player") || winnersName.equals("computer")) {
+				GameBoard.f.dispose();
+				new GameBoardTwo(false, false, true);
+			}
+			else {
+				GameBoard.f.dispose();
+				new GameBoard(false, false, true);
+			}
 		} 
 		else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			GameBoard.f.dispose();
-			f2.dispose();
+			if(winnersName.equals("player") || winnersName.equals("computer")) {
+				GameBoardTwo.f.dispose();
+			}
+			else {
+				GameBoard.f.dispose();
+			}
 		}
 	}
 }

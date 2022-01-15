@@ -13,7 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
+import tictactoe.playercomputer.GameBoardTwo;
 // import org.apache.log4j.Logger;
 
 /**
@@ -29,6 +31,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
 	private JTextField nameOneTextField, nameTwoTextField;
+	private JRadioButton playAgainstComputerRadioButton;
 	// private static final Logger logger = Logger.getLogger(Menu.class);
 
 	public static void main(String[] args) {		
@@ -84,6 +87,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 		btnStart.setBackground(new Color(144, 238, 144));
+		
+		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
+		playAgainstComputerRadioButton.setBounds(207, 275, 157, 23);
+		frame.getContentPane().add(playAgainstComputerRadioButton);
+		playAgainstComputerRadioButton.addActionListener(this);
 	}
 
 	@Override
@@ -130,8 +138,12 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == playAgainstComputerRadioButton) {
+			frame.dispose();
+			new GameBoardTwo(true, true, false);
+		}
 		// if start button is pushed and both name fields arn't empty
-		if (ae.getSource() == btnStart && !nameOneTextField.getText().isEmpty()
+		else if (ae.getSource() == btnStart && !nameOneTextField.getText().isEmpty()
 				&& !nameTwoTextField.getText().isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
@@ -170,6 +182,6 @@ public class Menu extends KeyAdapter implements ActionListener {
 		} else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
-		}
+		} 
 	}
 }
