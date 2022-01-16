@@ -26,6 +26,7 @@ import tictactoe.Winner;
  */
 public class GameBoardTwo implements ActionListener {
 
+	private static int[] availableEmptyCells = new int[9];
 	private static boolean toRun = true; // enforces the computer to only do 1 click inside new thread
 	private int randomCell;
 	private static JLabel lblPlayersTurn;
@@ -145,28 +146,28 @@ public class GameBoardTwo implements ActionListener {
 		}
 		
 		if(toRun) {
-			// int array values are auto initialized to 0
-			int[] availableEmptyCells = new int[9];
-			
 			int y = 0;
+			
 			// check every game board tile (cell) and see what's empty
 			for(int x = 0; x < gameBoardTiles.length; x++) {
 				if(gameBoardTiles[x].getText().isEmpty()) {
 					// add this empty cell number to the array of available empty cells
 					availableEmptyCells[y] = x;
-					System.out.println(x);
+					System.out.println("cell# " + x + " is empty");
+				} else {
+					availableEmptyCells[y] = 0;
 				}
 				y++;
 			}
 			
-			System.out.println(Arrays.toString(availableEmptyCells));
+			System.out.println("empty cells array: " + Arrays.toString(availableEmptyCells));
 						
 			do {
 				// use random generator to choose an empty cell from the above array and click it
 	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
 			} while(randomCell == 0);
 			
-			System.out.println("computer chose: " + randomCell);
+			System.out.println("computer chose cell# " + randomCell);
 			
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
@@ -352,7 +353,7 @@ public class GameBoardTwo implements ActionListener {
 			});
 		}
 		
-		// disables all 9 buttons on board after game is over
+		// disables all 9 buttons on board after game is over. Otherwise when game ends, user can still click on other cells causing another win
 		for(int x = 0; x < gameBoardTiles.length; x++) {
 			gameBoardTiles[x].setEnabled(false);
 		}
@@ -369,11 +370,24 @@ public class GameBoardTwo implements ActionListener {
 		isPlayerOnesTurn = !isPlayerOnesTurn;
 		isPlayerTwosTurn = !isPlayerTwosTurn;	
 		toRun = true;
+		
+		int y = 0;
+		
+		// check every game board tile (cell) and see what's empty
+		for(int x = 0; x < gameBoardTiles.length; x++) {
+			if(gameBoardTiles[x].getText().isEmpty()) {
+				// add this empty cell number to the array of available empty cells
+				availableEmptyCells[y] = x;
+				System.out.println("cell# " + x + " is empty");
+			} else {
+				availableEmptyCells[y] = 0;
+			}
+			y++;
+		}
 	}
 
 	/**
 	 * Performs actions after player two's turn
-	 * 
 	 * @param buttonPressed button that was just pressed by player two
 	 */
 	public static void playerTwosTurnComplete(JButton buttonPressed) {

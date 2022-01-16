@@ -269,7 +269,6 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Highlights the winning player's selected tiles and disables the tiles
-	 * 
 	 * @param one   first tile clicked
 	 * @param two   second tile clicked
 	 * @param three third tile clicked
@@ -305,7 +304,6 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player one's turn
-	 * 
 	 * @param buttonPressed button that was just pressed by player one
 	 */
 	public static void playerOnesTurnComplete(JButton buttonPressed) {
@@ -318,7 +316,6 @@ public class GameBoard implements ActionListener {
 
 	/**
 	 * Performs actions after player two's turn
-	 * 
 	 * @param buttonPressed button that was just pressed by player two
 	 */
 	public static void playerTwosTurnComplete(JButton buttonPressed) {
