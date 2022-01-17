@@ -26,6 +26,7 @@ import tictactoe.Winner;
  */
 public class GameBoardTwo implements ActionListener {
 
+	private boolean gameFinished;
 	private static int[] availableEmptyCells = new int[9];
 	private static boolean toRun = true; // enforces the computer to only do 1 click inside new thread
 	private int randomCell;
@@ -153,21 +154,21 @@ public class GameBoardTwo implements ActionListener {
 				if(gameBoardTiles[x].getText().isEmpty()) {
 					// add this empty cell number to the array of available empty cells
 					availableEmptyCells[y] = x;
-					System.out.println("cell# " + x + " is empty");
+				//	System.out.println("cell# " + x + " is empty");
 				} else {
 					availableEmptyCells[y] = 0;
 				}
 				y++;
 			}
 			
-			System.out.println("empty cells array: " + Arrays.toString(availableEmptyCells));
+			// System.out.println("empty cells array: " + Arrays.toString(availableEmptyCells));
 						
 			do {
 				// use random generator to choose an empty cell from the above array and click it
 	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
 			} while(randomCell == 0);
 			
-			System.out.println("computer chose cell# " + randomCell);
+			// System.out.println("computer chose cell# " + randomCell);
 			
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
@@ -218,14 +219,16 @@ public class GameBoardTwo implements ActionListener {
 		 */
 		
 		// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
-		if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
+		if (!gameFinished && !gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
 				&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
 				&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
-			new Winner("Game Over! It's a draw");
+			// need gameFinished variable to prevent bug where this code runs twice 
+			gameFinished = true;
+			new Winner("Game Over! It's a draw!!");
 		}
 
 		// if buttons 1, 2, 3 are triggered
-		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
+		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(playerOnesName);
@@ -238,7 +241,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 4, 5, 6 are triggered
-		if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
+		else if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(playerOnesName);
@@ -250,7 +253,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 7, 8, 9 are triggered
-		if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+		else if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(playerOnesName);
@@ -262,7 +265,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 1, 4, 7 are triggered
-		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(playerOnesName);
@@ -275,7 +278,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 2, 5, 8 are triggered
-		if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
+		else if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(playerOnesName);
@@ -287,7 +290,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 3, 6, 9 are triggered
-		if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(playerOnesName);
@@ -299,7 +302,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 1, 5, 9 are triggered
-		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(playerOnesName);
@@ -311,7 +314,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		// if buttons 3, 5, 7 are triggered
-		if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(playerOnesName);
@@ -378,7 +381,7 @@ public class GameBoardTwo implements ActionListener {
 			if(gameBoardTiles[x].getText().isEmpty()) {
 				// add this empty cell number to the array of available empty cells
 				availableEmptyCells[y] = x;
-				System.out.println("cell# " + x + " is empty");
+				// System.out.println("cell# " + x + " is empty");
 			} else {
 				availableEmptyCells[y] = 0;
 			}

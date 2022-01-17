@@ -32,7 +32,6 @@ public class Winner extends KeyAdapter implements ActionListener {
 	 * @param argGameResult holds the result of the game - winner's name or game over message
 	 */
 	public Winner(String argGameResult) {
-		
 		winnersName = argGameResult;
 		
 		JLabel lblGameResult = new JLabel();
@@ -57,7 +56,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
-		String message = argGameResult.equals("Game Over! Draw") ? argGameResult : (argGameResult + " wins!");
+		String message = argGameResult.equals("Game Over! It's a draw!")
+				|| argGameResult.equals("Game Over! It's a draw!!") ? argGameResult : (argGameResult + " wins!");
 		lblGameResult.setText(message);
 
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
@@ -86,7 +86,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if(winnersName.equals("player") || winnersName.equals("computer")) {
+			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
@@ -96,12 +96,12 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if (e.getSource() == btnQuit) {
-			if(winnersName.equals("player") || winnersName.equals("computer")) {
+			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			} 
 			else {
 				GameBoard.f.dispose();
-			}
+			}			
 		}
 	}
 	
@@ -115,8 +115,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 		
 		if (btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(winnersName.equals("player") || winnersName.equals("computer")) {
-				GameBoard.f.dispose();
+			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
+				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
 			else {
@@ -125,7 +125,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(winnersName.equals("player") || winnersName.equals("computer")) {
+			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			}
 			else {
