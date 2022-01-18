@@ -175,8 +175,7 @@ public class GameBoardTwo implements ActionListener {
 			 * doClick's timeout gets checked inside the event thread, so it won't get released 
 			 * until the actionPerformed method exits (and so the event thread can continue its event processing)
 			 */
-			new Thread(new Runnable() {
-	            public void run() {
+			new Thread(() -> {
 	            	// check that the current turn is the computer's turn
 	            	if(lblPlayersTurn.getText().equals("computer's turn:")) {  
 	            		try {
@@ -187,8 +186,8 @@ public class GameBoardTwo implements ActionListener {
 	            		
 	 					gameBoardTiles[randomCell].doClick();  	
 	 				}
-	             }
-	         }).start();
+				}
+	         ).start();		
 		}
 				
 		for(int x = 0; x < gameBoardTiles.length; x++) {
@@ -206,7 +205,7 @@ public class GameBoardTwo implements ActionListener {
 		}
 		
 		/*
-		 * Game board reference (button #'s):
+		 * Game board cell reference (button #'s):
 		 * 	1  4  7
 		 *  2  5  8
 		 *  3  6  9
@@ -218,111 +217,114 @@ public class GameBoardTwo implements ActionListener {
 		 * 2 5 8
 		 */
 		
-		// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
-		if (!gameFinished && !gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
-				&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
-				&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
-			// need gameFinished variable to prevent bug where this code runs twice 
-			gameFinished = true;
-			new Winner("Game Over! It's a draw!!");
-		}
-
-		// if buttons 1, 2, 3 are triggered
-		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
-				&& gameBoardTiles[2].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 4, 5, 6 are triggered
-		else if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 7, 8, 9 are triggered
-		else if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 1, 4, 7 are triggered
-		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
-				&& gameBoardTiles[6].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 2, 5, 8 are triggered
-		else if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 3, 6, 9 are triggered
-		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 1, 5, 9 are triggered
-		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-			new Winner(playerTwosName);
-		}
-
-		// if buttons 3, 5, 7 are triggered
-		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
-			// logger.info(playerOneWinsMessage);
-			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-			new Winner(playerOnesName);
-		} 
-		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
-			// logger.info(playerTwoWinsMessage);
-			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-			new Winner(playerTwosName);
+		// prevents bug - avoids simultaneous winning and tie messages
+		if(!gameFinished) {
+			// if buttons 1, 2, 3 are triggered
+			if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
+					&& gameBoardTiles[2].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 4, 5, 6 are triggered
+			else if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 7, 8, 9 are triggered
+			else if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 1, 4, 7 are triggered
+			else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
+					&& gameBoardTiles[6].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 2, 5, 8 are triggered
+			else if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 3, 6, 9 are triggered
+			else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 1, 5, 9 are triggered
+			else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
+				new Winner(playerTwosName);
+			}
+	
+			// if buttons 3, 5, 7 are triggered
+			else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+				// logger.info(playerOneWinsMessage);
+				winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
+				new Winner(playerOnesName);
+			} 
+			else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
+				// logger.info(playerTwoWinsMessage);
+				winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
+				new Winner(playerTwosName);
+			}
+			
+			// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
+			else if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
+					&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
+					&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
+				// need gameFinished variable to prevent bug where this code runs twice 
+				gameFinished = true;
+				new Winner("Game Over! It's a draw!!");
+			}
 		}
 	}
 

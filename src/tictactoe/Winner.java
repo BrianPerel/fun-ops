@@ -56,6 +56,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
+		// 2 '!' indicates the result comes from tictactoe v2 (player vs. computer), 1 '!' indicates result is from player vs. player
 		String message = argGameResult.equals("Game Over! It's a draw!")
 				|| argGameResult.equals("Game Over! It's a draw!!") ? argGameResult : (argGameResult + " wins!");
 		lblGameResult.setText(message);
