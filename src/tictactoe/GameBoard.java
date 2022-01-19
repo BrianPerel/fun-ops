@@ -18,44 +18,21 @@ import javax.swing.SwingConstants;
  * Implementation for tic tac toe game board. Initiates the game. <br>
  * 
  * @author Brian Perel
- *
+ * 
  */
 public class GameBoard implements ActionListener {
 
-	private boolean gameFinished;
-	private static String playerOnesName, playerTwosName;
 	private static JLabel lblPlayersTurn;
 	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
-	// private static final Logger logger = Logger.getLogger(GameBoard.class);
-	private static String playerOneWinsMessage, playerTwoWinsMessage;
-	private JButton[] gameBoardTiles = new JButton[9];
-	private JButton[] highlightTiles = new JButton[3];
+	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
+	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName, playerTwosName;
+	// private static final Logger logger = Logger.getLogger(GameBoard.class);
 
 	// needed to invert these to fix a window2 symbol problem
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
 	
 	static JFrame f = new JFrame("Tic Tac Toe");
-
-	/**
-	 * Setups the current game: makes decision on who's turn it is and assigns
-	 * player entered names
-	 * 
-	 * @param argIsStart         boolean flag indicating whether or not the game has just
-	 *                  begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
-	 *                  game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
-	 *                  game
-	 */
-	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		start = argIsStart;
-		isPlayerOnesTurn = argIsPlayerOnesTurn;
-		isPlayerTwosTurn = argIsPlayerTwosTurn;
-
-		playerOneWinsMessage = "Player 1 (" + getPlayerOnesName() + ") wins!";
-		playerTwoWinsMessage = "Player 2 (" + getPlayerTwosName() + ") wins!";
-	}
 
 	/**
 	 * Builds the game's GUI board
@@ -71,8 +48,6 @@ public class GameBoard implements ActionListener {
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 
-		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
-
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,6 +58,7 @@ public class GameBoard implements ActionListener {
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
+		// creates and sets up the board tiles
 		for(int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
@@ -103,6 +79,7 @@ public class GameBoard implements ActionListener {
 				}
 			});
 		}
+		
 		gameBoardTiles[0].setBounds(63, 64, 80, 70);
 		gameBoardTiles[1].setBounds(63, 145, 80, 70);
 		gameBoardTiles[2].setBounds(63, 226, 80, 70);
@@ -112,23 +89,46 @@ public class GameBoard implements ActionListener {
 		gameBoardTiles[6].setBounds(243, 64, 80, 70);
 		gameBoardTiles[7].setBounds(243, 145, 80, 70);
 		gameBoardTiles[8].setBounds(243, 226, 80, 70);
-
+		
+		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(lblPlayersTurn);
 		
+		// creates and sets up the board line dividers
 		for(int x = 0; x < gameBoardSeparators.length; x++) {
 			gameBoardSeparators[x] = new JSeparator();
 			gameBoardSeparators[x].setBackground(Color.blue);
 			f.getContentPane().add(gameBoardSeparators[x]);
+			
+			if(x == 2 || x == 3) {
+				gameBoardSeparators[x].setOrientation(SwingConstants.VERTICAL);
+			}
 		}
 
 		gameBoardSeparators[0].setBounds(63, 138, 260, 11);
 		gameBoardSeparators[1].setBounds(63, 221, 260, 11);
 		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
 		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
+	}
+	
+	/**
+	 * Setups the current game: makes decision on who's turn it is and assigns
+	 * player entered names
+	 * 
+	 * @param argIsStart         boolean flag indicating whether or not the game has just
+	 *                  begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 *                  game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 *                  game
+	 */
+	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+		start = argIsStart;
+		isPlayerOnesTurn = argIsPlayerOnesTurn;
+		isPlayerTwosTurn = argIsPlayerTwosTurn;
 
-		gameBoardSeparators[2].setOrientation(SwingConstants.VERTICAL);
-		gameBoardSeparators[3].setOrientation(SwingConstants.VERTICAL);
+		playerOneWinsMessage = "Player 1 (" + getPlayerOnesName() + ") wins!";
+		playerTwoWinsMessage = "Player 2 (" + getPlayerTwosName() + ") wins!";
 	}
 
 	@Override
@@ -141,19 +141,33 @@ public class GameBoard implements ActionListener {
 			start = false;
 		}
 
+		// scans through the game board and performs all actions needed to complete a player's turn
 		for(int x = 0; x < gameBoardTiles.length; x++) {
-			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
+			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {				
 				if (isPlayerOnesTurn) {
 					playerOnesTurnComplete(gameBoardTiles[x]);
 				} 
 				else if (isPlayerTwosTurn) {
 					playerTwosTurnComplete(gameBoardTiles[x]);
-				} 				
+				} 	
+				
+				isPlayerOnesTurn = !isPlayerOnesTurn;
+				isPlayerTwosTurn = !isPlayerTwosTurn;
+				
+				break;
 			} 
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				// logger.warn("Invalid Move!");
 			}
 		}
+		
+		patternCheck();
+	}
+	
+	/**
+	 * Scans board after every move to see if a pattern of 3 has been made or if all tiles have been clicked
+	 */
+	public void patternCheck() {
 		
 		/*
 		 * Game board reference (button #'s):
@@ -162,114 +176,114 @@ public class GameBoard implements ActionListener {
 		 *  3  6  9
 		 */
 		
-		// prevents bug - avoids simultaneous winning and tie messages
-		if(!gameFinished) {
-			
-			// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
-			if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
-					&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
-					&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
-				// need gameFinished variable to prevent bug where this code runs twice 
-				gameFinished = true;
-				new Winner("Game Over! It's a draw!");
-			}
-	
-			// if buttons 1, 2, 3 are triggered
-			else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
-					&& gameBoardTiles[2].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 4, 5, 6 are triggered
-			else if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 7, 8, 9 are triggered
-			else if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 1, 4, 7 are triggered
-			else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
-					&& gameBoardTiles[6].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 2, 5, 8 are triggered
-			else if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 3, 6, 9 are triggered
-			else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 1, 5, 9 are triggered
-			else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-				new Winner(getPlayerTwosName());
-			}
-	
-			// if buttons 3, 5, 7 are triggered
-			else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
-				// logger.info(playerOneWinsMessage);
-				winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-				new Winner(getPlayerOnesName());
-			} 
-			else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
-				// logger.info(playerTwoWinsMessage);
-				winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-				new Winner(getPlayerTwosName());
+		// if buttons 1, 2, 3 are triggered
+		if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
+				&& gameBoardTiles[2].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 4, 5, 6 are triggered
+		else if (gameBoardTiles[3].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[5].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[3].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[5].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 7, 8, 9 are triggered
+		else if (gameBoardTiles[6].getText().equals("X") && gameBoardTiles[7].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[6].getText().equals("O") && gameBoardTiles[7].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 1, 4, 7 are triggered
+		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[3].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[3].getText().equals("O")
+				&& gameBoardTiles[6].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 2, 5, 8 are triggered
+		else if (gameBoardTiles[1].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[7].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[1].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[7].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 3, 6, 9 are triggered
+		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[5].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[5].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 1, 5, 9 are triggered
+		else if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[8].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[8].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
+			new Winner(getPlayerTwosName());
+		}
+
+		// if buttons 3, 5, 7 are triggered
+		else if (gameBoardTiles[2].getText().equals("X") && gameBoardTiles[4].getText().equals("X") && gameBoardTiles[6].getText().equals("X")) {
+			// logger.info(playerOneWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
+			new Winner(getPlayerOnesName());
+		} 
+		else if (gameBoardTiles[2].getText().equals("O") && gameBoardTiles[4].getText().equals("O") && gameBoardTiles[6].getText().equals("O")) {
+			// logger.info(playerTwoWinsMessage);
+			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
+			new Winner(getPlayerTwosName());
+		}
+		
+		else {
+			// if all buttons are pressed default to game over, tie (draw)
+			for(int x = 0; x < gameBoardTiles.length; x++) {
+				// break if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out
+				if(gameBoardTiles[x].getText().isEmpty()) {
+					break;
+				}
+				else if(x == gameBoardTiles.length - 1) {
+					new Winner("Game Over! It's a draw!");
+				}
 			}
 		}
 	}
@@ -317,8 +331,6 @@ public class GameBoard implements ActionListener {
 		buttonPressed.setForeground(new Color(232, 46, 6));
 		buttonPressed.setText(PLAYER_ONE_SHAPE);
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
-		isPlayerOnesTurn = !isPlayerOnesTurn;
-		isPlayerTwosTurn = !isPlayerTwosTurn;
 	}
 
 	/**
@@ -329,8 +341,6 @@ public class GameBoard implements ActionListener {
 		buttonPressed.setForeground(new Color(0, 0, 255));
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		lblPlayersTurn.setText(getPlayerTwosName() + "'s turn:");
-		isPlayerOnesTurn = !isPlayerOnesTurn;
-		isPlayerTwosTurn = !isPlayerTwosTurn;
 	}
 
 	public static String getPlayerOnesName() {

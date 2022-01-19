@@ -1,6 +1,7 @@
 package tictactoe;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 
 import tictactoe.playercomputer.GameBoardTwo;
+
 // import org.apache.log4j.Logger;
 
 /**
@@ -28,8 +30,8 @@ import tictactoe.playercomputer.GameBoardTwo;
 public class Menu extends KeyAdapter implements ActionListener {
 
 	private JButton btnStart;
-	private static final String ERROR = "ERROR";
 	private JFrame frame = new JFrame();
+	private static final String ERROR = "ERROR";
 	private JTextField nameOneTextField, nameTwoTextField;
 	private JRadioButton playAgainstComputerRadioButton;
 	// private static final Logger logger = Logger.getLogger(Menu.class);

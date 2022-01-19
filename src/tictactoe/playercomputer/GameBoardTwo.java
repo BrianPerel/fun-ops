@@ -26,41 +26,19 @@ import tictactoe.Winner;
  */
 public class GameBoardTwo implements ActionListener {
 
+	public static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
 	private boolean gameFinished;
-	private static int[] availableEmptyCells = new int[9];
-	private static boolean toRun = true; // enforces the computer to only do 1 click inside new thread
 	private int randomCell;
+	private static int[] availableEmptyCells = new int[9];
+	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start; 
 	private static JLabel lblPlayersTurn;
-	private static String playerOnesName = "player", playerTwosName = "computer";
-	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
-	private static String playerOneWinsMessage, playerTwoWinsMessage;
-	private static JButton[] gameBoardTiles = new JButton[9];
-	private JButton[] highlightTiles = new JButton[3];
+	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
+	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName = "player", playerTwosName = "computer";
 	public static JFrame f = new JFrame("Tic Tac Toe");
 	private Random randomGenerator = new Random();
-
-	/**
-	 * Setups the current game: makes decision on who's turn it is and assigns
-	 * player entered names
-	 * 
-	 * @param argIsStart         boolean flag indicating whether or not the game has just
-	 *                  begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
-	 *                  game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
-	 *                  game
-	 */
-	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		start = argIsStart;
-		isPlayerOnesTurn = argIsPlayerOnesTurn;
-		isPlayerTwosTurn = argIsPlayerTwosTurn;
-
-		playerOneWinsMessage = playerOnesName + " wins!";
-		playerTwoWinsMessage = playerTwosName + " wins!";
-	}
 
 	/**
 	 * Builds the game's GUI board
@@ -88,6 +66,7 @@ public class GameBoardTwo implements ActionListener {
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
+		// creates and sets up the board tiles
 		for(int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
@@ -108,6 +87,7 @@ public class GameBoardTwo implements ActionListener {
 				}
 			});
 		}
+		
 		gameBoardTiles[0].setBounds(63, 64, 80, 70);
 		gameBoardTiles[1].setBounds(63, 145, 80, 70);
 		gameBoardTiles[2].setBounds(63, 226, 80, 70);
@@ -121,31 +101,53 @@ public class GameBoardTwo implements ActionListener {
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		f.getContentPane().add(lblPlayersTurn);
 		
+		// creates and sets up the board line dividers
 		for(int x = 0; x < gameBoardSeparators.length; x++) {
 			gameBoardSeparators[x] = new JSeparator();
 			gameBoardSeparators[x].setBackground(Color.blue);
 			f.getContentPane().add(gameBoardSeparators[x]);
+			
+			if(x == 2 || x == 3) {
+				gameBoardSeparators[x].setOrientation(SwingConstants.VERTICAL);
+			}
 		}
 
 		gameBoardSeparators[0].setBounds(63, 138, 260, 11);
 		gameBoardSeparators[1].setBounds(63, 221, 260, 11);
 		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
 		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
+	}
+	
+	/**
+	 * Setups the current game: makes decision on who's turn it is and assigns
+	 * player entered names
+	 * 
+	 * @param argIsStart         boolean flag indicating whether or not the game has just
+	 *                  begun
+	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 *                  game
+	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 *                  game
+	 */
+	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+		start = argIsStart;
+		isPlayerOnesTurn = argIsPlayerOnesTurn;
+		isPlayerTwosTurn = argIsPlayerTwosTurn;
 
-		gameBoardSeparators[2].setOrientation(SwingConstants.VERTICAL);
-		gameBoardSeparators[3].setOrientation(SwingConstants.VERTICAL);
+		playerOneWinsMessage = playerOnesName + " wins!";
+		playerTwoWinsMessage = playerTwosName + " wins!";
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
+		
 		// enforces player1 to always start first: Sets p1's and p2's turns for first round
 		if (start) {
 			isPlayerOnesTurn = !isPlayerOnesTurn;
 			isPlayerTwosTurn = !isPlayerTwosTurn;
 			start = false;
 		}
-		
+
 		if(toRun) {
 			int y = 0;
 			
@@ -154,22 +156,18 @@ public class GameBoardTwo implements ActionListener {
 				if(gameBoardTiles[x].getText().isEmpty()) {
 					// add this empty cell number to the array of available empty cells
 					availableEmptyCells[y] = x;
-				//	System.out.println("cell# " + x + " is empty");
 				} else {
 					availableEmptyCells[y] = 0;
 				}
+				
 				y++;
 			}
-			
-			// System.out.println("empty cells array: " + Arrays.toString(availableEmptyCells));
-						
+									
 			do {
 				// use random generator to choose an empty cell from the above array and click it
 	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
 			} while(randomCell == 0);
-			
-			// System.out.println("computer chose cell# " + randomCell);
-			
+						
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
 			 * doClick's timeout gets checked inside the event thread, so it won't get released 
@@ -178,8 +176,9 @@ public class GameBoardTwo implements ActionListener {
 			new Thread(() -> {
 	            	// check that the current turn is the computer's turn
 	            	if(lblPlayersTurn.getText().equals("computer's turn:")) {  
+
 	            		try {
-							Thread.sleep(200);
+							Thread.sleep(300);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -187,9 +186,10 @@ public class GameBoardTwo implements ActionListener {
 	 					gameBoardTiles[randomCell].doClick();  	
 	 				}
 				}
-	         ).start();		
+	         ).start();					
 		}
 				
+		// scans through the game board and performs all actions needed to complete a player's turn
 		for(int x = 0; x < gameBoardTiles.length; x++) {
 			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
 				if (isPlayerOnesTurn) {
@@ -197,12 +197,25 @@ public class GameBoardTwo implements ActionListener {
 				} 
 				else if (isPlayerTwosTurn) {
 					playerTwosTurnComplete(gameBoardTiles[x]);
-				} 				
+				} 		
+				
+				isPlayerOnesTurn = !isPlayerOnesTurn;
+				isPlayerTwosTurn = !isPlayerTwosTurn;	
+				
+				break;
 			} 
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				// logger.warn("Invalid Move!");
 			}
 		}
+		
+		patternCheck();
+	}
+	
+	/**
+	 * Scans board after every move to see if a pattern of 3 has been made or if all tiles have been clicked
+	 */
+	public void patternCheck() {
 		
 		/*
 		 * Game board cell reference (button #'s):
@@ -317,13 +330,18 @@ public class GameBoardTwo implements ActionListener {
 				new Winner(playerTwosName);
 			}
 			
-			// if all buttons are pressed default to game over, tie. However if succeeding 'if' condition is triggered this will be ignored
-			else if (!gameBoardTiles[0].getText().isEmpty() && !gameBoardTiles[1].getText().isEmpty() && !gameBoardTiles[2].getText().isEmpty()
-					&& !gameBoardTiles[3].getText().isEmpty() && !gameBoardTiles[4].getText().isEmpty() && !gameBoardTiles[5].getText().isEmpty()
-					&& !gameBoardTiles[6].getText().isEmpty() && !gameBoardTiles[7].getText().isEmpty() && !gameBoardTiles[8].getText().isEmpty()) {
-				// need gameFinished variable to prevent bug where this code runs twice 
-				gameFinished = true;
-				new Winner("Game Over! It's a draw!!");
+			else {
+				// if all buttons are pressed default to game over, tie (draw)
+				for(int x = 0; x < gameBoardTiles.length; x++) {
+					if(gameBoardTiles[x].getText().isEmpty()) {
+						break;
+					}
+					else if(x == gameBoardTiles.length - 1) {
+						// need gameFinished variable to prevent bug where this code runs twice 
+						gameFinished = true;
+						new Winner("Game Over! It's a draw!!");
+					}
+				}
 			}
 		}
 	}
@@ -372,23 +390,7 @@ public class GameBoardTwo implements ActionListener {
 		buttonPressed.setForeground(new Color(232, 46, 6));
 		buttonPressed.setText(PLAYER_ONE_SHAPE);
 		lblPlayersTurn.setText(playerOnesName + "'s turn:");
-		isPlayerOnesTurn = !isPlayerOnesTurn;
-		isPlayerTwosTurn = !isPlayerTwosTurn;	
 		toRun = true;
-		
-		int y = 0;
-		
-		// check every game board tile (cell) and see what's empty
-		for(int x = 0; x < gameBoardTiles.length; x++) {
-			if(gameBoardTiles[x].getText().isEmpty()) {
-				// add this empty cell number to the array of available empty cells
-				availableEmptyCells[y] = x;
-				// System.out.println("cell# " + x + " is empty");
-			} else {
-				availableEmptyCells[y] = 0;
-			}
-			y++;
-		}
 	}
 
 	/**
@@ -399,8 +401,6 @@ public class GameBoardTwo implements ActionListener {
 		buttonPressed.setForeground(new Color(0, 0, 255));
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		lblPlayersTurn.setText(playerTwosName + "'s turn:");
-		isPlayerOnesTurn = !isPlayerOnesTurn;
-		isPlayerTwosTurn = !isPlayerTwosTurn;
 		toRun = false;
 	}
 }

@@ -22,17 +22,16 @@ import tictactoe.playercomputer.GameBoardTwo;
  */
 public class Winner extends KeyAdapter implements ActionListener {
 
+	private String gameResult;
 	private JFrame f2 = new JFrame("Tic Tac Toe");
-	private JButton btnPlayAgain = new JButton("Play again");
-	private JButton btnQuit = new JButton("Quit");
-	private String winnersName;
+	private JButton btnPlayAgain = new JButton("Play again"), btnQuit = new JButton("Quit");
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
 	 * @param argGameResult holds the result of the game - winner's name or game over message
 	 */
 	public Winner(String argGameResult) {
-		winnersName = argGameResult;
+		gameResult = argGameResult;
 		
 		JLabel lblGameResult = new JLabel();
 		
@@ -46,6 +45,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 				new GameBoard(false, false, true);
 		    }
 		});
+		
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
 		f2.setResizable(false);
@@ -60,21 +60,18 @@ public class Winner extends KeyAdapter implements ActionListener {
 		String message = argGameResult.equals("Game Over! It's a draw!")
 				|| argGameResult.equals("Game Over! It's a draw!!") ? argGameResult : (argGameResult + " wins!");
 		lblGameResult.setText(message);
-
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblGameResult);
+		
 		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
-
 		btnPlayAgain.setBounds(39, 68, 100, 34);
 		btnPlayAgain.setBackground(new Color(144, 238, 144));
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
-		btnPlayAgain.setSelected(true);
-		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 		
-		btnQuit.setSelected(true);
+		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 		btnQuit.setBackground(new Color(144, 238, 144));
 		f2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
@@ -87,7 +84,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
+				GameBoardTwo.toRun = true;
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
@@ -97,7 +95,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if (e.getSource() == btnQuit) {
-			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			} 
 			else {
@@ -108,15 +106,10 @@ public class Winner extends KeyAdapter implements ActionListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// btnPlayAgain deselect when btnQuit is selected - problem fix
-		if(btnQuit.isSelected()) {
-			btnPlayAgain.setSelected(false);
-		}
-		
 		f2.dispose();
-		
-		if (btnPlayAgain.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
+
+		if (e.getSource() == btnPlayAgain && e.getKeyChar() == KeyEvent.VK_ENTER) {
+			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
@@ -125,8 +118,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 				new GameBoard(false, false, true);
 			}
 		} 
-		else if(btnQuit.isSelected() && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(winnersName.equals("player") || winnersName.equals("computer") || winnersName.equals("Game Over! It's a draw!!")) {
+		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
+			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			}
 			else {
