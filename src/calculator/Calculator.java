@@ -133,7 +133,7 @@ public class Calculator {
 
 	/**
 	 * Converts String to Double values, calls appropriate requested operation, 
-	 * and formats the return value
+	 * and formats the return value.
 	 * @return formatted result value after performing operation
 	 */
 	public static String compute() {

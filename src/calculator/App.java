@@ -50,7 +50,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Constructor: Initializes the contents of the frame, building the gui.
+	 * Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
 
@@ -165,7 +165,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to when buttons are clicked via mouse (actions)
+	 * This is responsible for listening to when buttons are clicked via mouse (actions).
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -343,7 +343,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to all keyboard input
+	 * This is responsible for listening to all keyboard input.
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -464,7 +464,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		/**
 		 * use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY,
-		 * KeyEvent.VK_ADD, and KeyEvent.C don't work
+		 * KeyEvent.VK_ADD, and KeyEvent.C don't work.
 		 */
 
 		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
@@ -485,7 +485,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Resets all calculator arrays
+	 * Resets all calculator array's values.
 	 */
 	public static void resetValues() {
 		Arrays.fill(operatorFlags, Boolean.FALSE);

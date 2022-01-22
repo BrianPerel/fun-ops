@@ -84,6 +84,7 @@ public class Paddle extends Rectangle {
 	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {
+				
 		if (id.equals("Paddle1")) {
 			g.setColor(Color.red);
 		} else {

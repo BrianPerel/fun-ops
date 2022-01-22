@@ -33,6 +33,7 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
+	private boolean outOfTimeFlag;
 	private JCheckBox closeTimerCheckBox;
 	private JFormattedTextField textFieldGuessTheNumber;
 	private SecureRandom randomGenerator = new SecureRandom();
@@ -148,9 +149,6 @@ public class GuessingGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
-		// user gets 10 seconds to make a guess (if timer is on)
-		boolean outOfTimeFlag = false;
 		
 		StopWatchPanel.btnStop.doClick();
 		
@@ -171,7 +169,7 @@ public class GuessingGame implements ActionListener {
 			}
 		}
 
-		evaluateGuess(ae, outOfTimeFlag);
+		performGuiButtonAction(ae, outOfTimeFlag);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -193,64 +191,15 @@ public class GuessingGame implements ActionListener {
 	}
 	
 	/**
-	 * Examines value user guesses with
+	 * Performs associated action of the GUI button that is clicked 
 	 * @param ae the action event triggered
 	 * @param outOfTimeFlag boolean keeping track of whether or not timer has hit 10 seconds
 	 */
-	public void evaluateGuess(ActionEvent ae, boolean outOfTimeFlag) {
-				
+	public void performGuiButtonAction(ActionEvent ae, boolean outOfTimeFlag) {
+		
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			totalGuessesMade++;
-			
-			int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
-
-			// if input remainder entered is outside of range 1-99
-			if (textFieldGuessTheNumberInt >= 100
-					|| textFieldGuessTheNumberInt <= 0) {
-
-				try {
-					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
-
-			} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
-
-				try {
-					Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
-				randomNumber = randomGenerator.nextInt(100);
-				textFieldRandomNumber.setText(Integer.toString(randomNumber));
-				
-				if (!outOfTimeFlag) {
-					totalGameScore += 10;
-				}
-
-			} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
-
-				try {
-					Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
-				
-				if (totalGameScore != 0) {
-					totalGameScore -= 10;
-				}
-			}
-
-			// set score after action is completed
-			textFieldScore.setText(Integer.toString(totalGameScore));
-			guessesTextField.setText(Integer.toString(totalGuessesMade));
+			evaluateGuess();
 		}
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
@@ -279,5 +228,60 @@ public class GuessingGame implements ActionListener {
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
+	}
+	
+	/**
+	 * Evaluates the user's guess value
+	 */
+	public void evaluateGuess() {
+		totalGuessesMade++;
+		
+		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
+
+		// if input remainder entered is outside of range 1-99
+		if (textFieldGuessTheNumberInt >= 100 || textFieldGuessTheNumberInt <= 0) {
+
+			try {
+				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
+
+		} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
+
+			try {
+				Applet.newAudioClip(new File("res/audio/win.wav").toURL()).play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
+			randomNumber = randomGenerator.nextInt(100);
+			textFieldRandomNumber.setText(Integer.toString(randomNumber));
+			
+			if (!outOfTimeFlag) {
+				totalGameScore += 10;
+			}
+
+		} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
+
+			try {
+				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
+			
+			if (totalGameScore != 0) {
+				totalGameScore -= 10;
+			}
+		}
+
+		// set score after action is completed
+		textFieldScore.setText(Integer.toString(totalGameScore));
+		guessesTextField.setText(Integer.toString(totalGuessesMade));
 	}
 }

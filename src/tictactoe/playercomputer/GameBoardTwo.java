@@ -136,6 +136,10 @@ public class GameBoardTwo implements ActionListener {
 
 		playerOneWinsMessage = playerOnesName + " wins!";
 		playerTwoWinsMessage = playerTwosName + " wins!";
+		
+		for(int x = 0; x < availableEmptyCells.length; x++) {
+			availableEmptyCells[x] = x;
+		}
 	}
 
 	@Override
@@ -148,25 +152,11 @@ public class GameBoardTwo implements ActionListener {
 			start = false;
 		}
 
-		if(toRun) {
-			int y = 0;
-			
-			// check every game board tile (cell) and see what's empty
-			for(int x = 0; x < gameBoardTiles.length; x++) {
-				if(gameBoardTiles[x].getText().isEmpty()) {
-					// add this empty cell number to the array of available empty cells
-					availableEmptyCells[y] = x;
-				} else {
-					availableEmptyCells[y] = 0;
-				}
-				
-				y++;
-			}
-									
+		if(toRun) {						
 			do {
 				// use random generator to choose an empty cell from the above array and click it
 	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
-			} while(randomCell == 0);
+			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
 						
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
@@ -176,7 +166,6 @@ public class GameBoardTwo implements ActionListener {
 			new Thread(() -> {
 	            	// check that the current turn is the computer's turn
 	            	if(lblPlayersTurn.getText().equals("computer's turn:")) {  
-
 	            		try {
 							Thread.sleep(300);
 						} catch (InterruptedException e) {
@@ -188,6 +177,10 @@ public class GameBoardTwo implements ActionListener {
 				}
 	         ).start();					
 		}
+		
+		// prevents computer from choosing same button on it's next turn
+		availableEmptyCells[randomCell] = -99;
+			
 				
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for(int x = 0; x < gameBoardTiles.length; x++) {

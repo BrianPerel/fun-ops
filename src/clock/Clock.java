@@ -66,6 +66,7 @@ public class Clock {
 
 		while (true) {
 			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
+			
 			if (time.substring(0, 1).equals("0")) {
 				time = time.substring(1, time.length());
 			}

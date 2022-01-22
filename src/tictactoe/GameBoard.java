@@ -27,10 +27,8 @@ public class GameBoard implements ActionListener {
 	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
 	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName, playerTwosName;
+	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);
-
-	// needed to invert these to fix a window2 symbol problem
-	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X";
 	
 	static JFrame f = new JFrame("Tic Tac Toe");
 

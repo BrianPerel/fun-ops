@@ -21,7 +21,6 @@ public class EncryptDecrypt {
 	 */
 	public EncryptDecrypt(String argData) {
 		this.data = argData;
-		isEncrypted = false;
 	}
 
 	/**
@@ -36,7 +35,7 @@ public class EncryptDecrypt {
 	public void encrypt() throws IOException {
 		if (!isEncrypted) { // checks if encryption process has already occurred. Since you can't encrypt
 							// encrypted data
-			StringBuilder maskedData = new StringBuilder(""); // create variable that will store a line of random characters
+			StringBuilder maskedData = new StringBuilder(); // create variable that will store a line of random characters
 															// of same length as original sentence in the file
 
 			// loop to traverse data String provided by user, in order to replace every
@@ -74,32 +73,35 @@ public class EncryptDecrypt {
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public String decrypt() throws IOException {
-
-		StringBuilder unmaskedData = new StringBuilder();
-
-		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
-		// values from data variable
-		// with a random integer number subtracted and casted to char type
-		for (int index = 0; index < data.length(); index++) {
-			// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
-			// into a char which is 'a'
-			unmaskedData.append((char) (data.charAt(index) - 5));
+		
+		if(isEncrypted) {
+			StringBuilder unmaskedData = new StringBuilder();
+	
+			// loop to traverse encrypted data, fill in a blank StringBuilder variable with
+			// values from data variable
+			// with a random integer number subtracted and casted to char type
+			for (int index = 0; index < data.length(); index++) {
+				// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
+				// into a char which is 'a'
+				unmaskedData.append((char) (data.charAt(index) - 5));
+			}
+	
+			// cast the StringBuilder into a String
+			data = unmaskedData.toString();
+	
+			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName());
+	
+			try {
+				// override with decrypted data
+				myWriter.write(data);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	
+			myWriter.close();
+			isEncrypted = false;
 		}
-
-		// cast the StringBuilder into a String
-		data = unmaskedData.toString();
-
-		FileWriter myWriter = new FileWriter(EncryptionGui.getFileName());
-
-		try {
-			// override with decrypted data
-			myWriter.write(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		myWriter.close();
-		isEncrypted = false;
+		
 		return data;
 	}
 
