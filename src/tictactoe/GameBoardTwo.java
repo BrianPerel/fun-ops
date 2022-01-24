@@ -1,4 +1,4 @@
-package tictactoe.playercomputer;
+package tictactoe;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-
-import tictactoe.Winner;
 
 // import org.apache.log4j.Logger;
 
@@ -152,12 +150,13 @@ public class GameBoardTwo implements ActionListener {
 			start = false;
 		}
 
-		if(toRun) {						
+		if(toRun) {		
+
 			do {
 				// use random generator to choose an empty cell from the above array and click it
 	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
 			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
-						
+
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
 			 * doClick's timeout gets checked inside the event thread, so it won't get released 
@@ -178,10 +177,8 @@ public class GameBoardTwo implements ActionListener {
 	         ).start();					
 		}
 		
-		// prevents computer from choosing same button on it's next turn
-		availableEmptyCells[randomCell] = -99;
-			
-				
+		availableEmptyCells[randomCell] = -99; // prevents computer from choosing same button it's clicked on it's next turn
+
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for(int x = 0; x < gameBoardTiles.length; x++) {
 			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
@@ -192,6 +189,7 @@ public class GameBoardTwo implements ActionListener {
 					playerTwosTurnComplete(gameBoardTiles[x]);
 				} 		
 				
+				availableEmptyCells[x] = -99; // prevents computer from choosing a tile that player has chosen
 				isPlayerOnesTurn = !isPlayerOnesTurn;
 				isPlayerTwosTurn = !isPlayerTwosTurn;	
 				
@@ -329,7 +327,7 @@ public class GameBoardTwo implements ActionListener {
 					if(gameBoardTiles[x].getText().isEmpty()) {
 						break;
 					}
-					else if(x == gameBoardTiles.length - 1) {
+					else if(x == (gameBoardTiles.length - 1)) {
 						// need gameFinished variable to prevent bug where this code runs twice 
 						gameFinished = true;
 						new Winner("Game Over! It's a draw!!");

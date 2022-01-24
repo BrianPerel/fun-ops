@@ -33,8 +33,9 @@ public class EncryptDecrypt {
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
 	public void encrypt() throws IOException {
-		if (!isEncrypted) { // checks if encryption process has already occurred. Since you can't encrypt
-							// encrypted data
+		
+		// checks if encryption process has already occurred. Since you can't encrypt encrypted data
+		if (!isEncrypted) { 
 			StringBuilder maskedData = new StringBuilder(); // create variable that will store a line of random characters
 															// of same length as original sentence in the file
 
@@ -49,7 +50,6 @@ public class EncryptDecrypt {
 
 			// cast the StringBuilder into a String
 			data = maskedData.toString();
-
 			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName()); // access the existing txt file
 
 			try {
@@ -74,6 +74,7 @@ public class EncryptDecrypt {
 	 */
 	public String decrypt() throws IOException {
 		
+		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if(isEncrypted) {
 			StringBuilder unmaskedData = new StringBuilder();
 	

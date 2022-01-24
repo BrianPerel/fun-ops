@@ -155,6 +155,7 @@ public class EncryptionGui implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		
 		// if filename isn't empty or file hasn't yet been loaded
 		if (ae.getSource() == btnLoadFile && !loadingTextField.getText().isEmpty() && !isFileLoaded) {
 			obtainFileData();
@@ -189,7 +190,6 @@ public class EncryptionGui implements ActionListener {
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
-		
 
 		// if loaded file is BLANK or encrypt/decrypt btn pushed
 		else if (data.isBlank() && (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt)) {
@@ -224,7 +224,6 @@ public class EncryptionGui implements ActionListener {
 
 		try {
 			File f1 = new File(fileToLoad);
-			
 			read = new Scanner(f1);
 
 			while (read.hasNextLine()) {

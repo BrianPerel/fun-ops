@@ -56,7 +56,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
-		cursorRightPositionedWithZero = String.valueOf(spacesForMainTextField).concat("0");
+		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 436);
@@ -358,108 +358,108 @@ public class App extends KeyAdapter implements ActionListener {
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
 		switch (e.getKeyChar()) {
-		case KeyEvent.VK_0:
-			userInputTextField.setText(userInputTextField.getText().concat("0"));
-			hasNumberZeroBeenEnteredByUser = true;
-			break;
-
-		case KeyEvent.VK_1:
-			userInputTextField.setText(userInputTextField.getText().concat("1"));
-			break;
-
-		case KeyEvent.VK_2:
-			userInputTextField.setText(userInputTextField.getText().concat("2"));
-			break;
-
-		case KeyEvent.VK_3:
-			userInputTextField.setText(userInputTextField.getText().concat("3"));
-			break;
-
-		case KeyEvent.VK_4:
-			userInputTextField.setText(userInputTextField.getText().concat("4"));
-			break;
-
-		case KeyEvent.VK_5:
-			userInputTextField.setText(userInputTextField.getText().concat("5"));
-			break;
-
-		case KeyEvent.VK_6:
-			userInputTextField.setText(userInputTextField.getText().concat("6"));
-			break;
-
-		case KeyEvent.VK_7:
-			userInputTextField.setText(userInputTextField.getText().concat("7"));
-			break;
-
-		case KeyEvent.VK_8:
-			userInputTextField.setText(userInputTextField.getText().concat("8"));
-			break;
-
-		case KeyEvent.VK_9:
-			userInputTextField.setText(userInputTextField.getText().concat("9"));
-			break;
-
-		// actions for symbol buttons
-		case KeyEvent.VK_SLASH:
-			Calculator.setNumber(userInputTextField.getText());
-			userInputTextField.setText(cursorRightPositioned);
-			operatorFlags[0] = true;
-			break;
-
-		// KeyEvent.VK_PLUS DOESN'T WORK - it was left for reference to see what it
-		// would look like in
-		// KeyEvent code
-		case KeyEvent.VK_PLUS:
-			Calculator.setNumber(userInputTextField.getText());
-			userInputTextField.setText(cursorRightPositioned);
-			operatorFlags[3] = true;
-			break;
-
-		case KeyEvent.VK_MINUS:
-			Calculator.setNumber(userInputTextField.getText());
-			userInputTextField.setText(cursorRightPositioned);
-			operatorFlags[2] = true;
-			break;
-
-		case KeyEvent.VK_ENTER, KeyEvent.VK_EQUALS:
-			// if textField label is blank, then no action has been done by user.
-			// Hence in that scenario equal operation isn't performed
-			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
+			case KeyEvent.VK_0:
+				userInputTextField.setText(userInputTextField.getText().concat("0"));
+				hasNumberZeroBeenEnteredByUser = true;
+				break;
+	
+			case KeyEvent.VK_1:
+				userInputTextField.setText(userInputTextField.getText().concat("1"));
+				break;
+	
+			case KeyEvent.VK_2:
+				userInputTextField.setText(userInputTextField.getText().concat("2"));
+				break;
+	
+			case KeyEvent.VK_3:
+				userInputTextField.setText(userInputTextField.getText().concat("3"));
+				break;
+	
+			case KeyEvent.VK_4:
+				userInputTextField.setText(userInputTextField.getText().concat("4"));
+				break;
+	
+			case KeyEvent.VK_5:
+				userInputTextField.setText(userInputTextField.getText().concat("5"));
+				break;
+	
+			case KeyEvent.VK_6:
+				userInputTextField.setText(userInputTextField.getText().concat("6"));
+				break;
+	
+			case KeyEvent.VK_7:
+				userInputTextField.setText(userInputTextField.getText().concat("7"));
+				break;
+	
+			case KeyEvent.VK_8:
+				userInputTextField.setText(userInputTextField.getText().concat("8"));
+				break;
+	
+			case KeyEvent.VK_9:
+				userInputTextField.setText(userInputTextField.getText().concat("9"));
+				break;
+	
+			// actions for symbol buttons
+			case KeyEvent.VK_SLASH:
 				Calculator.setNumber(userInputTextField.getText());
-
-				// perform computation to make the value
-				String value = Calculator.compute();
-
-				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
-				// display 25
-				double v = Double.parseDouble(value);
-				if ((v * 10) % 10 == 0) { // if value calculated is whole number
-					value = df.format(v); // removes zero's after decimal point
+				userInputTextField.setText(cursorRightPositioned);
+				operatorFlags[0] = true;
+				break;
+	
+			// KeyEvent.VK_PLUS DOESN'T WORK - it was left for reference to see what it
+			// would look like in
+			// KeyEvent code
+			case KeyEvent.VK_PLUS:
+				Calculator.setNumber(userInputTextField.getText());
+				userInputTextField.setText(cursorRightPositioned);
+				operatorFlags[3] = true;
+				break;
+	
+			case KeyEvent.VK_MINUS:
+				Calculator.setNumber(userInputTextField.getText());
+				userInputTextField.setText(cursorRightPositioned);
+				operatorFlags[2] = true;
+				break;
+	
+			case KeyEvent.VK_ENTER, KeyEvent.VK_EQUALS:
+				// if textField label is blank, then no action has been done by user.
+				// Hence in that scenario equal operation isn't performed
+				if (!userInputTextField.getText().equals(cursorRightPositioned)) {
+					Calculator.setNumber(userInputTextField.getText());
+	
+					// perform computation to make the value
+					String value = Calculator.compute();
+	
+					// if value is whole then don't display 0's after decimal; ex. instead of 25.00
+					// display 25
+					double v = Double.parseDouble(value);
+					if ((v * 10) % 10 == 0) { // if value calculated is whole number
+						value = df.format(v); // removes zero's after decimal point
+					}
+	
+					// check for division by zero. Avoids exception being flagged
+					userInputTextField.setText(
+							Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
+	
+					// reset all array values to 0
+					Collections.fill(Calculator.stringNumbers, "");
+					resetValues();
 				}
-
-				// check for division by zero. Avoids exception being flagged
-				userInputTextField.setText(
-						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
-
-				// reset all array values to 0
-				Collections.fill(Calculator.stringNumbers, "");
-				resetValues();
-			}
-			break; // break statement for case enter key button
-
-		case KeyEvent.VK_BACK_SPACE:
-			userInputTextField
-					.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
-			break;
-
-		case KeyEvent.VK_PERIOD:
-			if (!userInputTextField.getText().contains(".")) {
-				userInputTextField.setText(userInputTextField.getText() + ".");
-			}
-			break;
-
-		default:
-			break;
+				break; // break statement for case enter key button
+	
+			case KeyEvent.VK_BACK_SPACE:
+				userInputTextField
+						.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
+				break;
+	
+			case KeyEvent.VK_PERIOD:
+				if (!userInputTextField.getText().contains(".")) {
+					userInputTextField.setText(userInputTextField.getText() + ".");
+				}
+				break;
+	
+			default:
+				break;
 		}
 
 		/**

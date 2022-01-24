@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import tictactoe.playercomputer.GameBoardTwo;
-
 /**
  * Implementation for winner window. When a player wins, this window is displayed. <br>
  * 

@@ -37,8 +37,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
 	private JTextArea hangmanTextField;
 	private JTextField hangmanWordTextField;
-	
-	// chosen hangman word
 	private static String hangmanWord, maskingAsterisk;
 
 	// store contents of random words in arraylist to give ability to extract txt at
@@ -59,11 +57,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
 	private boolean w, o, r, d;
-	
 	private boolean[] t = new boolean[4];
-	
 	private static SecureRandom randomGenerator = new SecureRandom();
-
+	
 	public static void main(String[] args) {
 		try {
 			Hangman window = new Hangman();
@@ -286,7 +282,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				tmp = e.getKeyChar();
 			}
 
-			else if (w && o && r && d) {
+			if (w && o && r && d) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word is: " + hangmanWord);
 				resetGame();	
 			}
@@ -307,6 +303,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			if (letterTextFields[i].hasFocus()) {
 				letterTextFields[i].setBorder(BorderFactory.createLineBorder(new Color(34, 139, 34), 2));
 				t[i] = true;
+				break;
 			}
 		}
 	}

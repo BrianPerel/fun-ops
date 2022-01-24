@@ -201,6 +201,7 @@ public class GuessingGame implements ActionListener {
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			evaluateGuess();
 		}
+		
 		// if play again btn is pushed
 		else if (ae.getSource() == btnPlayAgain) {
 
@@ -217,6 +218,7 @@ public class GuessingGame implements ActionListener {
 			textFieldScore.setText("0");
 			totalGameScore = totalGuessesMade = 0;
 		}
+		
 		// if guess btn is pushed and input is empty
 		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
 
