@@ -132,6 +132,7 @@ public class StopWatch extends JFrame {
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
+				
 				watchSetText();
 			}
 			

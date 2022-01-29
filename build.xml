@@ -234,7 +234,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="encryption.EncryptionGUI" />
+				<attribute name="Main-Class" value="encryption.EncryptionGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bgImageEncrypt" />
 			</manifest>
 		</jar>
@@ -383,7 +383,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/pong-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="pingpong.PingPongGUI" />
+				<attribute name="Main-Class" value="pingpong.PingPongGui" />
 			</manifest>
 		</jar>
 	</target>

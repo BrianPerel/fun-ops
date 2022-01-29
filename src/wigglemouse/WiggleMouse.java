@@ -1,5 +1,6 @@
 package wigglemouse;
 
+import java.awt.AWTException;
 import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;
@@ -25,7 +26,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
 	private JButton btnStart;
-	private static Robot robot;
 	private static int x, y, timeToWait;
 	private static String[] choices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private static final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
@@ -33,15 +33,15 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	/**
 	 * Launch the application.
 	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
+	 * @throws AWTException 
 	 */
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, AWTException {		
 		try {
 			WiggleMouse window = new WiggleMouse();
 			window.frame.setVisible(true);
-			window.frame.setTitle("Mouse move by B. Perel");
+			window.frame.setTitle("Wiggle mouse by B. Perel");
 			window.frame.setResizable(false);
 			window.frame.setLocationRelativeTo(null);
-			robot = new Robot();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,14 +119,17 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	/**
 	 * performs mouse movement action
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
+	 * @throws AWTException 
 	 */
-	public static void moveMouse() throws InterruptedException {
+	public static void moveMouse() throws InterruptedException, AWTException {
+		
+		Robot robot = new Robot();
+		
 		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done
 			// twice in loop so that if user moves mouse the pointer doesn't jump back to original point
 			setMouseLocation();
-			// time to wait before next mouse move
-			Thread.sleep(timeToWait);
+			Thread.sleep(timeToWait); // time to wait before next mouse move
 			setMouseLocation();
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle

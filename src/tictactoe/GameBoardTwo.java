@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,7 +35,7 @@ public class GameBoardTwo implements ActionListener {
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
 	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName = "player", playerTwosName = "computer";
 	public static JFrame f = new JFrame("Tic Tac Toe");
-	private Random randomGenerator = new Random();
+	private SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Builds the game's GUI board
@@ -151,12 +150,6 @@ public class GameBoardTwo implements ActionListener {
 		}
 
 		if(toRun) {		
-
-			do {
-				// use random generator to choose an empty cell from the above array and click it
-	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
-			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
-
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
 			 * doClick's timeout gets checked inside the event thread, so it won't get released 
@@ -165,10 +158,16 @@ public class GameBoardTwo implements ActionListener {
 			new Thread(() -> {
 	            	// check that the current turn is the computer's turn
 	            	if(lblPlayersTurn.getText().equals("computer's turn:")) {  
+	            		do {
+	        				// use random generator to choose an empty cell from the above array and click it
+	        	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
+	        			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
+	            		
 	            		try {
 							Thread.sleep(300);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
+							Thread.currentThread().interrupt();
 						}
 	            		
 	 					gameBoardTiles[randomCell].doClick();  	
@@ -216,6 +215,7 @@ public class GameBoardTwo implements ActionListener {
 		 */
 		
 		/*
+		 * Game board cell reference (gameBoardTiles array indices)
 		 * 0 3 6
 		 * 1 4 7
 		 * 2 5 8

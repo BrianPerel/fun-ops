@@ -157,7 +157,7 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
 		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
-		userInputTextField.setBounds(178, 27, 170, 40);
+		userInputTextField.setBounds(33, 27, 315, 40);
 		frame.getContentPane().add(userInputTextField);
 		userInputTextField.setColumns(10);
 		userInputTextField.setEditable(false);

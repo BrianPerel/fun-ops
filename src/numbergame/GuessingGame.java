@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.security.SecureRandom;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,7 +34,6 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame implements ActionListener {
 
 	private JFrame frame;
-	private boolean outOfTimeFlag;
 	private JCheckBox closeTimerCheckBox;
 	private JFormattedTextField textFieldGuessTheNumber;
 	private SecureRandom randomGenerator = new SecureRandom();
@@ -124,6 +124,7 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
 		lblScoringInfo.setBounds(315, 24, 172, 17);
@@ -150,6 +151,7 @@ public class GuessingGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
+		boolean outOfTimeFlag = false;
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
@@ -199,7 +201,7 @@ public class GuessingGame implements ActionListener {
 		
 		// if guess btn is pushed and input is numeric data
 		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			evaluateGuess();
+			evaluateGuess(outOfTimeFlag);
 		}
 		
 		// if play again btn is pushed
@@ -235,7 +237,7 @@ public class GuessingGame implements ActionListener {
 	/**
 	 * Evaluates the user's guess value
 	 */
-	public void evaluateGuess() {
+	public void evaluateGuess(boolean outOfTimeFlag) {
 		totalGuessesMade++;
 		
 		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
@@ -249,6 +251,7 @@ public class GuessingGame implements ActionListener {
 				e.printStackTrace();
 			}
 
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
 
 		} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
@@ -259,6 +262,7 @@ public class GuessingGame implements ActionListener {
 				e.printStackTrace();
 			}
 
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(new Color(50, 205, 50), 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -275,12 +279,15 @@ public class GuessingGame implements ActionListener {
 				e.printStackTrace();
 			}
 
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
 			
 			if (totalGameScore != 0) {
 				totalGameScore -= 10;
 			}
 		}
+		
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));

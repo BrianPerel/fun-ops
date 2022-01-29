@@ -88,7 +88,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		btnStart.setBackground(new Color(144, 238, 144));
 		
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
-		playAgainstComputerRadioButton.setBounds(207, 275, 157, 23);
+		playAgainstComputerRadioButton.setBounds(207, 268, 157, 23);
+		playAgainstComputerRadioButton.setOpaque(false);
 		frame.getContentPane().add(playAgainstComputerRadioButton);
 		playAgainstComputerRadioButton.addActionListener(this);
 	}

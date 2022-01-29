@@ -28,13 +28,12 @@ import javax.swing.JTextField;
  */
 public class EncryptionGui implements ActionListener {
 
+	private JFrame frame;
 	private String data = "";
 	private JButton btnBrowse;
 	private boolean isFileLoaded;
-	private JFrame frame;
 	private static String fileName;
 	private EncryptDecrypt dataSet;
-	private static EncryptionGui window;
 	private JTextField loadingTextField;
 	private JButton btnEncrypt = new JButton("Encrypt");
 	private JButton btnDecrypt = new JButton("Decrypt");
@@ -42,7 +41,7 @@ public class EncryptionGui implements ActionListener {
 
 	public static void main(String[] args) {	
 		try {
-			window = new EncryptionGui();
+			EncryptionGui window = new EncryptionGui();
 			window.frame.setVisible(true);
 			window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 			window.frame.setResizable(false);
@@ -57,7 +56,6 @@ public class EncryptionGui implements ActionListener {
 	 * @throws FileNotFoundException thrown if file not found
 	 */
 	public EncryptionGui() throws FileNotFoundException {
-		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 421, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -169,8 +167,6 @@ public class EncryptionGui implements ActionListener {
 
 		// if loaded file isn't blank, allow encryption op
 		else if (ae.getSource() == btnEncrypt && !data.isBlank()) {
-			window.frame.setAlwaysOnTop(false);
-
 			try {
 				dataSet.encrypt();
 			} catch (IOException e) {

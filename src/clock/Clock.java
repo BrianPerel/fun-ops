@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -53,28 +54,38 @@ public class Clock {
 		lblClockTime.setForeground(Color.green);
 		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.getContentPane().add(lblClockTime);
-
-		getTime();
+		
+		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
+		militaryTimeFormatCheckBox.setBounds(310, 178, 97, 23);
+		militaryTimeFormatCheckBox.setBackground(Color.BLACK);
+		militaryTimeFormatCheckBox.setForeground(Color.WHITE);
+		frame.getContentPane().add(militaryTimeFormatCheckBox);
+		
+		getTime(militaryTimeFormatCheckBox);
 	}
 
 	/**
 	 * Obtains the current time, applies formatting if needed, and repeats action every second
 	 */
-	public void getTime() {
+	public void getTime(JCheckBox militaryTimeFormatCheckBox) {
 		
 		String time;
 
 		while (true) {
-			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
-			
-			if (time.substring(0, 1).equals("0")) {
-				time = time.substring(1, time.length());
+			if(militaryTimeFormatCheckBox.isSelected()) {
+				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+			} else {				
+				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
+				
+				if (time.substring(0, 1).equals("0")) {
+					time = time.substring(1, time.length());
+				}	
 			}
-
 			lblClockTime.setText(time);
-
+			
+			// updates the time every second
 			try {
-				Thread.sleep(1000); // updates the time every second
+				Thread.sleep(1000); 
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				Thread.currentThread().interrupt();
