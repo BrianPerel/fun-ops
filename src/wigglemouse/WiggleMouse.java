@@ -27,8 +27,8 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	private JFrame frame;
 	private JButton btnStart;
 	private static int x, y, timeToWait;
-	private static String[] choices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
-	private static final JComboBox<String> timeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(choices));
+	private static String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
+	private static final JComboBox<String> waitTimeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(waitTimeChoices));
 
 	/**
 	 * Launch the application.
@@ -72,8 +72,8 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
 		frame.getContentPane().add(lblDisplayMessage);
 
-		timeOptionsComboBox.setBounds(395, 23, 100, 22);
-		frame.getContentPane().add(timeOptionsComboBox);
+		waitTimeOptionsComboBox.setBounds(395, 23, 100, 22);
+		frame.getContentPane().add(waitTimeOptionsComboBox);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * Updates the time to wait before moving the mouse
 	 */
 	public static void updateWaitingTime() {
-		switch ((String) timeOptionsComboBox.getSelectedItem()) {
+		switch ((String) waitTimeOptionsComboBox.getSelectedItem()) {
 		case "1/2 minute":
 			timeToWait = 30000;
 			break;
@@ -143,7 +143,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * sets the current mouse's position into variables (x, y)
+	 * sets the current mouse's position into variables (x, y coordinates)
 	 */
 	public static void setMouseLocation() {
 		x = (int) MouseInfo.getPointerInfo().getLocation().getX();

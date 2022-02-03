@@ -60,7 +60,6 @@ public class GuessingGame implements ActionListener {
 	 * @throws InterruptedException
 	 */
 	public GuessingGame() throws InterruptedException {
-
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
@@ -238,6 +237,7 @@ public class GuessingGame implements ActionListener {
 	 * Evaluates the user's guess value
 	 */
 	public void evaluateGuess(boolean outOfTimeFlag) {
+		
 		totalGuessesMade++;
 		
 		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());

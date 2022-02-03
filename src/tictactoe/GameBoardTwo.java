@@ -33,7 +33,7 @@ public class GameBoardTwo implements ActionListener {
 	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
-	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName = "player", playerTwosName = "computer";
+	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName = "Player", playerTwosName = "Computer";
 	public static JFrame f = new JFrame("Tic Tac Toe");
 	private SecureRandom randomGenerator = new SecureRandom();
 
@@ -157,7 +157,7 @@ public class GameBoardTwo implements ActionListener {
 			 */
 			new Thread(() -> {
 	            	// check that the current turn is the computer's turn
-	            	if(lblPlayersTurn.getText().equals("computer's turn:")) {  
+	            	if(lblPlayersTurn.getText().equals("Computer's turn:")) {  
 	            		do {
 	        				// use random generator to choose an empty cell from the above array and click it
 	        	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
@@ -215,7 +215,6 @@ public class GameBoardTwo implements ActionListener {
 		 */
 		
 		/*
-		 * Game board cell reference (gameBoardTiles array indices)
 		 * 0 3 6
 		 * 1 4 7
 		 * 2 5 8
@@ -349,27 +348,26 @@ public class GameBoardTwo implements ActionListener {
 		highlightTiles[1] = two;
 		highlightTiles[2] = three;
 		
-		for(int i = 0; i < highlightTiles.length; i++) {
-			highlightTiles[i].setBackground(Color.GREEN);
+		for(JButton button : highlightTiles) {
+			button.setBackground(Color.GREEN);
 			
 			// this will prevent the program from changing colors when you hover after winning
-			final int x = i;
-			highlightTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					highlightTiles[x].setBackground(Color.GREEN);
+					button.setBackground(Color.GREEN);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					highlightTiles[x].setBackground(Color.GREEN);
+					button.setBackground(Color.GREEN);
 				}
 			});
 		}
 		
 		// disables all 9 buttons on board after game is over. Otherwise when game ends, user can still click on other cells causing another win
-		for(int x = 0; x < gameBoardTiles.length; x++) {
-			gameBoardTiles[x].setEnabled(false);
+		for(JButton button : gameBoardTiles) {
+			button.setEnabled(false);
 		}
 	}
 

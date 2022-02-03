@@ -71,16 +71,19 @@ public class Clock {
 		
 		String time;
 
-		while (true) {
+		while (true) {			
 			if(militaryTimeFormatCheckBox.isSelected()) {
 				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
-			} else {				
+			} 
+			else {				
 				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
 				
+				// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
 				if (time.substring(0, 1).equals("0")) {
 					time = time.substring(1, time.length());
 				}	
 			}
+			
 			lblClockTime.setText(time);
 			
 			// updates the time every second

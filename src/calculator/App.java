@@ -53,7 +53,6 @@ public class App extends KeyAdapter implements ActionListener {
 	 * Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
-
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
@@ -89,24 +88,23 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
 
-		for (int i = 0; i < buttons.length; i++) {
-			buttons[i].setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-			buttons[i].setBackground(Color.WHITE);
-			frame.getContentPane().add(buttons[i]);
-			buttons[i].addActionListener(this);
-			buttons[i].addKeyListener(this);
-			buttons[i].setHorizontalAlignment(SwingConstants.CENTER);
+		for (JButton button : buttons) {
+			button.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
+			button.setBackground(Color.WHITE);
+			frame.getContentPane().add(button);
+			button.addActionListener(this);
+			button.addKeyListener(this);
+			button.setHorizontalAlignment(SwingConstants.CENTER);
 
-			final int x = i;
-			buttons[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					buttons[x].setBackground(new Color(225, 225, 225));
+					button.setBackground(new Color(225, 225, 225));
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					buttons[x].setBackground(Color.WHITE);
+					button.setBackground(Color.WHITE);
 				}
 			});
 		}

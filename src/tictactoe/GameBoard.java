@@ -24,8 +24,8 @@ public class GameBoard implements ActionListener {
 
 	private static JLabel lblPlayersTurn;
 	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
-	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
-	private JSeparator[] gameBoardSeparators = new JSeparator[5];
+	private JButton[] gameBoardTiles = new JButton[9], highlightWinnersTiles = new JButton[3];
+	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
 	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName, playerTwosName;
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);
@@ -140,13 +140,13 @@ public class GameBoard implements ActionListener {
 		}
 
 		// scans through the game board and performs all actions needed to complete a player's turn
-		for(int x = 0; x < gameBoardTiles.length; x++) {
-			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {				
+		for(JButton button : gameBoardTiles) {
+			if (ae.getSource() == button && button.getText().isEmpty()) {				
 				if (isPlayerOnesTurn) {
-					playerOnesTurnComplete(gameBoardTiles[x]);
+					playerOnesTurnComplete(button);
 				} 
 				else if (isPlayerTwosTurn) {
-					playerTwosTurnComplete(gameBoardTiles[x]);
+					playerTwosTurnComplete(button);
 				} 	
 				
 				isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -154,7 +154,7 @@ public class GameBoard implements ActionListener {
 				
 				break;
 			} 
-			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
+			else if (ae.getSource() == button && !button.getText().isEmpty()) {
 				// logger.warn("Invalid Move!");
 			}
 		}
@@ -293,31 +293,30 @@ public class GameBoard implements ActionListener {
 	 * @param three third tile clicked
 	 */
 	public void winnersPattern(JButton one, JButton two, JButton three) {
-		highlightTiles[0] = one;
-		highlightTiles[1] = two;
-		highlightTiles[2] = three;
+		highlightWinnersTiles[0] = one;
+		highlightWinnersTiles[1] = two;
+		highlightWinnersTiles[2] = three;
 		
-		for(int i = 0; i < highlightTiles.length; i++) {
-			highlightTiles[i].setBackground(Color.GREEN);
+		for(JButton button : highlightWinnersTiles) {
+			button.setBackground(Color.GREEN);
 			
 			// this will prevent the program from changing colors when you hover after winning
-			final int x = i;
-			highlightTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					highlightTiles[x].setBackground(Color.GREEN);
+					button.setBackground(Color.GREEN);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					highlightTiles[x].setBackground(Color.GREEN);
+					button.setBackground(Color.GREEN);
 				}
 			});
 		}
 		
 		// disables all 9 buttons on board after game is over
-		for(int x = 0; x < gameBoardTiles.length; x++) {
-			gameBoardTiles[x].setEnabled(false);
+		for(JButton button : gameBoardTiles) {
+			button.setEnabled(false);
 		}
 	}
 
