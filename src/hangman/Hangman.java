@@ -37,8 +37,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
 	private static String previousHangmanWord;
 	private JTextArea hangmanTextField;
+	private static JTextField guessesLeftTextField;
 	private static JTextField hangmanWordTextField;
 	private static String hangmanWord, maskingAsterisk;
+	private static int guessesLeft;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
@@ -46,7 +48,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	// store hangman drawing in arraylist, each part to be displayed is in separate
 	// space of arraylist
-	private ArrayList<String> hangmanDrawing = new ArrayList<>();
+	private static ArrayList<String> hangmanDrawing = new ArrayList<>();
 
 	// placeholder for a counter
 	private int count;
@@ -114,12 +116,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextField.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
 		hangmanWordTextField = new JTextField();
+		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		hangmanWordTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
-		hangmanWordTextField.setBounds(356, 99, 60, 27);
+		hangmanWordTextField.setBounds(356, 125, 60, 27);
 		frame.getContentPane().add(hangmanWordTextField);
 		hangmanWordTextField.setColumns(10);
-		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setFocusable(false);
 		hangmanWordTextField.setToolTipText("Secret Word");
 		
@@ -139,9 +141,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[3].setBounds(387, 186, 17, 20);
 
 		JLabel lblWordText = new JLabel("WORD:");
-		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 13));
+		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 14));
 		lblWordText.setForeground(Color.WHITE);
-		lblWordText.setBounds(300, 102, 126, 24);
+		lblWordText.setBounds(300, 102, 126, 72);
 		frame.getContentPane().add(lblWordText);
 
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
@@ -150,6 +152,21 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		lblHangmanTheme.setBounds(273, 44, 183, 29);
 		frame.getContentPane().add(lblHangmanTheme);
 		
+		JLabel lblGuessesLeft = new JLabel("Guesses left:");
+		lblGuessesLeft.setFont(new Font("Century Schoolbook", Font.PLAIN, 16));
+		lblGuessesLeft.setForeground(Color.WHITE);
+		lblGuessesLeft.setBounds(250, 44, 183, 100);
+		frame.getContentPane().add(lblGuessesLeft);
+		
+		guessesLeftTextField = new JTextField();
+		guessesLeftTextField.setEditable(false);
+		guessesLeftTextField.setHorizontalAlignment(SwingConstants.LEFT);
+		guessesLeftTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
+		guessesLeftTextField.setBounds(356, 85, 40, 20);
+		frame.getContentPane().add(guessesLeftTextField);
+		guessesLeftTextField.setColumns(10);
+		guessesLeftTextField.setFocusable(false);
+
 		try {
 			// read file of random hangman words
 			Scanner myReader = new Scanner(new File("Hangman.txt"));
@@ -191,6 +208,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Read from list file and randomly select a hangman word
 	 */
 	public static void createHangmanWord() {
+		guessesLeft = hangmanDrawing.size();
+		guessesLeftTextField.setText(String.valueOf(guessesLeft));
 		hangmanWordTextField.setText("****");
 		
 		// choose random word from txt file, update the .nextInt() parameter value as you add words to hangman.txt
@@ -254,7 +273,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
 			char charGuessed = Character.toUpperCase(e.getKeyChar());
@@ -279,6 +297,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			} else if (letterTextFields[0].getText().length() <= 1 && (charGuessed != hangmanWord.charAt(0))
 					&& (charGuessed != hangmanWord.charAt(1))
 					&& (charGuessed != hangmanWord.charAt(2))) {
+				
+				guessesLeftTextField.setText(String.valueOf(--guessesLeft));
 
 				// defect fix - prevent character from loosing health if same wrong letter was
 				// pressed more than once

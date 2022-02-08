@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,7 +31,7 @@ public class GameBoard implements ActionListener {
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);
 	
-	static JFrame f = new JFrame("Tic Tac Toe");
+	protected static JFrame f = new JFrame("Tic Tac Toe");
 
 	/**
 	 * Builds the game's GUI board
@@ -61,8 +62,9 @@ public class GameBoard implements ActionListener {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
-			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 20));
+			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
 			gameBoardTiles[i].setBackground(new Color(244, 164, 96));
+			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.gray));
 			
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
@@ -90,6 +92,7 @@ public class GameBoard implements ActionListener {
 		
 		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
+		lblPlayersTurn.setOpaque(false);
 		f.getContentPane().add(lblPlayersTurn);
 		
 		// creates and sets up the board line dividers
@@ -104,7 +107,7 @@ public class GameBoard implements ActionListener {
 		}
 
 		gameBoardSeparators[0].setBounds(63, 138, 260, 11);
-		gameBoardSeparators[1].setBounds(63, 221, 260, 11);
+		gameBoardSeparators[1].setBounds(63, 220, 260, 11);
 		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
 		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
 	}
@@ -126,7 +129,7 @@ public class GameBoard implements ActionListener {
 		isPlayerTwosTurn = argIsPlayerTwosTurn;
 
 		playerOneWinsMessage = "Player 1 (" + getPlayerOnesName() + ") wins!";
-		playerTwoWinsMessage = "Player 2 (" + getPlayerTwosName() + ") wins!";
+		playerTwoWinsMessage = playerOneWinsMessage.substring(0, 6) + "2 (" + getPlayerTwosName() + ") wins!";
 	}
 
 	@Override
@@ -180,8 +183,7 @@ public class GameBoard implements ActionListener {
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O")
-				&& gameBoardTiles[2].getText().equals("O")) {
+		else if (gameBoardTiles[0].getText().equals("O") && gameBoardTiles[1].getText().equals("O") && gameBoardTiles[2].getText().equals("O")) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(getPlayerTwosName());
@@ -279,7 +281,7 @@ public class GameBoard implements ActionListener {
 				if(gameBoardTiles[x].getText().isEmpty()) {
 					break;
 				}
-				else if(x == gameBoardTiles.length - 1) {
+				else if(x == (gameBoardTiles.length - 1)) {
 					new Winner("Game Over! It's a draw!");
 				}
 			}

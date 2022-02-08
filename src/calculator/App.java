@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -156,6 +157,8 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(33, 27, 315, 40);
+		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.gray, 3));
+
 		frame.getContentPane().add(userInputTextField);
 		userInputTextField.setColumns(10);
 		userInputTextField.setEditable(false);
@@ -247,17 +250,17 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// backspace symbol
 		case "\u232B":
-			userInputTextField
-					.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
+			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+					? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
+					: cursorRightPositionedWithZero);
 			break;
 
-		case "1/x":
+		case "1/x":			
 			// validate that the current text in textField isn't blank
-			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				// need to cast below multiple times in order to perform 1/x operation
-				userInputTextField.setText(cursorRightPositioned
-						.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText()))));
-			}
+			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+					// need to cast below multiple times in order to perform 1/x operation
+					? cursorRightPositioned.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText())))
+					: cursorRightPositionedWithZero);
 			break;
 
 		case "=":
@@ -284,7 +287,9 @@ public class App extends KeyAdapter implements ActionListener {
 				Collections.fill(Calculator.stringNumbers, "");
 				hasNumberZeroBeenEnteredByUser = false;
 				resetValues();
-			}
+			} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
+				userInputTextField.setText(cursorRightPositionedWithZero);
+			} 
 			break; // break statement for case equals button
 
 		case "CE", "C":
@@ -305,23 +310,24 @@ public class App extends KeyAdapter implements ActionListener {
 				Calculator.setNumber(
 						String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
 				userInputTextField.setText(userInputTextField.getText().concat("%"));
-				// x\u00B2 -> X^2 symbol
-			}
+			} else {
+				userInputTextField.setText(cursorRightPositionedWithZero);
+			}			
 			break;
 
-		case "x\u00B2":
-			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField.setText(cursorRightPositioned
-						.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2))));
-			}
+		// x\u00B2 -> X^2 symbol
+		case "x\u00B2":			
+			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+					? cursorRightPositioned
+							.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2)))
+					: cursorRightPositionedWithZero);			
 			break;
 
 		// 2\u221Ax -> 2 square root x symbol
-		case "2\u221Ax":
-			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField
-						.setText(cursorRightPositioned + Math.sqrt(Double.valueOf(userInputTextField.getText())));
-			}
+		case "2\u221Ax":			
+			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+					? cursorRightPositioned.concat(String.valueOf(Math.sqrt(Double.valueOf(userInputTextField.getText()))))
+					: cursorRightPositionedWithZero);
 			break;
 
 		case "+/-":

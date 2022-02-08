@@ -82,7 +82,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.toRun = true;
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
@@ -93,7 +93,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if (e.getSource() == btnQuit) {
-			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			} 
 			else {
@@ -107,7 +107,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 
 		if (e.getSource() == btnPlayAgain && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
@@ -117,12 +117,12 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals("player") || gameResult.equals("computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			}
 			else {
 				GameBoard.f.dispose();
 			}
-		}
+		}		
 	}
 }

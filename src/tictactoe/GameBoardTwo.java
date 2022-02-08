@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.SecureRandom;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +25,6 @@ import javax.swing.SwingConstants;
 public class GameBoardTwo implements ActionListener {
 
 	public static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
-	private boolean gameFinished;
 	private int randomCell;
 	private static int[] availableEmptyCells = new int[9];
 	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start; 
@@ -34,7 +34,7 @@ public class GameBoardTwo implements ActionListener {
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
 	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
 	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName = "Player", playerTwosName = "Computer";
-	public static JFrame f = new JFrame("Tic Tac Toe");
+	public static final JFrame f = new JFrame("Tic Tac Toe");
 	private SecureRandom randomGenerator = new SecureRandom();
 
 	/**
@@ -68,8 +68,9 @@ public class GameBoardTwo implements ActionListener {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
-			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 20));
+			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
 			gameBoardTiles[i].setBackground(new Color(244, 164, 96));
+			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.gray));
 			
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
@@ -221,7 +222,7 @@ public class GameBoardTwo implements ActionListener {
 		 */
 		
 		// prevents bug - avoids simultaneous winning and tie messages
-		if(!gameFinished) {
+		if(!toRun) {
 			// if buttons 1, 2, 3 are triggered
 			if (gameBoardTiles[0].getText().equals("X") && gameBoardTiles[1].getText().equals("X") && gameBoardTiles[2].getText().equals("X")) {
 				// logger.info(playerOneWinsMessage);
@@ -328,7 +329,6 @@ public class GameBoardTwo implements ActionListener {
 					}
 					else if(x == (gameBoardTiles.length - 1)) {
 						// need gameFinished variable to prevent bug where this code runs twice 
-						gameFinished = true;
 						new Winner("Game Over! It's a draw!!");
 					}
 				}

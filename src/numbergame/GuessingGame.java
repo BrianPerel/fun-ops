@@ -56,10 +56,8 @@ public class GuessingGame implements ActionListener {
 
 	/**
 	 * Create the application - Build the GUI
-	 * 
-	 * @throws InterruptedException
 	 */
-	public GuessingGame() throws InterruptedException {
+	public GuessingGame() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);

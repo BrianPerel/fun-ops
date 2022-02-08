@@ -191,7 +191,7 @@
 	</target>
 
 	<!-- targets for calculator -->
-	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
+	<target name="compile-calculator" depends="clean" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -225,7 +225,7 @@
 	</target>
 
 	<!-- targets for encryption program -->
-	<target name="compile-encryption program" description="compile program">
+	<target name="compile-encryption program" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/encryption" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -279,7 +279,7 @@
 	</target>
 
 	<!-- targets for hangman -->
-	<target name="compile-hangman" description="compile program">
+	<target name="compile-hangman" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern">
 			<classpath refid="build.classpath" />
@@ -349,7 +349,7 @@
 	</target>
 
 	<!-- targets for guessing game -->
-	<target name="compile-guessing game" description="compile program">
+	<target name="compile-guessing game" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
 		<javac includeantruntime="false" srcdir="${src.dir}/numbergame" destdir="${classes.dir}" compiler="modern" />
@@ -374,7 +374,7 @@
 	</target>
 
 	<!-- targets for ping pong game -->
-	<target name="compile-pong" description="compile program">
+	<target name="compile-pong" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/pingpong" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -429,7 +429,7 @@
 	</target>
 
 	<!-- targets for stopwatch -->
-	<target name="compile-stopwatch" description="compile program">
+	<target name="compile-stopwatch" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -448,7 +448,7 @@
 	</target>
 
 	<!-- targets for tic tac toe -->
-	<target name="compile-tic tac toe" description="compile program">
+	<target name="compile-tic tac toe" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/tictactoe" destdir="${classes.dir}" compiler="modern">
 			<classpath refid="build.classpath" />
@@ -504,7 +504,7 @@
 
 
 	<!-- targets for wiggle mouse -->
-	<target name="compile-wiggle mouse" description="compile program">
+	<target name="compile-wiggle mouse" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/wigglemouse" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -573,7 +573,7 @@
 	</target>
 
 	<!-- targets for clock -->
-	<target name="compile-clock" description="compile program">
+	<target name="compile-clock" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/clock" destdir="${classes.dir}" compiler="modern" />
 	</target>
@@ -593,31 +593,22 @@
 	</target>
 
 	<!-- javadoc target -->
-	<target name="create Javadoc for all programs" description="generate Javadoc for applications">
-		<javadoc packagenames="calculator" sourcepath="src" destdir="docs/api/calculator" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="encryption" sourcepath="src" destdir="docs/api/encryption" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="hangman" sourcepath="src" destdir="docs/api/hangman" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="numbergame" sourcepath="src" destdir="docs/api/numberGame" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="tictactoe" sourcepath="src" destdir="docs/api/ticTacToe" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="wigglemouse" sourcepath="src" destdir="docs/api/wiggleMouse" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="clock" sourcepath="src" destdir="docs/api/clock" author="false" version="true" windowtitle="My API Page" />
-		<javadoc packagenames="pingpong" sourcepath="src" destdir="docs/api/pong" author="false" version="true" windowtitle="My API Page" />
+	<target name="create Javadoc for all programs" depends="clean" description="generate Javadoc for applications">
+		<javadoc sourcepath="src" destdir="docs/api" author="false" version="true" windowtitle="My API Page">
+			<fileset dir="src">
+				<include name="*.java" />
+			</fileset>
+		</javadoc>	
 	</target>
 
 	<!-- unjar target -->
 	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program, 
 		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
-
+		
 		<unjar dest="${unjar.dir}">
-			<fileset file="${jar.dir}/calculator-${version.num}.jar" />
-			<fileset file="${jar.dir}/encryptDecrypt-${version.num}.jar" />
-			<fileset file="${jar.dir}/guessingGame-${version.num}.jar" />
-			<fileset file="${jar.dir}/hangman-${version.num}.jar" />
-			<fileset file="${jar.dir}/tic_tac_toe-${version.num}.jar" />
-			<fileset file="${jar.dir}/wigglemouse-${version.num}.jar" />
-			<fileset file="${jar.dir}/stopwatch-${version.num}.jar" />
-			<fileset file="${jar.dir}/clock-${version.num}.jar" />
-			<fileset file="${jar.dir}/pong-${version.num}.jar" />
+			<fileset dir="${jar.dir}">
+            	<include name="*.jar" />
+			</fileset>
 		</unjar>
 	</target>
 </project>

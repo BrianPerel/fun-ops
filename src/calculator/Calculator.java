@@ -10,21 +10,22 @@ import java.util.List;
  */
 public class Calculator {
 
-	static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
-	static int arrayNumsFilled; // container to tell what array subscripts are free or taken
+	protected static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
+	protected static int arrayNumsFilled; // container to tell what array subscripts are free or taken
 	private static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
-	static boolean divideByZeroflag; // if user divides by 0, raise flag
+	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to double
-	static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
+	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
 													// values
-	static List<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
+	protected static List<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
 	
 	private static double answer;
 	
-	// private constructor will hide the implicit public one
-	private Calculator() {}
+	private Calculator() {
+		// private constructor will hide the implicit public one
+	}
 
 	/**
 	 * Sets the number (contained as the argument) in the numbers array. This will

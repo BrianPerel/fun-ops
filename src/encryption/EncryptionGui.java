@@ -53,9 +53,8 @@ public class EncryptionGui implements ActionListener {
 
 	/**
 	 * Create the application.
-	 * @throws FileNotFoundException thrown if file not found
 	 */
-	public EncryptionGui() throws FileNotFoundException {
+	public EncryptionGui() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 421, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

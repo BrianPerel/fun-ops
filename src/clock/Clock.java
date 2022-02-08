@@ -47,7 +47,7 @@ public class Clock {
 		}
 
 		if (font != null) {
-			font = font.deriveFont(Font.BOLD, 110);
+			font = font.deriveFont(Font.BOLD, 130);
 		}
 
 		lblClockTime.setFont(font);
@@ -56,7 +56,7 @@ public class Clock {
 		frame.getContentPane().add(lblClockTime);
 		
 		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
-		militaryTimeFormatCheckBox.setBounds(310, 178, 97, 23);
+		militaryTimeFormatCheckBox.setBounds(310, 178, 97, 25);
 		militaryTimeFormatCheckBox.setBackground(Color.BLACK);
 		militaryTimeFormatCheckBox.setForeground(Color.WHITE);
 		frame.getContentPane().add(militaryTimeFormatCheckBox);
