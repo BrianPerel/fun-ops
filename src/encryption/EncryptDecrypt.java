@@ -12,14 +12,14 @@ import java.io.IOException;
  */
 public class EncryptDecrypt {
 
-	private String data; // field to hold data from file provided by user
+	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
 	 * @param argData the user data to be encrypted/decrypted
 	 */
-	public EncryptDecrypt(String argData) {
+	public EncryptDecrypt(StringBuilder argData) {
 		this.data = argData;
 	}
 
@@ -49,11 +49,11 @@ public class EncryptDecrypt {
 			}
 
 			// cast the StringBuilder into a String
-			data = maskedData.toString();
+			data = maskedData;
 			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName()); // access the existing txt file
 
 			try {
-				myWriter.write(data); // write newly created string of random characters into file
+				myWriter.write(data.toString()); // write newly created string of random characters into file
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -72,7 +72,7 @@ public class EncryptDecrypt {
 	 * @return returns the unmasked/decrypted data string
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
-	public String decrypt() throws IOException {
+	public StringBuilder decrypt() throws IOException {
 		
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if(isEncrypted) {
@@ -88,13 +88,13 @@ public class EncryptDecrypt {
 			}
 	
 			// cast the StringBuilder into a String
-			data = unmaskedData.toString();
+			data = unmaskedData;
 	
 			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName());
 	
 			try {
 				// override with decrypted data
-				myWriter.write(data);
+				myWriter.write(data.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -108,6 +108,6 @@ public class EncryptDecrypt {
 
 	@Override
 	public String toString() {
-		return data;
+		return data.toString();
 	}
 }

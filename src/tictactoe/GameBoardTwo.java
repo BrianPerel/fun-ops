@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 // import org.apache.log4j.Logger;
 
@@ -24,11 +25,11 @@ import javax.swing.SwingConstants;
  */
 public class GameBoardTwo implements ActionListener {
 
-	public static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
 	private int randomCell;
+	private static JLabel lblPlayersTurn;
+	public static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
 	private static int[] availableEmptyCells = new int[9];
 	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start; 
-	private static JLabel lblPlayersTurn;
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
 	private JButton[] gameBoardTiles = new JButton[9], highlightTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5];
@@ -55,7 +56,7 @@ public class GameBoardTwo implements ActionListener {
 
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.getContentPane().setLayout(null);
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);

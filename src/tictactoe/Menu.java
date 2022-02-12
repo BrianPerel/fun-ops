@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 // import org.apache.log4j.Logger;
 
@@ -33,8 +35,10 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private JRadioButton playAgainstComputerRadioButton;
 	// private static final Logger logger = Logger.getLogger(Menu.class);
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {			
 		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
 			Menu window = new Menu();
 			window.frame.setVisible(true);
 			window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
@@ -52,7 +56,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	 */
 	public Menu() {
 		frame.setBounds(100, 100, 399, 358);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));

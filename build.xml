@@ -109,7 +109,7 @@
 
 		<move file="number_game.exe" todir="${release.dir}/number_game" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, figure.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, bg-image-question-figure.jpg" />
 		</copy>
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
@@ -419,7 +419,7 @@
 
 		<move file="number_game.exe" todir="${release.dir}/number_game" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, figure.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg, bg-image-question-figure.jpg" />
 		</copy>
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
@@ -514,6 +514,7 @@
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="wigglemouse.WiggleMouse" />
+				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake" />
 			</manifest>
 		</jar>
 	</target>

@@ -10,10 +10,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 /**
  * Mouse wiggle program. Useful for when you want to be away from your computer
@@ -53,11 +55,11 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private WiggleMouse() {
+	public WiggleMouse() {
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 550, 182);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		btnStart = new JButton("SET TIME");
@@ -74,6 +76,10 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 
 		waitTimeOptionsComboBox.setBounds(395, 23, 100, 22);
 		frame.getContentPane().add(waitTimeOptionsComboBox);
+		
+		JLabel lblNewLabel = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
+		lblNewLabel.setBounds(35, 64, 80, 55);
+		frame.getContentPane().add(lblNewLabel);	
 	}
 
 	@Override

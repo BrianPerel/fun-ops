@@ -22,6 +22,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
 // import org.apache.log4j.Logger;
@@ -96,7 +97,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		frame.setBounds(100, 100, 529, 326);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-hangman.jpg")));
 
@@ -119,7 +120,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanWordTextField.setEditable(false);
 		hangmanWordTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		hangmanWordTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
-		hangmanWordTextField.setBounds(356, 125, 60, 27);
+		hangmanWordTextField.setBounds(368, 125, 50, 27);
 		frame.getContentPane().add(hangmanWordTextField);
 		hangmanWordTextField.setColumns(10);
 		hangmanWordTextField.setFocusable(false);
@@ -143,26 +144,26 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		JLabel lblWordText = new JLabel("WORD:");
 		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 14));
 		lblWordText.setForeground(Color.WHITE);
-		lblWordText.setBounds(300, 102, 126, 72);
+		lblWordText.setBounds(310, 102, 126, 72);
 		frame.getContentPane().add(lblWordText);
 
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
 		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
 		lblHangmanTheme.setForeground(Color.WHITE);
-		lblHangmanTheme.setBounds(273, 44, 183, 29);
+		lblHangmanTheme.setBounds(270, 44, 183, 29);
 		frame.getContentPane().add(lblHangmanTheme);
 		
 		JLabel lblGuessesLeft = new JLabel("Guesses left:");
 		lblGuessesLeft.setFont(new Font("Century Schoolbook", Font.PLAIN, 16));
 		lblGuessesLeft.setForeground(Color.WHITE);
-		lblGuessesLeft.setBounds(250, 44, 183, 100);
+		lblGuessesLeft.setBounds(280, 44, 183, 100);
 		frame.getContentPane().add(lblGuessesLeft);
 		
 		guessesLeftTextField = new JTextField();
 		guessesLeftTextField.setEditable(false);
 		guessesLeftTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		guessesLeftTextField.setFont(new Font("MV Boli", Font.BOLD, 15));
-		guessesLeftTextField.setBounds(356, 85, 40, 20);
+		guessesLeftTextField.setBounds(375, 85, 40, 20);
 		frame.getContentPane().add(guessesLeftTextField);
 		guessesLeftTextField.setColumns(10);
 		guessesLeftTextField.setFocusable(false);
@@ -298,12 +299,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					&& (charGuessed != hangmanWord.charAt(1))
 					&& (charGuessed != hangmanWord.charAt(2))) {
 				
-				guessesLeftTextField.setText(String.valueOf(--guessesLeft));
-
 				// defect fix - prevent character from loosing health if same wrong letter was
 				// pressed more than once
 				if (e.getKeyChar() != tmp) {
 					hangmanTextField.append(hangmanDrawing.get(count++));
+					guessesLeftTextField.setText(String.valueOf(--guessesLeft));
 				} 
 
 				if (count == hangmanDrawing.size()) {

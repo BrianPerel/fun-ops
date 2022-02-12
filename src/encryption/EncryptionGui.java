@@ -15,8 +15,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 /**
  * Encryption-decryption application. The idea is that the user can load a file,
@@ -29,18 +32,19 @@ import javax.swing.JTextField;
 public class EncryptionGui implements ActionListener {
 
 	private JFrame frame;
-	private String data = "";
 	private JButton btnBrowse;
 	private boolean isFileLoaded;
 	private static String fileName;
 	private EncryptDecrypt dataSet;
 	private JTextField loadingTextField;
+	private StringBuilder data = new StringBuilder();
 	private JButton btnEncrypt = new JButton("Encrypt");
 	private JButton btnDecrypt = new JButton("Decrypt");
 	private JButton btnLoadFile = new JButton("Load file");
 
 	public static void main(String[] args) {	
 		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 			EncryptionGui window = new EncryptionGui();
 			window.frame.setVisible(true);
 			window.frame.setTitle("Encrypt-decrypt App by: Brian Perel");
@@ -57,12 +61,12 @@ public class EncryptionGui implements ActionListener {
 	public EncryptionGui() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 421, 264);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
 
-		btnLoadFile.setBounds(49, 43, 89, 23);
+		btnLoadFile.setBounds(49, 43, 89, 28);
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
@@ -80,11 +84,11 @@ public class EncryptionGui implements ActionListener {
 		});
 
 		loadingTextField = new JTextField();
-		loadingTextField.setBounds(148, 44, 112, 22);
+		loadingTextField.setBounds(148, 44, 112, 26);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
 
-		btnEncrypt.setBounds(84, 140, 89, 23);
+		btnEncrypt.setBounds(84, 140, 89, 28);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
 		btnEncrypt.setBackground(new Color(135, 206, 250));
@@ -100,7 +104,7 @@ public class EncryptionGui implements ActionListener {
 		    }
 		});
 
-		btnDecrypt.setBounds(235, 139, 89, 23);
+		btnDecrypt.setBounds(235, 139, 89, 28);
 		frame.getContentPane().add(btnDecrypt);
 
 		JSeparator separator = new JSeparator();
@@ -121,7 +125,7 @@ public class EncryptionGui implements ActionListener {
 		});
 
 		btnBrowse = new JButton("Browse");
-		btnBrowse.setBounds(270, 43, 86, 23);
+		btnBrowse.setBounds(270, 43, 86, 28);
 		frame.getContentPane().add(btnBrowse);
 		btnBrowse.addActionListener(this);
 		btnBrowse.setBackground(new Color(135, 206, 250));
@@ -165,8 +169,9 @@ public class EncryptionGui implements ActionListener {
 		}
 
 		// if loaded file isn't blank, allow encryption op
-		else if (ae.getSource() == btnEncrypt && !data.isBlank()) {
+		else if (ae.getSource() == btnEncrypt && !data.isEmpty()) {
 			try {
+				frame.getContentPane().add(new JProgressBar());
 				dataSet.encrypt();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -176,7 +181,7 @@ public class EncryptionGui implements ActionListener {
 		}
 
 		// if loaded file isn't blank, allow decryption operation
-		else if (ae.getSource() == btnDecrypt && !data.isBlank()) {
+		else if (ae.getSource() == btnDecrypt && !data.isEmpty()) {
 			try {
 				dataSet.decrypt();
 			} catch (IOException e) {
@@ -186,8 +191,8 @@ public class EncryptionGui implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
 		}
 
-		// if loaded file is BLANK or encrypt/decrypt btn pushed
-		else if (data.isBlank() && (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt)) {
+		// if loaded file is BLANK and encrypt/decrypt btn pushed
+		else if (data.isEmpty() && (ae.getSource() == btnEncrypt || ae.getSource() == btnDecrypt)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -222,7 +227,7 @@ public class EncryptionGui implements ActionListener {
 			read = new Scanner(f1);
 
 			while (read.hasNextLine()) {
-				data += read.nextLine();
+				data.append(read.nextLine());
 			}
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
@@ -249,10 +254,10 @@ public class EncryptionGui implements ActionListener {
 			loadingTextField.setText("");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-		if(read != null) {
-			read.close();
+		} finally {
+			if(read != null) {
+				read.close();
+			}
 		}
 	}
 

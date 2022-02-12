@@ -213,4 +213,6 @@ public class GameBoard extends JPanel implements Runnable {
 			paddleTwo.keyReleased(e);
 		}
 	}
+
+	
 }

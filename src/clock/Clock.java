@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 public class Clock {
 
@@ -28,7 +29,7 @@ public class Clock {
 		frame.setTitle("Clock");
 		frame.setBounds(100, 100, 450, 280);
 		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
@@ -47,7 +48,7 @@ public class Clock {
 		}
 
 		if (font != null) {
-			font = font.deriveFont(Font.BOLD, 130);
+			font = font.deriveFont(Font.BOLD, 110);
 		}
 
 		lblClockTime.setFont(font);

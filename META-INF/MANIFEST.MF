@@ -11,6 +11,7 @@ Main-Class: hangman.Hangman
 Resource: res/graphics/bg-image-hangman
 
 Main-Class: wigglemouse.WiggleMouse 
+Resource: res/graphics/image-mouse-shake
 
 Main-Class: numberguessing.GuessingGame
 Resource: res/audio/chimes.wav

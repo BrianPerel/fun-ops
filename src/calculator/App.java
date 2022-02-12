@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 /**
  * Application implementation for the calculator's UI. Builds and displays all
@@ -29,7 +31,7 @@ import javax.swing.SwingConstants;
 public class App extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
-	private static String cursorRightPositionedWithZero, cursorRightPositioned;
+	private String cursorRightPositionedWithZero, cursorRightPositioned;
 	private JFormattedTextField userInputTextField;
 	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
@@ -38,8 +40,10 @@ public class App extends KeyAdapter implements ActionListener {
 	private static boolean hasNumberZeroBeenEnteredByUser;
 	private JButton[] buttons = new JButton[24];
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {			
 		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
 			App window = new App();
 			window.frame.setVisible(true);
 			window.frame.setTitle("Calculator App by: Brian Perel");
@@ -61,7 +65,7 @@ public class App extends KeyAdapter implements ActionListener {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 436);
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		buttons[0] = new JButton("1/x");
@@ -463,6 +467,7 @@ public class App extends KeyAdapter implements ActionListener {
 				break;
 	
 			default:
+				userInputTextField.setText(cursorRightPositionedWithZero);
 				break;
 		}
 

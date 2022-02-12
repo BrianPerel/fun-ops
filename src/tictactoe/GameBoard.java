@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 // import org.apache.log4j.Logger;
 
@@ -49,7 +50,7 @@ public class GameBoard implements ActionListener {
 
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.getContentPane().setLayout(null);
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);

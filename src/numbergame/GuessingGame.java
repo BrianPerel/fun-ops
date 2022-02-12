@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
@@ -62,7 +63,7 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 526, 352);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
@@ -89,7 +90,7 @@ public class GuessingGame implements ActionListener {
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
 
-		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/figure.jpg"));
+		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/bg-image-question-figure.jpg"));
 		lblImage.setBounds(10, 66, 220, 238);
 		frame.getContentPane().add(lblImage);
 

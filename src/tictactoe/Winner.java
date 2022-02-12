@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 /**
  * Implementation for winner window. When a player wins, this window is displayed. <br>
@@ -22,6 +23,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 	private String gameResult;
 	private JFrame f2 = new JFrame("Tic Tac Toe");
+	private static final String PLAYER = "Player", COMPUTER = "Computer";
 	private JButton btnPlayAgain = new JButton("Play again"), btnQuit = new JButton("Quit");
 
 	/**
@@ -35,7 +37,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
-		f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -82,7 +84,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.toRun = true;
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
@@ -93,7 +95,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if (e.getSource() == btnQuit) {
-			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			} 
 			else {
@@ -107,7 +109,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 
 		if (e.getSource() == btnPlayAgain && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 				new GameBoardTwo(false, false, true);
 			}
@@ -117,7 +119,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals("Player") || gameResult.equals("Computer") || gameResult.equals("Game Over! It's a draw!!")) {
+			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
 			}
 			else {

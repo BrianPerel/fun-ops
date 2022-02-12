@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 /**
  * A Java application that works as a stop-watch in the format 00:00:00
@@ -23,6 +25,12 @@ import javax.swing.Timer;
 public class StopWatch extends JFrame {
 	
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		new StopWatch(300, 150); // 300 x 150 = default requested window measurements (width x height)
 	}
 
@@ -31,7 +39,7 @@ public class StopWatch extends JFrame {
 	 */	
 	public StopWatch(int x, int y) {
 		super("Brian Perel - Stopwatch");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
 		setResizable(false);
 		setSize(x, y);
