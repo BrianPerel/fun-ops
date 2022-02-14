@@ -97,9 +97,11 @@ public class Winner extends KeyAdapter implements ActionListener {
 		else if (e.getSource() == btnQuit) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
+				System.exit(0);
 			} 
 			else {
 				GameBoard.f.dispose();
+				System.exit(0);
 			}			
 		}
 	}
@@ -121,9 +123,11 @@ public class Winner extends KeyAdapter implements ActionListener {
 		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				GameBoardTwo.f.dispose();
+				System.exit(0);
 			}
 			else {
 				GameBoard.f.dispose();
+				System.exit(0);
 			}
 		}		
 	}

@@ -1,6 +1,7 @@
 package tictactoe;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -90,6 +91,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 		btnStart.setBackground(new Color(144, 238, 144));
+	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
 		playAgainstComputerRadioButton.setBounds(207, 268, 157, 23);
@@ -100,7 +102,16 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ENTER && !nameOneTextField.getText().isEmpty()
+		if(nameOneTextField.getText().trim().equalsIgnoreCase("player") || nameOneTextField.getText().trim().equalsIgnoreCase("computer")
+				|| nameTwoTextField.getText().trim().equalsIgnoreCase("player") || nameTwoTextField.getText().trim().equalsIgnoreCase("computer")) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
+					JOptionPane.ERROR_MESSAGE);
+			nameOneTextField.setText("");
+			nameTwoTextField.setText("");
+			nameOneTextField.requestFocus();
+		}
+		
+		else if (e.getKeyChar() == KeyEvent.VK_ENTER && !nameOneTextField.getText().isEmpty()
 				&& !nameTwoTextField.getText().isEmpty() && !nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
 
 			// remove extra whitespace from name textfields before proceeding
@@ -125,8 +136,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 			frame.dispose();
 			new GameBoard(true, true, false);
 
-			// if one of the 2 textfields doesn't get a name
 		} 
+		// if one of the 2 textfields doesn't get a name
 		else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
@@ -142,7 +153,16 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource() == playAgainstComputerRadioButton) {
+		if(nameOneTextField.getText().trim().equalsIgnoreCase("player") || nameOneTextField.getText().trim().equalsIgnoreCase("computer")
+				|| nameTwoTextField.getText().trim().equalsIgnoreCase("player") || nameTwoTextField.getText().trim().equalsIgnoreCase("computer")) {
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
+					JOptionPane.ERROR_MESSAGE);
+			nameOneTextField.setText("");
+			nameTwoTextField.setText("");
+			nameOneTextField.requestFocus();
+		}
+		
+		else if (ae.getSource() == playAgainstComputerRadioButton) {
 			frame.dispose();
 			new GameBoardTwo(true, true, false);
 		}

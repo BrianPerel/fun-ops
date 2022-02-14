@@ -2,6 +2,7 @@ package stopwatch;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,6 +82,9 @@ public class StopWatch extends JFrame {
 			btnStart.setFont(new Font("Georgia", Font.PLAIN, 15));
 			btnStop.setFont(new Font("Georgia", Font.PLAIN, 15));
 			btnReset.setFont(new Font("Georgia", Font.PLAIN, 15));
+		    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		    btnStop.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		    btnReset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			btnStart.setBackground(new Color(0, 255, 128));
 			btnStop.setBackground(new Color(255, 98, 98));
 			btnReset.setBackground(new Color(146, 205, 255));
@@ -105,7 +109,7 @@ public class StopWatch extends JFrame {
 			private static final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			@Override
-			public void actionPerformed(ActionEvent event) {
+			public void actionPerformed(ActionEvent event) {				
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}

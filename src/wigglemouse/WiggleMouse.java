@@ -1,6 +1,7 @@
 package wigglemouse;
 
 import java.awt.AWTException;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;
@@ -80,6 +81,8 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		JLabel lblNewLabel = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
 		lblNewLabel.setBounds(35, 64, 80, 55);
 		frame.getContentPane().add(lblNewLabel);	
+		
+	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	@Override
