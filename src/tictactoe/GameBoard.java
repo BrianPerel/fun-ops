@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 // import org.apache.log4j.Logger;
@@ -24,13 +25,19 @@ import javax.swing.WindowConstants;
  */
 public class GameBoard implements ActionListener {
 
-	private static JLabel lblPlayersTurn;
-	private static boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
-	private JButton[] gameBoardTiles = new JButton[9], highlightWinnersTiles = new JButton[3];
+	protected JLabel lblPlayersTurn;
+	protected boolean isPlayerOnesTurn;
+	protected boolean isPlayerTwosTurn;
+	protected boolean start;
+	protected JButton[] gameBoardTiles = new JButton[9], highlightWinnersTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
-	private static String playerOneWinsMessage, playerTwoWinsMessage, playerOnesName, playerTwosName;
-	private static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
+	protected static String playerOneWinsMessage;
+	protected static String playerTwoWinsMessage;
+	private static String playerOnesName;
+	private static String playerTwosName;
+	protected static final String PLAYER_ONE_SHAPE = "O"; // needed to invert these to fix a window2 symbol problem
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);
+	protected static final String PLAYER_TWO_SHAPE = "X";
 	
 	protected static JFrame f = new JFrame("Tic Tac Toe");
 
@@ -45,6 +52,12 @@ public class GameBoard implements ActionListener {
 	 *                  game
 	 */
 	public GameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+		
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 
@@ -124,7 +137,7 @@ public class GameBoard implements ActionListener {
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public static void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		start = argIsStart;
 		isPlayerOnesTurn = argIsPlayerOnesTurn;
 		isPlayerTwosTurn = argIsPlayerTwosTurn;
@@ -176,6 +189,12 @@ public class GameBoard implements ActionListener {
 		 * 	1  4  7
 		 *  2  5  8
 		 *  3  6  9
+		 */
+		
+		/*
+		 * 0 3 6
+		 * 1 4 7
+		 * 2 5 8
 		 */
 		
 		// if buttons 1, 2, 3 are triggered
@@ -278,7 +297,7 @@ public class GameBoard implements ActionListener {
 		else {
 			// if all buttons are pressed default to game over, tie (draw)
 			for(int x = 0; x < gameBoardTiles.length; x++) {
-				// break if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out
+				// break if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
 				if(gameBoardTiles[x].getText().isEmpty()) {
 					break;
 				}
@@ -327,7 +346,7 @@ public class GameBoard implements ActionListener {
 	 * Performs actions after player one's turn
 	 * @param buttonPressed button that was just pressed by player one
 	 */
-	public static void playerOnesTurnComplete(JButton buttonPressed) {
+	public void playerOnesTurnComplete(JButton buttonPressed) {
 		buttonPressed.setForeground(new Color(232, 46, 6));
 		buttonPressed.setText(PLAYER_ONE_SHAPE);
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
@@ -337,7 +356,7 @@ public class GameBoard implements ActionListener {
 	 * Performs actions after player two's turn
 	 * @param buttonPressed button that was just pressed by player two
 	 */
-	public static void playerTwosTurnComplete(JButton buttonPressed) {
+	public void playerTwosTurnComplete(JButton buttonPressed) {
 		buttonPressed.setForeground(new Color(0, 0, 255));
 		buttonPressed.setText(PLAYER_TWO_SHAPE);
 		lblPlayersTurn.setText(getPlayerTwosName() + "'s turn:");

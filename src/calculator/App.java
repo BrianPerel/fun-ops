@@ -173,7 +173,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 * This is responsible for listening to when buttons are clicked via mouse (actions).
 	 */
 	@Override
-	public void actionPerformed(ActionEvent ae) {
+	public void actionPerformed(ActionEvent ae) {		
 		// remove the auto display '0' value from the main number entry textField box so that
 		// this '0' is not included in calculations
 		// Since it's only needed for display purposes
@@ -355,6 +355,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
+		char keyChar = e.getKeyChar();
 
 		// remove auto display '0' value from main number entry textField box so that
 		// '0' is not included in calculation
@@ -365,7 +366,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
-		switch (e.getKeyChar()) {
+		switch (keyChar) {
 			case KeyEvent.VK_0:
 				userInputTextField.setText(userInputTextField.getText().concat("0"));
 				hasNumberZeroBeenEnteredByUser = true;
@@ -476,16 +477,16 @@ public class App extends KeyAdapter implements ActionListener {
 		 * KeyEvent.VK_ADD, and KeyEvent.C don't work.
 		 */
 
-		if (Character.toUpperCase(e.getKeyChar()) == 'C') {
+		if (Character.toUpperCase(keyChar) == 'C') {
 			userInputTextField.setText(cursorRightPositionedWithZero);
 			resetValues();
 		}
 
-		if (e.getKeyChar() == '*' || e.getKeyChar() == '+') {
+		if (keyChar == '*' || keyChar == '+') {
 			Calculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 
-			if (e.getKeyChar() == '*') {
+			if (keyChar == '*') {
 				operatorFlags[1] = true;
 			} else {
 				operatorFlags[3] = true;

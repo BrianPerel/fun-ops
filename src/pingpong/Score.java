@@ -11,7 +11,7 @@ public class Score {
 	private int playerOneScore, playerTwoScore;
 
 	/**
-	 * Draws the white middle dividing game line, draws the score labels for player1 and player2, sets font 
+	 * Draws the white middle dividing game line and the lines around the game board, draws the score labels for player1 and player2, sets font 
 	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {

@@ -39,6 +39,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	public static void main(String[] args) {			
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		//	System.out.println(UIManager.getLookAndFeel());
 			
 			Menu window = new Menu();
 			window.frame.setVisible(true);

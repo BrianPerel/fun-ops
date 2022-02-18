@@ -186,7 +186,12 @@
 			</config>
 		</launch4j>
 
-		<move file="wigglemouse.exe" todir="${release.dir}" />
+		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse" />
+		<copy todir="build/release/wigglemouse/res/graphics">
+			<fileset dir="res/graphics" includes="image-mouse-shake.jpg" />
+		</copy>
+		<zip destfile="build/release/wigglemouse.zip" basedir="build/release/wigglemouse" update="true" />
+		<delete dir="build/release/wigglemouse" />
 
 	</target>
 
@@ -502,7 +507,6 @@
 		<delete dir="${release.dir}/tic_tac_toe" />
 	</target>
 
-
 	<!-- targets for wiggle mouse -->
 	<target name="compile-wiggle mouse" depends="clean" description="compile program">
 		<mkdir dir="${classes.dir}" />
@@ -522,9 +526,21 @@
 	<target name="run-wiggle mouse" depends="jar-wiggle mouse" description="run the program">
 		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
+	
+	<!-- zip wigglemouse program -->
+	<target name="zip-wigglemouse-jar w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle mouse">
+		<copy todir="${dist.dir}/wigglemouse">
+			<fileset dir="${jar.dir}" includes="wigglemouse-${version.num}.jar" />
+		</copy>
+		<copy todir="${dist.dir}/wigglemouse/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="image-mouse-shake.jpg" />
+		</copy>
+		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse" update="true" />
+		<delete dir="${dist.dir}/wigglemouse" />
+	</target>
 
 	<!-- create wiggle mouse.exe target -->
-	<target name="create wigglemouse.exe" description="create .exe file for wiggle mouse program" depends="jar-wiggle mouse">
+	<target name="create and zip wigglemouse.exe" description="create .exe file for wiggle mouse program" depends="jar-wiggle mouse">
 		<launch4j>
 			<config headerType="gui" outfile="wigglemouse.exe" dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico">
 				<jre minVersion="${min.jre.version}">
@@ -534,8 +550,13 @@
 				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
 			</config>
 		</launch4j>
-
-		<move file="wigglemouse.exe" todir="${release.dir}" />
+		
+		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse" />
+		<copy todir="build/release/wigglemouse/res/graphics">
+			<fileset dir="res/graphics" includes="image-mouse-shake.jpg" />
+		</copy>
+		<zip destfile="build/release/wigglemouse.zip" basedir="build/release/wigglemouse" update="true" />
+		<delete dir="build/release/wigglemouse" />
 	</target>
 
 	<!-- create and zip clock.exe target -->
@@ -595,11 +616,7 @@
 
 	<!-- javadoc target -->
 	<target name="create Javadoc for all programs" depends="clean" description="generate Javadoc for applications">
-		<javadoc sourcepath="src" destdir="docs/api" author="false" version="true" windowtitle="My API Page">
-			<fileset dir="src">
-				<include name="*.java" />
-			</fileset>
-		</javadoc>	
+		<javadoc sourcepath="src" destdir="docs/api" author="true" version="true" windowtitle="My API Page" />	
 	</target>
 
 	<!-- unjar target -->
@@ -607,9 +624,7 @@
 		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
 		
 		<unjar dest="${unjar.dir}">
-			<fileset dir="${jar.dir}">
-            	<include name="*.jar" />
-			</fileset>
+			<fileset dir="${jar.dir}" />
 		</unjar>
 	</target>
 </project>

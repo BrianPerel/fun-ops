@@ -60,7 +60,6 @@ public class GuessingGame implements ActionListener {
 	 */
 	public GuessingGame() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 526, 352);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -139,7 +138,10 @@ public class GuessingGame implements ActionListener {
 		frame.getContentPane().add(closeTimerCheckBox);
 		closeTimerCheckBox.addActionListener(this);
 
-		new StopWatch(300, 110); // launch the stopwatch
+		
+		StopWatch stopWatch = new StopWatch(300, 110); // launch the stopwatch
+		// prevents closure of the stopwatch window frame from closing the guessing game
+		stopWatch.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
 		StopWatchPanel.btnReset.setVisible(false);
@@ -148,12 +150,13 @@ public class GuessingGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		Object source = ae.getSource();
 		
 		boolean outOfTimeFlag = false;
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
-		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && ae.getSource() != btnPlayAgain) {
+		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && source != btnPlayAgain) {
 			outOfTimeFlag = true;
 
 			try {
@@ -169,7 +172,7 @@ public class GuessingGame implements ActionListener {
 			}
 		}
 
-		performGuiButtonAction(ae, outOfTimeFlag);
+		performGuiButtonAction(source, outOfTimeFlag);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -195,15 +198,15 @@ public class GuessingGame implements ActionListener {
 	 * @param ae the action event triggered
 	 * @param outOfTimeFlag boolean keeping track of whether or not timer has hit 10 seconds
 	 */
-	public void performGuiButtonAction(ActionEvent ae, boolean outOfTimeFlag) {
+	public void performGuiButtonAction(Object source, boolean outOfTimeFlag) {
 		
 		// if guess btn is pushed and input is numeric data
-		if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
+		if (source == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			evaluateGuess(outOfTimeFlag);
 		}
 		
 		// if play again btn is pushed
-		else if (ae.getSource() == btnPlayAgain) {
+		else if (source == btnPlayAgain) {
 
 			try {
 				Applet.newAudioClip(new File("res/audio/chimes.wav").toURL()).play();
@@ -220,7 +223,7 @@ public class GuessingGame implements ActionListener {
 		}
 		
 		// if guess btn is pushed and input is empty
-		else if (ae.getSource() == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
+		else if (source == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
 
 			try {
 				Applet.newAudioClip(new File("res/audio/fail.wav").toURL()).play();

@@ -19,8 +19,8 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
- * A Java application that works as a stop-watch in the format 00:00:00
- * (hh:mm:ss) Classes are nested to support multiple inheritance
+ * Stop-watch app in the format 00:00:00 (hh:mm:ss).
+ * Classes are nested to support multiple inheritance
  */
 @SuppressWarnings("serial")
 public class StopWatch extends JFrame {
@@ -52,19 +52,19 @@ public class StopWatch extends JFrame {
 	 * Represents the stop-watch panel for this program. Will update the time here
 	 */
 	public class StopWatchPanel extends JPanel {
-		/** represent the hours, minutes, and seconds in the watch. */
-		private int hour, minute, second, centisec;
+		/** represent the hours, minutes, and seconds in the watch */
+		private int hour, minute, second, centisecond;
 		/** btns - start, stop, reset */
 		public static JButton btnStart, btnStop, btnReset;
-		/** Show the timer. */
+		/** Show the timer */
 		public static JLabel watch;
-		/** Timer to be used for watch. */
+		/** Timer to be used for watch */
 		private Timer timer;
-		/** Button listener. */
-		private ActionListener b = new ButtonListener();
+		/** Button listener */
+		private ActionListener buttonListener = new ButtonListener();
 
 		/**
-		 * Constructor: Sets up this panel to listen for mouse events.
+		 * Constructor: Sets up this panel to listen for mouse events
 		 */
 		public StopWatchPanel() {
 			setLayout(new BorderLayout());
@@ -82,39 +82,42 @@ public class StopWatch extends JFrame {
 			btnStart.setFont(new Font("Georgia", Font.PLAIN, 15));
 			btnStop.setFont(new Font("Georgia", Font.PLAIN, 15));
 			btnReset.setFont(new Font("Georgia", Font.PLAIN, 15));
-		    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		    btnStop.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		    btnReset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+		    btnStart.setCursor(handCursor);
+		    btnStop.setCursor(handCursor);
+		    btnReset.setCursor(handCursor);
 			btnStart.setBackground(new Color(0, 255, 128));
 			btnStop.setBackground(new Color(255, 98, 98));
 			btnReset.setBackground(new Color(146, 205, 255));
-			btnStart.addActionListener(b);
-			btnStop.addActionListener(b);
-			btnReset.addActionListener(b);
-			btnStart.addKeyListener((KeyListener) b);
-			btnStop.addKeyListener((KeyListener) b);
-			btnReset.addKeyListener((KeyListener) b);
+			btnStart.addActionListener(buttonListener);
+			btnStop.addActionListener(buttonListener);
+			btnReset.addActionListener(buttonListener);
+			btnStart.addKeyListener((KeyListener) buttonListener);
+			btnStop.addKeyListener((KeyListener) buttonListener);
+			btnReset.addKeyListener((KeyListener) buttonListener);
 			buttonPanel.add(btnStart);
 			buttonPanel.add(btnStop);
 			buttonPanel.add(btnReset);
 			add(buttonPanel, BorderLayout.CENTER);
-			timer = new Timer(10, b);
+			timer = new Timer(0, buttonListener);
 		}
 
 		/**
-		 * Represents a listener for button push (action) events.
+		 * Represents a listener for button push (action) events
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
 			private static final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
 
 			@Override
-			public void actionPerformed(ActionEvent event) {				
+			public void actionPerformed(ActionEvent event) {	
+				Object source = event.getSource();
+				
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
 				
-				centisec++;
+				centisecond++;
 				
 				if (minute == TIMEBASE) {
 					hour++;
@@ -124,19 +127,19 @@ public class StopWatch extends JFrame {
 					minute++;
 					second = 0;
 				}
-				if (centisec == CENTSECBASE) {
+				if (centisecond == CENTSECBASE) {
 					second++;
-					centisec = 0;
+					centisecond = 0;
 				}
-				if (event.getSource() == btnStart) {
+				if (source == btnStart) {
 					btnStart.setEnabled(false);
 					btnStop.setEnabled(true);
 					timer.start();
-				} else if (event.getSource() == btnStop) {
+				} else if (source == btnStop) {
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(false);
 					timer.stop();
-				} else if (event.getSource() == btnReset) { 
+				} else if (source == btnReset) { 
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(true);
 					btnStart.requestFocus();
@@ -150,11 +153,14 @@ public class StopWatch extends JFrame {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
+				Object source = e.getSource();
+				char keyChar = e.getKeyChar();
+				
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
 				
-				centisec++;
+				centisecond++;
 				
 				if (minute == TIMEBASE) {
 					hour++;
@@ -164,19 +170,19 @@ public class StopWatch extends JFrame {
 					minute++;
 					second = 0;
 				}
-				if (centisec == CENTSECBASE) {
+				if (centisecond == CENTSECBASE) {
 					second++;
-					centisec = 0;
+					centisecond = 0;
 				}
-				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
+				if (keyChar == KeyEvent.VK_ENTER && source == btnStart) {
 					btnStart.setEnabled(false);
 					btnStop.setEnabled(true);
 					timer.start();
-				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStop) {
+				} else if (keyChar == KeyEvent.VK_ENTER && source == btnStop) {
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(false);
 					timer.stop();
-				} else if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnReset) { 
+				} else if (keyChar == KeyEvent.VK_ENTER && source == btnReset) { 
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(true);
 					btnStart.requestFocus();
@@ -184,6 +190,7 @@ public class StopWatch extends JFrame {
 					hour = minute = second = 0;
 					watch.setText("00:00:00");
 				}
+				
 				watchSetText();
 			}
 
