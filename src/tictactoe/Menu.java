@@ -39,13 +39,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 	public static void main(String[] args) {			
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		//	System.out.println(UIManager.getLookAndFeel());
 			
-			Menu window = new Menu();
-			window.frame.setVisible(true);
-			window.frame.setTitle("Tic Tac Toe App by: Brian Perel");
-			window.frame.setResizable(false);
-			window.frame.setLocationRelativeTo(null);
+			new Menu();
+			
 			// logger.info("Starting tic tac toe log");
 		} catch (Exception e) {
 			// logger.error("Error: " + e.toString());
@@ -57,7 +53,9 @@ public class Menu extends KeyAdapter implements ActionListener {
 	 * Create the application. Build all components
 	 */
 	public Menu() {
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 399, 358);
+		frame.setTitle("Tic Tac Toe App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -99,12 +97,18 @@ public class Menu extends KeyAdapter implements ActionListener {
 		playAgainstComputerRadioButton.setOpaque(false);
 		frame.getContentPane().add(playAgainstComputerRadioButton);
 		playAgainstComputerRadioButton.addActionListener(this);
+		
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(nameOneTextField.getText().trim().equalsIgnoreCase("player") || nameOneTextField.getText().trim().equalsIgnoreCase("computer")
-				|| nameTwoTextField.getText().trim().equalsIgnoreCase("player") || nameTwoTextField.getText().trim().equalsIgnoreCase("computer")) {
+		String nameOne = nameOneTextField.getText();
+		String nameTwo = nameTwoTextField.getText();
+		
+		if(nameOne.trim().equalsIgnoreCase("player") || nameOne.trim().equalsIgnoreCase("computer")
+				|| nameTwo.trim().equalsIgnoreCase("player") || nameTwo.trim().equalsIgnoreCase("computer")) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -112,38 +116,38 @@ public class Menu extends KeyAdapter implements ActionListener {
 			nameOneTextField.requestFocus();
 		}
 		
-		else if (e.getKeyChar() == KeyEvent.VK_ENTER && !nameOneTextField.getText().isEmpty()
-				&& !nameTwoTextField.getText().isEmpty() && !nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
+		else if (e.getKeyChar() == KeyEvent.VK_ENTER && !nameOne.isEmpty()
+				&& !nameTwo.isEmpty() && !nameOne.equalsIgnoreCase(nameTwo)) {
 
 			// remove extra whitespace from name textfields before proceeding
-			GameBoard.setPlayerOnesName(nameOneTextField.getText().trim());
-			GameBoard.setPlayerTwosName(nameTwoTextField.getText().trim());
+			PvPGameBoard.setPlayerOnesName(nameOne.trim());
+			PvPGameBoard.setPlayerTwosName(nameTwo.trim());
 
 			// if first letter of player one's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.getPlayerOnesName().charAt(0))) {
-				GameBoard.setPlayerOnesName((GameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
-						+ GameBoard.getPlayerOnesName().substring(1));
+			if (Character.isLowerCase(PvPGameBoard.getPlayerOnesName().charAt(0))) {
+				PvPGameBoard.setPlayerOnesName((PvPGameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+						+ PvPGameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.getPlayerTwosName().charAt(0))) {
-				GameBoard.setPlayerTwosName((GameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
-						+ GameBoard.getPlayerTwosName().substring(1));
+			if (Character.isLowerCase(PvPGameBoard.getPlayerTwosName().charAt(0))) {
+				PvPGameBoard.setPlayerTwosName((PvPGameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+						+ PvPGameBoard.getPlayerTwosName().substring(1));
 			}
 
 			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
 			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());
 
 			frame.dispose();
-			new GameBoard(true, true, false);
+			new PvPGameBoard(true, true, false);
 
 		} 
 		// if one of the 2 textfields doesn't get a name
-		else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
+		else if (nameOne.isEmpty() || nameTwo.isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} // if first name field equals the second one
-		else if (nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
+		else if (nameOne.equalsIgnoreCase(nameTwo)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -154,8 +158,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if(nameOneTextField.getText().trim().equalsIgnoreCase("player") || nameOneTextField.getText().trim().equalsIgnoreCase("computer")
-				|| nameTwoTextField.getText().trim().equalsIgnoreCase("player") || nameTwoTextField.getText().trim().equalsIgnoreCase("computer")) {
+		String nameOne = nameOneTextField.getText();
+		String nameTwo = nameTwoTextField.getText();
+		
+		if(nameOne.trim().equalsIgnoreCase("player") || nameOne.trim().equalsIgnoreCase("computer")
+				|| nameTwo.trim().equalsIgnoreCase("player") || nameTwo.trim().equalsIgnoreCase("computer")) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -165,18 +172,18 @@ public class Menu extends KeyAdapter implements ActionListener {
 		
 		else if (ae.getSource() == playAgainstComputerRadioButton) {
 			frame.dispose();
-			new GameBoardTwo(true, true, false);
+			new PvEGameBoard(true, true, false);
 		}
 		// if start button is pushed and both name fields arn't empty
-		else if (ae.getSource() == btnStart && !nameOneTextField.getText().isEmpty()
-				&& !nameTwoTextField.getText().isEmpty()) {
+		else if (ae.getSource() == btnStart && !nameOne.isEmpty()
+				&& !nameTwo.isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
-			GameBoard.setPlayerOnesName(nameOneTextField.getText().trim());
-			GameBoard.setPlayerTwosName(nameTwoTextField.getText().trim());
+			PvPGameBoard.setPlayerOnesName(nameOne.trim());
+			PvPGameBoard.setPlayerTwosName(nameTwo.trim());
 
 			// if first name field equals the second one
-			if (nameOneTextField.getText().equalsIgnoreCase(nameTwoTextField.getText())) {
+			if (nameOne.equalsIgnoreCase(nameTwo)) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names");
 				nameOneTextField.setText("");
 				nameTwoTextField.setText("");
@@ -186,25 +193,25 @@ public class Menu extends KeyAdapter implements ActionListener {
 			}
 
 			// if first letter of player one's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.getPlayerOnesName().charAt(0))) {
-				GameBoard.setPlayerOnesName((GameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
-						+ GameBoard.getPlayerOnesName().substring(1));
+			if (Character.isLowerCase(PvPGameBoard.getPlayerOnesName().charAt(0))) {
+				PvPGameBoard.setPlayerOnesName((PvPGameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+						+ PvPGameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
-			if (Character.isLowerCase(GameBoard.getPlayerTwosName().charAt(0))) {
-				GameBoard.setPlayerTwosName((GameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
-						+ GameBoard.getPlayerTwosName().substring(1));
+			if (Character.isLowerCase(PvPGameBoard.getPlayerTwosName().charAt(0))) {
+				PvPGameBoard.setPlayerTwosName((PvPGameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+						+ PvPGameBoard.getPlayerTwosName().substring(1));
 			}
 			
 			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
 			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());
 
 			frame.dispose();
-			new GameBoard(true, true, false);
+			new PvPGameBoard(true, true, false);
 
 			// if both name text fields are empty
-		} else if (nameOneTextField.getText().isEmpty() || nameTwoTextField.getText().isEmpty()) {
+		} else if (nameOne.isEmpty() || nameTwo.isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} 

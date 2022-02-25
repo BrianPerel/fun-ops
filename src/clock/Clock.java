@@ -3,21 +3,44 @@ package clock;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-public class Clock {
+public class Clock implements ActionListener {
 
 	private JLabel lblClockTime;
+	private JTextField alarmTime;
+	private String timeAlarmGoesOff;
+	boolean alarmShouldRing = true;
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		
 		new Clock();
 	}
 
@@ -57,10 +80,23 @@ public class Clock {
 		frame.getContentPane().add(lblClockTime);
 		
 		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
-		militaryTimeFormatCheckBox.setBounds(310, 178, 97, 25);
+		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
 		militaryTimeFormatCheckBox.setBackground(Color.BLACK);
 		militaryTimeFormatCheckBox.setForeground(Color.WHITE);
 		frame.getContentPane().add(militaryTimeFormatCheckBox);
+		
+		alarmTime = new JTextField();
+		alarmTime.setBounds(40, 175, 84, 28);
+		alarmTime.setForeground(Color.BLACK);
+		alarmTime.setBackground(new Color(211, 211, 211));
+		frame.getContentPane().add(alarmTime);
+		alarmTime.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
+		
+		JButton btnSetAlarm = new JButton("Set Alarm");
+		btnSetAlarm.setBounds(125, 175, 90, 25);
+		btnSetAlarm.setForeground(Color.BLACK);
+		frame.getContentPane().add(btnSetAlarm);
+		btnSetAlarm.addActionListener(this);
 		
 		getTime(militaryTimeFormatCheckBox);
 	}
@@ -84,7 +120,23 @@ public class Clock {
 					time = time.substring(1, time.length());
 				}	
 			}
-			
+							
+			// if alarm time set is triggered, play wav file
+			if(alarmShouldRing && time.equals(timeAlarmGoesOff)) {
+				try {
+					AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav"));
+					Clip clip = AudioSystem.getClip();
+					clip.open(audioStream);
+					clip.start();
+					TimeUnit.SECONDS.sleep(3);
+					clip.stop();
+					alarmShouldRing = false;
+				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e1) {
+					Thread.currentThread().interrupt();
+					e1.printStackTrace();
+				}
+			}
+
 			lblClockTime.setText(time);
 			
 			// updates the time every second
@@ -95,5 +147,12 @@ public class Clock {
 				Thread.currentThread().interrupt();
 			}
 		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		alarmShouldRing = true;
+		timeAlarmGoesOff = alarmTime.getText();
+		JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

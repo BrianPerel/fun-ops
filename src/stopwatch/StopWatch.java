@@ -39,7 +39,7 @@ public class StopWatch extends JFrame {
 	 * Creates the GUI frame (box)
 	 */	
 	public StopWatch(int x, int y) {
-		super("Brian Perel - Stopwatch");
+		super("Stopwatch");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
 		setResizable(false);

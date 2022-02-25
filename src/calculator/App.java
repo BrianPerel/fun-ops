@@ -30,9 +30,8 @@ import javax.swing.WindowConstants;
  */
 public class App extends KeyAdapter implements ActionListener {
 
-	private JFrame frame;
-	private String cursorRightPositionedWithZero, cursorRightPositioned;
 	private JFormattedTextField userInputTextField;
+	private String cursorRightPositionedWithZero, cursorRightPositioned;
 	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
@@ -42,16 +41,12 @@ public class App extends KeyAdapter implements ActionListener {
 
 	public static void main(String[] args) {			
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			
-			App window = new App();
-			window.frame.setVisible(true);
-			window.frame.setTitle("Calculator App by: Brian Perel");
-			window.frame.setResizable(false);
-			window.frame.setLocationRelativeTo(null);
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		new App();
 	}
 
 	/**
@@ -62,8 +57,10 @@ public class App extends KeyAdapter implements ActionListener {
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
 
-		frame = new JFrame();
+		JFrame frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 400, 436);
+		frame.setTitle("Calculator App by: Brian Perel");
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -77,16 +74,12 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[6] = new JButton("2\u221Ax"); // unicode for 2 square root x symbol = 2\u221Ax
 		buttons[7] = new JButton("\u00F7"); // unicode for division symbol = \u00F7
 		buttons[8] = new JButton("*");
-		buttons[9] = new JButton("0");
-		buttons[10] = new JButton("1");
-		buttons[11] = new JButton("2");
-		buttons[12] = new JButton("3");
-		buttons[13] = new JButton("4");
-		buttons[14] = new JButton("5");
-		buttons[15] = new JButton("6");
-		buttons[16] = new JButton("7");
-		buttons[17] = new JButton("8");
-		buttons[18] = new JButton("9");
+
+		// assign numeric keypad button values for buttons 9-18
+		for(int x = 0; x <= 9; x++) {
+			buttons[x+9] = new JButton(Integer.toString(x));
+		}
+		
 		buttons[19] = new JButton("-");
 		buttons[20] = new JButton("+");
 		buttons[21] = new JButton("+/-");
@@ -167,6 +160,9 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setColumns(10);
 		userInputTextField.setEditable(false);
 		userInputTextField.addKeyListener(this);
+		
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	/**
@@ -448,7 +444,7 @@ public class App extends KeyAdapter implements ActionListener {
 	
 					// check for division by zero. Avoids exception being flagged
 					userInputTextField.setText(
-							Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned + value);
+							Calculator.divideByZeroflag ? "Cannot divide by zero" : (cursorRightPositioned + value));
 	
 					// reset all array values to 0
 					Collections.fill(Calculator.stringNumbers, "");

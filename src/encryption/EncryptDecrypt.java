@@ -47,10 +47,10 @@ public class EncryptDecrypt {
 				// into a char which is 'o'
 				maskedData.append((char) (data.charAt(index) + 5));
 			}
-
+			
 			// cast the StringBuilder into a String
 			data = maskedData;
-			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName()); // access the existing txt file
+			FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName()); // access the existing txt file
 
 			try {
 				myWriter.write(data.toString()); // write newly created string of random characters into file
@@ -75,22 +75,11 @@ public class EncryptDecrypt {
 	public StringBuilder decrypt() throws IOException {
 		
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
-		if(isEncrypted) {
-			StringBuilder unmaskedData = new StringBuilder();
-	
-			// loop to traverse encrypted data, fill in a blank StringBuilder variable with
-			// values from data variable
-			// with a random integer number subtracted and casted to char type
-			for (int index = 0; index < data.length(); index++) {
-				// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
-				// into a char which is 'a'
-				unmaskedData.append((char) (data.charAt(index) - 5));
-			}
-	
+		if(isEncrypted) {				
 			// cast the StringBuilder into a String
-			data = unmaskedData;
+			data = checkSentenceFormat();
 	
-			FileWriter myWriter = new FileWriter(EncryptionGui.getFileName());
+			FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
 				// override with decrypted data
@@ -104,6 +93,50 @@ public class EncryptDecrypt {
 		}
 		
 		return data;
+	}
+	
+	/**
+	 * Enforces every sentence to start with a single space, during decryption process
+	 * @return unmaskedData the decrypted data
+	 */
+	public StringBuilder checkSentenceFormat() {
+		
+		StringBuilder unmaskedData = new StringBuilder();
+		
+		int wordCount = 0;
+		
+		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
+		// values from data variable
+		// with a random integer number subtracted and casted to char type
+		for (int index = 0; index < data.length(); index++) {
+			// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
+			// into a char which is 'a'
+			unmaskedData.append((char) (data.charAt(index) - 5));
+			
+			if (Character.isWhitespace((char) (data.charAt(index) - 5))) {
+				wordCount++;
+				
+				// if the number in wordCount is divisible by 25 (ex. 25, 50, 75, 100, etc.) then add a new line to the file being decrypted
+				if (wordCount % 25 == 0) {
+					unmaskedData.append('\n');
+				} 
+			}
+		}
+					
+		// checks that every sentence starts with a single space
+		for (int index = 0; index < unmaskedData.length()-1; index++) {				
+			// if current character detected is a '.' and the next character is not a space then...
+			if(unmaskedData.charAt(index) == '.' && !Character.isWhitespace(unmaskedData.charAt(index+1))) {
+				// insert a single space into StringBuilder unmaskedData here, at index+1 
+				unmaskedData.insert(index+1, ' ');
+			// if 2 spaces at the beginning of a sentence are encountered, format it to start with just 1 space
+			} else if(unmaskedData.charAt(index) == '.' && Character.isWhitespace(unmaskedData.charAt(index+1)) 
+					&& Character.isWhitespace(unmaskedData.charAt(index+2))) {
+				unmaskedData.replace(index+2, index+3, "");
+			}
+		} 
+		
+		return unmaskedData;
 	}
 
 	@Override

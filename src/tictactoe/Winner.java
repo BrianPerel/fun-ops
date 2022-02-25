@@ -41,8 +41,8 @@ public class Winner extends KeyAdapter implements ActionListener {
 		f2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
-				GameBoard.f.dispose();
-				new GameBoard(false, false, true);
+				PvPGameBoard.f.dispose();
+				new PvPGameBoard(false, false, true);
 		    }
 		});
 		
@@ -85,22 +85,22 @@ public class Winner extends KeyAdapter implements ActionListener {
 		
 		if (e.getSource() == btnPlayAgain) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				GameBoardTwo.toRun = true;
-				GameBoardTwo.f.dispose();
-				new GameBoardTwo(false, false, true);
+				PvEGameBoard.toRun = true;
+				PvEGameBoard.f.dispose();
+				new PvEGameBoard(false, false, true);
 			}
 			else {
-				GameBoard.f.dispose();
-				new GameBoard(false, false, true);
+				PvPGameBoard.f.dispose();
+				new PvPGameBoard(false, false, true);
 			}
 		} 
 		else if (e.getSource() == btnQuit) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				GameBoardTwo.f.dispose();
+				PvEGameBoard.f.dispose();
 				System.exit(0);
 			} 
 			else {
-				GameBoard.f.dispose();
+				PvPGameBoard.f.dispose();
 				System.exit(0);
 			}			
 		}
@@ -112,21 +112,21 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		if (e.getSource() == btnPlayAgain && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				GameBoardTwo.f.dispose();
-				new GameBoardTwo(false, false, true);
+				PvEGameBoard.f.dispose();
+				new PvEGameBoard(false, false, true);
 			}
 			else {
-				GameBoard.f.dispose();
-				new GameBoard(false, false, true);
+				PvPGameBoard.f.dispose();
+				new PvPGameBoard(false, false, true);
 			}
 		} 
 		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				GameBoardTwo.f.dispose();
+				PvEGameBoard.f.dispose();
 				System.exit(0);
 			}
 			else {
-				GameBoard.f.dispose();
+				PvPGameBoard.f.dispose();
 				System.exit(0);
 			}
 		}		

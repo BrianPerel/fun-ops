@@ -17,11 +17,13 @@ Main-Class: numberguessing.GuessingGame
 Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
-Resource4: res/graphics/figure
+Resource4: res/graphics/bg-image-guessing-figure
 Resource5: res/graphics/bg-image-guess
 
-Main-Class: encryption.EncryptionGUI
-Resource: res/graphics/bgImageEncrypt
+Main-Class: numberguessing.AdvancedGuessingGame
+
+Main-Class: encryption.EncryptDecryptGui
+Resource: res/graphics/bg-image-encryption
 
 Main-Class: tictactoe.Menu
 Resource: res/graphics/bg-image-tac

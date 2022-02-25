@@ -27,7 +27,6 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse extends KeyAdapter implements ActionListener {
 
-	private JFrame frame;
 	private JButton btnStart;
 	private static int x, y, timeToWait;
 	private static String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
@@ -39,15 +38,8 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * @throws AWTException 
 	 */
 	public static void main(String[] args) throws InterruptedException, AWTException {		
-		try {
-			WiggleMouse window = new WiggleMouse();
-			window.frame.setVisible(true);
-			window.frame.setTitle("Wiggle mouse by B. Perel");
-			window.frame.setResizable(false);
-			window.frame.setLocationRelativeTo(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		new WiggleMouse();
 
 		timeToWait = 30000;
 		moveMouse();
@@ -57,9 +49,11 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	public WiggleMouse() {
-		frame = new JFrame();
-		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		JFrame frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 550, 182);
+		frame.setTitle("Wiggle mouse by B. Perel");
+		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -83,6 +77,9 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(lblNewLabel);	
 		
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	    
+	    frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	@Override

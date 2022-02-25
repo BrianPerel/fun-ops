@@ -51,7 +51,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// space of arraylist
 	private static ArrayList<String> hangmanDrawing = new ArrayList<>();
 
-	// placeholder for a counter
+	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
 	private int count;
 
 	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
@@ -66,16 +66,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private static SecureRandom randomGenerator = new SecureRandom();
 	
 	public static void main(String[] args) {
-		try {
-			Hangman window = new Hangman();
-			window.frame.setVisible(true);
-			window.frame.setTitle("Hangman App by: Brian Perel");
-			window.frame.setResizable(false);
-			window.frame.setLocationRelativeTo(null);
-		} catch (Exception e) {
-			// logger.error("Error: " + e.toString());
-			e.printStackTrace();
-		}
+		new Hangman();
 	}
 
 	/**
@@ -94,8 +85,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanDrawing.add("\n |       /   \\ \n |");
 
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 529, 326);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Hangman App by: Brian Perel");
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -187,6 +180,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 		
 		createHangmanWord();
+		
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	/**
@@ -270,7 +266,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Performs appropriate actions when key pressed 
+	 * Performs appropriate actions when a key is pressed 
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
