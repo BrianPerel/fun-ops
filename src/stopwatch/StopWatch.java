@@ -53,9 +53,14 @@ public class StopWatch extends JFrame {
 	 */
 	public class StopWatchPanel extends JPanel {
 		/** represent the hours, minutes, and seconds in the watch */
-		private int hour, minute, second, centisecond;
+		private int hour;
+		private int minute;
+		private int second;
+		private int centisecond;
 		/** btns - start, stop, reset */
-		public static JButton btnStart, btnStop, btnReset;
+		public static JButton btnStart;
+		public static JButton btnStop;
+		public static JButton btnReset;
 		/** Show the timer */
 		public static JLabel watch;
 		/** Timer to be used for watch */
@@ -72,10 +77,11 @@ public class StopWatch extends JFrame {
 			watch = new JLabel("00:00:00", JLabel.CENTER);
 			watch.setFont(new Font("Helvetica", Font.PLAIN, 36));
 			watchPanel.add(watch);
-			watchPanel.setBackground(new Color(225, 225, 225));
+			Color superLightGrey = new Color(225, 225, 225);
+			watchPanel.setBackground(superLightGrey);
 			add(watchPanel, BorderLayout.NORTH);
 			JPanel buttonPanel = new JPanel();
-			buttonPanel.setBackground(new Color(225, 225, 225));
+			buttonPanel.setBackground(superLightGrey);
 			btnStart = new JButton("START");
 			btnStop = new JButton("STOP");
 			btnReset = new JButton("RESET");
@@ -86,9 +92,12 @@ public class StopWatch extends JFrame {
 		    btnStart.setCursor(handCursor);
 		    btnStop.setCursor(handCursor);
 		    btnReset.setCursor(handCursor);
-			btnStart.setBackground(new Color(0, 255, 128));
-			btnStop.setBackground(new Color(255, 98, 98));
-			btnReset.setBackground(new Color(146, 205, 255));
+		    Color lightGreen = new Color(0, 255, 128);
+			btnStart.setBackground(lightGreen);
+			Color lightRed = new Color(255, 98, 98);
+			btnStop.setBackground(lightRed);
+			Color lightBlue = new Color(146, 205, 255);
+			btnReset.setBackground(lightBlue);
 			btnStart.addActionListener(buttonListener);
 			btnStop.addActionListener(buttonListener);
 			btnReset.addActionListener(buttonListener);
@@ -107,7 +116,9 @@ public class StopWatch extends JFrame {
 		 */
 		public class ButtonListener extends KeyAdapter implements ActionListener {
 			
-			private static final int TIMEBASE = 60, CENTSECBASE = 99, SHOWBASE = 10;
+			private static final int TIMEBASE = 60;
+			private static final int CENTSECBASE = 99;
+			private static final int SHOWBASE = 10;
 
 			@Override
 			public void actionPerformed(ActionEvent event) {	

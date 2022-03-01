@@ -56,8 +56,8 @@ public class AdvancedGuessingGame extends GuessingGame {
 		} else if (textFieldGuessTheNumberInt + randomNumber == 1000) {
 			
 			playSound("res/audio/win.wav");
-
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(new Color(50, 205, 50), 2));
+			Color lightGreen = new Color(50, 205, 50);
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(lightGreen, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 1000");
 			randomNumber = randomGenerator.nextInt(899) + 100;
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -84,5 +84,4 @@ public class AdvancedGuessingGame extends GuessingGame {
 		textFieldScore.setText(Integer.toString(totalGameScore));
 		guessesTextField.setText(Integer.toString(totalGuessesMade));
 	}
-
 }

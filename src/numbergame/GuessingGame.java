@@ -1,6 +1,7 @@
 package numbergame;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -41,14 +41,19 @@ import stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	protected JFrame frame;
-	protected JLabel lblGuess, lblScoringInfo;
+	protected JLabel lblGuess;
+	private JCheckBox closeTimerCheckBox;
 	protected JFormattedTextField textFieldGuessTheNumber;
 	protected SecureRandom randomGenerator = new SecureRandom();
-	protected int totalGuessesMade, totalGameScore, randomNumber;
-	protected JTextField textFieldScore, guessesTextField, textFieldRandomNumber;
-	protected JButton btnPlayAgain = new JButton("Play again?"), btnGuess = new JButton("Guess");
+	protected int totalGuessesMade;
+	protected int totalGameScore;
+	protected int randomNumber;
+	protected JTextField textFieldScore;
+	protected JTextField guessesTextField;
+	protected JTextField textFieldRandomNumber;
+	protected JButton btnPlayAgain = new JButton("Play again?");
+	protected JButton btnGuess = new JButton("Guess");
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
-	private JCheckBox closeTimerCheckBox;
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -125,7 +130,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.addActionListener(this);
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-		lblScoringInfo = new JLabel("Successful guess = 10 points");
+		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
 		lblScoringInfo.setBounds(315, 24, 172, 17);
 		frame.getContentPane().add(lblScoringInfo);
 
@@ -151,6 +156,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnReset.setVisible(false);
 		StopWatchPanel.btnStart.doClick();
 		
+		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		closeTimerCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
@@ -163,11 +172,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
-		if (StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0 && !source.equals(btnPlayAgain)) {
+		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain)) {
 			outOfTimeFlag = true;
-			
 			playSound(FAIL_SOUND);
-
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
 
 			if (totalGameScore != 0) {
@@ -207,13 +214,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
-		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6, 8).compareTo("10") >= 0
+		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
 				&& !source.equals(btnPlayAgain)) {
 			
 			outOfTimeFlag = true;
-			
 			playSound(FAIL_SOUND);
-
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
 
 			if (totalGameScore != 0) {
@@ -256,9 +261,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
-			
 			playSound("res/audio/chimes.wav");
-
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
 			guessesTextField.setText("0");
 			randomNumber = randomGenerator.nextInt(100);
@@ -269,9 +272,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		
 		// if guess btn is pushed and input is empty
 		else if (source == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
-			
 			playSound(FAIL_SOUND);
-
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 	}
@@ -287,17 +288,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// if input remainder entered is outside of range 1-99
 		if (textFieldGuessTheNumberInt >= 100 || textFieldGuessTheNumberInt <= 0) {
-			
 			playSound(FAIL_SOUND);
-
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
-
 		} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
-			
 			playSound("res/audio/win.wav");
-
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(new Color(50, 205, 50), 2));
+			Color lightGreen = new Color(50, 205, 50);
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(lightGreen, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -305,11 +302,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			if (!outOfTimeFlag) {
 				totalGameScore += 10;
 			}
-
 		} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
-			
 			playSound(FAIL_SOUND);
-
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
 			
@@ -327,9 +321,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	
 	public void playSound(String fileToPlay) {
 		try {
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(fileToPlay));
 			Clip clip = AudioSystem.getClip();
-			clip.open(audioStream);
+			clip.open(AudioSystem.getAudioInputStream(new File(fileToPlay)));
 			clip.start();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 			e1.printStackTrace();

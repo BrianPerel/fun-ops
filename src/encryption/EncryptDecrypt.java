@@ -78,7 +78,6 @@ public class EncryptDecrypt {
 		if(isEncrypted) {				
 			// cast the StringBuilder into a String
 			data = checkSentenceFormat();
-	
 			FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
@@ -100,11 +99,11 @@ public class EncryptDecrypt {
 	 * @return unmaskedData the decrypted data
 	 */
 	public StringBuilder checkSentenceFormat() {
-		
-		StringBuilder unmaskedData = new StringBuilder();
-		
+				
 		int wordCount = 0;
-		
+
+		StringBuilder unmaskedData = new StringBuilder();
+				
 		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
 		// values from data variable
 		// with a random integer number subtracted and casted to char type
@@ -124,15 +123,16 @@ public class EncryptDecrypt {
 		}
 					
 		// checks that every sentence starts with a single space
-		for (int index = 0; index < unmaskedData.length()-1; index++) {				
+		for (int index = 0; index < unmaskedData.length() - 1; index++) {				
 			// if current character detected is a '.' and the next character is not a space then...
-			if(unmaskedData.charAt(index) == '.' && !Character.isWhitespace(unmaskedData.charAt(index+1))) {
+			if(unmaskedData.charAt(index) == '.' && !Character.isWhitespace(unmaskedData.charAt(index + 1))) {
 				// insert a single space into StringBuilder unmaskedData here, at index+1 
-				unmaskedData.insert(index+1, ' ');
-			// if 2 spaces at the beginning of a sentence are encountered, format it to start with just 1 space
-			} else if(unmaskedData.charAt(index) == '.' && Character.isWhitespace(unmaskedData.charAt(index+1)) 
-					&& Character.isWhitespace(unmaskedData.charAt(index+2))) {
-				unmaskedData.replace(index+2, index+3, "");
+				unmaskedData.insert(index + 1, ' ');
+				
+				// if 2 spaces at the beginning of a sentence are encountered, format it to start with just 1 space
+				if(Character.isWhitespace(unmaskedData.charAt(index + 2))) {
+					unmaskedData.replace(index + 2, index + 3, "");
+				}
 			}
 		} 
 		

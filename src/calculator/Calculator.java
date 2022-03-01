@@ -2,7 +2,6 @@ package calculator;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Performs all calculator operations. <br>
@@ -10,16 +9,14 @@ import java.util.List;
  */
 public class Calculator {
 
-	protected static int arrayPositionNumber; // used to place every user calculator operand value in a separate location
-	protected static int arrayNumsFilled; // container to tell what array subscripts are free or taken
 	private static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to double
-	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
+	protected static ArrayList<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
 													// values
-	protected static List<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
+	protected static ArrayList<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
 	
 	private static double answer;
 	
@@ -36,10 +33,8 @@ public class Calculator {
 		// do not set number in memory if % is still attached to number (enforces fact
 		// that code must remove % before this step) or if string
 		// includes a character
-		if (!argNumber.contains("%")) {
-			stringNumbers.add(arrayPositionNumber, argNumber.trim());
-			arrayPositionNumber++;
-			arrayNumsFilled++;
+		if (!argNumber.endsWith("%")) {
+			stringNumbers.add(argNumber.trim());
 		}
 	}
 
@@ -48,11 +43,11 @@ public class Calculator {
 	 * @return the quotient
 	 */
 	public static double divide() {
-		for (int i = 1; i < arrayNumsFilled; i++) {
+		for (int i = 1; i < doubleNumbers.size(); i++) {
 			if (doubleNumbers.get(i) != 0 || doubleNumbers.get(0) == 0 || doubleNumbers.get(1) == 0) {
 				if (doubleNumbers.get(1) == 0) {
 					divideByZeroflag = true;
-					answer = 0;
+					return 0;
 				} else {
 					answer /= doubleNumbers.get(i);
 				}
@@ -73,7 +68,7 @@ public class Calculator {
 		 * locations are taken in, avoiding any null values, since the Array by default
 		 * is initialized to null values
 		 */
-		for (int i = 1; i < arrayNumsFilled; i++) {
+		for (int i = 1; i < doubleNumbers.size(); i++) {
 			// first part of below condition is because: by default double array values have
 			// been initialized to 0,
 			// since we're multiplying we don't want to multiply any random 0's cause we'll
@@ -125,8 +120,8 @@ public class Calculator {
 	 * double. This is performed when equals operator is hit
 	 */
 	public static void applyStringToDoubleConversion() {
-		for (int i = 0; i < stringNumbers.size(); i++) {
-			doubleNumbers.add(i, Double.parseDouble(stringNumbers.get(i)));
+		for (String i : stringNumbers) { // get String value
+			doubleNumbers.add(Double.parseDouble(stringNumbers.get(stringNumbers.indexOf(i))));
 		}
 		
 		answer = doubleNumbers.get(0);

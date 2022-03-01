@@ -17,7 +17,7 @@ import javax.swing.JButton;
 public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 
 	private int randomCell;
-	public static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
+	protected static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
 	private static int[] availableEmptyCells = new int[9];
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
 	private SecureRandom randomGenerator = new SecureRandom();
@@ -35,8 +35,8 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	public PvEGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		setPlayerOnesName("Player");
-		setPlayerTwosName("Computer");
+		setPlayerOnesName(Winner.PLAYER);
+		setPlayerTwosName(Winner.COMPUTER);
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn");
 	}
 

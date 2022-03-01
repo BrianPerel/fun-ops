@@ -31,13 +31,12 @@ import javax.swing.WindowConstants;
 public class App extends KeyAdapter implements ActionListener {
 
 	private JFormattedTextField userInputTextField;
-	private String cursorRightPositionedWithZero, cursorRightPositioned;
+	private String cursorRightPositionedWithZero; 
+	private String cursorRightPositioned;
 	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	private char[] spacesForMainTextField = new char[31];
 	private static boolean hasNumberZeroBeenEnteredByUser;
-	private JButton[] buttons = new JButton[24];
 
 	public static void main(String[] args) {			
 		try {
@@ -53,6 +52,7 @@ public class App extends KeyAdapter implements ActionListener {
 	 * Initializes the contents of the frame, building the gui.
 	 */
 	public App() {
+		char[] spacesForMainTextField = new char[31];
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
@@ -65,6 +65,7 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
+		JButton[] buttons = new JButton[24];
 		buttons[0] = new JButton("1/x");
 		buttons[1] = new JButton("CE");
 		buttons[2] = new JButton("C");
@@ -85,6 +86,8 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[21] = new JButton("+/-");
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
+		
+		Color superLightGrey = new Color(225, 225, 225);
 
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
@@ -97,7 +100,7 @@ public class App extends KeyAdapter implements ActionListener {
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					button.setBackground(new Color(225, 225, 225));
+					button.setBackground(superLightGrey);
 				}
 
 				@Override
@@ -141,7 +144,7 @@ public class App extends KeyAdapter implements ActionListener {
 		btnBackspace.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBackspace.setBackground(new Color(225, 225, 225));
+				btnBackspace.setBackground(superLightGrey);
 			}
 
 			@Override
@@ -250,9 +253,15 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// backspace symbol
 		case "\u232B":
-			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
-					? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
-					: cursorRightPositionedWithZero);
+			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
+			if(userInputTextField.getText().trim().length() == 1) {
+				userInputTextField.setText(cursorRightPositionedWithZero);
+			} else {
+				userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+						? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
+						: cursorRightPositionedWithZero);
+			}			
+			
 			break;
 
 		case "1/x":			
@@ -264,32 +273,7 @@ public class App extends KeyAdapter implements ActionListener {
 			break;
 
 		case "=":
-			// if textField label is blank, then no action has been done by user.
-			// Hence in that scenario equal operation isn't performed
-			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				Calculator.setNumber(userInputTextField.getText());
-
-				// perform computation to make the value
-				String value = Calculator.compute();
-
-				// if value is whole then don't display 0's after decimal; ex. instead of 25.00
-				// display 25
-				double v = Double.parseDouble(value);
-				if ((v * 10) % 10 == 0) { // if value calculated is whole number
-					value = df.format(v); // removes zero's after decimal point
-				}
-
-				// check for division by zero. Avoids exception being flagged
-				userInputTextField.setText(
-						Calculator.divideByZeroflag ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
-
-				// reset all array values to 0
-				Collections.fill(Calculator.stringNumbers, "");
-				hasNumberZeroBeenEnteredByUser = false;
-				resetValues();
-			} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
-				userInputTextField.setText(cursorRightPositionedWithZero);
-			} 
+			performEnterEqualsOp();
 			break; // break statement for case equals button
 
 		case "CE", "C":
@@ -335,7 +319,7 @@ public class App extends KeyAdapter implements ActionListener {
 				// if current number is positive, number becomes negative (minus is
 				// prepended) else if number is negative, number becomes positive (minues is
 				// removed)
-				userInputTextField.setText(userInputTextField.getText().trim().substring(0, 1).equals("-")
+				userInputTextField.setText(userInputTextField.getText().trim().startsWith("-")
 						? cursorRightPositioned.concat(userInputTextField.getText().replace("-", ""))
 						: cursorRightPositioned.concat(("-".concat(userInputTextField.getText().trim()))));
 			}
@@ -427,29 +411,7 @@ public class App extends KeyAdapter implements ActionListener {
 				break;
 	
 			case KeyEvent.VK_ENTER, KeyEvent.VK_EQUALS:
-				// if textField label is blank, then no action has been done by user.
-				// Hence in that scenario equal operation isn't performed
-				if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-					Calculator.setNumber(userInputTextField.getText());
-	
-					// perform computation to make the value
-					String value = Calculator.compute();
-	
-					// if value is whole then don't display 0's after decimal; ex. instead of 25.00
-					// display 25
-					double v = Double.parseDouble(value);
-					if ((v * 10) % 10 == 0) { // if value calculated is whole number
-						value = df.format(v); // removes zero's after decimal point
-					}
-	
-					// check for division by zero. Avoids exception being flagged
-					userInputTextField.setText(
-							Calculator.divideByZeroflag ? "Cannot divide by zero" : (cursorRightPositioned + value));
-	
-					// reset all array values to 0
-					Collections.fill(Calculator.stringNumbers, "");
-					resetValues();
-				}
+				performEnterEqualsOp();
 				break; // break statement for case enter key button
 	
 			case KeyEvent.VK_BACK_SPACE:
@@ -499,6 +461,34 @@ public class App extends KeyAdapter implements ActionListener {
 		Collections.fill(Calculator.doubleNumbers, 0.0);
 		Calculator.stringNumbers.clear();
 		Calculator.doubleNumbers.clear();
-		Calculator.arrayNumsFilled = Calculator.arrayPositionNumber = 0;
+	}
+	
+	public void performEnterEqualsOp() {
+		// if textField label is blank, then no action has been done by user.
+		// Hence in that scenario equal operation isn't performed
+		if (!userInputTextField.getText().equals(cursorRightPositioned)) {
+			Calculator.setNumber(userInputTextField.getText());
+
+			// perform computation to make the value
+			String value = Calculator.compute();
+
+			// if value is whole then don't display 0's after decimal; ex. instead of 25.00
+			// display 25
+			double v = Double.parseDouble(value);
+			if ((v * 10) % 10 == 0) { // if value calculated is whole number
+				value = df.format(v); // removes zero's after decimal point
+			}
+
+			// check for division by zero. Avoids exception being flagged
+			userInputTextField.setText(
+					(Calculator.divideByZeroflag) ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
+
+			// reset all array values to 0
+			Collections.fill(Calculator.stringNumbers, "");
+			hasNumberZeroBeenEnteredByUser = false;
+			resetValues();
+		} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
+			userInputTextField.setText(cursorRightPositionedWithZero);
+		} 
 	}
 }

@@ -23,8 +23,10 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 	private String gameResult;
 	private JFrame f2 = new JFrame("Tic Tac Toe");
-	private static final String PLAYER = "Player", COMPUTER = "Computer";
-	private JButton btnPlayAgain = new JButton("Play again"), btnQuit = new JButton("Quit");
+	protected static final String PLAYER = "Player";
+	protected static final String COMPUTER = "Computer";
+	private JButton btnPlayAgain = new JButton("Play again");
+	private JButton btnQuit = new JButton("Quit");
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
@@ -66,13 +68,14 @@ public class Winner extends KeyAdapter implements ActionListener {
 		
 		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 		btnPlayAgain.setBounds(39, 68, 100, 34);
-		btnPlayAgain.setBackground(new Color(144, 238, 144));
+		Color ultraLightGreen = new Color(144, 238, 144);
+		btnPlayAgain.setBackground(ultraLightGreen);
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		
 		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
-		btnQuit.setBackground(new Color(144, 238, 144));
+		btnQuit.setBackground(ultraLightGreen);
 		f2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
 		btnQuit.addActionListener(this);
@@ -86,7 +89,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		if (e.getSource() == btnPlayAgain) {
 			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				PvEGameBoard.toRun = true;
-				PvEGameBoard.f.dispose();
+				PvPGameBoard.f.dispose();
 				new PvEGameBoard(false, false, true);
 			}
 			else {
@@ -94,15 +97,11 @@ public class Winner extends KeyAdapter implements ActionListener {
 				new PvPGameBoard(false, false, true);
 			}
 		} 
-		else if (e.getSource() == btnQuit) {
-			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				PvEGameBoard.f.dispose();
-				System.exit(0);
-			} 
-			else {
-				PvPGameBoard.f.dispose();
-				System.exit(0);
-			}			
+		else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) 
+				|| gameResult.equals("Game Over! It's a draw!!")) {
+			
+			PvPGameBoard.f.dispose();
+			System.exit(0);		
 		}
 	}
 	
@@ -110,25 +109,23 @@ public class Winner extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent e) {
 		f2.dispose();
 
-		if (e.getSource() == btnPlayAgain && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				PvEGameBoard.f.dispose();
-				new PvEGameBoard(false, false, true);
-			}
-			else {
-				PvPGameBoard.f.dispose();
-				new PvPGameBoard(false, false, true);
-			}
-		} 
-		else if(e.getSource() == btnQuit && e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				PvEGameBoard.f.dispose();
-				System.exit(0);
-			}
-			else {
+		if(e.getKeyChar() == KeyEvent.VK_ENTER) {
+			if (e.getSource() == btnPlayAgain) {
+				if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+					PvPGameBoard.f.dispose();
+					new PvEGameBoard(false, false, true);
+				}
+				else {
+					PvPGameBoard.f.dispose();
+					new PvPGameBoard(false, false, true);
+				}
+			} 
+			else if(e.getSource() == btnQuit && gameResult.equals(PLAYER) 
+					|| gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+				
 				PvPGameBoard.f.dispose();
 				System.exit(0);
 			}
-		}		
+		}
 	}
 }

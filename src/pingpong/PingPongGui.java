@@ -36,7 +36,8 @@ public class PingPongGui extends JFrame implements ActionListener {
 		menuOption.addActionListener(this);
 		
 		this.setResizable(false);
-		this.setBackground(new Color(0, 78, 3));
+		Color darkGreen = new Color(0, 78, 3);
+		this.setBackground(darkGreen);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);

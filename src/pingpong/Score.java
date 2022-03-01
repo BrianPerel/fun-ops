@@ -8,7 +8,8 @@ import java.awt.Graphics2D;
 
 public class Score {
 
-	private int playerOneScore, playerTwoScore;
+	private int playerOneScore;
+	private int playerTwoScore;
 
 	/**
 	 * Draws the white middle dividing game line and the lines around the game board, draws the score labels for player1 and player2, sets font 
@@ -30,7 +31,7 @@ public class Score {
 
 		p1 = "P1: ".concat(String.valueOf(getPlayerOneScore() / 10)).concat(String.valueOf(getPlayerOneScore() % 10));
 		p2 = "P2: ".concat(String.valueOf(getPlayerTwoScore() / 10)).concat(String.valueOf(getPlayerTwoScore() % 10));
-		
+
 		// if score is below 10 show only single digit for player scores
 		if(getPlayerOneScore() < 10 || getPlayerTwoScore() < 10) {
 			g.drawString(p1.substring(0, 4).concat(p1.substring(5, 6)), 170, 50);

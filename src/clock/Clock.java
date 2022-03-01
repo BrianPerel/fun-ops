@@ -1,6 +1,7 @@
 package clock;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -88,7 +88,8 @@ public class Clock implements ActionListener {
 		alarmTime = new JTextField();
 		alarmTime.setBounds(40, 175, 84, 28);
 		alarmTime.setForeground(Color.BLACK);
-		alarmTime.setBackground(new Color(211, 211, 211));
+		Color superLightGrey = new Color(211, 211, 211);
+		alarmTime.setBackground(superLightGrey);
 		frame.getContentPane().add(alarmTime);
 		alarmTime.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
@@ -97,7 +98,7 @@ public class Clock implements ActionListener {
 		btnSetAlarm.setForeground(Color.BLACK);
 		frame.getContentPane().add(btnSetAlarm);
 		btnSetAlarm.addActionListener(this);
-		
+				
 		getTime(militaryTimeFormatCheckBox);
 	}
 
@@ -109,24 +110,19 @@ public class Clock implements ActionListener {
 		String time;
 
 		while (true) {			
-			if(militaryTimeFormatCheckBox.isSelected()) {
-				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
-			} 
-			else {				
-				time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
-				
-				// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
-				if (time.substring(0, 1).equals("0")) {
-					time = time.substring(1, time.length());
-				}	
-			}
+			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) 
+					? "HH:mm" : "hh:mm a"));
+			
+			// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
+			if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
+				time = time.substring(1, time.length());
+			}	
 							
 			// if alarm time set is triggered, play wav file
 			if(alarmShouldRing && time.equals(timeAlarmGoesOff)) {
 				try {
-					AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav"));
 					Clip clip = AudioSystem.getClip();
-					clip.open(audioStream);
+					clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
 					clip.start();
 					TimeUnit.SECONDS.sleep(3);
 					clip.stop();

@@ -1,6 +1,7 @@
 package encryption;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,10 +38,10 @@ public class EncryptDecryptGui implements ActionListener {
 	private static String fileName;
 	private EncryptDecrypt dataSet;
 	private JTextField loadingTextField;
-	private StringBuilder data = new StringBuilder();
-	private JButton btnEncrypt = new JButton("Encrypt");
-	private JButton btnDecrypt = new JButton("Decrypt");
-	private JButton btnLoadFile = new JButton("Load file");
+	private StringBuilder data;
+	private JButton btnEncrypt;
+	private JButton btnDecrypt;
+	private JButton btnLoadFile;
 
 	public static void main(String[] args) {	
 		try {
@@ -62,6 +63,11 @@ public class EncryptDecryptGui implements ActionListener {
 		frame.setTitle("Encrypt-decrypt App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		data = new StringBuilder();
+		btnEncrypt = new JButton("Encrypt");
+		btnDecrypt = new JButton("Decrypt");
+		btnLoadFile = new JButton("Load file");
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
 
@@ -69,18 +75,22 @@ public class EncryptDecryptGui implements ActionListener {
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
-		btnLoadFile.setBackground(new Color(135, 206, 250));
+		Color lightBlue = new Color(135, 206, 250); // regular color of gui buttons
+		Color darkerLightBlue = new Color(102, 178, 255); // color of gui buttons when hovering 
+		btnLoadFile.setBackground(lightBlue);
 		btnLoadFile.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(new Color(102, 178, 255));
+				btnLoadFile.setBackground(darkerLightBlue);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(new Color(135, 206, 250));
+				btnLoadFile.setBackground(lightBlue);
 		    }
 		});
+		
+		btnLoadFile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		loadingTextField = new JTextField();
 		loadingTextField.setBounds(148, 44, 112, 26);
@@ -90,18 +100,20 @@ public class EncryptDecryptGui implements ActionListener {
 		btnEncrypt.setBounds(84, 140, 89, 28);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
-		btnEncrypt.setBackground(new Color(135, 206, 250));
+		btnEncrypt.setBackground(lightBlue);
 		btnEncrypt.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(new Color(102, 178, 255));
+				btnEncrypt.setBackground(darkerLightBlue);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(new Color(135, 206, 250));
+				btnEncrypt.setBackground(lightBlue);
 		    }
 		});
+		
+		btnEncrypt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnDecrypt.setBounds(235, 139, 89, 28);
 		frame.getContentPane().add(btnDecrypt);
@@ -110,35 +122,39 @@ public class EncryptDecryptGui implements ActionListener {
 		separator.setBounds(49, 104, 307, 2);
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
-		btnDecrypt.setBackground(new Color(135, 206, 250));
+		btnDecrypt.setBackground(lightBlue);
 		btnDecrypt.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(new Color(102, 178, 255));
+				btnDecrypt.setBackground(darkerLightBlue);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(new Color(135, 206, 250));
+				btnDecrypt.setBackground(lightBlue);
 		    }
 		});
+		
+		btnDecrypt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnBrowse = new JButton("Browse");
 		btnBrowse.setBounds(270, 43, 86, 28);
 		frame.getContentPane().add(btnBrowse);
 		btnBrowse.addActionListener(this);
-		btnBrowse.setBackground(new Color(135, 206, 250));
+		btnBrowse.setBackground(lightBlue);
 		btnBrowse.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(new Color(102, 178, 255));
+				btnBrowse.setBackground(darkerLightBlue);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(new Color(135, 206, 250));
+				btnBrowse.setBackground(lightBlue);
 		    }
 		});
+		
+		btnBrowse.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -159,14 +175,15 @@ public class EncryptDecryptGui implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
+		String fileToLoad = loadingTextField.getText();
 		
 		// if filename isn't empty or file hasn't yet been loaded
-		if (source == btnLoadFile && !loadingTextField.getText().isEmpty() && !isFileLoaded) {
-			obtainFileData();
+		if (source == btnLoadFile && !fileToLoad.isEmpty() && !isFileLoaded) {
+			obtainFileData(fileToLoad);
 		}
 
 		// if file load textfield is empty while load file btn is pushed
-		else if (source == btnLoadFile && loadingTextField.getText().isEmpty()) {
+		else if (source == btnLoadFile && fileToLoad.isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -195,7 +212,7 @@ public class EncryptDecryptGui implements ActionListener {
 		}
 
 		// if loaded file is BLANK and encrypt/decrypt btn pushed
-		else if (!loadingTextField.getText().isEmpty() && data.isEmpty() && (source == btnEncrypt || source == btnDecrypt)) {
+		else if (!fileToLoad.isEmpty() && data.isEmpty() && (source == btnEncrypt || source == btnDecrypt)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -220,10 +237,8 @@ public class EncryptDecryptGui implements ActionListener {
 	/**
 	 * Loads the desired file and obtains the contents within
 	 */
-	public void obtainFileData() {
+	public void obtainFileData(String fileToLoad) {
 		Scanner read = null;
-
-		String fileToLoad = loadingTextField.getText();
 		
 		if(!fileToLoad.endsWith(".txt")) {
 			fileToLoad += ".txt";

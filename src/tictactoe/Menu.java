@@ -29,10 +29,11 @@ import javax.swing.WindowConstants;
  */
 public class Menu extends KeyAdapter implements ActionListener {
 
+	private JFrame frame;
 	private JButton btnStart;
-	private JFrame frame = new JFrame();
 	private static final String ERROR = "ERROR";
-	private JTextField nameOneTextField, nameTwoTextField;
+	private JTextField nameOneTextField;
+	private JTextField nameTwoTextField;
 	private JRadioButton playAgainstComputerRadioButton;
 	// private static final Logger logger = Logger.getLogger(Menu.class);
 
@@ -53,6 +54,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	 * Create the application. Build all components
 	 */
 	public Menu() {
+		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 399, 358);
 		frame.setTitle("Tic Tac Toe App by: Brian Perel");
@@ -89,7 +91,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
-		btnStart.setBackground(new Color(144, 238, 144));
+		Color ultraLightGreen = new Color(144, 238, 144);
+		btnStart.setBackground(ultraLightGreen);
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
@@ -107,8 +110,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText();
 		String nameTwo = nameTwoTextField.getText();
 		
-		if(nameOne.trim().equalsIgnoreCase("player") || nameOne.trim().equalsIgnoreCase("computer")
-				|| nameTwo.trim().equalsIgnoreCase("player") || nameTwo.trim().equalsIgnoreCase("computer")) {
+		if(nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
+				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -161,8 +164,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText();
 		String nameTwo = nameTwoTextField.getText();
 		
-		if(nameOne.trim().equalsIgnoreCase("player") || nameOne.trim().equalsIgnoreCase("computer")
-				|| nameTwo.trim().equalsIgnoreCase("player") || nameTwo.trim().equalsIgnoreCase("computer")) {
+		if(nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
+				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");

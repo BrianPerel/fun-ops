@@ -6,8 +6,6 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultComboBoxModel;
@@ -25,10 +23,12 @@ import javax.swing.WindowConstants;
  * @author Brian Perel
  *
  */
-public class WiggleMouse extends KeyAdapter implements ActionListener {
+public class WiggleMouse {
 
 	private JButton btnStart;
-	private static int x, y, timeToWait;
+	private static int y;
+	private static int x;
+	private static int timeToWait;
 	private static String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private static final JComboBox<String> waitTimeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(waitTimeChoices));
 
@@ -38,10 +38,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 * @throws AWTException 
 	 */
 	public static void main(String[] args) throws InterruptedException, AWTException {		
-		
 		new WiggleMouse();
-
-		timeToWait = 30000;
 		moveMouse();
 	}
 
@@ -61,8 +58,6 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
 		btnStart.setBounds(215, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
-		btnStart.addActionListener(this);
-		btnStart.addKeyListener(this);
 
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
@@ -80,20 +75,21 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	    
 	    frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource() == btnStart) {
-			updateWaitingTime();
-		}
-	}
-	
-	@Override
-	public void keyPressed(KeyEvent ae) {
-		if (ae.getSource() == btnStart) {
-			updateWaitingTime();
-		}
+		btnStart.addActionListener((ActionEvent ae) -> {
+			if (ae.getSource() == btnStart) {
+				updateWaitingTime();
+			}
+		});
+		
+		btnStart.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent ae) {
+				if (ae.getKeyChar() == KeyEvent.VK_ENTER && ae.getSource() == btnStart) {
+					updateWaitingTime();
+				}
+			}
+		});
 	}
 	
 	/**
@@ -129,6 +125,7 @@ public class WiggleMouse extends KeyAdapter implements ActionListener {
 	 */
 	public static void moveMouse() throws InterruptedException, AWTException {
 		
+		timeToWait = 30000;
 		Robot robot = new Robot();
 		
 		while (true) {

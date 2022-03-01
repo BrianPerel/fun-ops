@@ -26,12 +26,16 @@ import javax.swing.WindowConstants;
 public class PvPGameBoard implements ActionListener {
 
 	protected JLabel lblPlayersTurn;
-	protected boolean isPlayerOnesTurn, isPlayerTwosTurn, start;
-	protected JButton[] gameBoardTiles = new JButton[9], highlightWinnersTiles = new JButton[3];
+	protected boolean isPlayerOnesTurn;
+	protected boolean isPlayerTwosTurn;
+	protected boolean start;
+	protected JButton[] gameBoardTiles = new JButton[9];
+	protected JButton[] highlightWinnersTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
-	protected static String playerOneWinsMessage, playerTwoWinsMessage;
-	private static String playerOnesName, playerTwosName;
-	protected static final String PLAYER_ONE_SHAPE = "O", PLAYER_TWO_SHAPE = "X"; // needed to invert these to fix a window2 symbol problem
+	protected static String playerOneWinsMessage;
+	protected static String playerTwoWinsMessage;
+	private static String playerOnesName;
+	private static String playerTwosName;
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);	
 	protected static JFrame f = new JFrame("Tic Tac Toe");
 
@@ -71,19 +75,21 @@ public class PvPGameBoard implements ActionListener {
 			f.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
-			gameBoardTiles[i].setBackground(new Color(244, 164, 96));
+			Color ultraLightOrange = new Color(244, 164, 96);
+			gameBoardTiles[i].setBackground(ultraLightOrange);
 			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.gray));
 			
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					gameBoardTiles[x].setBackground(new Color(222, 126, 0));
+					Color lightOrange = new Color(222, 126, 0);
+					gameBoardTiles[x].setBackground(lightOrange);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					gameBoardTiles[x].setBackground(new Color(244, 164, 96));
+					gameBoardTiles[x].setBackground(ultraLightOrange);
 				}
 			});
 		}
@@ -338,8 +344,9 @@ public class PvPGameBoard implements ActionListener {
 	 * @param buttonPressed button that was just pressed by player one
 	 */
 	public void playerOnesTurnComplete(JButton buttonPressed) {
-		buttonPressed.setForeground(new Color(232, 46, 6));
-		buttonPressed.setText(PLAYER_ONE_SHAPE);
+		Color lightRed = new Color(232, 46, 6);
+		buttonPressed.setForeground(lightRed);
+		buttonPressed.setText("O");
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
 	}
 
@@ -348,8 +355,8 @@ public class PvPGameBoard implements ActionListener {
 	 * @param buttonPressed button that was just pressed by player two
 	 */
 	public void playerTwosTurnComplete(JButton buttonPressed) {
-		buttonPressed.setForeground(new Color(0, 0, 255));
-		buttonPressed.setText(PLAYER_TWO_SHAPE);
+		buttonPressed.setForeground(Color.BLUE);
+		buttonPressed.setText("X");
 		lblPlayersTurn.setText(getPlayerTwosName() + "'s turn:");
 	}
 
