@@ -235,7 +235,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			StopWatchPanel.btnStart.setEnabled(false);
 			closeTimerCheckBox.setEnabled(false);
 			StopWatchPanel.watch.setEnabled(false);
-		} else if(closeTimerCheckBox.isEnabled()) {
+		} else if (closeTimerCheckBox.isEnabled()) {
 			// start the timer from 0
 			StopWatchPanel.btnStart.doClick();
 		}
@@ -319,6 +319,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		guessesTextField.setText(Integer.toString(totalGuessesMade));
 	}
 	
+	/**
+	 * Performs actions to play specific audio that is called upon
+	 * @param fileToPlay the audio requested to play
+	 */
 	public void playSound(String fileToPlay) {
 		try {
 			Clip clip = AudioSystem.getClip();

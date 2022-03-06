@@ -9,6 +9,7 @@ for the projects through ANT. In that case make sure to download
 
 - log4j should already be in the project, but if not: use log4j in feature development: go to Eclipse run configurations, find and click on the program with the main class
 that you want to use run, go to the Dependencies tab, click Classpath entries, advanced, add folder,
-and add the folder that contains the log4j.properties file (currently log4j folder)
+and add the folder that contains the log4j.properties file (currently lib folder). 
+Additionally add the log4j jar file from lib folder to the Classpath Entries for every app's run configuration
 
 - [Check out the project here](https://brianperel.github.io/side_projects.htm)

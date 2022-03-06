@@ -85,22 +85,19 @@ public class Winner extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {	
 		f2.dispose();
+		PvPGameBoard.f.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-				PvEGameBoard.toRun = true;
-				PvPGameBoard.f.dispose();
-				new PvEGameBoard(false, false, true);
+			if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+				new PvEGameBoard(false, false, true).toRun = true;
 			}
 			else {
-				PvPGameBoard.f.dispose();
 				new PvPGameBoard(false, false, true);
 			}
 		} 
 		else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) 
 				|| gameResult.equals("Game Over! It's a draw!!")) {
 			
-			PvPGameBoard.f.dispose();
 			System.exit(0);		
 		}
 	}
@@ -108,22 +105,20 @@ public class Winner extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		f2.dispose();
+		PvPGameBoard.f.dispose();
 
-		if(e.getKeyChar() == KeyEvent.VK_ENTER) {
+		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if (e.getSource() == btnPlayAgain) {
-				if(gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
-					PvPGameBoard.f.dispose();
-					new PvEGameBoard(false, false, true);
+				if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+					new PvEGameBoard(false, false, true).toRun = true;				
 				}
 				else {
-					PvPGameBoard.f.dispose();
 					new PvPGameBoard(false, false, true);
 				}
 			} 
-			else if(e.getSource() == btnQuit && gameResult.equals(PLAYER) 
+			else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) 
 					|| gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
 				
-				PvPGameBoard.f.dispose();
 				System.exit(0);
 			}
 		}

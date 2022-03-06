@@ -36,7 +36,7 @@ public class App extends KeyAdapter implements ActionListener {
 	private DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
-	private static boolean hasNumberZeroBeenEnteredByUser;
+	private boolean hasNumberZeroBeenEnteredByUser;
 
 	public static void main(String[] args) {			
 		try {
@@ -49,13 +49,14 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Initializes the contents of the frame, building the gui.
+	 * Places all the buttons on the app's board and initializes the contents of the frame, building the gui. 
 	 */
 	public App() {
 		char[] spacesForMainTextField = new char[31];
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
+		
 
 		JFrame frame = new JFrame();
 		frame.setResizable(false);
@@ -77,7 +78,7 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[8] = new JButton("*");
 
 		// assign numeric keypad button values for buttons 9-18
-		for(int x = 0; x <= 9; x++) {
+		for (int x = 0; x <= 9; x++) {
 			buttons[x+9] = new JButton(Integer.toString(x));
 		}
 		
@@ -96,7 +97,7 @@ public class App extends KeyAdapter implements ActionListener {
 			button.addActionListener(this);
 			button.addKeyListener(this);
 			button.setHorizontalAlignment(SwingConstants.CENTER);
-
+			// below code is used to create the button hover effect
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -141,6 +142,7 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(btnBackspace);
 		btnBackspace.addActionListener(this);
 		btnBackspace.addKeyListener(this);
+		// below code is used to create the button hover effect
 		btnBackspace.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -169,7 +171,7 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * This is responsible for listening to when buttons are clicked via mouse (actions).
+	 * This is responsible for listening to when buttons are clicked via the mouse (which represent actions).
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {		
@@ -254,14 +256,14 @@ public class App extends KeyAdapter implements ActionListener {
 		// backspace symbol
 		case "\u232B":
 			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-			if(userInputTextField.getText().trim().length() == 1) {
+			if (userInputTextField.getText().trim().length() == 1) {
 				userInputTextField.setText(cursorRightPositionedWithZero);
-			} else {
-				userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
-						? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
-						: cursorRightPositionedWithZero);
-			}			
+				break;
+			}
 			
+			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+					? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
+					: cursorRightPositionedWithZero);
 			break;
 
 		case "1/x":			
@@ -274,7 +276,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "=":
 			performEnterEqualsOp();
-			break; // break statement for case equals button
+			break;
 
 		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
@@ -292,18 +294,19 @@ public class App extends KeyAdapter implements ActionListener {
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 				Calculator.setNumber(
-						String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
-				userInputTextField.setText(userInputTextField.getText().concat("%"));
-			} else {
-				userInputTextField.setText(cursorRightPositionedWithZero);
-			}			
+					String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
+					userInputTextField.setText(userInputTextField.getText().concat("%"));
+					
+				break;
+			}
+				
+			userInputTextField.setText(cursorRightPositionedWithZero);
 			break;
 
 		// x\u00B2 -> X^2 symbol
 		case "x\u00B2":			
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
-					? cursorRightPositioned
-							.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2)))
+					? cursorRightPositioned.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2)))
 					: cursorRightPositionedWithZero);			
 			break;
 
@@ -453,23 +456,25 @@ public class App extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Resets all calculator array's values.
+	 * Resets all calculator's arrays/memory.
 	 */
-	public static void resetValues() {
-		Arrays.fill(operatorFlags, Boolean.FALSE);
+	public void resetValues() {
+		Arrays.fill(operatorFlags, false);
 		hasNumberZeroBeenEnteredByUser = false;
-		Collections.fill(Calculator.doubleNumbers, 0.0);
 		Calculator.stringNumbers.clear();
 		Calculator.doubleNumbers.clear();
 	}
 	
+	/**
+	 * Performs actions responsible for when the calculator's equals button is hit
+	 */
 	public void performEnterEqualsOp() {
 		// if textField label is blank, then no action has been done by user.
 		// Hence in that scenario equal operation isn't performed
 		if (!userInputTextField.getText().equals(cursorRightPositioned)) {
 			Calculator.setNumber(userInputTextField.getText());
 
-			// perform computation to make the value
+			// perform computation to make and get the value
 			String value = Calculator.compute();
 
 			// if value is whole then don't display 0's after decimal; ex. instead of 25.00
@@ -483,9 +488,7 @@ public class App extends KeyAdapter implements ActionListener {
 			userInputTextField.setText(
 					(Calculator.divideByZeroflag) ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
 
-			// reset all array values to 0
-			Collections.fill(Calculator.stringNumbers, "");
-			hasNumberZeroBeenEnteredByUser = false;
+			// reset all array/memory values
 			resetValues();
 		} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
 			userInputTextField.setText(cursorRightPositionedWithZero);

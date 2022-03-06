@@ -39,15 +39,14 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	public static void main(String[] args) {			
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			
-			new Menu();
-			
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
 			// logger.info("Starting tic tac toe log");
 		} catch (Exception e) {
 			// logger.error("Error: " + e.toString());
 			e.printStackTrace();
 		}
+		
+		new Menu();
 	}
 
 	/**
@@ -110,7 +109,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText();
 		String nameTwo = nameTwoTextField.getText();
 		
-		if(nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
+		if (nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
 				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
@@ -164,7 +163,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText();
 		String nameTwo = nameTwoTextField.getText();
 		
-		if(nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
+		if (nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
 				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);

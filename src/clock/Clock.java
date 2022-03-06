@@ -1,7 +1,6 @@
 package clock;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,7 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Create the clock application
+	 * Create the clock application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
 	public Clock() {
 		JFrame frame = new JFrame();
@@ -94,6 +93,9 @@ public class Clock implements ActionListener {
 		alarmTime.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
 		JButton btnSetAlarm = new JButton("Set Alarm");
+		
+		// sets keyboard shortcut/ keyboard mnemonic to alt+'s' for the set alarm button
+		btnSetAlarm.setMnemonic('s');
 		btnSetAlarm.setBounds(125, 175, 90, 25);
 		btnSetAlarm.setForeground(Color.BLACK);
 		frame.getContentPane().add(btnSetAlarm);
@@ -103,7 +105,7 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Obtains the current time, applies formatting if needed, and repeats action every second
+	 * Obtains the current time, applies formatting if needed, listens for if user enters an alarm time, and repeats these actions every second
 	 */
 	public void getTime(JCheckBox militaryTimeFormatCheckBox) {
 		
@@ -119,7 +121,7 @@ public class Clock implements ActionListener {
 			}	
 							
 			// if alarm time set is triggered, play wav file
-			if(alarmShouldRing && time.equals(timeAlarmGoesOff)) {
+			if (alarmShouldRing && time.equals(timeAlarmGoesOff)) {
 				try {
 					Clip clip = AudioSystem.getClip();
 					clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
@@ -138,8 +140,8 @@ public class Clock implements ActionListener {
 			// updates the time every second
 			try {
 				Thread.sleep(1000); 
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
 		}

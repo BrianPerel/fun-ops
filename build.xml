@@ -34,7 +34,7 @@
 	<!-- reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
-		<fileset dir="log4j">
+		<fileset dir="lib">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -366,7 +366,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="tictactoe.Menu" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac" />
-				<attribute name="Class-Path" value="log4j/log4j-1.2.17.jar" />
+				<attribute name="Class-Path" value="lib/log4j-1.2.17.jar" />
 			</manifest>
 		</jar>
 	</target>

@@ -147,8 +147,8 @@ public class GameBoard extends JPanel implements Runnable {
 			
 			try {
 				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
 			
@@ -159,8 +159,8 @@ public class GameBoard extends JPanel implements Runnable {
 			
 			try {
 				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
 			
@@ -174,8 +174,8 @@ public class GameBoard extends JPanel implements Runnable {
 	public void run() {
 		try {
 			Thread.sleep(800);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
 		

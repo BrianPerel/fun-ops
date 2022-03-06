@@ -42,7 +42,6 @@ public class AdvancedGuessingGame extends GuessingGame {
 	public void evaluateGuess(boolean outOfTimeFlag) {		
 		
 		totalGuessesMade++;
-				
 		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
 
 		// if input remainder entered is outside of range 100-999

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultComboBoxModel;
@@ -39,13 +40,12 @@ public class WiggleMouse {
 	 */
 	public static void main(String[] args) throws InterruptedException, AWTException {		
 		new WiggleMouse();
-		moveMouse();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public WiggleMouse() {
+	public WiggleMouse() throws InterruptedException, AWTException {
 		JFrame frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 550, 182);
@@ -82,7 +82,7 @@ public class WiggleMouse {
 			}
 		});
 		
-		btnStart.addKeyListener(new java.awt.event.KeyAdapter() {
+		btnStart.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ae) {
 				if (ae.getKeyChar() == KeyEvent.VK_ENTER && ae.getSource() == btnStart) {
@@ -90,6 +90,8 @@ public class WiggleMouse {
 				}
 			}
 		});
+	
+		moveMouse();
 	}
 	
 	/**
@@ -119,13 +121,13 @@ public class WiggleMouse {
 	}
 
 	/**
-	 * performs mouse movement action
+	 * Performs mouse movement action
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
 	 * @throws AWTException 
 	 */
 	public static void moveMouse() throws InterruptedException, AWTException {
 		
-		timeToWait = 30000;
+		timeToWait = 30000; // default wait time before wiggling your mouse
 		Robot robot = new Robot();
 		
 		while (true) {
@@ -146,7 +148,7 @@ public class WiggleMouse {
 	}
 
 	/**
-	 * sets the current mouse's position into variables (x, y coordinates)
+	 * Sets the current mouse's position into variables (x, y coordinates)
 	 */
 	public static void setMouseLocation() {
 		x = (int) MouseInfo.getPointerInfo().getLocation().getX();

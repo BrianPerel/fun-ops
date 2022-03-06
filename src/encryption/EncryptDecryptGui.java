@@ -16,7 +16,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -26,6 +25,9 @@ import javax.swing.WindowConstants;
  * Encryption-decryption application. The idea is that the user can load a file,
  * encrypt it's contents, and hold an encrypted file. Then at any point can open
  * this modified file and decrypt it.
+ * 
+ * The science of encrypting and decrypting information is called cryptography. 
+ * Unencrypted data is also known as plaintext, and encrypted data is called ciphertext
  * 
  * @author Brian Perel
  *
@@ -42,6 +44,7 @@ public class EncryptDecryptGui implements ActionListener {
 	private JButton btnEncrypt;
 	private JButton btnDecrypt;
 	private JButton btnLoadFile;
+	private static final String ERROR = "ERROR";
 
 	public static void main(String[] args) {	
 		try {
@@ -54,7 +57,7 @@ public class EncryptDecryptGui implements ActionListener {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
 	public EncryptDecryptGui() {
 		frame = new JFrame();
@@ -165,8 +168,10 @@ public class EncryptDecryptGui implements ActionListener {
 	 */
 	public void fileBrowse() {
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-
+		// browse menu's default look in location is set to the user's home (C:\Users\example)
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); 
+		
+		// creates the JFileChooser browse menu window that pops up when browse is hit
 		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
 			loadingTextField.setText(fileChooser.getSelectedFile().getName());
 		}
@@ -177,24 +182,31 @@ public class EncryptDecryptGui implements ActionListener {
 		Object source = ae.getSource();
 		String fileToLoad = loadingTextField.getText();
 		
-		// if filename isn't empty or file hasn't yet been loaded
-		if (source == btnLoadFile && !fileToLoad.isEmpty() && !isFileLoaded) {
-			obtainFileData(fileToLoad);
-		}
-
-		// if file load textfield is empty while load file btn is pushed
-		else if (source == btnLoadFile && fileToLoad.isEmpty()) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered", "Error",
+		if (source == btnLoadFile) {
+			// if filename isn't empty or file hasn't yet been loaded
+			if(!fileToLoad.isEmpty() && !isFileLoaded) {
+				obtainFileData(fileToLoad);
+				return;
+			}
+			
+			// if file has been already been loaded and load file btn pushed
+			else if (isFileLoaded) {
+				JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", ERROR,
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+	
+			// if file load textfield is empty while load file btn is pushed
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered", ERROR,
 					JOptionPane.ERROR_MESSAGE);
-		}
+		}		
 
 		// if loaded file isn't blank, allow encryption op
 		else if (source == btnEncrypt && !data.isEmpty()) {
 			try {
-				frame.getContentPane().add(new JProgressBar());
 				dataSet.encrypt();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			}
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully encrypted");
@@ -204,8 +216,8 @@ public class EncryptDecryptGui implements ActionListener {
 		else if (source == btnDecrypt && !data.isEmpty()) {
 			try {
 				dataSet.decrypt();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			}
 			
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully decrypted");
@@ -213,19 +225,13 @@ public class EncryptDecryptGui implements ActionListener {
 
 		// if loaded file is BLANK and encrypt/decrypt btn pushed
 		else if (!fileToLoad.isEmpty() && data.isEmpty() && (source == btnEncrypt || source == btnDecrypt)) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-
-		// if file has been already been loaded and load file btn pushed
-		else if (source == btnLoadFile && isFileLoaded) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 
 		// if encrypt/decrypt is pushed and file has not been loaded
 		else if ((source == btnEncrypt || source == btnDecrypt) && !isFileLoaded) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", "Error",
+			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 
@@ -238,48 +244,46 @@ public class EncryptDecryptGui implements ActionListener {
 	 * Loads the desired file and obtains the contents within
 	 */
 	public void obtainFileData(String fileToLoad) {
-		Scanner read = null;
-		
-		if(!fileToLoad.endsWith(".txt")) {
+
+		// append .txt to the filename entered if entered without .txt 
+		if (!fileToLoad.endsWith(".txt")) {
 			fileToLoad += ".txt";
 		}
+		
+		File file = new File(fileToLoad);
 
-		try {
-			File f1 = new File(fileToLoad);
-			read = new Scanner(f1);
+		// use try with resources here, which will auto close resources
+		try (
+			  Scanner read = new Scanner(file);
+			) {
 
+			// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
 			while (read.hasNextLine()) {
 				data.append(read.nextLine());
 			}
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
-			setFileName(f1.toString());
+			setFileName(file.toString());
 			dataSet = new EncryptDecrypt(data);
 			isFileLoaded = true;
 
-			// check if Desktop is supported by Platform or not
+			// check if Desktop is supported by this Platform or not
 			if (!Desktop.isDesktopSupported()) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
-						"Error", JOptionPane.ERROR_MESSAGE);
-				read.close();
+						ERROR, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
 			// check if this file exists
-			if (f1.exists()) {
-				Desktop.getDesktop().open(f1);
+			if (file.exists()) {
+				Desktop.getDesktop().open(file);
 			}
 
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
-			read = new Scanner("");
 			loadingTextField.setText("");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(read != null) {
-				read.close();
-			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
 

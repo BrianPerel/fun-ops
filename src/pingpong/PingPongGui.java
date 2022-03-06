@@ -46,7 +46,7 @@ public class PingPongGui extends JFrame implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == menuOption)  {  
+		if (e.getSource() == menuOption)  {  
 			this.dispose();
 			new PingPongGui();
 		}

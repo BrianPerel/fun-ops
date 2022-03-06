@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.SecureRandom;
 
-import javax.swing.JButton;
-
 // import org.apache.log4j.Logger;
 
 /**
@@ -17,8 +15,8 @@ import javax.swing.JButton;
 public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 
 	private int randomCell;
-	protected static boolean toRun = true; // toRun = enforces the computer to only do 1 click inside new thread
-	private static int[] availableEmptyCells = new int[9];
+	protected boolean toRun = true; // toRun = enforces the computer to only do 1 click inside the new thread
+	private int[] availableEmptyCells;
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
 	private SecureRandom randomGenerator = new SecureRandom();
 
@@ -44,7 +42,9 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		
-		for(int x = 0; x < availableEmptyCells.length; x++) {
+		availableEmptyCells = new int[9];
+		
+		for (int x = 0; x < availableEmptyCells.length; x++) {
 			availableEmptyCells[x] = x;
 		}
 	}
@@ -58,44 +58,21 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			isPlayerTwosTurn = !isPlayerTwosTurn;
 			start = false;
 		}
-
-		if(toRun) {		
-			/*
-			 * create another thread and have doClick() called from within that new thread. This is needed because
-			 * doClick's timeout gets checked inside the event thread, so it won't get released 
-			 * until the actionPerformed method exits (and so the event thread can continue its event processing)
-			 */
-			new Thread(() -> {
-	            	// check that the current turn is the computer's turn
-	            	if(lblPlayersTurn.getText().equals("Computer's turn:")) {  
-	            		do {
-	        				// use random generator to choose an empty cell from the above array and click it
-	        	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
-	        			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
-	            		
-	            		try {
-							Thread.sleep(300);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-							Thread.currentThread().interrupt();
-						}
-	            		
-	 					gameBoardTiles[randomCell].doClick();  	
-	 				}
-				}
-	         ).start();					
-		}
+		
+		createStartThread();
 		
 		availableEmptyCells[randomCell] = -99; // prevents computer from choosing same button it's clicked on it's next turn
 
 		// scans through the game board and performs all actions needed to complete a player's turn
-		for(int x = 0; x < gameBoardTiles.length; x++) {
+		for (int x = 0; x < gameBoardTiles.length; x++) {
 			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
 				if (isPlayerOnesTurn) {
-					playerOnesTurnComplete(gameBoardTiles[x]);
+					super.playerOnesTurnComplete(gameBoardTiles[x]);
+					toRun = true;
 				} 
 				else if (isPlayerTwosTurn) {
-					playerTwosTurnComplete(gameBoardTiles[x]);
+					super.playerTwosTurnComplete(gameBoardTiles[x]);
+					toRun = false;
 				} 		
 				
 				availableEmptyCells[x] = -99; // prevents computer from choosing a tile that player has chosen
@@ -112,15 +89,35 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		patternCheck();
 	}
 	
-	@Override
-	public void playerOnesTurnComplete(JButton buttonPressed) {
-		super.playerOnesTurnComplete(buttonPressed);
-		toRun = true;
-	}
-
-	@Override
-	public void playerTwosTurnComplete(JButton buttonPressed) {
-		super.playerTwosTurnComplete(buttonPressed);
-		toRun = false;
+	/**
+	 * Creates a new thread when it's the computer's turn and selects a free/empty tile on the gameboard
+	 */
+	public void createStartThread() { 
+		// toRun enforces the computer to only do 1 click inside the new thread
+		if (toRun) {		
+			/*
+			 * create another thread and have doClick() called from within that new thread. This is needed because
+			 * doClick's timeout gets checked inside the event thread, so it won't get released 
+			 * until the actionPerformed method exits (and so the event thread can continue its event processing)
+			 */
+			new Thread(() -> {
+            	// check that the current turn is the computer's turn
+            	if (lblPlayersTurn.getText().equals("Computer's turn:")) {  
+            		do {
+        				// use random generator to choose an empty cell from the above array and click it
+        	            randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
+        			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
+            		
+            		try {
+						Thread.sleep(300);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+						Thread.currentThread().interrupt();
+					}
+            		
+ 					gameBoardTiles[randomCell].doClick();  	
+ 				}
+			}).start();					
+		}
 	}
 }

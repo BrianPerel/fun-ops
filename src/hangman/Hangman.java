@@ -36,20 +36,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFrame frame;
 	// private static final Logger logger = Logger.getLogger(Hangman.class);
 	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
-	private static String previousHangmanWord;
 	private JTextArea hangmanTextField;
-	private static JTextField guessesLeftTextField;
-	private static JTextField hangmanWordTextField;
-	private static String hangmanWord, maskingAsterisk;
-	private static int guessesLeft;
+	private JTextField guessesLeftTextField;
+	private JTextField hangmanWordTextField;
+	private String hangmanWord;
+	private String maskingAsterisk;
+	private int guessesLeft;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
 	private static ArrayList<String> line = new ArrayList<>();
 
-	// store hangman drawing in arraylist, each part to be displayed is in separate
-	// space of arraylist
-	private static ArrayList<String> hangmanDrawing = new ArrayList<>();
+	// store hangman drawing in an array, each part is to be displayed is in a separate
+	// space of the array
+	private String[] hangmanDrawingArray = new String[9];
 
 	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
 	private int count;
@@ -57,7 +57,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
 	private char tmp;
 
-	// t1-t4: flags to indicate which of the 4 user guessing text fields have the insertion
+	// textFieldHasFocus: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
 	private boolean w, o, r, d;
@@ -70,19 +70,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Create the application and initialize the contents of the frame
+	 * Creates the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
 	public Hangman() {
 		// add drawing components to list
-		hangmanDrawing.add("  ___________");
-		hangmanDrawing.add("\n |         |");
-		hangmanDrawing.add("\n |         O");
-		hangmanDrawing.add("\n |         | ");
-		hangmanDrawing.add("\n |        /|\\");
-		hangmanDrawing.add("\n |       / | \\");
-		hangmanDrawing.add("\n |         |");
-		hangmanDrawing.add("\n |        / \\");
-		hangmanDrawing.add("\n |       /   \\ \n |");
+		hangmanDrawingArray[0] = "  ___________";
+		hangmanDrawingArray[1] = "\n |         |";
+		hangmanDrawingArray[2] = "\n |         O";
+		hangmanDrawingArray[3] = "\n |         | ";
+		hangmanDrawingArray[4] = "\n |        /|\\";
+		hangmanDrawingArray[5] = "\n |       / | \\";
+		hangmanDrawingArray[6] = "\n |         |";
+		hangmanDrawingArray[7] = "\n |        / \\";
+		hangmanDrawingArray[8] = "\n |       /   \\ \n |";		
 
 		frame = new JFrame();
 		frame.setResizable(false);
@@ -119,7 +119,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanWordTextField.setFocusable(false);
 		hangmanWordTextField.setToolTipText("Secret Word");
 		
-		for(int x = 0; x < letterTextFields.length; x++) {
+		for (int x = 0; x < letterTextFields.length; x++) {
 			letterTextFields[x] = new JFormattedTextField(createFormatter("U"));
 			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
 			frame.getContentPane().add(letterTextFields[x]);
@@ -186,7 +186,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * MaskFormatter is used to specify/create the format of a text field
+	 * MaskFormatter is used to specify/create/enforce a custom format for a text field's input
 	 * @param argString is the text field's user input area (the box)
 	 * @return the formatted text field
 	 */
@@ -202,18 +202,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Read from list file and randomly select a hangman word
+	 * Read and randomly select a word from a loaded file with a list of hangman words
 	 */
-	public static void createHangmanWord() {
-		guessesLeft = hangmanDrawing.size();
-		guessesLeftTextField.setText(String.valueOf(guessesLeft));
+	public void createHangmanWord() {
+		String previousHangmanWord = hangmanWord;
+		guessesLeft = hangmanDrawingArray.length; // initializes the tracker for the number of guesses you have at start
+		guessesLeftTextField.setText(String.valueOf(guessesLeft)); 
 		hangmanWordTextField.setText("****");
 		
 		// choose random word from txt file, update the .nextInt() parameter value as you add words to hangman.txt
 		hangmanWord = line.get(randomGenerator.nextInt(numberOfHangmanWords));
 		
-		// enforces the program from choosing the same previously chosen word from file 
-		if(hangmanWord.equals(previousHangmanWord)) {
+		// enforces the program from choosing the same word as previously chosen from the hangman word list file 
+		if (hangmanWord.equals(previousHangmanWord)) {
 			hangmanWord = line.get(randomGenerator.nextInt(numberOfHangmanWords));
 		}
 		
@@ -224,7 +225,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * resets the game, occurs when user wins or looses
+	 * Resets the game, occurs when user wins or looses
 	 */
 	public void resetGame() {
 		hangmanTextField.setText("");
@@ -238,15 +239,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		letterTextFields[0].requestFocus();
 		w = o = r = d = false;
-		previousHangmanWord = hangmanWord;
 		createHangmanWord();
 		count = 0;
 	}
 	
 	/**
-	 * Performs actions to display the correct placements of '*' while user is guessing
+	 * Performs actions to display the correct placements of '*' in the hangman words box, while user is guessing
+	 * @return returns letters guessed to reveal along with masking '*'
 	 */
-	public static String maskRemainingHangmanWord(char argUsersGuess) {
+	public String maskRemainingHangmanWord(char argUsersGuess) {
 		StringBuilder newasterisk = new StringBuilder();
 
 		for (int i = 0; i < hangmanWord.length(); i++) {
@@ -262,7 +263,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}			
 
 		maskingAsterisk = newasterisk.toString();
-		return maskingAsterisk;
+		return maskingAsterisk; 
 	}
 
 	/**
@@ -272,48 +273,55 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void keyPressed(KeyEvent e) {
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
-			char keyChar = e.getKeyChar(), charGuessed = Character.toUpperCase(keyChar);
+			char charGuesssed = Character.toUpperCase(e.getKeyChar());
 			
-			// text field 1 chosen + letter entered matches first char of
-			// hangman word + the letter hasn't been guessed yet
-			if (textFieldHasFocus[0] && (charGuessed == hangmanWord.charAt(0)) && !w) {
-				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // x000
-				w = true;
-			} else if (textFieldHasFocus[1] && (charGuessed == hangmanWord.charAt(1)) && !o) {
-				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 0x00
-				o = true;
-			} else if (textFieldHasFocus[2] && (charGuessed == hangmanWord.charAt(2)) && !r) {
-				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 00x0
-				r = true;
-			} else if (textFieldHasFocus[3] && (charGuessed == hangmanWord.charAt(3)) && !d) {
-				hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 000x
-				// below line is a code fix: will force set/display final letter if correct before
-				// trigger of winner message appears
-				letterTextFields[3].setText(letterTextFields[3].getText());
-				d = true;
-			} else if (letterTextFields[0].getText().length() <= 1 && (charGuessed != hangmanWord.charAt(0))
-					&& (charGuessed != hangmanWord.charAt(1))
-					&& (charGuessed != hangmanWord.charAt(2))) {
-				
-				// defect fix - prevent character from loosing health if same wrong letter was
-				// pressed more than once
-				if (keyChar != tmp) {
-					hangmanTextField.append(hangmanDrawing.get(count++));
-					guessesLeftTextField.setText(String.valueOf(--guessesLeft));
-				} 
-
-				if (count == hangmanDrawing.size()) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + hangmanWord);
-					resetGame();
-				}
-
-				tmp = keyChar;
-			}
+			analyzeGuess(charGuesssed);
 
 			if (w && o && r && d) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word is: " + hangmanWord);
 				resetGame();	
 			}
+		}
+	}
+	
+	/**
+	 * Examines the letter the user placed in a text field 
+	 * @param charGuessed users guess
+	 */
+	public void analyzeGuess(char charGuessed) {
+		// text field 1 chosen + letter entered matches first char of
+		// hangman word + the letter hasn't been guessed yet
+		if (textFieldHasFocus[0] && (charGuessed == hangmanWord.charAt(0)) && !w) {
+			hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // x000
+			w = true;
+		} else if (textFieldHasFocus[1] && (charGuessed == hangmanWord.charAt(1)) && !o) {
+			hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 0x00
+			o = true;
+		} else if (textFieldHasFocus[2] && (charGuessed == hangmanWord.charAt(2)) && !r) {
+			hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 00x0
+			r = true;
+		} else if (textFieldHasFocus[3] && (charGuessed == hangmanWord.charAt(3)) && !d) {
+			hangmanWordTextField.setText(maskRemainingHangmanWord(charGuessed)); // 000x
+			// below line is a code fix: will force set/display final letter if correct before
+			// trigger of winner message appears
+			letterTextFields[3].setText(letterTextFields[3].getText());
+			d = true;
+		} else if (letterTextFields[0].getText().length() <= 1 && (charGuessed != hangmanWord.charAt(0))
+				&& (charGuessed != hangmanWord.charAt(1)) && (charGuessed != hangmanWord.charAt(2))) {
+			
+			// defect fix - prevent character from loosing health if same wrong letter was
+			// pressed more than once
+			if (charGuessed != tmp) {
+				hangmanTextField.append(hangmanDrawingArray[count++]);
+				guessesLeftTextField.setText(String.valueOf(--guessesLeft));
+			} 
+
+			if (count == hangmanDrawingArray.length) {
+				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + hangmanWord);
+				resetGame();
+			}
+
+			tmp = charGuessed;
 		}
 	}
 

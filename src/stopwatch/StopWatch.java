@@ -85,30 +85,23 @@ public class StopWatch extends JFrame {
 			btnStart = new JButton("START");
 			btnStop = new JButton("STOP");
 			btnReset = new JButton("RESET");
-			btnStart.setFont(new Font("Georgia", Font.PLAIN, 15));
-			btnStop.setFont(new Font("Georgia", Font.PLAIN, 15));
-			btnReset.setFont(new Font("Georgia", Font.PLAIN, 15));
-			Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-		    btnStart.setCursor(handCursor);
-		    btnStop.setCursor(handCursor);
-		    btnReset.setCursor(handCursor);
 		    Color lightGreen = new Color(0, 255, 128);
 			btnStart.setBackground(lightGreen);
 			Color lightRed = new Color(255, 98, 98);
 			btnStop.setBackground(lightRed);
 			Color lightBlue = new Color(146, 205, 255);
 			btnReset.setBackground(lightBlue);
-			btnStart.addActionListener(buttonListener);
-			btnStop.addActionListener(buttonListener);
-			btnReset.addActionListener(buttonListener);
-			btnStart.addKeyListener((KeyListener) buttonListener);
-			btnStop.addKeyListener((KeyListener) buttonListener);
-			btnReset.addKeyListener((KeyListener) buttonListener);
-			buttonPanel.add(btnStart);
-			buttonPanel.add(btnStop);
-			buttonPanel.add(btnReset);
 			add(buttonPanel, BorderLayout.CENTER);
 			timer = new Timer(0, buttonListener);
+			JButton[] buttons = {btnStart, btnStop, btnReset};
+			
+			for(JButton button : buttons) {
+				button.addKeyListener((KeyListener) buttonListener);
+				button.setFont(new Font("Georgia", Font.PLAIN, 15));
+				button.addActionListener(buttonListener);
+				button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				buttonPanel.add(button);
+			}
 		}
 
 		/**
