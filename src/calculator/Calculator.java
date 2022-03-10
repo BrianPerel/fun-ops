@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Brian Perel
  */
 public class Calculator {
-
+	
 	private static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 
@@ -21,7 +21,7 @@ public class Calculator {
 	private static double answer;
 	
 	private Calculator() {
-		// private constructor will hide the implicit public one
+		// private constructor will hide the implicit public one, b/c utility classes like this should not have public constructors
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class Calculator {
 		// do not set number in memory if % is still attached to number (enforces fact
 		// that code must remove % before this step) or if string
 		// includes a character
-		if (!argNumber.endsWith("%")) {
+		if (!argNumber.endsWith("%")) {			
 			stringNumbers.add(argNumber.trim());
 		}
 	}

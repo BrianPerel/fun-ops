@@ -14,6 +14,7 @@ public class EncryptDecrypt {
 
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
+	private FileWriter myWriter; // creates the file writer object to write to files
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
@@ -48,9 +49,8 @@ public class EncryptDecrypt {
 				maskedData.append((char) (data.charAt(index) + 5));
 			}
 			
-			// cast the StringBuilder into a String
-			data = maskedData;
-			FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName()); // access the existing txt file
+			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption
+			myWriter = new FileWriter(EncryptDecryptGui.getFileName()); // access the existing txt file
 
 			try {
 				myWriter.write(data.toString()); // write newly created string of random characters into file
@@ -75,10 +75,10 @@ public class EncryptDecrypt {
 	public StringBuilder decrypt() throws IOException {
 		
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
-		if (isEncrypted) {				
-			// cast the StringBuilder into a String
-			data = checkSentenceFormat();
-			FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName());
+		if (isEncrypted) {	
+			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
+			data = decryptAndcheckSentenceFormat();
+			myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
 				// override with decrypted data
@@ -98,7 +98,7 @@ public class EncryptDecrypt {
 	 * Enforces every sentence to start with a single space, during decryption process
 	 * @return unmaskedData the decrypted data
 	 */
-	public StringBuilder checkSentenceFormat() {
+	public StringBuilder decryptAndcheckSentenceFormat() {
 				
 		int wordCount = 0;
 

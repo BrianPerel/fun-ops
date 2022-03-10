@@ -45,6 +45,8 @@ public class EncryptDecryptGui implements ActionListener {
 	private JButton btnDecrypt;
 	private JButton btnLoadFile;
 	private static final String ERROR = "ERROR";
+	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of gui buttons
+	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of gui buttons when hovering 
 
 	public static void main(String[] args) {	
 		try {
@@ -60,12 +62,11 @@ public class EncryptDecryptGui implements ActionListener {
 	 * Create the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
 	public EncryptDecryptGui() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 421, 264);
-		frame.setTitle("Encrypt-decrypt App by: Brian Perel");
+		frame = new JFrame("Encrypt-decrypt App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		frame.setSize(421, 264);
 		
 		data = new StringBuilder();
 		btnEncrypt = new JButton("Encrypt");
@@ -78,18 +79,16 @@ public class EncryptDecryptGui implements ActionListener {
 		frame.getContentPane().add(btnLoadFile);
 		btnLoadFile.addActionListener(this);
 		btnLoadFile.setFocusable(false);
-		Color lightBlue = new Color(135, 206, 250); // regular color of gui buttons
-		Color darkerLightBlue = new Color(102, 178, 255); // color of gui buttons when hovering 
-		btnLoadFile.setBackground(lightBlue);
+		btnLoadFile.setBackground(LIGHT_BLUE);
 		btnLoadFile.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(darkerLightBlue);
+				btnLoadFile.setBackground(DARK_LIGHT_BLUE);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(lightBlue);
+				btnLoadFile.setBackground(LIGHT_BLUE);
 		    }
 		});
 		
@@ -103,16 +102,16 @@ public class EncryptDecryptGui implements ActionListener {
 		btnEncrypt.setBounds(84, 140, 89, 28);
 		frame.getContentPane().add(btnEncrypt);
 		btnEncrypt.addActionListener(this);
-		btnEncrypt.setBackground(lightBlue);
+		btnEncrypt.setBackground(LIGHT_BLUE);
 		btnEncrypt.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(darkerLightBlue);
+				btnEncrypt.setBackground(DARK_LIGHT_BLUE);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(lightBlue);
+				btnEncrypt.setBackground(LIGHT_BLUE);
 		    }
 		});
 		
@@ -125,16 +124,16 @@ public class EncryptDecryptGui implements ActionListener {
 		separator.setBounds(49, 104, 307, 2);
 		frame.getContentPane().add(separator);
 		btnDecrypt.addActionListener(this);
-		btnDecrypt.setBackground(lightBlue);
+		btnDecrypt.setBackground(LIGHT_BLUE);
 		btnDecrypt.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(darkerLightBlue);
+				btnDecrypt.setBackground(DARK_LIGHT_BLUE);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(lightBlue);
+				btnDecrypt.setBackground(LIGHT_BLUE);
 		    }
 		});
 		
@@ -144,16 +143,16 @@ public class EncryptDecryptGui implements ActionListener {
 		btnBrowse.setBounds(270, 43, 86, 28);
 		frame.getContentPane().add(btnBrowse);
 		btnBrowse.addActionListener(this);
-		btnBrowse.setBackground(lightBlue);
+		btnBrowse.setBackground(LIGHT_BLUE);
 		btnBrowse.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(darkerLightBlue);
+				btnBrowse.setBackground(DARK_LIGHT_BLUE);
 		    }
 			
 			@Override
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(lightBlue);
+				btnBrowse.setBackground(LIGHT_BLUE);
 		    }
 		});
 		

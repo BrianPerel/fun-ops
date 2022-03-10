@@ -25,8 +25,10 @@ public class Winner extends KeyAdapter implements ActionListener {
 	private JFrame f2 = new JFrame("Tic Tac Toe");
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
+	private static final String GAME_OVER = "Game Over! It's a draw!";
 	private JButton btnPlayAgain = new JButton("Play again");
 	private JButton btnQuit = new JButton("Quit");
+	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
@@ -58,9 +60,9 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
-		// 2 '!' indicates the result comes from tictactoe v2 (player vs. computer), 1 '!' indicates result is from player vs. player
-		String message = argGameResult.equals("Game Over! It's a draw!")
-				|| argGameResult.equals("Game Over! It's a draw!!") ? argGameResult : (argGameResult + " wins!");
+		// 2 '!' at the end of the string indicates the result comes from tictactoe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
+		String message = argGameResult.equals(GAME_OVER)
+				|| argGameResult.equals(GAME_OVER + "!") ? argGameResult : (argGameResult + " wins!");
 		lblGameResult.setText(message);
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
@@ -68,14 +70,13 @@ public class Winner extends KeyAdapter implements ActionListener {
 		
 		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
 		btnPlayAgain.setBounds(39, 68, 100, 34);
-		Color ultraLightGreen = new Color(144, 238, 144);
-		btnPlayAgain.setBackground(ultraLightGreen);
+		btnPlayAgain.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		
 		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
-		btnQuit.setBackground(ultraLightGreen);
+		btnQuit.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
 		btnQuit.addActionListener(this);
@@ -88,7 +89,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		PvPGameBoard.f.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+			if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				new PvEGameBoard(false, false, true).toRun = true;
 			}
 			else {
@@ -109,7 +110,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if (e.getSource() == btnPlayAgain) {
-				if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+				if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 					new PvEGameBoard(false, false, true).toRun = true;				
 				}
 				else {
@@ -117,7 +118,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 				}
 			} 
 			else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) 
-					|| gameResult.equals(COMPUTER) || gameResult.equals("Game Over! It's a draw!!")) {
+					|| gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				
 				System.exit(0);
 			}

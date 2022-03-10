@@ -35,6 +35,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	private JTextField nameOneTextField;
 	private JTextField nameTwoTextField;
 	private JRadioButton playAgainstComputerRadioButton;
+	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 	// private static final Logger logger = Logger.getLogger(Menu.class);
 
 	public static void main(String[] args) {			
@@ -55,7 +56,7 @@ public class Menu extends KeyAdapter implements ActionListener {
 	public Menu() {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 399, 358);
+		frame.setSize(399, 358);
 		frame.setTitle("Tic Tac Toe App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -85,13 +86,12 @@ public class Menu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(nameTwoTextField);
 		
 		btnStart = new JButton("Start");
-		btnStart.setFont(new Font("Lucida Fax", Font.BOLD, 14));
+		btnStart.setFont(new Font("Lucida Fax", Font.BOLD + Font.ITALIC, 14));
 		btnStart.setBounds(145, 192, 107, 35);
 		frame.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
-		Color ultraLightGreen = new Color(144, 238, 144);
-		btnStart.setBackground(ultraLightGreen);
+		btnStart.setBackground(LIGHT_GREEN);
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");

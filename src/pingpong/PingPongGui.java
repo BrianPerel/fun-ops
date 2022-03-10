@@ -13,6 +13,7 @@ import javax.swing.WindowConstants;
 public class PingPongGui extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 8513294011065865486L;
+	private static final Color DARK_GREEN = new Color(0, 78, 3);
 	private JMenuItem menuOption;
 
 	public static void main(String[] args) {
@@ -23,8 +24,8 @@ public class PingPongGui extends JFrame implements ActionListener {
 	 * Setups and creates the GUI
 	 */
 	public PingPongGui() {
+		super("Pong Game");
 		this.add(new GameBoard());
-		this.setTitle("Pong Game");
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Menu");
@@ -36,8 +37,7 @@ public class PingPongGui extends JFrame implements ActionListener {
 		menuOption.addActionListener(this);
 		
 		this.setResizable(false);
-		Color darkGreen = new Color(0, 78, 3);
-		this.setBackground(darkGreen);
+		this.setBackground(DARK_GREEN);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);

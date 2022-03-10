@@ -49,14 +49,13 @@ public class AdvancedGuessingGame extends GuessingGame {
 			
 			playSound(FAIL_SOUND);
 
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (100-999)");
 
 		} else if (textFieldGuessTheNumberInt + randomNumber == 1000) {
 			
 			playSound("res/audio/win.wav");
-			Color lightGreen = new Color(50, 205, 50);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(lightGreen, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 1000");
 			randomNumber = randomGenerator.nextInt(899) + 100;
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -69,7 +68,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 			
 			playSound(FAIL_SOUND);
 
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 1000");
 			
 			if (totalGameScore != 0) {
@@ -77,7 +76,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 			}
 		}
 		
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));

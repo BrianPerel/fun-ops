@@ -16,8 +16,9 @@ public class Score {
 	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {
-		String p1, p2;
-		g.setColor(Color.white);
+		String p1;
+		String p2;
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Magneto", Font.PLAIN, 40));
 		g.drawLine(0, 278, 1000, 278); // main horizontal line
         Graphics2D g2 = (Graphics2D) g;

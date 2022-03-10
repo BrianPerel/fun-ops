@@ -1,5 +1,7 @@
 package calculator;
 
+import static java.awt.Color.WHITE;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -8,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -37,7 +38,8 @@ public class App extends KeyAdapter implements ActionListener {
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
 														// clicked
 	private boolean hasNumberZeroBeenEnteredByUser;
-
+	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
+	
 	public static void main(String[] args) {			
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
@@ -56,15 +58,13 @@ public class App extends KeyAdapter implements ActionListener {
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
 		cursorRightPositionedWithZero = cursorRightPositioned.concat("0");
-		
 
-		JFrame frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 400, 436);
-		frame.setTitle("Calculator App by: Brian Perel");
+		JFrame frame = new JFrame("Calculator App by: Brian Perel");
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		frame.setSize(400, 436);
 
 		JButton[] buttons = new JButton[24];
 		buttons[0] = new JButton("1/x");
@@ -88,11 +88,9 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
 		
-		Color superLightGrey = new Color(225, 225, 225);
-
 		for (JButton button : buttons) {
-			button.setFont(new Font("Bookman Old Style", Font.BOLD, 13));
-			button.setBackground(Color.WHITE);
+			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
+			button.setBackground(WHITE);
 			frame.getContentPane().add(button);
 			button.addActionListener(this);
 			button.addKeyListener(this);
@@ -101,12 +99,12 @@ public class App extends KeyAdapter implements ActionListener {
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					button.setBackground(superLightGrey);
+					button.setBackground(SUPER_LIGHT_GRAY);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					button.setBackground(Color.WHITE);
+					button.setBackground(WHITE);
 				}
 			});
 		}
@@ -137,7 +135,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// unicode for backspace symbol
 		JButton btnBackspace = new JButton("\u232B");
-		btnBackspace.setBackground(Color.WHITE);
+		btnBackspace.setBackground(WHITE);
 		btnBackspace.setBounds(268, 100, 80, 40);
 		frame.getContentPane().add(btnBackspace);
 		btnBackspace.addActionListener(this);
@@ -146,12 +144,12 @@ public class App extends KeyAdapter implements ActionListener {
 		btnBackspace.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBackspace.setBackground(superLightGrey);
+				btnBackspace.setBackground(SUPER_LIGHT_GRAY);
 			}
 
 			@Override
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnBackspace.setBackground(Color.WHITE);
+				btnBackspace.setBackground(WHITE);
 			}
 		});
 
@@ -159,7 +157,7 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(33, 27, 315, 40);
-		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.gray, 3));
+		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 
 		frame.getContentPane().add(userInputTextField);
 		userInputTextField.setColumns(10);
@@ -261,17 +259,26 @@ public class App extends KeyAdapter implements ActionListener {
 				break;
 			}
 			
+			// otherwise remove the last digit of the current string in text field
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
 					? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
 					: cursorRightPositionedWithZero);
 			break;
 
-		case "1/x":			
+		case "1/x":		
+			double value = 1 / Double.valueOf(userInputTextField.getText());
+			
 			// validate that the current text in textField isn't blank
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
 					// need to cast below multiple times in order to perform 1/x operation
-					? cursorRightPositioned.concat(Double.toString(1 / Double.valueOf(userInputTextField.getText())))
+					? cursorRightPositioned.concat(Double.toString(value))
 					: cursorRightPositionedWithZero);
+			
+			// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
+			if ((value * 10) % 10 == 0) { // if value calculated is whole number
+				userInputTextField.setText(df.format(value)); // removes zero's after decimal point
+			}
+			
 			break;
 
 		case "=":
@@ -280,7 +287,6 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			Collections.fill(Calculator.stringNumbers, null);
 			Calculator.divideByZeroflag = false;
 			resetValues();
 			break;
@@ -293,9 +299,8 @@ public class App extends KeyAdapter implements ActionListener {
 
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				Calculator.setNumber(
-					String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
-					userInputTextField.setText(userInputTextField.getText().concat("%"));
+				Calculator.setNumber(String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
+				userInputTextField.setText(userInputTextField.getText().concat("%"));
 					
 				break;
 			}
@@ -304,17 +309,33 @@ public class App extends KeyAdapter implements ActionListener {
 			break;
 
 		// x\u00B2 -> X^2 symbol
-		case "x\u00B2":			
+		case "x\u00B2":		
+			double valueSquared = Math.pow((Double.valueOf(userInputTextField.getText())), 2);
+			
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
-					? cursorRightPositioned.concat(Double.toString(Math.pow((Double.valueOf(userInputTextField.getText())), 2)))
-					: cursorRightPositionedWithZero);			
+					? cursorRightPositioned.concat(Double.toString(valueSquared))
+					: cursorRightPositionedWithZero);	
+			
+			// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
+			if ((valueSquared * 10) % 10 == 0) { // if value calculated is whole number
+				userInputTextField.setText(df.format(valueSquared)); // removes zero's after decimal point
+			}
+			
 			break;
 
 		// 2\u221Ax -> 2 square root x symbol
-		case "2\u221Ax":			
+		case "2\u221Ax":	
+			double valueSquareRooted = Math.sqrt(Double.valueOf(userInputTextField.getText()));
+			
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
-					? cursorRightPositioned.concat(String.valueOf(Math.sqrt(Double.valueOf(userInputTextField.getText()))))
+					? cursorRightPositioned.concat(String.valueOf(valueSquareRooted))
 					: cursorRightPositionedWithZero);
+			
+			// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
+			if ((valueSquareRooted * 10) % 10 == 0) { // if value calculated is whole number
+				userInputTextField.setText(df.format(valueSquareRooted)); // removes zero's after decimal point
+			}
+
 			break;
 
 		case "+/-":
@@ -350,7 +371,7 @@ public class App extends KeyAdapter implements ActionListener {
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
 		switch (keyChar) {
-			case KeyEvent.VK_0:
+			case KeyEvent.VK_0: 
 				userInputTextField.setText(userInputTextField.getText().concat("0"));
 				hasNumberZeroBeenEnteredByUser = true;
 				break;
@@ -392,7 +413,8 @@ public class App extends KeyAdapter implements ActionListener {
 				break;
 	
 			// actions for symbol buttons
-			case KeyEvent.VK_SLASH:
+				
+			case KeyEvent.VK_SLASH: // VK_SLASH indicates '/' or division
 				Calculator.setNumber(userInputTextField.getText());
 				userInputTextField.setText(cursorRightPositioned);
 				operatorFlags[0] = true;
@@ -417,12 +439,21 @@ public class App extends KeyAdapter implements ActionListener {
 				performEnterEqualsOp();
 				break; // break statement for case enter key button
 	
-			case KeyEvent.VK_BACK_SPACE:
-				userInputTextField
-						.setText(userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1));
+			case KeyEvent.VK_BACK_SPACE:				
+				// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
+				if (userInputTextField.getText().trim().length() == 1) {
+					userInputTextField.setText(cursorRightPositionedWithZero);
+					break;
+				}
+				
+				// otherwise remove the last digit of the current string in text field
+				userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
+						? userInputTextField.getText().substring(0, userInputTextField.getText().length() - 1)
+						: cursorRightPositionedWithZero);
 				break;
 	
 			case KeyEvent.VK_PERIOD:
+				// adds a decimal point
 				if (!userInputTextField.getText().contains(".")) {
 					userInputTextField.setText(userInputTextField.getText() + ".");
 				}
@@ -488,8 +519,8 @@ public class App extends KeyAdapter implements ActionListener {
 			userInputTextField.setText(
 					(Calculator.divideByZeroflag) ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
 
-			// reset all array/memory values
-			resetValues();
+			resetValues(); // reset all array/memory values
+			
 		} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
 			userInputTextField.setText(cursorRightPositionedWithZero);
 		} 

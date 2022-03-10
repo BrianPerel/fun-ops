@@ -77,11 +77,11 @@ public class StopWatch extends JFrame {
 			watch = new JLabel("00:00:00", JLabel.CENTER);
 			watch.setFont(new Font("Helvetica", Font.PLAIN, 36));
 			watchPanel.add(watch);
-			Color superLightGrey = new Color(225, 225, 225);
-			watchPanel.setBackground(superLightGrey);
+			Color lightGray = new Color(225, 225, 225);
+			watchPanel.setBackground(lightGray);
 			add(watchPanel, BorderLayout.NORTH);
 			JPanel buttonPanel = new JPanel();
-			buttonPanel.setBackground(superLightGrey);
+			buttonPanel.setBackground(lightGray);
 			btnStart = new JButton("START");
 			btnStop = new JButton("STOP");
 			btnReset = new JButton("RESET");

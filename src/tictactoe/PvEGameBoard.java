@@ -81,6 +81,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 				
 				break;
 			} 
+			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				// logger.warn("Invalid Move!");
 			}

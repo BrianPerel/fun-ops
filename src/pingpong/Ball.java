@@ -67,7 +67,7 @@ public class Ball extends Rectangle {
 	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {
-		g.setColor(Color.white);
+		g.setColor(Color.WHITE);
 		g.fillOval(x, y, height, width);	
 	}
 

@@ -54,6 +54,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain = new JButton("Play again?");
 	protected JButton btnGuess = new JButton("Guess");
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
+	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -63,13 +64,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Create the application - Build the GUI
 	 */
 	public GuessingGame() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 526, 352);
-		frame.setTitle("Number Guessing Game by: Brian Perel");
+		frame = new JFrame("Number Guessing Game by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setBackground(Color.WHITE);
+		frame.setResizable(false);
+		frame.setSize(526, 352);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
 
@@ -119,7 +119,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		btnGuess.setBounds(255, 230, 105, 23);
 		btnGuess.addActionListener(this);
-		btnGuess.setBackground(Color.green);
+		btnGuess.setBackground(Color.GREEN);
 		frame.getContentPane().add(btnGuess);
 		btnGuess.addKeyListener(this);
 
@@ -289,12 +289,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		// if input remainder entered is outside of range 1-99
 		if (textFieldGuessTheNumberInt >= 100 || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
 		} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
 			playSound("res/audio/win.wav");
-			Color lightGreen = new Color(50, 205, 50);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(lightGreen, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -304,7 +303,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
 			playSound(FAIL_SOUND);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");
 			
 			if (totalGameScore != 0) {
@@ -312,7 +311,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 		
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));

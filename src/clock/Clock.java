@@ -1,5 +1,8 @@
 package clock;
 
+import static java.awt.Color.BLACK;
+import static java.awt.Color.WHITE;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -28,9 +31,10 @@ import javax.swing.WindowConstants;
 public class Clock implements ActionListener {
 
 	private JLabel lblClockTime;
-	private JTextField alarmTime;
+	private JTextField alarmTimeTextField;
 	private String timeAlarmGoesOff;
-	boolean alarmShouldRing = true;
+	private boolean alarmShouldRing = true;
+	private static final Color SUPER_LIGHT_GRAY = new Color(211, 211, 211);
 
 	public static void main(String[] args) {
 		try {
@@ -47,18 +51,17 @@ public class Clock implements ActionListener {
 	 * Create the clock application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
 	public Clock() {
-		JFrame frame = new JFrame();
-		frame.setTitle("Clock");
+		JFrame frame = new JFrame("Clock");
 		frame.setBounds(100, 100, 450, 280);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().setBackground(Color.BLACK);
+		frame.getContentPane().setBackground(BLACK);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
 
 		lblClockTime = new JLabel();
-		lblClockTime.setForeground(Color.WHITE);
+		lblClockTime.setForeground(WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
 
 		Font font = null;
@@ -74,30 +77,29 @@ public class Clock implements ActionListener {
 		}
 
 		lblClockTime.setFont(font);
-		lblClockTime.setForeground(Color.green);
+		lblClockTime.setForeground(Color.GREEN);
 		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.getContentPane().add(lblClockTime);
 		
 		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
 		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
-		militaryTimeFormatCheckBox.setBackground(Color.BLACK);
-		militaryTimeFormatCheckBox.setForeground(Color.WHITE);
+		militaryTimeFormatCheckBox.setBackground(BLACK);
+		militaryTimeFormatCheckBox.setForeground(WHITE);
 		frame.getContentPane().add(militaryTimeFormatCheckBox);
 		
-		alarmTime = new JTextField();
-		alarmTime.setBounds(40, 175, 84, 28);
-		alarmTime.setForeground(Color.BLACK);
-		Color superLightGrey = new Color(211, 211, 211);
-		alarmTime.setBackground(superLightGrey);
-		frame.getContentPane().add(alarmTime);
-		alarmTime.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
+		alarmTimeTextField = new JTextField();
+		alarmTimeTextField.setBounds(40, 175, 84, 28);
+		alarmTimeTextField.setForeground(BLACK);
+		alarmTimeTextField.setBackground(SUPER_LIGHT_GRAY);
+		frame.getContentPane().add(alarmTimeTextField);
+		alarmTimeTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
 		JButton btnSetAlarm = new JButton("Set Alarm");
 		
 		// sets keyboard shortcut/ keyboard mnemonic to alt+'s' for the set alarm button
 		btnSetAlarm.setMnemonic('s');
 		btnSetAlarm.setBounds(125, 175, 90, 25);
-		btnSetAlarm.setForeground(Color.BLACK);
+		btnSetAlarm.setForeground(BLACK);
 		frame.getContentPane().add(btnSetAlarm);
 		btnSetAlarm.addActionListener(this);
 				
@@ -150,7 +152,7 @@ public class Clock implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		alarmShouldRing = true;
-		timeAlarmGoesOff = alarmTime.getText();
+		timeAlarmGoesOff = alarmTimeTextField.getText();
 		JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

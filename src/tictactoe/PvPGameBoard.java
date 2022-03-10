@@ -1,5 +1,7 @@
 package tictactoe;
 
+import static java.awt.Color.GREEN;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -38,6 +40,9 @@ public class PvPGameBoard implements ActionListener {
 	private static String playerTwosName;
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);	
 	protected static JFrame f = new JFrame("Tic Tac Toe");
+	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
+	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
+	private static final Color LIGHT_RED = new Color(232, 46, 6);
 
 	/**
 	 * Builds the game's GUI board
@@ -58,6 +63,9 @@ public class PvPGameBoard implements ActionListener {
 		}
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		
+		// assigning a background image to the app
+		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		f.setResizable(false);
 		f.setBounds(100, 100, 399, 358);
@@ -66,30 +74,25 @@ public class PvPGameBoard implements ActionListener {
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);
 
-		// assigning a background image to the app
-		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
-		
 		// creates and sets up the board tiles
 		for (int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
-			Color ultraLightOrange = new Color(244, 164, 96);
-			gameBoardTiles[i].setBackground(ultraLightOrange);
-			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.gray));
+			gameBoardTiles[i].setBackground(ULTRA_LIGHT_ORANGE);
+			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY));
 			
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					Color lightOrange = new Color(222, 126, 0);
-					gameBoardTiles[x].setBackground(lightOrange);
+					gameBoardTiles[x].setBackground(LIGHT_ORANGE);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					gameBoardTiles[x].setBackground(ultraLightOrange);
+					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE);
 				}
 			});
 		}
@@ -112,7 +115,7 @@ public class PvPGameBoard implements ActionListener {
 		// creates and sets up the board line dividers
 		for (int x = 0; x < gameBoardSeparators.length; x++) {
 			gameBoardSeparators[x] = new JSeparator();
-			gameBoardSeparators[x].setBackground(Color.blue);
+			gameBoardSeparators[x].setBackground(Color.BLUE);
 			f.getContentPane().add(gameBoardSeparators[x]);
 			
 			if (x == 2 || x == 3) {
@@ -320,18 +323,18 @@ public class PvPGameBoard implements ActionListener {
 		highlightWinnersTiles[2] = three;
 		
 		for (JButton button : highlightWinnersTiles) {
-			button.setBackground(Color.GREEN);
+			button.setBackground(GREEN);
 			
 			// this will prevent the program from changing colors when you hover after winning
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
-					button.setBackground(Color.GREEN);
+					button.setBackground(GREEN);
 				}
 
 				@Override
 				public void mouseExited(java.awt.event.MouseEvent evt) {
-					button.setBackground(Color.GREEN);
+					button.setBackground(GREEN);
 				}
 			});
 		}
@@ -347,8 +350,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param buttonPressed button that was just pressed by player one
 	 */
 	public void playerOnesTurnComplete(JButton buttonPressed) {
-		Color lightRed = new Color(232, 46, 6);
-		buttonPressed.setForeground(lightRed);
+		buttonPressed.setForeground(LIGHT_RED);
 		buttonPressed.setText("O");
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
 	}

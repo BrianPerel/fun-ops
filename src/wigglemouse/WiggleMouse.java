@@ -46,10 +46,9 @@ public class WiggleMouse {
 	 * Initialize the contents of the frame.
 	 */
 	public WiggleMouse() throws InterruptedException, AWTException {
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Wiggle mouse by B. Perel");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 550, 182);
-		frame.setTitle("Wiggle mouse by B. Perel");
+		frame.setSize(550, 182);
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

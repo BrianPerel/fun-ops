@@ -60,7 +60,7 @@ public class GameBoard extends JPanel implements Runnable {
 		Image image = createImage(getWidth(), getHeight());
 		draw(image.getGraphics());
 		g.drawImage(image, 0, 0, this);
-		g.setColor(Color.white);
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Magneto", Font.PLAIN, 40));
 	}
 
@@ -200,7 +200,7 @@ public class GameBoard extends JPanel implements Runnable {
 	/**
 	 * A action listener class that listens to keys pressed and released on the pong table
 	 */
-	public class ActionListener extends KeyAdapter {
+	private class ActionListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			paddleOne.keyPressed(e);
@@ -212,7 +212,5 @@ public class GameBoard extends JPanel implements Runnable {
 			paddleOne.keyReleased(e);
 			paddleTwo.keyReleased(e);
 		}
-	}
-
-	
+	}	
 }

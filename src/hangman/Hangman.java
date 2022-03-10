@@ -1,5 +1,7 @@
 package hangman;
 
+import static java.awt.Color.WHITE;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -42,6 +44,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String hangmanWord;
 	private String maskingAsterisk;
 	private int guessesLeft;
+	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
@@ -84,12 +87,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanDrawingArray[7] = "\n |        / \\";
 		hangmanDrawingArray[8] = "\n |       /   \\ \n |";		
 
-		frame = new JFrame();
+		frame = new JFrame("Hangman App by: Brian Perel");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 529, 326);
+		frame.setSize(529, 326);
 		frame.getContentPane().setLayout(null);
-		frame.setTitle("Hangman App by: Brian Perel");
-		frame.getContentPane().setBackground(Color.WHITE);
+		frame.getContentPane().setBackground(WHITE);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-hangman.jpg")));
@@ -136,19 +138,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		JLabel lblWordText = new JLabel("WORD:");
 		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 14));
-		lblWordText.setForeground(Color.WHITE);
+		lblWordText.setForeground(WHITE);
 		lblWordText.setBounds(310, 102, 126, 72);
 		frame.getContentPane().add(lblWordText);
 
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
 		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
-		lblHangmanTheme.setForeground(Color.WHITE);
+		lblHangmanTheme.setForeground(WHITE);
 		lblHangmanTheme.setBounds(270, 44, 183, 29);
 		frame.getContentPane().add(lblHangmanTheme);
 		
 		JLabel lblGuessesLeft = new JLabel("Guesses left:");
 		lblGuessesLeft.setFont(new Font("Century Schoolbook", Font.PLAIN, 16));
-		lblGuessesLeft.setForeground(Color.WHITE);
+		lblGuessesLeft.setForeground(WHITE);
 		lblGuessesLeft.setBounds(280, 44, 183, 100);
 		frame.getContentPane().add(lblGuessesLeft);
 		
@@ -273,9 +275,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void keyPressed(KeyEvent e) {
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
-			char charGuesssed = Character.toUpperCase(e.getKeyChar());
 			
-			analyzeGuess(charGuesssed);
+			analyzeGuess(Character.toUpperCase(e.getKeyChar()));
 
 			if (w && o && r && d) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The word is: " + hangmanWord);
@@ -332,13 +333,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 		for (JFormattedTextField textField : letterTextFields) {
-			textField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 		}
 		
 		for (int i = 0; i < letterTextFields.length; i++) {
 			if (letterTextFields[i].hasFocus()) {
-				Color lightGreen = new Color(34, 139, 34);
-				letterTextFields[i].setBorder(BorderFactory.createLineBorder(lightGreen, 2));
+				letterTextFields[i].setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
 				textFieldHasFocus[i] = true;
 				break;
 			}
