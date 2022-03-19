@@ -16,7 +16,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -64,100 +63,54 @@ public class EncryptDecryptGui implements ActionListener {
 	public EncryptDecryptGui() {
 		frame = new JFrame("Encrypt-decrypt App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setSize(421, 264);
 		
 		data = new StringBuilder();
-		btnEncrypt = new JButton("Encrypt");
-		btnDecrypt = new JButton("Decrypt");
-		btnLoadFile = new JButton("Load file");
-
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
-
-		btnLoadFile.setBounds(49, 43, 89, 28);
-		frame.getContentPane().add(btnLoadFile);
-		btnLoadFile.addActionListener(this);
-		btnLoadFile.setFocusable(false);
-		btnLoadFile.setBackground(LIGHT_BLUE);
-		btnLoadFile.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(DARK_LIGHT_BLUE);
-		    }
-			
-			@Override
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnLoadFile.setBackground(LIGHT_BLUE);
-		    }
-		});
 		
-		btnLoadFile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+		JButton[] buttons = new JButton[4];
+		
+		buttons[0] = new JButton("Load file");
+		btnLoadFile = buttons[0];
+		
 		loadingTextField = new JTextField();
 		loadingTextField.setBounds(148, 44, 112, 26);
 		frame.getContentPane().add(loadingTextField);
 		loadingTextField.setColumns(10);
-
-		btnEncrypt.setBounds(84, 140, 89, 28);
-		frame.getContentPane().add(btnEncrypt);
-		btnEncrypt.addActionListener(this);
-		btnEncrypt.setBackground(LIGHT_BLUE);
-		btnEncrypt.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(DARK_LIGHT_BLUE);
-		    }
-			
-			@Override
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnEncrypt.setBackground(LIGHT_BLUE);
-		    }
-		});
 		
-		btnEncrypt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		buttons[1] = new JButton("Browse");
+		btnBrowse = buttons[1];
+		buttons[2] = new JButton("Encrypt");
+		btnEncrypt = buttons[2];
+		buttons[3] = new JButton("Decrypt");
+		btnDecrypt = buttons[3];
 
-		btnDecrypt.setBounds(235, 139, 89, 28);
-		frame.getContentPane().add(btnDecrypt);
+		for(JButton button : buttons) {
+			frame.getContentPane().add(button);
+			button.addActionListener(this);
+			button.setFocusable(false);
+			button.setBackground(LIGHT_BLUE);
+			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			button.addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+			    public void mouseEntered(java.awt.event.MouseEvent evt) {
+					button.setBackground(DARK_LIGHT_BLUE);
+			    }
+				
+				@Override
+			    public void mouseExited(java.awt.event.MouseEvent evt) {
+					button.setBackground(LIGHT_BLUE);
+			    }
+			});
+		}
+		
+		buttons[0].setBounds(49, 43, 89, 28);
+		buttons[1].setBounds(270, 43, 86, 28);
+		buttons[2].setBounds(84, 140, 89, 28);
+		buttons[3].setBounds(235, 139, 89, 28);
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(49, 104, 307, 2);
-		frame.getContentPane().add(separator);
-		btnDecrypt.addActionListener(this);
-		btnDecrypt.setBackground(LIGHT_BLUE);
-		btnDecrypt.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(DARK_LIGHT_BLUE);
-		    }
-			
-			@Override
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnDecrypt.setBackground(LIGHT_BLUE);
-		    }
-		});
-		
-		btnDecrypt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		btnBrowse = new JButton("Browse");
-		btnBrowse.setBounds(270, 43, 86, 28);
-		frame.getContentPane().add(btnBrowse);
-		btnBrowse.addActionListener(this);
-		btnBrowse.setBackground(LIGHT_BLUE);
-		btnBrowse.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(DARK_LIGHT_BLUE);
-		    }
-			
-			@Override
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnBrowse.setBackground(LIGHT_BLUE);
-		    }
-		});
-		
-		btnBrowse.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
@@ -189,15 +142,9 @@ public class EncryptDecryptGui implements ActionListener {
 			}
 			
 			// if file has been already been loaded and load file btn pushed
-			else if (isFileLoaded) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", ERROR,
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-	
-			// if file load textfield is empty while load file btn is pushed
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file name entered", ERROR,
-					JOptionPane.ERROR_MESSAGE);
+			// or if file load textfield is empty while load file btn is pushed
+			JOptionPane.showMessageDialog(frame.getComponent(0), isFileLoaded ? "A file has already been loaded" 
+					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
 		}		
 
 		// if loaded file isn't blank, allow encryption op

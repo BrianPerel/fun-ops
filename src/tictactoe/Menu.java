@@ -106,11 +106,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		String nameOne = nameOneTextField.getText();
-		String nameTwo = nameTwoTextField.getText();
+		String nameOne = nameOneTextField.getText().trim();
+		String nameTwo = nameTwoTextField.getText().trim();
 		
-		if (nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
-				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
+		if (nameOne.equalsIgnoreCase(Winner.PLAYER) || nameOne.equalsIgnoreCase(Winner.COMPUTER)
+				|| nameTwo.equalsIgnoreCase(Winner.PLAYER) || nameTwo.equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -122,20 +122,20 @@ public class Menu extends KeyAdapter implements ActionListener {
 				&& !nameTwo.isEmpty() && !nameOne.equalsIgnoreCase(nameTwo)) {
 
 			// remove extra whitespace from name textfields before proceeding
-			PvPGameBoard.setPlayerOnesName(nameOne.trim());
-			PvPGameBoard.setPlayerTwosName(nameTwo.trim());
+			PvPGameBoard.setPlayerOnesName(nameOne);
+			PvPGameBoard.setPlayerTwosName(nameTwo);
 
 			// if first letter of player one's name is lowercase make upper case
 			if (Character.isLowerCase(PvPGameBoard.getPlayerOnesName().charAt(0))) {
-				PvPGameBoard.setPlayerOnesName((PvPGameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+				PvPGameBoard.setPlayerOnesName(PvPGameBoard.getPlayerOnesName().substring(0, 1).toUpperCase()
 						+ PvPGameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
 			if (Character.isLowerCase(PvPGameBoard.getPlayerTwosName().charAt(0))) {
-				PvPGameBoard.setPlayerTwosName((PvPGameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+				PvPGameBoard.setPlayerTwosName(PvPGameBoard.getPlayerTwosName().substring(0, 1).toUpperCase()
 						+ PvPGameBoard.getPlayerTwosName().substring(1));
-			}
+			} 
 
 			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
 			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());
@@ -160,11 +160,11 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		String nameOne = nameOneTextField.getText();
-		String nameTwo = nameTwoTextField.getText();
+		String nameOne = nameOneTextField.getText().trim();
+		String nameTwo = nameTwoTextField.getText().trim();
 		
-		if (nameOne.trim().equalsIgnoreCase(Winner.PLAYER) || nameOne.trim().equalsIgnoreCase(Winner.COMPUTER)
-				|| nameTwo.trim().equalsIgnoreCase(Winner.PLAYER) || nameTwo.trim().equalsIgnoreCase(Winner.COMPUTER)) {
+		if (nameOne.equalsIgnoreCase(Winner.PLAYER) || nameOne.equalsIgnoreCase(Winner.COMPUTER)
+				|| nameTwo.equalsIgnoreCase(Winner.PLAYER) || nameTwo.equalsIgnoreCase(Winner.COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -181,8 +181,8 @@ public class Menu extends KeyAdapter implements ActionListener {
 				&& !nameTwo.isEmpty()) {
 
 			// remove whitespace from name textfields before proceeding
-			PvPGameBoard.setPlayerOnesName(nameOne.trim());
-			PvPGameBoard.setPlayerTwosName(nameTwo.trim());
+			PvPGameBoard.setPlayerOnesName(nameOne);
+			PvPGameBoard.setPlayerTwosName(nameTwo);
 
 			// if first name field equals the second one
 			if (nameOne.equalsIgnoreCase(nameTwo)) {
@@ -196,15 +196,15 @@ public class Menu extends KeyAdapter implements ActionListener {
 
 			// if first letter of player one's name is lowercase make upper case
 			if (Character.isLowerCase(PvPGameBoard.getPlayerOnesName().charAt(0))) {
-				PvPGameBoard.setPlayerOnesName((PvPGameBoard.getPlayerOnesName().charAt(0) + "").toUpperCase()
+				PvPGameBoard.setPlayerOnesName(PvPGameBoard.getPlayerOnesName().substring(0, 1).toUpperCase()
 						+ PvPGameBoard.getPlayerOnesName().substring(1));
 			}
 
 			// if first letter of player two's name is lowercase make upper case
 			if (Character.isLowerCase(PvPGameBoard.getPlayerTwosName().charAt(0))) {
-				PvPGameBoard.setPlayerTwosName((PvPGameBoard.getPlayerTwosName().charAt(0) + "").toUpperCase()
+				PvPGameBoard.setPlayerTwosName(PvPGameBoard.getPlayerTwosName().substring(0, 1).toUpperCase()
 						+ PvPGameBoard.getPlayerTwosName().substring(1));
-			}
+			} 
 			
 			// logger.info("Player 1: " + GameBoard.getPlayerOnesName());
 			// logger.info("Player 2: " + GameBoard.getPlayerTwosName());

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -65,6 +67,17 @@ public class App extends KeyAdapter implements ActionListener {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setSize(400, 436);
+		
+		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
+		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
+		userInputTextField.setBounds(33, 27, 315, 40);
+		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
+
+		frame.getContentPane().add(userInputTextField);
+		userInputTextField.setColumns(10);
+		userInputTextField.setEditable(false);
+		userInputTextField.addKeyListener(this);
 
 		JButton[] buttons = new JButton[24];
 		buttons[0] = new JButton("1/x");
@@ -96,22 +109,25 @@ public class App extends KeyAdapter implements ActionListener {
 			button.addKeyListener(this);
 			button.setHorizontalAlignment(SwingConstants.CENTER);
 			// below code is used to create the button hover effect
-			button.addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseEntered(java.awt.event.MouseEvent evt) {
+				public void mouseEntered(MouseEvent evt) {
 					button.setBackground(SUPER_LIGHT_GRAY);
 				}
 
 				@Override
-				public void mouseExited(java.awt.event.MouseEvent evt) {
+				public void mouseExited(MouseEvent evt) {
 					button.setBackground(WHITE);
 				}
 			});
 		}
+		
+		buttons[3].setFont(new Font("SansSerif", Font.BOLD, 12)); // need to custom add default font details for the backspace button, as the font details applied from above prevent the backspace symbol from being displayed
 
 		buttons[0].setBounds(31, 141, 80, 40);
 		buttons[1].setBounds(110, 100, 80, 40);
 		buttons[2].setBounds(189, 100, 80, 40);
+		buttons[3].setBounds(268, 100, 80, 40);
 		buttons[4].setBounds(31, 100, 80, 40);
 		buttons[5].setBounds(110, 141, 80, 40);
 		buttons[6].setBounds(189, 141, 80, 40);
@@ -131,38 +147,7 @@ public class App extends KeyAdapter implements ActionListener {
 		buttons[20].setBounds(268, 263, 80, 40);
 		buttons[21].setBounds(31, 304, 80, 40);
 		buttons[22].setBounds(189, 304, 80, 40);
-		buttons[23].setBounds(268, 304, 80, 40);
-
-		// unicode for backspace symbol
-		JButton btnBackspace = new JButton("\u232B");
-		btnBackspace.setBackground(WHITE);
-		btnBackspace.setBounds(268, 100, 80, 40);
-		frame.getContentPane().add(btnBackspace);
-		btnBackspace.addActionListener(this);
-		btnBackspace.addKeyListener(this);
-		// below code is used to create the button hover effect
-		btnBackspace.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnBackspace.setBackground(SUPER_LIGHT_GRAY);
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnBackspace.setBackground(WHITE);
-			}
-		});
-
-		userInputTextField = new JFormattedTextField(cursorRightPositionedWithZero);
-		userInputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
-		userInputTextField.setBounds(33, 27, 315, 40);
-		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
-
-		frame.getContentPane().add(userInputTextField);
-		userInputTextField.setColumns(10);
-		userInputTextField.setEditable(false);
-		userInputTextField.addKeyListener(this);
+		buttons[23].setBounds(268, 304, 80, 40);		
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -310,7 +295,7 @@ public class App extends KeyAdapter implements ActionListener {
 
 		// x\u00B2 -> X^2 symbol
 		case "x\u00B2":		
-			double valueSquared = Math.pow((Double.valueOf(userInputTextField.getText())), 2);
+			double valueSquared = Math.pow(Double.valueOf(userInputTextField.getText()), 2);
 			
 			userInputTextField.setText(!userInputTextField.getText().equals(cursorRightPositioned)
 					? cursorRightPositioned.concat(Double.toString(valueSquared))
@@ -345,7 +330,7 @@ public class App extends KeyAdapter implements ActionListener {
 				// removed)
 				userInputTextField.setText(userInputTextField.getText().trim().startsWith("-")
 						? cursorRightPositioned.concat(userInputTextField.getText().replace("-", ""))
-						: cursorRightPositioned.concat(("-".concat(userInputTextField.getText().trim()))));
+						: cursorRightPositioned.concat("-".concat(userInputTextField.getText().trim())));
 			}
 			break;
 
@@ -493,7 +478,7 @@ public class App extends KeyAdapter implements ActionListener {
 		Arrays.fill(operatorFlags, false);
 		hasNumberZeroBeenEnteredByUser = false;
 		Calculator.stringNumbers.clear();
-		Calculator.doubleNumbers.clear();
+		Calculator.bigDecimalNumbers.clear();
 	}
 	
 	/**

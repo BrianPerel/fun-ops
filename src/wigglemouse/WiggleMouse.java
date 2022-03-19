@@ -26,7 +26,6 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse {
 
-	private JButton btnStart;
 	private static int y;
 	private static int x;
 	private static int timeToWait;
@@ -53,11 +52,6 @@ public class WiggleMouse {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		btnStart = new JButton("SET TIME");
-		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
-		btnStart.setBounds(215, 78, 99, 23);
-		frame.getContentPane().add(btnStart);
-
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
@@ -66,10 +60,14 @@ public class WiggleMouse {
 		waitTimeOptionsComboBox.setBounds(395, 23, 100, 22);
 		frame.getContentPane().add(waitTimeOptionsComboBox);
 		
-		JLabel lblNewLabel = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
-		lblNewLabel.setBounds(35, 64, 80, 55);
-		frame.getContentPane().add(lblNewLabel);	
+		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
+		lblArrowIcon.setBounds(35, 64, 80, 55);
+		frame.getContentPane().add(lblArrowIcon);	
 		
+		JButton btnStart = new JButton("SET TIME");
+		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
+		btnStart.setBounds(215, 78, 99, 23);
+		frame.getContentPane().add(btnStart);
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	    
 	    frame.setVisible(true);

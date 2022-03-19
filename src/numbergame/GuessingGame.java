@@ -30,10 +30,10 @@ import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
 
 /**
- * A guessing number game in which the user receives a randomly generated number
+ * A guessing number game in which the user receives a randomly generated secret number
  * between 1-99 and he/she must guess what the remainder is. Every correct guess
- * equates to 10 points, every incorrect guess equates to -10 points. Score is
- * kept for every session. <br>
+ * gives the player 10 points, every incorrect guess takes away 10 points. 
+ * Score is kept for every session. <br>
  * 
  * @author Brian Perel
  *
@@ -94,6 +94,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		guessesTextField.setBounds(238, 22, 52, 20);
 		guessesTextField.setFocusable(false);
 		frame.getContentPane().add(guessesTextField);
+		
+		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
+		lblScoringInfo.setBounds(315, 24, 172, 17);
+		frame.getContentPane().add(lblScoringInfo);
 
 		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/bg-image-guessing-figure.jpg"));
 		lblImage.setBounds(10, 66, 220, 238);
@@ -120,6 +124,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		btnGuess.setBounds(255, 230, 105, 23);
 		btnGuess.addActionListener(this);
 		btnGuess.setBackground(Color.GREEN);
+		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(btnGuess);
 		btnGuess.addKeyListener(this);
 
@@ -130,12 +135,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.addActionListener(this);
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
-		lblScoringInfo.setBounds(315, 24, 172, 17);
-		frame.getContentPane().add(lblScoringInfo);
-
 		btnPlayAgain.setBounds(382, 230, 105, 23);
 		btnPlayAgain.addActionListener(this);
+		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPlayAgain.setBackground(Color.ORANGE);
 		frame.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addKeyListener(this);
@@ -144,6 +146,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.setBackground(Color.WHITE);
 		closeTimerCheckBox.setBounds(296, 260, 158, 23);
 		frame.getContentPane().add(closeTimerCheckBox);
+		closeTimerCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		closeTimerCheckBox.addActionListener(this);
 		closeTimerCheckBox.addKeyListener(this);
 		
@@ -155,10 +158,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnStop.setVisible(false);
 		StopWatchPanel.btnReset.setVisible(false);
 		StopWatchPanel.btnStart.doClick();
-		
-		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		closeTimerCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

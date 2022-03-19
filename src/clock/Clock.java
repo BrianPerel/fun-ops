@@ -81,12 +81,6 @@ public class Clock implements ActionListener {
 		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.getContentPane().add(lblClockTime);
 		
-		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
-		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
-		militaryTimeFormatCheckBox.setBackground(BLACK);
-		militaryTimeFormatCheckBox.setForeground(WHITE);
-		frame.getContentPane().add(militaryTimeFormatCheckBox);
-		
 		alarmTimeTextField = new JTextField();
 		alarmTimeTextField.setBounds(40, 175, 84, 28);
 		alarmTimeTextField.setForeground(BLACK);
@@ -102,6 +96,12 @@ public class Clock implements ActionListener {
 		btnSetAlarm.setForeground(BLACK);
 		frame.getContentPane().add(btnSetAlarm);
 		btnSetAlarm.addActionListener(this);
+		
+		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
+		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
+		militaryTimeFormatCheckBox.setBackground(BLACK);
+		militaryTimeFormatCheckBox.setForeground(WHITE);
+		frame.getContentPane().add(militaryTimeFormatCheckBox);		
 				
 		getTime(militaryTimeFormatCheckBox);
 	}

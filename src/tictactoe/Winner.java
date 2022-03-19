@@ -68,14 +68,16 @@ public class Winner extends KeyAdapter implements ActionListener {
 		lblGameResult.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblGameResult);
 		
-		btnPlayAgain.setFont(new Font("Lucida Fax", Font.BOLD, 12));
+		Font customFont = new Font("Lucida Fax", Font.BOLD, 12);
+		
+		btnPlayAgain.setFont(customFont);
 		btnPlayAgain.setBounds(39, 68, 100, 34);
 		btnPlayAgain.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		
-		btnQuit.setFont(new Font("Lucida Fax", Font.BOLD, 12));
+		btnQuit.setFont(customFont);
 		btnQuit.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);

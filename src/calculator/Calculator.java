@@ -1,5 +1,6 @@
 package calculator;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -13,12 +14,12 @@ public class Calculator {
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
-	// component, then for computation we cast values entered to double
+	// component, then for computation we cast values entered to BigDecimal
 	protected static ArrayList<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
 													// values
-	protected static ArrayList<Double> doubleNumbers = new ArrayList<>(); // container for when values are converted
+	protected static ArrayList<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted
 	
-	private static double answer;
+	private static BigDecimal answer;
 	
 	private Calculator() {
 		// private constructor will hide the implicit public one, b/c utility classes like this should not have public constructors
@@ -42,14 +43,14 @@ public class Calculator {
 	 * Calculator division operation
 	 * @return the quotient
 	 */
-	public static double divide() {
-		for (int i = 1; i < doubleNumbers.size(); i++) {
-			if (doubleNumbers.get(i) != 0 || doubleNumbers.get(0) == 0 || doubleNumbers.get(1) == 0) {
-				if (doubleNumbers.get(1) == 0) {
+	public static BigDecimal divide() {
+		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
+			if (bigDecimalNumbers.get(i) != BigDecimal.ZERO || bigDecimalNumbers.get(0) == BigDecimal.ZERO || bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
+				if (bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
 					divideByZeroflag = true;
-					return 0;
+					return BigDecimal.ZERO;
 				} else {
-					answer /= doubleNumbers.get(i);
+					answer = answer.divide(bigDecimalNumbers.get(i));
 				}
 			}
 		}
@@ -61,21 +62,21 @@ public class Calculator {
 	 * Calculator multiplication operation
 	 * @return the product
 	 */
-	public static double multiply() {
+	public static BigDecimal multiply() {
 		/*
 		 * array starts at 1 because the first number is already taken into account
 		 * above during initialization. Loop traverses until only array filled subscript
 		 * locations are taken in, avoiding any null values, since the Array by default
 		 * is initialized to null values
 		 */
-		for (int i = 1; i < doubleNumbers.size(); i++) {
+		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
 			// first part of below condition is because: by default double array values have
 			// been initialized to 0,
 			// since we're multiplying we don't want to multiply any random 0's cause we'll
 			// be getting 0
 			// second and third part of statement are to allow you to do 0 * x or x * 0
-			if (doubleNumbers.get(i) != 0 || doubleNumbers.get(0) == 0 || doubleNumbers.get(1) == 0) {
-				answer *= doubleNumbers.get(i);
+			if (bigDecimalNumbers.get(i) != BigDecimal.ZERO || bigDecimalNumbers.get(0) == BigDecimal.ZERO || bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
+				answer = answer.multiply(bigDecimalNumbers.get(i));
 			}
 		}
 
@@ -86,9 +87,9 @@ public class Calculator {
 	 * Calculator subtraction operation
 	 * @return the difference
 	 */
-	public static double subtract() {
-		for (int i = 1; i < doubleNumbers.size(); i++) {
-			answer -= doubleNumbers.get(i);
+	public static BigDecimal subtract() {
+		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
+			answer = answer.subtract(bigDecimalNumbers.get(i));
 		}
 
 		return answer;
@@ -98,9 +99,9 @@ public class Calculator {
 	 * Calculator addition operation
 	 * @return the sum
 	 */
-	public static double add() {
-		for (int i = 1; i < doubleNumbers.size(); i++) {
-			answer += doubleNumbers.get(i);
+	public static BigDecimal add() {
+		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
+			answer = answer.add(bigDecimalNumbers.get(i));
 		}
 
 		return answer;
@@ -111,29 +112,29 @@ public class Calculator {
 	 * @param argNumber the value positioned before the % sign in user input
 	 * @return the percent result
 	 */
-	public static double percentage(double argNumber) {
-		return argNumber / 100;
+	public static BigDecimal percentage(double argNumber) {
+		return BigDecimal.valueOf(argNumber).divide(new BigDecimal(100));
 	}
 
 	/**
-	 * Fills up the double array with String array values after being casted to
-	 * double. This is performed when equals operator is hit
+	 * Fills up the BigDecimal array with String array values after being casted to
+	 * BigDecimal. This is performed when equals operator is hit
 	 */
-	public static void applyStringToDoubleConversion() {
+	public static void applyStringToBigDecimalConversion() {
 		for (String i : stringNumbers) { // get String value
-			doubleNumbers.add(Double.parseDouble(stringNumbers.get(stringNumbers.indexOf(i))));
+			bigDecimalNumbers.add(new BigDecimal(stringNumbers.get(stringNumbers.indexOf(i))));
 		}
 		
-		answer = doubleNumbers.get(0);
+		answer = bigDecimalNumbers.get(0);
 	}
 
 	/**
-	 * Converts String to Double values, calls appropriate requested operation, 
+	 * Converts String to BigDecimal values, calls appropriate requested operation, 
 	 * and formats the return value.
 	 * @return formatted result value after performing operation
 	 */
 	public static String compute() {
-		applyStringToDoubleConversion();
+		applyStringToBigDecimalConversion();
 
 		if (App.operatorFlags[0]) {
 			return df.format(divide());
