@@ -44,7 +44,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JLabel lblGuess;
 	private JCheckBox closeTimerCheckBox;
 	protected JFormattedTextField textFieldGuessTheNumber;
-	protected SecureRandom randomGenerator = new SecureRandom();
 	protected int totalGuessesMade;
 	protected int totalGameScore;
 	protected int randomNumber;
@@ -54,6 +53,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain = new JButton("Play again?");
 	protected JButton btnGuess = new JButton("Guess");
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
+	protected static final SecureRandom randomGenerator = new SecureRandom();
 	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 
 	public static void main(String[] args) {

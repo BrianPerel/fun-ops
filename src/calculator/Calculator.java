@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Calculator {
 	
-	private static DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
+	private static final DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 
 	// values are stored as string values at start to input into textField
@@ -45,14 +45,13 @@ public class Calculator {
 	 */
 	public static BigDecimal divide() {
 		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
-			if (bigDecimalNumbers.get(i) != BigDecimal.ZERO || bigDecimalNumbers.get(0) == BigDecimal.ZERO || bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
-				if (bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
-					divideByZeroflag = true;
-					return BigDecimal.ZERO;
-				} else {
-					answer = answer.divide(bigDecimalNumbers.get(i));
-				}
-			}
+			if (BigDecimal.ZERO.equals(bigDecimalNumbers.get(1))) {
+				divideByZeroflag = true;
+				return BigDecimal.ZERO;
+			} 
+				
+			answer = answer.divide(bigDecimalNumbers.get(i));
+			
 		}
 
 		return answer;

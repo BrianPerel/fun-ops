@@ -17,12 +17,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -31,11 +32,10 @@ import javax.swing.WindowConstants;
 public class Clock implements ActionListener {
 
 	private JLabel lblClockTime;
-	private JTextField alarmTimeTextField;
-	private String timeAlarmGoesOff;
+	private String alarmTime;
+	private JMenuItem menuOption;
 	private boolean alarmShouldRing = true;
-	private static final Color SUPER_LIGHT_GRAY = new Color(211, 211, 211);
-
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -59,6 +59,22 @@ public class Clock implements ActionListener {
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
+		
+		Font custFont = new Font("Bookman Old Style", Font.PLAIN, 13);
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Alarm");
+		menu.setFont(custFont);
+		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/ keyboard mnemonic
+	
+		menuOption = new JMenuItem("Set Alarm Time");
+		menuOption.setFont(custFont);
+	
+		menu.add(menuOption);
+		menuBar.add(menu);
+		frame.setJMenuBar(menuBar);
+		
+		menuOption.addActionListener(this);
 
 		lblClockTime = new JLabel();
 		lblClockTime.setForeground(WHITE);
@@ -80,22 +96,6 @@ public class Clock implements ActionListener {
 		lblClockTime.setForeground(Color.GREEN);
 		lblClockTime.setBounds(37, 0, 365, 197);
 		frame.getContentPane().add(lblClockTime);
-		
-		alarmTimeTextField = new JTextField();
-		alarmTimeTextField.setBounds(40, 175, 84, 28);
-		alarmTimeTextField.setForeground(BLACK);
-		alarmTimeTextField.setBackground(SUPER_LIGHT_GRAY);
-		frame.getContentPane().add(alarmTimeTextField);
-		alarmTimeTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
-		
-		JButton btnSetAlarm = new JButton("Set Alarm");
-		
-		// sets keyboard shortcut/ keyboard mnemonic to alt+'s' for the set alarm button
-		btnSetAlarm.setMnemonic('s');
-		btnSetAlarm.setBounds(125, 175, 90, 25);
-		btnSetAlarm.setForeground(BLACK);
-		frame.getContentPane().add(btnSetAlarm);
-		btnSetAlarm.addActionListener(this);
 		
 		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
 		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
@@ -123,7 +123,7 @@ public class Clock implements ActionListener {
 			}	
 							
 			// if alarm time set is triggered, play wav file
-			if (alarmShouldRing && time.equals(timeAlarmGoesOff)) {
+			if (alarmShouldRing && time.equalsIgnoreCase(alarmTime)) {
 				try {
 					Clip clip = AudioSystem.getClip();
 					clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
@@ -151,8 +151,19 @@ public class Clock implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		alarmShouldRing = true;
-		timeAlarmGoesOff = alarmTimeTextField.getText();
-		JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+		if (ae.getSource() == menuOption)  {  
+				alarmTime = JOptionPane.showInputDialog("Alarm time: ");
+				// first 2 and 4 index of alarmTime string should be numbers only
+				if(alarmTime != null) {
+					if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
+							&& alarmTime.substring(2, 3).equals(":") && (alarmTime.toUpperCase().contains("AM") || alarmTime.toUpperCase().contains("PM"))) {
+						alarmShouldRing = true;
+						alarmTime = alarmTime.trim();
+						JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+		}		
 	}
 }

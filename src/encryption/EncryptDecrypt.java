@@ -33,7 +33,7 @@ public class EncryptDecrypt {
 	 * 
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
-	public void encrypt() throws IOException {
+	public boolean encrypt() throws IOException {
 		
 		// checks if encryption process has already occurred. Since you can't encrypt encrypted data
 		if (!isEncrypted) { 
@@ -61,7 +61,11 @@ public class EncryptDecrypt {
 
 			myWriter.close();
 			isEncrypted = true;
-		}
+			
+			return isEncrypted;
+		} 
+	
+		return false;
 	}
 
 	/**
@@ -73,12 +77,12 @@ public class EncryptDecrypt {
 	 * @return returns the unmasked/decrypted data string
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
-	public StringBuilder decrypt() throws IOException {
+	public boolean decrypt() throws IOException {
 		
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if (isEncrypted) {	
 			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
-			data = decryptAndcheckSentenceFormat();
+			data = decryptAndFormat();
 			myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
@@ -90,16 +94,18 @@ public class EncryptDecrypt {
 	
 			myWriter.close();
 			isEncrypted = false;
+			
+			return true;
 		}
 		
-		return data;
+		return false;
 	}
 	
 	/**
 	 * Enforces every sentence to start with a single space, during decryption process
 	 * @return unmaskedData the decrypted data
 	 */
-	public StringBuilder decryptAndcheckSentenceFormat() {
+	public StringBuilder decryptAndFormat() {
 				
 		int wordCount = 0;
 

@@ -29,7 +29,7 @@ public class WiggleMouse {
 	private static int y;
 	private static int x;
 	private static int timeToWait;
-	private static String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
+	private static final String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private static final JComboBox<String> waitTimeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(waitTimeChoices));
 
 	/**

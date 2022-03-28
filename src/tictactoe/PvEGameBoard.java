@@ -18,7 +18,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	protected boolean toRun = true; // toRun = enforces the computer to only do 1 click inside the new thread
 	private int[] availableEmptyCells;
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
-	private SecureRandom randomGenerator = new SecureRandom();
+	private static final SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Builds the game's GUI board
@@ -104,24 +104,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			new Thread(() -> {
             	// check that the current turn is the computer's turn
             	if (lblPlayersTurn.getText().equals("Computer's turn:")) {  
-            		do {
-            			int tmp = canPlayerWinInOneMove();
-            			
-            			if(tmp != -99) {
-	            			for(int x = 0; x < availableEmptyCells.length; x++) {
-	            				if(tmp == availableEmptyCells[x]) {
-	            					randomCell = tmp;
-	            					break;
-	            				}
-	            			}
-	            			
-	            			break;
-            			} 
-            			
-            			// use random generator to choose an empty cell from the above array and click it
-            			randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
-            			
-        			} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
+            		makeBestMove();
             		
             		try {
 						Thread.sleep(300);
@@ -136,11 +119,37 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		}
 	}
 	
+	public void makeBestMove() {
+		do {
+			for(int x = 0; x < 9; x++) {
+				tile[x] = gameBoardTiles[x].getText();
+			}
+			
+			int tmp = canPlayerWinInOneMove(tile);
+			
+			if(tmp != -99) {
+    			for(int x = 0; x < availableEmptyCells.length; x++) {
+    				if(tmp == availableEmptyCells[x]) {
+    					randomCell = tmp;
+    					break;
+    				}
+    			}
+    			
+    			break;
+			} 
+			
+			// use random generator to choose an empty cell from the above array and click it
+			randomCell = availableEmptyCells[randomGenerator.nextInt(availableEmptyCells.length)];
+			
+		} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
+		
+	}
+	
 	/**
 	 * Checks whether the player can win in there next move (1 move)
 	 * @return recommended button for AI to select
 	 */
-	public int canPlayerWinInOneMove() {
+	public int canPlayerWinInOneMove(String[] tile) {
 		
 		/*
 		 * Game board's tile/button index numbers
@@ -149,23 +158,17 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		 * 1 4 7
 		 * 2 5 8
 		 */
-				
-		for(int x = 0; x < 9; x++) {
-			tile[x] = gameBoardTiles[x].getText();
-		}
 		
 		// if player has pressed buttons 0, 2 and computer hasn't pressed button 1
 		if (tile[0].equals("X") && tile[2].equals("X") && !tile[1].equals("O")) {
 			return 1;
 		} 
 		
-
 		// if player has pressed buttons 3, 5 and computer hasn't pressed button 4
 		else if (tile[3].equals("X") && tile[5].equals("X") && !tile[4].equals("O")) {
 			return 6;
 		} 
 		
-
 		// if player has pressed buttons 6, 8 and computer hasn't pressed button 7
 		else if (tile[6].equals("X") && tile[8].equals("X") && !tile[7].equals("O")) {
 			return 7;
@@ -178,15 +181,13 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4
 		// or if player has pressed buttons 0, 8 and computer hasn't pressed button 4
-		else if (tile[1].equals("X") && tile[7].equals("X") && !tile[4].equals("O")
-				|| (tile[0].equals("X") && tile[8].equals("X") && !tile[4].equals("O"))) {
+		else if ((tile[1].equals("X") && tile[7].equals("X")) || (tile[0].equals("X") && tile[8].equals("X")) && !tile[4].equals("O")) {
 			return 4;
 		} 
 		
 		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5 
 		// or if player has pressed buttons 2, 8 and computer hasn't pressed button 4
-		else if (tile[2].equals("X") && tile[8].equals("X") && !tile[5].equals("O")
-				|| (tile[2].equals("X") && tile[8].equals("X") && !tile[4].equals("O"))) {
+		else if (tile[2].equals("X") && tile[8].equals("X") && (!tile[5].equals("O") || !tile[4].equals("O"))) {
 			return 5;
 		} 
 		
