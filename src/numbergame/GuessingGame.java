@@ -150,14 +150,21 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.addActionListener(this);
 		closeTimerCheckBox.addKeyListener(this);
 		
-		StopWatch stopWatch = new StopWatch(300, 110); // launch the stopwatch
+		// setup stop watch implementation for guessing game 
+		StopWatch stopWatch = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		stopWatch.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
-		stopWatch.setLocation(390, 340);
+		stopWatch.setLocation(390, 340); // set stop watch to the left of game board
+		
+		//  hide the stop watch buttons, as we won't be using them here
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
 		StopWatchPanel.btnReset.setVisible(false);
-		StopWatchPanel.btnStart.doClick();
+		
+		// timer auto starts as soon as game board appears
+		StopWatchPanel.btnStart.doClick(); 
+		
+		StopWatchPanel.isRedFontEnabled = true;
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -171,7 +178,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
-		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain)) {
+		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
 			outOfTimeFlag = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
@@ -188,10 +195,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		if (closeTimerCheckBox.isSelected()) {
 			StopWatchPanel.btnStart.setEnabled(false);
-			closeTimerCheckBox.setEnabled(false);
 			StopWatchPanel.watch.setEnabled(false);
 		}
-
+		else {
+			StopWatchPanel.btnStart.setEnabled(true);
+			StopWatchPanel.watch.setEnabled(true);
+		}
+		
 		// start the timer from 0
 		StopWatchPanel.btnStart.doClick();
 
@@ -214,7 +224,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		
 		// if the timer is greater than 10 seconds when the user guesses 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
-				&& !source.equals(btnPlayAgain)) {
+				&& !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
 			
 			outOfTimeFlag = true;
 			playSound(FAIL_SOUND);
@@ -234,7 +244,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			StopWatchPanel.btnStart.setEnabled(false);
 			closeTimerCheckBox.setEnabled(false);
 			StopWatchPanel.watch.setEnabled(false);
-		} else if (closeTimerCheckBox.isEnabled()) {
+		} 
+		else if (closeTimerCheckBox.isEnabled()) {
 			// start the timer from 0
 			StopWatchPanel.btnStart.doClick();
 		}
@@ -257,7 +268,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		if (source == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 			evaluateGuess(outOfTimeFlag);
 		}
-		
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
 			playSound("res/audio/chimes.wav");
@@ -268,7 +278,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			textFieldScore.setText("0");
 			totalGameScore = totalGuessesMade = 0;
 		}
-		
 		// if guess btn is pushed and input is empty
 		else if (source == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
 			playSound(FAIL_SOUND);
@@ -290,7 +299,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (1-99)");
-		} else if (textFieldGuessTheNumberInt + randomNumber == 100) {
+		}
+		else if (textFieldGuessTheNumberInt + randomNumber == 100) {
 			playSound("res/audio/win.wav");
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 100");
@@ -300,7 +310,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			if (!outOfTimeFlag) {
 				totalGameScore += 10;
 			}
-		} else if (textFieldGuessTheNumberInt + randomNumber != 100) {
+		}
+		else if (textFieldGuessTheNumberInt + randomNumber != 100) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Incorrect! That doesn't sum to 100");

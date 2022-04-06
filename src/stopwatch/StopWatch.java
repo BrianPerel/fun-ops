@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -49,7 +50,8 @@ public class StopWatch extends JFrame {
 	}
 
 	/**
-	 * Represents the stop-watch panel for this program. Will update the time here
+	 * Represents the stop-watch panel for this program. Will update the time here.
+	 * This is an inner class of StopWatch
 	 */
 	public class StopWatchPanel extends JPanel {
 		/** represent the hours, minutes, and seconds in the watch */
@@ -57,12 +59,14 @@ public class StopWatch extends JFrame {
 		private int minute;
 		private int second;
 		private int centisecond;
-		/** btns - start, stop, reset */
-		public static JButton btnStart;
-		public static JButton btnStop;
-		public static JButton btnReset;
+		public static boolean isRedFontEnabled;
+		private static final String START_TIME = "00:00:00";
 		/** Show the timer */
-		public static JLabel watch;
+		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER);
+		/** btns - start, stop, reset */
+		public static final JButton btnStart = new JButton("START");
+		public static final JButton btnStop = new JButton("STOP");
+		public static final JButton btnReset = new JButton("RESET");
 		/** Timer to be used for watch */
 		private Timer timer;
 		/** Button listener */
@@ -74,22 +78,18 @@ public class StopWatch extends JFrame {
 		public StopWatchPanel() {
 			setLayout(new BorderLayout());
 			JPanel watchPanel = new JPanel();
-			watch = new JLabel("00:00:00", JLabel.CENTER);
 			watch.setFont(new Font("Helvetica", Font.PLAIN, 36));
 			watchPanel.add(watch);
-			Color lightGray = new Color(225, 225, 225);
+			final Color lightGray = new Color(225, 225, 225);
 			watchPanel.setBackground(lightGray);
 			add(watchPanel, BorderLayout.NORTH);
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setBackground(lightGray);
-			btnStart = new JButton("START");
-			btnStop = new JButton("STOP");
-			btnReset = new JButton("RESET");
-		    Color lightGreen = new Color(0, 255, 128);
+		    final Color lightGreen = new Color(0, 255, 128);
 			btnStart.setBackground(lightGreen);
-			Color lightRed = new Color(255, 98, 98);
+			final Color lightRed = new Color(255, 98, 98);
 			btnStop.setBackground(lightRed);
-			Color lightBlue = new Color(146, 205, 255);
+			final Color lightBlue = new Color(146, 205, 255);
 			btnReset.setBackground(lightBlue);
 			add(buttonPanel, BorderLayout.CENTER);
 			timer = new Timer(0, buttonListener);
@@ -105,9 +105,10 @@ public class StopWatch extends JFrame {
 		}
 
 		/**
-		 * Represents a listener for button push (action) events
+		 * Represents a listener for button push (action) events.
+		 * This is an inner class of StopWatchPanel
 		 */
-		public class ButtonListener extends KeyAdapter implements ActionListener {
+		class ButtonListener extends KeyAdapter implements ActionListener {
 			
 			private static final int TIMEBASE = 60;
 			private static final int CENTSECBASE = 99;
@@ -139,17 +140,23 @@ public class StopWatch extends JFrame {
 					btnStart.setEnabled(false);
 					btnStop.setEnabled(true);
 					timer.start();
-				} else if (source == btnStop) {
+				} 
+				else if (source == btnStop) {
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(false);
 					timer.stop();
-				} else if (source == btnReset) { 
+				} 
+				else if (source == btnReset) { 
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(true);
 					btnStart.requestFocus();
 					timer.stop();
 					hour = minute = second = 0;
-					watch.setText("00:00:00");
+					watch.setText(START_TIME);
+					
+					if(isRedFontEnabled) {
+						watch.setForeground(Color.BLACK);
+					}
 				}
 				
 				watchSetText();
@@ -182,17 +189,23 @@ public class StopWatch extends JFrame {
 					btnStart.setEnabled(false);
 					btnStop.setEnabled(true);
 					timer.start();
-				} else if (keyChar == KeyEvent.VK_ENTER && source == btnStop) {
+				} 
+				else if (keyChar == KeyEvent.VK_ENTER && source == btnStop) {
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(false);
 					timer.stop();
-				} else if (keyChar == KeyEvent.VK_ENTER && source == btnReset) { 
+				} 
+				else if (keyChar == KeyEvent.VK_ENTER && source == btnReset) { 
 					btnStart.setEnabled(true);
 					btnStop.setEnabled(true);
 					btnStart.requestFocus();
 					timer.stop();
 					hour = minute = second = 0;
-					watch.setText("00:00:00");
+					watch.setText(START_TIME);
+					
+					if(isRedFontEnabled) {
+						watch.setForeground(Color.BLACK);
+					}
 				}
 				
 				watchSetText();
@@ -202,6 +215,10 @@ public class StopWatch extends JFrame {
 			 * Sets the watch's time
 			 */
 			public void watchSetText() {
+				if(watch.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
+					watch.setForeground(Color.RED);
+				}
+				
 				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
 						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}

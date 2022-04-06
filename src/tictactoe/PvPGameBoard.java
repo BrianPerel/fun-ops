@@ -27,11 +27,11 @@ import javax.swing.WindowConstants;
  */
 public class PvPGameBoard implements ActionListener {
 
+	protected boolean start;
 	protected JLabel lblPlayersTurn;
 	protected boolean isPlayerOnesTurn;
 	protected boolean isPlayerTwosTurn;
 	protected String[] tile = new String[9];
-	protected boolean start;
 	protected JButton[] gameBoardTiles = new JButton[9];
 	protected JButton[] highlightWinnersTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
@@ -40,10 +40,12 @@ public class PvPGameBoard implements ActionListener {
 	private static String playerOnesName;
 	private static String playerTwosName;
 	// private static final Logger logger = Logger.getLogger(GameBoard.class);	
-	protected static JFrame f = new JFrame("Tic Tac Toe");
+	protected static final JFrame f = new JFrame("Tic Tac Toe");
 	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
 	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
 	private static final Color LIGHT_RED = new Color(232, 46, 6);
+	public static final String PLAYER_ONE_LETTER = "X";
+	public static final String PLAYER_TWO_LETTER = "O";
 
 	/**
 	 * Builds the game's GUI board
@@ -65,15 +67,8 @@ public class PvPGameBoard implements ActionListener {
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		
-
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
-
-		f.setResizable(false);
-		f.setBounds(100, 100, 399, 358);
-		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		f.setLocationRelativeTo(null);
-		f.setVisible(true);
 
 		// creates and sets up the board tiles
 		for (int i = 0; i < gameBoardTiles.length; i++) {
@@ -128,6 +123,12 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators[1].setBounds(63, 220, 260, 11);
 		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
 		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
+		
+		f.setResizable(false);
+		f.setSize(399, 358);
+		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
 	}
 	
 	/**
@@ -193,102 +194,101 @@ public class PvPGameBoard implements ActionListener {
 		 * 2 5 8
 		 */
 				
-		for(int x = 0; x < 9; x++) {
+		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
 		
 		// if buttons 0, 1, 2 are triggered - 3 in a row down the left side column
-		if (tile[0].equals("X") && tile[1].equals("X") && tile[2].equals("X")) {
+		if (tile[0].equals(PLAYER_ONE_LETTER) && tile[1].equals(PLAYER_ONE_LETTER) && tile[2].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[0].equals("O") && tile[1].equals("O") && tile[2].equals("O")) {
+		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[1].equals(PLAYER_TWO_LETTER) && tile[2].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 3, 4, 5 are triggered - 3 in a row down the middle column
-		else if (tile[3].equals("X") && tile[4].equals("X") && tile[5].equals("X")) {
+		else if (tile[3].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[3].equals("O") && tile[4].equals("O") && tile[5].equals("O")) {
+		else if (tile[3].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[5].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 6, 7, 8 are triggered - 3 in a row down the right side column
-		else if (tile[6].equals("X") && tile[7].equals("X") && tile[8].equals("X")) {
+		else if (tile[6].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[6].equals("O") && tile[7].equals("O") && tile[8].equals("O")) {
+		else if (tile[6].equals(PLAYER_TWO_LETTER) && tile[7].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 0, 3, 6 are triggered - 3 in a row across the top row
-		else if (tile[0].equals("X") && tile[3].equals("X") && tile[6].equals("X")) {
+		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[3].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[0].equals("O") && tile[3].equals("O")
-				&& tile[6].equals("O")) {
+		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[3].equals(PLAYER_TWO_LETTER) && tile[6].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 1, 4, 7 are triggered - 3 in a row across the middle row 
-		else if (tile[1].equals("X") && tile[4].equals("X") && tile[7].equals("X")) {
+		else if (tile[1].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[1].equals("O") && tile[4].equals("O") && tile[7].equals("O")) {
+		else if (tile[1].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[7].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 2, 5, 8 are triggered - 3 in a row across the bottom row
-		else if (tile[2].equals("X") && tile[5].equals("X") && tile[8].equals("X")) {
+		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[2].equals("O") && tile[5].equals("O") && tile[8].equals("O")) {
+		else if (tile[2].equals(PLAYER_TWO_LETTER) && tile[5].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
-		else if (tile[0].equals("X") && tile[4].equals("X") && tile[8].equals("X")) {
+		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[0].equals("O") && tile[4].equals("O") && tile[8].equals("O")) {
+		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new Winner(getPlayerTwosName());
 		}
 
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
-		else if (tile[2].equals("X") && tile[4].equals("X") && tile[6].equals("X")) {
+		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(getPlayerOnesName());
 		} 
-		else if (tile[2].equals("O") && tile[4].equals("O") && tile[6].equals("O")) {
+		else if (tile[2].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[6].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new Winner(getPlayerTwosName());
@@ -305,9 +305,9 @@ public class PvPGameBoard implements ActionListener {
 	 * Checks if game board is full, displays game over - tie (draw)
 	 */
 	public boolean isBoardFull() {
-		for (int x = 0; x < gameBoardTiles.length; x++) {
-			// break if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
-			if (gameBoardTiles[x].getText().isEmpty()) {
+		for(JButton x : gameBoardTiles) {
+			// return false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
+			if (x.getText().isEmpty()) {
 				return false;
 			}
 		}
@@ -355,7 +355,7 @@ public class PvPGameBoard implements ActionListener {
 	 */
 	public void playerOnesTurnComplete(JButton buttonPressed) {
 		buttonPressed.setForeground(LIGHT_RED);
-		buttonPressed.setText("O");
+		buttonPressed.setText(PLAYER_TWO_LETTER);
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
 	}
 
@@ -365,7 +365,7 @@ public class PvPGameBoard implements ActionListener {
 	 */
 	public void playerTwosTurnComplete(JButton buttonPressed) {
 		buttonPressed.setForeground(Color.BLUE);
-		buttonPressed.setText("X");
+		buttonPressed.setText(PLAYER_ONE_LETTER);
 		lblPlayersTurn.setText(getPlayerTwosName() + "'s turn:");
 	}
 

@@ -51,7 +51,6 @@ public class Calculator {
 			} 
 				
 			answer = answer.divide(bigDecimalNumbers.get(i));
-			
 		}
 
 		return answer;
@@ -86,7 +85,7 @@ public class Calculator {
 	 * Calculator subtraction operation
 	 * @return the difference
 	 */
-	public static BigDecimal subtract() {
+	public static BigDecimal subtract() {		
 		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
 			answer = answer.subtract(bigDecimalNumbers.get(i));
 		}
@@ -137,11 +136,14 @@ public class Calculator {
 
 		if (App.operatorFlags[0]) {
 			return df.format(divide());
-		} else if (App.operatorFlags[1]) {
+		} 
+		else if (App.operatorFlags[1]) {
 			return df.format(multiply());
-		} else if (App.operatorFlags[2]) {
+		} 
+		else if (App.operatorFlags[2]) {
 			return df.format(subtract());
-		} else if (App.operatorFlags[3]) {
+		} 
+		else if (App.operatorFlags[3]) {
 			return df.format(add());
 		}
 

@@ -29,8 +29,8 @@ public class WiggleMouse {
 	private static int y;
 	private static int x;
 	private static int timeToWait;
-	private static final String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
-	private static final JComboBox<String> waitTimeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(waitTimeChoices));
+	private static final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
+	private static final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
 
 	/**
 	 * Launch the application.
@@ -57,8 +57,8 @@ public class WiggleMouse {
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
 		frame.getContentPane().add(lblDisplayMessage);
 
-		waitTimeOptionsComboBox.setBounds(395, 23, 100, 22);
-		frame.getContentPane().add(waitTimeOptionsComboBox);
+		WAIT_TIME_OPTIONS_COMBO_BOX.setBounds(395, 23, 100, 22);
+		frame.getContentPane().add(WAIT_TIME_OPTIONS_COMBO_BOX);
 		
 		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
 		lblArrowIcon.setBounds(35, 64, 80, 55);
@@ -95,7 +95,7 @@ public class WiggleMouse {
 	 * Updates the time to wait before moving the mouse
 	 */
 	public static void updateWaitingTime() {
-		switch ((String) waitTimeOptionsComboBox.getSelectedItem()) {
+		switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
 		case "1/2 minute":
 			timeToWait = 30000;
 			break;

@@ -23,8 +23,6 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 	private String gameResult;
 	private JFrame f2 = new JFrame("Tic Tac Toe");
-	protected static final String PLAYER = "Player";
-	protected static final String COMPUTER = "Computer";
 	private static final String GAME_OVER = "Game Over! It's a draw!";
 	private JButton btnPlayAgain = new JButton("Play again");
 	private JButton btnQuit = new JButton("Quit");
@@ -53,7 +51,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		
 		f2.setResizable(false);
-		f2.setBounds(100, 100, 315, 167);
+		f2.setSize(315, 167);
 		f2.getContentPane().setLayout(null);
 		f2.setLocationRelativeTo(null);
 		f2.setVisible(true);
@@ -91,14 +89,14 @@ public class Winner extends KeyAdapter implements ActionListener {
 		PvPGameBoard.f.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-				new PvEGameBoard(false, false, true).toRun = true;
+			if (gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+				new PvEGameBoard(false, false, true).shouldRun = true;
 			}
 			else {
 				new PvPGameBoard(false, false, true);
 			}
 		} 
-		else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) 
+		else if (e.getSource() == btnQuit && gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) 
 				|| gameResult.equals("Game Over! It's a draw!!")) {
 			
 			System.exit(0);		
@@ -112,15 +110,15 @@ public class Winner extends KeyAdapter implements ActionListener {
 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if (e.getSource() == btnPlayAgain) {
-				if (gameResult.equals(PLAYER) || gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-					new PvEGameBoard(false, false, true).toRun = true;				
+				if (gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+					new PvEGameBoard(false, false, true).shouldRun = true;				
 				}
 				else {
 					new PvPGameBoard(false, false, true);
 				}
 			} 
-			else if (e.getSource() == btnQuit && gameResult.equals(PLAYER) 
-					|| gameResult.equals(COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+			else if (e.getSource() == btnQuit && gameResult.equals(Menu.PLAYER) 
+					|| gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				
 				System.exit(0);
 			}

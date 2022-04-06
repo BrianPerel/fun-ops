@@ -73,13 +73,12 @@ public class App extends KeyAdapter implements ActionListener {
 		userInputTextField.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		userInputTextField.setBounds(33, 27, 315, 40);
 		userInputTextField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
-
 		frame.getContentPane().add(userInputTextField);
 		userInputTextField.setColumns(10);
 		userInputTextField.setEditable(false);
 		userInputTextField.addKeyListener(this);
 
-		JButton[] buttons = new JButton[24];
+		JButton[] buttons = new JButton[25];
 		buttons[0] = new JButton("1/x");
 		buttons[1] = new JButton("CE");
 		buttons[2] = new JButton("C");
@@ -94,12 +93,13 @@ public class App extends KeyAdapter implements ActionListener {
 		for (int x = 0; x <= 9; x++) {
 			buttons[x+9] = new JButton(Integer.toString(x));
 		}
-		
+
 		buttons[19] = new JButton("-");
 		buttons[20] = new JButton("+");
 		buttons[21] = new JButton("+/-");
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
+		buttons[24] = new JButton(); // fixes an issue caused when commenting out 		frame.getContentPane().setLayout(null);
 		
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
@@ -159,15 +159,15 @@ public class App extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {		
 		// remove the auto display '0' value from the main number entry textField box so that
-		// this '0' is not included in calculations
-		// Since it's only needed for display purposes
+		// this '0' is not included in calculations. Since it's only needed for display purposes
 		if (userInputTextField.getText().equals(cursorRightPositionedWithZero) && !hasNumberZeroBeenEnteredByUser) {
 			userInputTextField.setText(cursorRightPositioned);
 		}
 
-		// actions for numbers 0-9 buttons and all calculator operands
+		// actions for numbers 0-9 buttons and all calculator operators/symbol buttons
 		switch (ae.getActionCommand()) {
 		case "0":
+			// if 0 button is clicked and the main number entry textField box doesn't have the auto display 0
 			if (!userInputTextField.getText().equals(cursorRightPositionedWithZero)) {
 				userInputTextField.setText(userInputTextField.getText().concat("0"));
 				hasNumberZeroBeenEnteredByUser = true;
@@ -465,7 +465,8 @@ public class App extends KeyAdapter implements ActionListener {
 
 			if (keyChar == '*') {
 				operatorFlags[1] = true;
-			} else {
+			} 
+			else {
 				operatorFlags[3] = true;
 			}
 		}
@@ -506,7 +507,8 @@ public class App extends KeyAdapter implements ActionListener {
 
 			resetValues(); // reset all array/memory values
 			
-		} else if (userInputTextField.getText().equals(cursorRightPositioned)) {
+		} 
+		else if (userInputTextField.getText().equals(cursorRightPositioned)) {
 			userInputTextField.setText(cursorRightPositionedWithZero);
 		} 
 	}

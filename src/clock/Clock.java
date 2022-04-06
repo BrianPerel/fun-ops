@@ -34,7 +34,7 @@ public class Clock implements ActionListener {
 	private JLabel lblClockTime;
 	private String alarmTime;
 	private JMenuItem menuOption;
-	private boolean alarmShouldRing = true;
+	private boolean alarmShouldRing;
 	
 	public static void main(String[] args) {
 		try {
@@ -52,7 +52,7 @@ public class Clock implements ActionListener {
 	 */
 	public Clock() {
 		JFrame frame = new JFrame("Clock");
-		frame.setBounds(100, 100, 450, 280);
+		frame.setSize(450, 280);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(BLACK);
@@ -60,22 +60,22 @@ public class Clock implements ActionListener {
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
 		
-		Font custFont = new Font("Bookman Old Style", Font.PLAIN, 13);
+		Font custFont = new Font("Bookman Old Style", Font.PLAIN, 14);
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Alarm");
 		menu.setFont(custFont);
 		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/ keyboard mnemonic
-	
+		menu.setDisplayedMnemonicIndex(-1);
+		
 		menuOption = new JMenuItem("Set Alarm Time");
 		menuOption.setFont(custFont);
+		menuOption.addActionListener(this);
 	
 		menu.add(menuOption);
 		menuBar.add(menu);
 		frame.setJMenuBar(menuBar);
 		
-		menuOption.addActionListener(this);
-
 		lblClockTime = new JLabel();
 		lblClockTime.setForeground(WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,6 +102,10 @@ public class Clock implements ActionListener {
 		militaryTimeFormatCheckBox.setBackground(BLACK);
 		militaryTimeFormatCheckBox.setForeground(WHITE);
 		frame.getContentPane().add(militaryTimeFormatCheckBox);		
+		
+		// adding this code in case frame.getContentPane().setLayout(null); removed
+		militaryTimeFormatCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
+		militaryTimeFormatCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 				
 		getTime(militaryTimeFormatCheckBox);
 	}
@@ -119,9 +123,9 @@ public class Clock implements ActionListener {
 			
 			// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
 			if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
-				time = time.substring(1, time.length());
+				time = time.substring(1);
 			}	
-							
+										
 			// if alarm time set is triggered, play wav file
 			if (alarmShouldRing && time.equalsIgnoreCase(alarmTime)) {
 				try {
@@ -152,18 +156,21 @@ public class Clock implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == menuOption)  {  
-				alarmTime = JOptionPane.showInputDialog("Alarm time: ");
-				// first 2 and 4 index of alarmTime string should be numbers only
-				if(alarmTime != null) {
-					if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
-							&& alarmTime.substring(2, 3).equals(":") && (alarmTime.toUpperCase().contains("AM") || alarmTime.toUpperCase().contains("PM"))) {
-						alarmShouldRing = true;
-						alarmTime = alarmTime.trim();
-						JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
-					} else {
-						JOptionPane.showMessageDialog(null, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
-					}
+			alarmTime = JOptionPane.showInputDialog("Alarm time: ");
+			
+			// first 2 and 4 index of alarmTime string should be numbers only
+			if(alarmTime != null) {
+				alarmTime = alarmTime.trim();
+				
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
+						&& alarmTime.substring(1, 2).equals(":") && (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
+					alarmShouldRing = true;
+					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+				} 
+				else {
+					JOptionPane.showMessageDialog(null, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
 		}		
 	}
 }

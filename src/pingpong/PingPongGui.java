@@ -28,6 +28,8 @@ public class PingPongGui extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Menu");
 		JMenuItem menuOption = new JMenuItem("Restart Game");
+		menu.setMnemonic('r'); // alt+m = menu keyboard shortcut/ keyboard mnemonic
+		menu.setDisplayedMnemonicIndex(-1);
 		
 		menu.add(menuOption);
 		menuBar.add(menu);

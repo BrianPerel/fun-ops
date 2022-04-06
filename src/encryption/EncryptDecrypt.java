@@ -39,7 +39,7 @@ public class EncryptDecrypt {
 		if (!isEncrypted) { 
 			StringBuilder maskedData = new StringBuilder(); // create variable that will store a line of random characters
 															// of same length as original sentence in the file
-
+			
 			// loop to traverse data String provided by user, in order to replace every
 			// character with a random integer number added and casted to char type
 			for (int index = 0; index < data.length(); index++) {

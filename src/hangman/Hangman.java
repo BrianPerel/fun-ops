@@ -49,22 +49,30 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// specific line
 	private static final ArrayList<String> WORD_LIST = new ArrayList<>();
 
-	// store hangman drawing in an array, each part is to be displayed is in a separate
-	// space of the array
-	private static final String[] HANGMAN_DRAWING = new String[9];
-
 	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
 	private int count;
 
 	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
-	private char tmp;
+	private char previousGuess;
 
 	// textFieldHasFocus: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
 	// printed
 	private boolean w, o, r, d;
 	private boolean[] textFieldHasFocus = new boolean[4]; 
-	private static SecureRandom randomGenerator = new SecureRandom();
+	private static final SecureRandom randomGenerator = new SecureRandom();
+	
+	// store hangman drawing in an array, each part is to be displayed is in a separate
+	// space of the array
+	private static final String[] HANGMAN_DRAWING = { "  ___________",
+													 "\n |         |",
+													 "\n |         O",
+													 "\n |         | ",
+													 "\n |        /|\\",
+													 "\n |       / | \\",
+													 "\n |         |",
+													 "\n |        / \\",
+													 "\n |       /   \\ \n |" };
 	
 	public static void main(String[] args) {
 		new Hangman();
@@ -142,9 +150,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[2].setBounds(360, 186, 17, 20);
 		letterTextFields[3].setBounds(387, 186, 17, 20);
 		
-		buildHangmanDrawing();		
 		getRandomWords();
-		secretWord = getHangmanWord();
+		secretWord = getSecretWord();
 		
 		// reveal the hangman word to the console 
 		System.out.println(secretWord);
@@ -187,22 +194,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Puts the hangman drawing's pieces into a list, to be displayed for every incorrect guess
-	 */
-	public static void buildHangmanDrawing() {
-		// add drawing components to list
-		HANGMAN_DRAWING[0] = "  ___________";
-		HANGMAN_DRAWING[1] = "\n |         |";
-		HANGMAN_DRAWING[2] = "\n |         O";
-		HANGMAN_DRAWING[3] = "\n |         | ";
-		HANGMAN_DRAWING[4] = "\n |        /|\\";
-		HANGMAN_DRAWING[5] = "\n |       / | \\";
-		HANGMAN_DRAWING[6] = "\n |         |";
-		HANGMAN_DRAWING[7] = "\n |        / \\";
-		HANGMAN_DRAWING[8] = "\n |       /   \\ \n |";		
-	}
-
-	/**
 	 * MaskFormatter is used to specify/create/enforce a custom format for a text field's input
 	 * @param argString is the text field's user input area (the box)
 	 * @return the formatted text field
@@ -221,7 +212,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Read and randomly select a word from a loaded file with a list of hangman words
 	 */
-	public String getHangmanWord() {
+	public String getSecretWord() {
 		guessesLeft = HANGMAN_DRAWING.length; // initializes the tracker for the number of guesses you have at start
 		guessesLeftTextField.setText(String.valueOf(guessesLeft)); 
 		
@@ -248,12 +239,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		w = o = r = d = false;
 				
 		// enforces the program from choosing the same word as previously chosen from the hangman word list file 
-		String previousHangmanWord = secretWord;
+		String previousSecretWord = secretWord;
 		
-		secretWord = getHangmanWord();
+		secretWord = getSecretWord();
 		
-		if (secretWord.equals(previousHangmanWord)) {
-			secretWord = getHangmanWord();
+		if (secretWord.equals(previousSecretWord)) {
+			secretWord = getSecretWord();
 		}
 		
 		// reveal the hangman word to the console 
@@ -285,9 +276,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		return maskingAsterisk; 
 	}
 
-	/**
-	 * Performs appropriate actions when a key is pressed 
-	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// accept only letters from user
@@ -295,6 +283,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			
 			analyzeGuess(Character.toUpperCase(e.getKeyChar()));
 
+			// if all letters are found
 			if (w && o && r && d) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The secret word is: " + secretWord);
 				playAgain();	
@@ -312,33 +301,37 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		if (textFieldHasFocus[0] && (guess == secretWord.charAt(0)) && !w) {
 			hangmanWordTextField.setText(maskHangmanWord(guess)); // x000
 			w = true;
-		} else if (textFieldHasFocus[1] && (guess == secretWord.charAt(1)) && !o) {
+		} 
+		else if (textFieldHasFocus[1] && (guess == secretWord.charAt(1)) && !o) {
 			hangmanWordTextField.setText(maskHangmanWord(guess)); // 0x00
 			o = true;
-		} else if (textFieldHasFocus[2] && (guess == secretWord.charAt(2)) && !r) {
+		} 
+		else if (textFieldHasFocus[2] && (guess == secretWord.charAt(2)) && !r) {
 			hangmanWordTextField.setText(maskHangmanWord(guess)); // 00x0
 			r = true;
-		} else if (textFieldHasFocus[3] && (guess == secretWord.charAt(3)) && !d) {
+		} 
+		else if (textFieldHasFocus[3] && (guess == secretWord.charAt(3)) && !d) {
 			hangmanWordTextField.setText(maskHangmanWord(guess)); // 000x
 			// below line is a code fix: will force set/display final letter if correct before
 			// trigger of winner message appears
 			letterTextFields[3].setText(letterTextFields[3].getText());
 			d = true;
-		} else if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
+		} 
+		else if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
 				&& (guess != secretWord.charAt(1)) && (guess != secretWord.charAt(2))) {
 			
 			// prevents player from loosing health if same wrong letter was pressed more than once
-			if (guess != tmp) {
+			if (guess != previousGuess) {
 				hangmanTextArea.append(HANGMAN_DRAWING[count++]);
 				guessesLeftTextField.setText(String.valueOf(--guessesLeft));
+				
+				if (count == HANGMAN_DRAWING.length) {
+					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
+					playAgain();
+				}
 			} 
-
-			if (count == HANGMAN_DRAWING.length) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
-				playAgain();
-			}
-
-			tmp = guess;
+			
+			previousGuess = guess;
 		}
 	}
 

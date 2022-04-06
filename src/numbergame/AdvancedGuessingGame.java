@@ -46,14 +46,12 @@ public class AdvancedGuessingGame extends GuessingGame {
 
 		// if input remainder entered is outside of range 100-999
 		if (textFieldGuessTheNumberInt >= 999 || textFieldGuessTheNumberInt <= 100) {
-			
 			playSound(FAIL_SOUND);
 
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a valid number (100-999)");
-
-		} else if (textFieldGuessTheNumberInt + randomNumber == 1000) {
-			
+		} 
+		else if (textFieldGuessTheNumberInt + randomNumber == 1000) {
 			playSound("res/audio/win.wav");
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Correct! You made 1000");
@@ -63,9 +61,8 @@ public class AdvancedGuessingGame extends GuessingGame {
 			if (!outOfTimeFlag) {
 				totalGameScore += 10;
 			}
-
-		} else if (textFieldGuessTheNumberInt + randomNumber != 1000) {
-			
+		} 
+		else if (textFieldGuessTheNumberInt + randomNumber != 1000) {
 			playSound(FAIL_SOUND);
 
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));

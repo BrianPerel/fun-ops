@@ -29,7 +29,8 @@ public class Paddle extends Rectangle {
 			if (e.getKeyCode() == KeyEvent.VK_S) {
 				setYDirection(speed);
 			}
-		} else if (id.equals("Paddle2")) {
+		} 
+		else if (id.equals("Paddle2")) {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				setYDirection(-speed);
 			}
@@ -53,7 +54,8 @@ public class Paddle extends Rectangle {
 			if (e.getKeyCode() == KeyEvent.VK_S) {
 				setYDirection(0);
 			}
-		} else if (id.equals("Paddle2")) {
+		}
+		else if (id.equals("Paddle2")) {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				setYDirection(0);
 			}
@@ -83,14 +85,8 @@ public class Paddle extends Rectangle {
 	 * Draws the game paddles
 	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {
-				
-		if (id.equals("Paddle1")) {
-			g.setColor(Color.RED);
-		} else {
-			g.setColor(Color.BLUE);
-		}
-		
+	public void draw(Graphics g) {		
+		g.setColor(id.equals("Paddle1") ? Color.RED : Color.BLUE);
 		g.fillOval(x, y, width, height);
 	}
 }

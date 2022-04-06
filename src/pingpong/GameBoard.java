@@ -105,7 +105,8 @@ public class GameBoard extends JPanel implements Runnable {
 			
 			if (pongBall.getyVelocityOfBall() > 0) {
 				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 0.2); // optional for more difficulty
-			} else {
+			} 
+			else {
 				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
 			}
 
@@ -119,7 +120,8 @@ public class GameBoard extends JPanel implements Runnable {
 
 			if (pongBall.getyVelocityOfBall() > 0) {
 				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 1); // optional for more difficulty
-			} else {
+			} 
+			else {
 				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
 			}
 			
