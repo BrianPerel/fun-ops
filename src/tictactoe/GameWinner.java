@@ -19,7 +19,7 @@ import javax.swing.WindowConstants;
  * 
  * @author Brian Perel
  */
-public class Winner extends KeyAdapter implements ActionListener {
+public class GameWinner extends KeyAdapter implements ActionListener {
 
 	private String gameResult;
 	private JFrame f2 = new JFrame("Tic Tac Toe");
@@ -32,7 +32,7 @@ public class Winner extends KeyAdapter implements ActionListener {
 	 * Builds GUI window to be displayed when a player wins
 	 * @param argGameResult holds the result of the game - winner's name or game over message
 	 */
-	public Winner(String argGameResult) {
+	public GameWinner(String argGameResult) {
 		gameResult = argGameResult;
 		
 		JLabel lblGameResult = new JLabel();
