@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -164,7 +165,7 @@ public class EncryptDecryptGui implements ActionListener {
 		if (source == btnEncrypt && !data.isEmpty()) {
 			try {
 				JOptionPane.showMessageDialog(frame.getComponent(0), 
-					dataSet.encrypt() ? "File succesfully encrypted" : "File already decrypted. Could not decrypt");
+					dataSet.encrypt() ? "File succesfully encrypted" : "File already encrypted. Could not encrypt");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}

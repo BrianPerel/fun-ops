@@ -178,13 +178,13 @@ public class PvPGameBoard implements ActionListener {
 			}
 		}
 		
-		isWinner();
+		checkForWinner();
 	}
 	
 	/**
 	 * Scans board after every move to see if a pattern of 3 has been made in a row, column, or diagonally or if all tiles have been clicked
 	 */
-	public void isWinner() {
+	public void checkForWinner() {
 		
 		/*
 		 * Game board's tile/button index numbers
@@ -202,101 +202,101 @@ public class PvPGameBoard implements ActionListener {
 		if (tile[0].equals(PLAYER_ONE_LETTER) && tile[1].equals(PLAYER_ONE_LETTER) && tile[2].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[1].equals(PLAYER_TWO_LETTER) && tile[2].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 3, 4, 5 are triggered - 3 in a row down the middle column
 		else if (tile[3].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[3].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[5].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 6, 7, 8 are triggered - 3 in a row down the right side column
 		else if (tile[6].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[6].equals(PLAYER_TWO_LETTER) && tile[7].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 0, 3, 6 are triggered - 3 in a row across the top row
 		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[3].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[3].equals(PLAYER_TWO_LETTER) && tile[6].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 1, 4, 7 are triggered - 3 in a row across the middle row 
 		else if (tile[1].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[1].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[7].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 2, 5, 8 are triggered - 3 in a row across the bottom row
 		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[2].equals(PLAYER_TWO_LETTER) && tile[5].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[0].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[8].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
 		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[4].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER)) {
 			// logger.info(playerOneWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-			new Winner(getPlayerOnesName());
+			new GameWinner(getPlayerOnesName());
 		} 
 		else if (tile[2].equals(PLAYER_TWO_LETTER) && tile[4].equals(PLAYER_TWO_LETTER) && tile[6].equals(PLAYER_TWO_LETTER)) {
 			// logger.info(playerTwoWinsMessage);
 			winnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
-			new Winner(getPlayerTwosName());
+			new GameWinner(getPlayerTwosName());
 		}
 		
 		else {
 			if(isBoardFull()) {
-				new Winner("Game Over! It's a draw!");
+				new GameWinner("Game Over! It's a draw!");
 			}
 		}
 	}

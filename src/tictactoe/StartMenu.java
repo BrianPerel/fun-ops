@@ -56,10 +56,9 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * Create the application. Build all components
 	 */
 	public StartMenu() {
-		frame = new JFrame();
+		frame = new JFrame("Tic Tac Toe App by: Brian Perel");
 		frame.setResizable(false);
 		frame.setSize(399, 358);
-		frame.setTitle("Tic Tac Toe App by: Brian Perel");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 

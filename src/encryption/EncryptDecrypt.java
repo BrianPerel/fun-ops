@@ -82,7 +82,7 @@ public class EncryptDecrypt {
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if (isEncrypted) {	
 			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
-			data = decryptAndFormat();
+			data = decryptAndFormat(0); // perform decryption process and format the data, the 0 value is used to count the words 
 			myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
@@ -95,7 +95,7 @@ public class EncryptDecrypt {
 			myWriter.close();
 			isEncrypted = false;
 			
-			return true;
+			return !isEncrypted;
 		}
 		
 		return false;
@@ -105,10 +105,7 @@ public class EncryptDecrypt {
 	 * Enforces every sentence to start with a single space, during decryption process
 	 * @return unmaskedData the decrypted data
 	 */
-	public StringBuilder decryptAndFormat() {
-				
-		int wordCount = 0;
-
+	public StringBuilder decryptAndFormat(int argWordCount) {
 		StringBuilder unmaskedData = new StringBuilder();
 				
 		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
@@ -120,10 +117,10 @@ public class EncryptDecrypt {
 			unmaskedData.append((char) (data.charAt(index) - 5));
 			
 			if (Character.isWhitespace((char) (data.charAt(index) - 5))) {
-				wordCount++;
+				argWordCount++;
 				
 				// if the number in wordCount is divisible by 25 (ex. 25, 50, 75, 100, etc.) then add a new line to the file being decrypted
-				if (wordCount % 25 == 0) {
+				if (argWordCount % 25 == 0) {
 					unmaskedData.append('\n');
 				} 
 			}

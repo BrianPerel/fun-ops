@@ -33,8 +33,8 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	public PvEGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		setPlayerOnesName(Menu.PLAYER);
-		setPlayerTwosName(Menu.COMPUTER);
+		setPlayerOnesName(StartMenu.PLAYER);
+		setPlayerTwosName(StartMenu.COMPUTER);
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn");
 	}
 
@@ -87,7 +87,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			}
 		}
 		
-		isWinner();
+		checkForWinner();
 	}
 	
 	/**

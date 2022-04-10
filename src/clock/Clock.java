@@ -84,12 +84,9 @@ public class Clock implements ActionListener {
 
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf"));
+			font = font.deriveFont(Font.BOLD, 110);
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
-		}
-
-		if (font != null) {
-			font = font.deriveFont(Font.BOLD, 110);
 		}
 
 		lblClockTime.setFont(font);
@@ -157,9 +154,9 @@ public class Clock implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == menuOption)  {  
 			alarmTime = JOptionPane.showInputDialog("Alarm time: ");
-			
+						
 			// first 2 and 4 index of alarmTime string should be numbers only
-			if(alarmTime != null) {
+			if(alarmTime != null && alarmTime.length() == 7) {
 				alarmTime = alarmTime.trim();
 				
 				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")

@@ -89,14 +89,14 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		PvPGameBoard.f.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
-			if (gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				new PvEGameBoard(false, false, true).shouldRun = true;
 			}
 			else {
 				new PvPGameBoard(false, false, true);
 			}
 		} 
-		else if (e.getSource() == btnQuit && gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) 
+		else if (e.getSource() == btnQuit && gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) 
 				|| gameResult.equals("Game Over! It's a draw!!")) {
 			
 			System.exit(0);		
@@ -110,15 +110,15 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if (e.getSource() == btnPlayAgain) {
-				if (gameResult.equals(Menu.PLAYER) || gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+				if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 					new PvEGameBoard(false, false, true).shouldRun = true;				
 				}
 				else {
 					new PvPGameBoard(false, false, true);
 				}
 			} 
-			else if (e.getSource() == btnQuit && gameResult.equals(Menu.PLAYER) 
-					|| gameResult.equals(Menu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+			else if (e.getSource() == btnQuit && gameResult.equals(StartMenu.PLAYER) 
+					|| gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				
 				System.exit(0);
 			}
