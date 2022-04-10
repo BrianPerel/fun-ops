@@ -55,7 +55,7 @@ public class App extends KeyAdapter implements ActionListener {
 	/**
 	 * Places all the buttons on the app's board and initializes the contents of the frame, building the gui. 
 	 */
-	public App() {
+	public MyCalculatorGui() {
 		char[] spacesForMainTextField = new char[31];
 		Arrays.fill(spacesForMainTextField, ' ');
 		cursorRightPositioned = String.valueOf(spacesForMainTextField);
