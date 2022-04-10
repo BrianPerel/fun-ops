@@ -20,7 +20,7 @@ import javax.swing.WindowConstants;
 // import org.apache.log4j.Logger;
 
 /**
- * Implementation for tic tac toe game board. Initiates the game. <br>
+ * Implementation for 3x3 tic tac toe game board. Initiates the game. Player 1 will go first.<br>
  * 
  * @author Brian Perel
  * 
@@ -52,9 +52,9 @@ public class PvPGameBoard implements ActionListener {
 	 * 
 	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
-	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
+	 * @param argIsPlayerOnesTurn boolean flag for program indicating if it's player one's turn in the
 	 *                  game
-	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
+	 * @param argIsPlayerTwosTurn boolean flag for program indicating if it's player two's turn in the
 	 *                  game
 	 */
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
