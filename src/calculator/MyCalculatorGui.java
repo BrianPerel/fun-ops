@@ -212,26 +212,26 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// actions for symbol buttons
 		case "*":
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 			operatorFlags[1] = true;
 			break;
 
 		// division symbol
 		case "\u00F7":
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 			operatorFlags[0] = true;
 			break;
 
 		case "+":
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 			operatorFlags[3] = true;
 			break;
 
 		case "-":
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 			operatorFlags[2] = true;
 			break;
@@ -272,7 +272,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case "CE", "C":
 			userInputTextField.setText(cursorRightPositionedWithZero);
-			Calculator.divideByZeroflag = false;
+			MyCalculator.divideByZeroflag = false;
 			resetValues();
 			break;
 
@@ -284,7 +284,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case "%":
 			if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-				Calculator.setNumber(String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
+				MyCalculator.setNumber(String.valueOf(Calculator.percentage(Double.parseDouble(userInputTextField.getText()))));
 				userInputTextField.setText(userInputTextField.getText().concat("%"));
 					
 				break;
@@ -400,7 +400,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// actions for symbol buttons
 				
 			case KeyEvent.VK_SLASH: // VK_SLASH indicates '/' or division
-				Calculator.setNumber(userInputTextField.getText());
+				MyCalculator.setNumber(userInputTextField.getText());
 				userInputTextField.setText(cursorRightPositioned);
 				operatorFlags[0] = true;
 				break;
@@ -409,13 +409,13 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// would look like in
 			// KeyEvent code
 			case KeyEvent.VK_PLUS:
-				Calculator.setNumber(userInputTextField.getText());
+				MyCalculator.setNumber(userInputTextField.getText());
 				userInputTextField.setText(cursorRightPositioned);
 				operatorFlags[3] = true;
 				break;
 	
 			case KeyEvent.VK_MINUS:
-				Calculator.setNumber(userInputTextField.getText());
+				MyCalculator.setNumber(userInputTextField.getText());
 				userInputTextField.setText(cursorRightPositioned);
 				operatorFlags[2] = true;
 				break;
@@ -460,7 +460,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 
 		if (keyChar == '*' || keyChar == '+') {
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 			userInputTextField.setText(cursorRightPositioned);
 
 			if (keyChar == '*') {
@@ -478,8 +478,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	public void resetValues() {
 		Arrays.fill(operatorFlags, false);
 		hasNumberZeroBeenEnteredByUser = false;
-		Calculator.stringNumbers.clear();
-		Calculator.bigDecimalNumbers.clear();
+		MyCalculator.stringNumbers.clear();
+		MyCalculator.bigDecimalNumbers.clear();
 	}
 	
 	/**
@@ -489,10 +489,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		// if textField label is blank, then no action has been done by user.
 		// Hence in that scenario equal operation isn't performed
 		if (!userInputTextField.getText().equals(cursorRightPositioned)) {
-			Calculator.setNumber(userInputTextField.getText());
+			MyCalculator.setNumber(userInputTextField.getText());
 
 			// perform computation to make and get the value
-			String value = Calculator.compute();
+			String value = MyCalculator.compute();
 
 			// if value is whole then don't display 0's after decimal; ex. instead of 25.00
 			// display 25
@@ -503,7 +503,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 			// check for division by zero. Avoids exception being flagged
 			userInputTextField.setText(
-					(Calculator.divideByZeroflag) ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
+					(MyCalculator.divideByZeroflag) ? " Cannot divide by zero" : cursorRightPositioned.concat(value));
 
 			resetValues(); // reset all array/memory values
 			
