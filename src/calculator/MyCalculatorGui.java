@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
  * 
  * @author Brian Perel
  */
-public class App extends KeyAdapter implements ActionListener {
+public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 	private JFormattedTextField userInputTextField;
 	private String cursorRightPositionedWithZero; 
@@ -49,7 +49,7 @@ public class App extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 		
-		new App();
+		new MyCalculatorGui();
 	}
 
 	/**
