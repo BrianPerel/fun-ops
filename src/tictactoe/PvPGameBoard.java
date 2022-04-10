@@ -184,7 +184,7 @@ public class PvPGameBoard implements ActionListener {
 	/**
 	 * Scans board after every move to see if a pattern of 3 has been made in a row, column, or diagonally or if all tiles have been clicked
 	 */
-	public void checkForWinner() {
+	public void isWinner() {
 		
 		/*
 		 * Game board's tile/button index numbers
