@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Performs all calculator operations. <br>
  * @author Brian Perel
  */
-public class Calculator {
+public class MyCalculator {
 	
 	private static final DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
@@ -21,7 +21,7 @@ public class Calculator {
 	
 	private static BigDecimal answer;
 	
-	private Calculator() {
+	private MyCalculator() {
 		// private constructor will hide the implicit public one, b/c utility classes like this should not have public constructors
 	}
 
@@ -134,16 +134,16 @@ public class Calculator {
 	public static String compute() {
 		applyStringToBigDecimalConversion();
 
-		if (App.operatorFlags[0]) {
+		if (MyCalculatorGui.operatorFlags[0]) {
 			return df.format(divide());
 		} 
-		else if (App.operatorFlags[1]) {
+		else if (MyCalculatorGui.operatorFlags[1]) {
 			return df.format(multiply());
 		} 
-		else if (App.operatorFlags[2]) {
+		else if (MyCalculatorGui.operatorFlags[2]) {
 			return df.format(subtract());
 		} 
-		else if (App.operatorFlags[3]) {
+		else if (MyCalculatorGui.operatorFlags[3]) {
 			return df.format(add());
 		}
 
