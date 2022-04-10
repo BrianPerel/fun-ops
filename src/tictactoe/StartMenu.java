@@ -27,7 +27,7 @@ import javax.swing.WindowConstants;
  * @author Brian Perel
  *
  */
-public class Menu extends KeyAdapter implements ActionListener {
+public class StartMenu extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
 	private JButton btnStart;
@@ -49,13 +49,13 @@ public class Menu extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 		
-		new Menu();
+		new StartMenu();
 	}
 
 	/**
 	 * Create the application. Build all components
 	 */
-	public Menu() {
+	public StartMenu() {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setSize(399, 358);
