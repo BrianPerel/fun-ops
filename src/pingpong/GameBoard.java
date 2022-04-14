@@ -103,12 +103,7 @@ public class GameBoard extends JPanel implements Runnable {
 			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
 			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 0.2); // optional for more difficulty - increases the balls speed
 			
-			if (pongBall.getyVelocityOfBall() > 0) {
-				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 0.2); // optional for more difficulty
-			} 
-			else {
-				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
-			}
+			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 0.2 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
 
 			pongBall.setXDirection(pongBall.getxVelocityOfBall());
 			pongBall.setYDirection(pongBall.getyVelocityOfBall());
@@ -118,12 +113,7 @@ public class GameBoard extends JPanel implements Runnable {
 			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
 			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty
 
-			if (pongBall.getyVelocityOfBall() > 0) {
-				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() + 1); // optional for more difficulty
-			} 
-			else {
-				pongBall.setyVelocityOfBall(pongBall.getyVelocityOfBall() - 1);
-			}
+			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 1 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
 			
 			pongBall.setXDirection(-pongBall.getxVelocityOfBall());
 			pongBall.setYDirection(pongBall.getyVelocityOfBall());

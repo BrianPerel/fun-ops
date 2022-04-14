@@ -28,9 +28,9 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	@Override
-	public void performGuiButtonAction(Object source, boolean outOfTimeFlag) {
+	public void performGuiButtonAction(Object source, boolean isOutOfTime) {
 		
-		super.performGuiButtonAction(source, outOfTimeFlag);
+		super.performGuiButtonAction(source, isOutOfTime);
 		
 		if (source == btnPlayAgain) {
 			randomNumber = randomGenerator.nextInt(899) + 100;
@@ -39,7 +39,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	@Override
-	public void evaluateGuess(boolean outOfTimeFlag) {		
+	public void evaluateGuess(boolean isOutOfTime) {		
 		
 		totalGuessesMade++;
 		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
@@ -58,7 +58,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 			randomNumber = randomGenerator.nextInt(899) + 100;
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			
-			if (!outOfTimeFlag) {
+			if (!isOutOfTime) {
 				totalGameScore += 10;
 			}
 		} 
@@ -77,6 +77,6 @@ public class AdvancedGuessingGame extends GuessingGame {
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));
-		guessesTextField.setText(Integer.toString(totalGuessesMade));
+		textFieldGuesses.setText(Integer.toString(totalGuessesMade));
 	}
 }

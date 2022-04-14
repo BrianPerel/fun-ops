@@ -126,6 +126,15 @@ public class EncryptDecrypt {
 			}
 		}
 					
+		formatData(unmaskedData); 
+		return unmaskedData;
+	}
+
+	/**
+	 * Formats the decrypted data
+	 * @param unmaskedData data in it's original (decrypted) form
+	 */
+	public void formatData(StringBuilder unmaskedData) {
 		// checks that every sentence starts with a single space
 		for (int index = 0; index < unmaskedData.length() - 1; index++) {				
 			// if current character detected is a '.' and the next character is not a space then...
@@ -138,9 +147,7 @@ public class EncryptDecrypt {
 					unmaskedData.replace(index + 2, index + 3, "");
 				}
 			}
-		} 
-		
-		return unmaskedData;
+		}
 	}
 
 	@Override

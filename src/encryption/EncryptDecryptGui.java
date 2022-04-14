@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -36,10 +35,10 @@ public class EncryptDecryptGui implements ActionListener {
 
 	private JFrame frame;
 	private JButton btnBrowse;
-	private boolean isFileLoaded;
+	private boolean hasFileBeenLoaded;
 	private static String fileName;
 	private EncryptDecrypt dataSet;
-	private JTextField loadingTextField;
+	private JTextField textFieldLoading;
 	private StringBuilder data;
 	private JButton btnEncrypt;
 	private JButton btnDecrypt;
@@ -75,10 +74,10 @@ public class EncryptDecryptGui implements ActionListener {
 		
 		btnLoadFile = buttons[0] = new JButton("Load file");
 		
-		loadingTextField = new JTextField();
-		loadingTextField.setBounds(148, 44, 112, 26);
-		frame.getContentPane().add(loadingTextField);
-		loadingTextField.setColumns(10);
+		textFieldLoading = new JTextField();
+		textFieldLoading.setBounds(148, 44, 112, 26);
+		frame.getContentPane().add(textFieldLoading);
+		textFieldLoading.setColumns(10);
 		
 		btnBrowse = buttons[1] = new JButton("Browse");
 		btnEncrypt = buttons[2] = new JButton("Encrypt");
@@ -122,29 +121,29 @@ public class EncryptDecryptGui implements ActionListener {
 		
 		// creates the JFileChooser browse menu window that pops up when browse is hit
 		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-			loadingTextField.setText(fileChooser.getSelectedFile().getName());
+			textFieldLoading.setText(fileChooser.getSelectedFile().getName());
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
-		String fileToLoad = loadingTextField.getText();
+		String fileToLoad = textFieldLoading.getText();
 		
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
-			if(!fileToLoad.isEmpty() && !isFileLoaded) {
+			if(!fileToLoad.isEmpty() && !hasFileBeenLoaded) {
 				loadFileData(fileToLoad);
 				return;
 			}
 			
 			// if file has been already been loaded and load file btn pushed
 			// or if file load textfield is empty while load file btn is pushed
-			JOptionPane.showMessageDialog(frame.getComponent(0), isFileLoaded ? "A file has already been loaded" 
+			JOptionPane.showMessageDialog(frame.getComponent(0), hasFileBeenLoaded ? "A file has already been loaded" 
 					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
 		}		
 		// if encrypt/decrypt btn pushed and file has not been loaded
-		else if ((source == btnEncrypt || source == btnDecrypt) && !isFileLoaded) {
+		else if ((source == btnEncrypt || source == btnDecrypt) && !hasFileBeenLoaded) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -211,7 +210,7 @@ public class EncryptDecryptGui implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
 			setFileName(file.toString());
 			dataSet = new EncryptDecrypt(data);
-			isFileLoaded = true;
+			hasFileBeenLoaded = true;
 
 			// check if Desktop is supported by this Platform or not
 			if (!Desktop.isDesktopSupported()) {
@@ -227,7 +226,7 @@ public class EncryptDecryptGui implements ActionListener {
 
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
-			loadingTextField.setText("");
+			textFieldLoading.setText("");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}

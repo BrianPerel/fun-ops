@@ -4,6 +4,7 @@ import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
@@ -33,8 +34,8 @@ public class Clock implements ActionListener {
 
 	private JLabel lblClockTime;
 	private String alarmTime;
-	private JMenuItem menuOption;
-	private boolean alarmShouldRing;
+	private final JMenuItem menuOption;
+	private boolean hasAlarmRung;
 	
 	public static void main(String[] args) {
 		try {
@@ -67,10 +68,13 @@ public class Clock implements ActionListener {
 		menu.setFont(custFont);
 		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/ keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1);
+		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menu.setToolTipText("Sets an alarm time");
 		
 		menuOption = new JMenuItem("Set Alarm Time");
 		menuOption.setFont(custFont);
 		menuOption.addActionListener(this);
+		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	
 		menu.add(menuOption);
 		menuBar.add(menu);
@@ -91,7 +95,7 @@ public class Clock implements ActionListener {
 
 		lblClockTime.setFont(font);
 		lblClockTime.setForeground(Color.GREEN);
-		lblClockTime.setBounds(37, 0, 365, 197);
+		lblClockTime.setBounds(32, 23, 365, 123);
 		frame.getContentPane().add(lblClockTime);
 		
 		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
@@ -103,12 +107,14 @@ public class Clock implements ActionListener {
 		// adding this code in case frame.getContentPane().setLayout(null); removed
 		militaryTimeFormatCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
 		militaryTimeFormatCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
+		militaryTimeFormatCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				
 		getTime(militaryTimeFormatCheckBox);
 	}
 
 	/**
 	 * Obtains the current time, applies formatting if needed, listens for if user enters an alarm time, and repeats these actions every second
+	 * @param militaryTimeFormatCheckBox the display military time JCheckBox 
 	 */
 	public void getTime(JCheckBox militaryTimeFormatCheckBox) {
 		
@@ -122,20 +128,9 @@ public class Clock implements ActionListener {
 			if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
 				time = time.substring(1);
 			}	
-										
-			// if alarm time set is triggered, play wav file
-			if (alarmShouldRing && time.equalsIgnoreCase(alarmTime)) {
-				try {
-					Clip clip = AudioSystem.getClip();
-					clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
-					clip.start();
-					TimeUnit.SECONDS.sleep(3);
-					clip.stop();
-					alarmShouldRing = false;
-				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e1) {
-					Thread.currentThread().interrupt();
-					e1.printStackTrace();
-				}
+			
+			if(!hasAlarmRung && time.equalsIgnoreCase(alarmTime)) {
+				ringAlarm(time);
 			}
 
 			lblClockTime.setText(time);
@@ -143,10 +138,29 @@ public class Clock implements ActionListener {
 			// updates the time every second
 			try {
 				Thread.sleep(1000); 
-			} catch (InterruptedException ie) {
+			} catch (final InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
+		}
+	}
+
+	/**
+	 * Rings the alarm if conditions are met
+	 * @param time the alarm time
+	 */
+	public void ringAlarm(String time) {
+		// play alarm wav file
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
+			clip.start();
+			TimeUnit.SECONDS.sleep(3);
+			clip.stop();
+			hasAlarmRung = true;
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e1) {
+			Thread.currentThread().interrupt();
+			e1.printStackTrace();
 		}
 	}
 	
@@ -156,12 +170,12 @@ public class Clock implements ActionListener {
 			alarmTime = JOptionPane.showInputDialog("Alarm time: ");
 						
 			// first 2 and 4 index of alarmTime string should be numbers only
-			if(alarmTime != null && alarmTime.length() == 7) {
+			if(alarmTime != null) {
 				alarmTime = alarmTime.trim();
 				
-				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 7
 						&& alarmTime.substring(1, 2).equals(":") && (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
-					alarmShouldRing = true;
+					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				} 
 				else {

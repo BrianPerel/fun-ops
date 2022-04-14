@@ -48,7 +48,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected int totalGameScore;
 	protected int randomNumber;
 	protected JTextField textFieldScore;
-	protected JTextField guessesTextField;
+	protected JTextField textFieldGuesses;
 	protected JTextField textFieldRandomNumber;
 	protected JButton btnPlayAgain = new JButton("Play again?");
 	protected JButton btnGuess = new JButton("Guess");
@@ -88,12 +88,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblGuesses.setBounds(144, 24, 84, 17);
 		frame.getContentPane().add(lblGuesses);
 
-		guessesTextField = new JTextField("0");
-		guessesTextField.setEditable(false);
-		guessesTextField.setColumns(10);
-		guessesTextField.setBounds(238, 22, 52, 20);
-		guessesTextField.setFocusable(false);
-		frame.getContentPane().add(guessesTextField);
+		textFieldGuesses = new JTextField("0");
+		textFieldGuesses.setEditable(false);
+		textFieldGuesses.setColumns(10);
+		textFieldGuesses.setBounds(238, 22, 52, 20);
+		textFieldGuesses.setFocusable(false);
+		frame.getContentPane().add(textFieldGuesses);
 		
 		JLabel lblScoringInfo = new JLabel("Successful guess = 10 points");
 		lblScoringInfo.setBounds(315, 24, 172, 17);
@@ -149,6 +149,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		closeTimerCheckBox.addActionListener(this);
 		closeTimerCheckBox.addKeyListener(this);
+		closeTimerCheckBox.setOpaque(false);
 		
 		// setup stop watch implementation for guessing game 
 		StopWatch stopWatch = new StopWatch(300, 110); // launch the stop watch
@@ -174,12 +175,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
 		
-		boolean outOfTimeFlag = false;
+		boolean isOutOfTime = false;
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
 		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
-			outOfTimeFlag = true;
+			isOutOfTime = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
 
@@ -188,19 +189,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 
-		performGuiButtonAction(source, outOfTimeFlag);
+		performGuiButtonAction(source, isOutOfTime);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
-
-		if (closeTimerCheckBox.isSelected()) {
-			StopWatchPanel.btnStart.setEnabled(false);
-			StopWatchPanel.watch.setEnabled(false);
-		}
-		else {
-			StopWatchPanel.btnStart.setEnabled(true);
-			StopWatchPanel.watch.setEnabled(true);
-		}
+		
+		StopWatchPanel.btnStart.setEnabled(!closeTimerCheckBox.isSelected());
+		StopWatchPanel.watch.setEnabled(!closeTimerCheckBox.isSelected());
 		
 		// start the timer from 0
 		StopWatchPanel.btnStart.doClick();
@@ -219,14 +214,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent e) {		
 		Object source = e.getSource();
 
-		boolean outOfTimeFlag = false;
+		boolean isOutOfTime = false;
 		StopWatchPanel.btnStop.doClick();
 		
 		// if the timer is greater than 10 seconds when the user guesses 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
 				&& !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
 			
-			outOfTimeFlag = true;
+			isOutOfTime = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time!");
 
@@ -235,7 +230,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 
-		performGuiButtonAction(source, outOfTimeFlag);
+		performGuiButtonAction(source, isOutOfTime);
 		
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -260,19 +255,18 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Performs associated action of the GUI button that is clicked 
 	 * @param ae the action event triggered
-	 * @param outOfTimeFlag boolean keeping track of whether or not timer has hit 10 seconds
+	 * @param isOutOfTime boolean keeping track of whether or not timer has hit 10 seconds
 	 */
-	public void performGuiButtonAction(Object source, boolean outOfTimeFlag) {
-		
+	public void performGuiButtonAction(Object source, boolean isOutOfTime) {
 		// if guess btn is pushed and input is numeric data
 		if (source == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			evaluateGuess(outOfTimeFlag);
+			evaluateGuess(isOutOfTime);
 		}
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
 			playSound("res/audio/chimes.wav");
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
-			guessesTextField.setText("0");
+			textFieldGuesses.setText("0");
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
@@ -288,7 +282,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Evaluates the user's guess value
 	 */
-	public void evaluateGuess(boolean outOfTimeFlag) {
+	public void evaluateGuess(boolean isOutOfTime) {
 		
 		totalGuessesMade++;
 		
@@ -307,7 +301,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			randomNumber = randomGenerator.nextInt(100);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			
-			if (!outOfTimeFlag) {
+			if (!isOutOfTime) {
 				totalGameScore += 10;
 			}
 		}
@@ -325,7 +319,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));
-		guessesTextField.setText(Integer.toString(totalGuessesMade));
+		textFieldGuesses.setText(Integer.toString(totalGuessesMade));
 	}
 	
 	/**

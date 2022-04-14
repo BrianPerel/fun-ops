@@ -159,7 +159,7 @@ public class StopWatch extends JFrame {
 					}
 				}
 				
-				watchSetText();
+				setTextForWatch();
 			}
 			
 			@Override
@@ -208,13 +208,13 @@ public class StopWatch extends JFrame {
 					}
 				}
 				
-				watchSetText();
+				setTextForWatch();
 			}
 
 			/**
 			 * Sets the watch's time
 			 */
-			public void watchSetText() {
+			public void setTextForWatch() {
 				if(watch.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
 					watch.setForeground(Color.RED);
 				}

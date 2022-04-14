@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.SecureRandom;
@@ -15,8 +16,8 @@ import java.security.SecureRandom;
 public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 
 	private int randomCell;
-	protected boolean shouldRun = true; // enforces the computer to only do 1 click inside the new thread
 	private int[] freeEmptyTiles;
+	protected boolean shouldRun = true; // enforces the computer to only do 1 click inside the new thread
 	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
 	private static final SecureRandom randomGenerator = new SecureRandom();
 
@@ -53,10 +54,10 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		// enforces player1 to always start first: Sets p1's and p2's turns for first round
-		if (start) {
+		if (isStart) {
 			isPlayerOnesTurn = !isPlayerOnesTurn;
 			isPlayerTwosTurn = !isPlayerTwosTurn;
-			start = false;
+			isStart = false;
 		}
 				
 		makeMoveComputer();
@@ -67,11 +68,11 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		for (int x = 0; x < gameBoardTiles.length; x++) {
 			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
 				if (isPlayerOnesTurn) {
-					super.playerOnesTurnComplete(gameBoardTiles[x]);
+					super.completePlayersTurn(gameBoardTiles[x], LIGHT_RED, PLAYER_TWO_LETTER, getPlayerOnesName());
 					shouldRun = true;
 				} 
 				else if (isPlayerTwosTurn) {
-					super.playerTwosTurnComplete(gameBoardTiles[x]);
+					super.completePlayersTurn(gameBoardTiles[x], Color.BLUE, PLAYER_ONE_LETTER, getPlayerTwosName());
 					shouldRun = false;
 				} 		
 				
@@ -178,12 +179,14 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		} 
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4
 		// or if player has pressed buttons 0, 8 and computer hasn't pressed button 4
-		else if ((tile[1].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) || (tile[0].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER)) && !tile[4].equals(PLAYER_TWO_LETTER)) {
+		else if ((tile[1].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) || (tile[0].equals(PLAYER_ONE_LETTER)
+				&& tile[8].equals(PLAYER_ONE_LETTER)) && !tile[4].equals(PLAYER_TWO_LETTER)) {
 			return 4;
 		} 
 		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5 
 		// or if player has pressed buttons 2, 8 and computer hasn't pressed button 4
-		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && (!tile[5].equals(PLAYER_TWO_LETTER) || !tile[4].equals(PLAYER_TWO_LETTER))) {
+		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && (!tile[5].equals(PLAYER_TWO_LETTER)
+				|| !tile[4].equals(PLAYER_TWO_LETTER))) {
 			return 5;
 		} 
 		

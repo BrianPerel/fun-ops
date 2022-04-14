@@ -101,6 +101,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		frame.getContentPane().add(playAgainstComputerRadioButton);
 		playAgainstComputerRadioButton.addActionListener(this);
 		playAgainstComputerRadioButton.addKeyListener(this);
+		playAgainstComputerRadioButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

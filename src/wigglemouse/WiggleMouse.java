@@ -26,9 +26,9 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse {
 
-	private static int y;
-	private static int x;
-	private static int timeToWait;
+	private int x;
+	private int y;
+	private int timeToWait;
 	private static final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private static final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
 
@@ -59,7 +59,8 @@ public class WiggleMouse {
 
 		WAIT_TIME_OPTIONS_COMBO_BOX.setBounds(395, 23, 100, 22);
 		frame.getContentPane().add(WAIT_TIME_OPTIONS_COMBO_BOX);
-		
+		WAIT_TIME_OPTIONS_COMBO_BOX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
 		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
 		lblArrowIcon.setBounds(35, 64, 80, 55);
 		frame.getContentPane().add(lblArrowIcon);	
@@ -69,67 +70,63 @@ public class WiggleMouse {
 		btnStart.setBounds(215, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	    
-	    frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
-
 		btnStart.addActionListener((ActionEvent ae) -> {
 			if (ae.getSource() == btnStart) {
-				updateWaitingTime();
+				timeToWait = updateIdleTime();
 			}
 		});
-		
 		btnStart.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent ae) {
-				if (ae.getKeyChar() == KeyEvent.VK_ENTER && ae.getSource() == btnStart) {
-					updateWaitingTime();
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
+					timeToWait = updateIdleTime();
 				}
 			}
 		});
+		
+	    frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	
 		moveMouse();
 	}
 	
 	/**
-	 * Updates the time to wait before moving the mouse
+	 * Updates the time to wait before wiggling the mouse
 	 */
-	public static void updateWaitingTime() {
+	public int updateIdleTime() {
 		switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
 		case "1/2 minute":
-			timeToWait = 30000;
-			break;
+			return 30000;
 
 		case "1 minute":
-			timeToWait = 60000;
-			break;
+			return 60000;
 
 		case "3 minutes":
-			timeToWait = 180000;
-			break;
+			return 180000;
 
 		case "5 minutes":
-			timeToWait = 300000;
-			break;
+			return 300000;
 		
 		default:
 			break;
 		}
+		
+		return timeToWait;
 	}
 
 	/**
-	 * Performs mouse movement action
+	 * Performs mouse movement actions
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
 	 * @throws AWTException 
 	 */
-	public static void moveMouse() throws InterruptedException, AWTException {
+	public void moveMouse() throws InterruptedException, AWTException {
 		
 		timeToWait = 30000; // default wait time before wiggling your mouse
 		Robot robot = new Robot();
 		
 		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done
-			// twice in loop so that if user moves mouse the pointer doesn't jump back to original point
+			// twice in loop so that if user moves the mouse, the pointer doesn't jump back to the original point
 			setMouseLocation();
 			Thread.sleep(timeToWait); // time to wait before next mouse move
 			setMouseLocation();
@@ -147,7 +144,7 @@ public class WiggleMouse {
 	/**
 	 * Sets the current mouse's position into variables (x, y coordinates)
 	 */
-	public static void setMouseLocation() {
+	public void setMouseLocation() {
 		x = (int) MouseInfo.getPointerInfo().getLocation().getX();
 		y = (int) MouseInfo.getPointerInfo().getLocation().getY();
 	}

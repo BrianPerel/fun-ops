@@ -1,6 +1,7 @@
 package pingpong;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
@@ -30,6 +31,8 @@ public class PingPongGui extends JFrame {
 		JMenuItem menuOption = new JMenuItem("Restart Game");
 		menu.setMnemonic('r'); // alt+m = menu keyboard shortcut/ keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1);
+		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		menu.add(menuOption);
 		menuBar.add(menu);

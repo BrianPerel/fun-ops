@@ -1,6 +1,7 @@
 package tictactoe;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,10 +23,10 @@ import javax.swing.WindowConstants;
 public class GameWinner extends KeyAdapter implements ActionListener {
 
 	private String gameResult;
-	private JFrame f2 = new JFrame("Tic Tac Toe");
+	private JFrame f2;
+	private JButton btnPlayAgain;
+	private JButton btnQuit;
 	private static final String GAME_OVER = "Game Over! It's a draw!";
-	private JButton btnPlayAgain = new JButton("Play again");
-	private JButton btnQuit = new JButton("Quit");
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 
 	/**
@@ -39,6 +40,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
+		f2 = new JFrame("Tic Tac Toe");
 		f2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
@@ -68,19 +70,23 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		
 		Font customFont = new Font("Lucida Fax", Font.BOLD, 12);
 		
+		btnPlayAgain = new JButton("Play again");
 		btnPlayAgain.setFont(customFont);
 		btnPlayAgain.setBounds(39, 68, 100, 34);
 		btnPlayAgain.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
+		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
+		btnQuit = new JButton("Quit");
 		btnQuit.setFont(customFont);
 		btnQuit.setBackground(LIGHT_GREEN);
 		f2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
 		btnQuit.addActionListener(this);
 		btnQuit.addKeyListener(this);
+		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	@Override

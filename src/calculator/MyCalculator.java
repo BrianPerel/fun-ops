@@ -110,7 +110,7 @@ public class MyCalculator {
 	 * @param argNumber the value positioned before the % sign in user input
 	 * @return the percent result
 	 */
-	public static BigDecimal percentage(double argNumber) {
+	public static BigDecimal calculatePercentage(double argNumber) {
 		return BigDecimal.valueOf(argNumber).divide(new BigDecimal(100));
 	}
 
