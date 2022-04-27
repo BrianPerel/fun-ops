@@ -205,8 +205,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			frame.dispose();
 			new PvPGameBoard(true, true, false);
 
-			// if both name text fields are empty
 		} 
+		// if both name text fields are empty
 		else if (nameOne.isEmpty() || nameTwo.isEmpty()) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);

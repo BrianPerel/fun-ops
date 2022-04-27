@@ -134,7 +134,7 @@ public class EncryptDecryptGui implements ActionListener {
 			// if filename isn't empty or file hasn't yet been loaded
 			if(!fileToLoad.isEmpty() && !hasFileBeenLoaded) {
 				loadFileData(fileToLoad);
-				return;
+				return; // prevent below statements from executing if we fall to here
 			}
 			
 			// if file has been already been loaded and load file btn pushed

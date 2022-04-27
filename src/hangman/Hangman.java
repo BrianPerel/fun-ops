@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
@@ -43,11 +44,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String secretWord;
 	private String maskingAsterisk;
 	private int guessesLeft;
-	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line
-	private static final ArrayList<String> WORD_LIST = new ArrayList<>();
+	private final ArrayList<String> wordList = new ArrayList<>();
 
 	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
 	private int count;
@@ -61,18 +61,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private boolean w, o, r, d;
 	private boolean[] textFieldHasFocus = new boolean[4]; 
 	private static final SecureRandom randomGenerator = new SecureRandom();
+	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
 	
 	// store hangman drawing in an array, each part is to be displayed is in a separate
 	// space of the array
-	private static final String[] HANGMAN_DRAWING = { "  ___________",
-													 "\n |         |",
-													 "\n |         O",
-													 "\n |         | ",
-													 "\n |        /|\\",
-													 "\n |       / | \\",
-													 "\n |         |",
-													 "\n |        / \\",
-													 "\n |       /   \\ \n |" };
+	private final String[] hangmanDrawing = { "  ___________",
+											  "\n |         |",
+											  "\n |         O",
+											  "\n |         | ",
+											  "\n |        /|\\",
+											  "\n |       / | \\",
+											  "\n |         |",
+											  "\n |        / \\",
+											  "\n |       /   \\ \n |" };
 	
 	public static void main(String[] args) {
 		new Hangman();
@@ -163,11 +164,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Loads file and obtains a list of hangman words
 	 */
-	public static void getRandomWords() {
-		try {
+	public void getRandomWords() {
+		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
 			// read file of random hangman words
-			Scanner myReader = new Scanner(new File("Hangman.txt"));
-
 			while (myReader.hasNext()) {
 				// store every line in arraylist
 				// to attach a line number to each element
@@ -182,11 +181,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					}
 				}
 				
-				WORD_LIST.add(word);				
+				wordList.add(word);				
 			}			
-
-			myReader.close();
-
+			
+			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness 
+			
 		} catch (FileNotFoundException e) {
 			// logger.error("Error: File not found. " + e.toString());
 			e.printStackTrace();
@@ -213,13 +212,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Read and randomly select a word from a loaded file with a list of hangman words
 	 */
 	public String getSecretWord() {
-		guessesLeft = HANGMAN_DRAWING.length; // initializes the tracker for the number of guesses you have at start
+		guessesLeft = hangmanDrawing.length; // initializes the tracker for the number of guesses you have at start
 		textFieldGuessesLeft.setText(String.valueOf(guessesLeft)); 
 		
 		maskingAsterisk = new String(new char[letterTextFields.length]).replace("\0", "*");
 		
 		// choose random word from txt file, update the .nextInt() parameter value (line.size()) as you add words to hangman.txt in the future
-		return WORD_LIST.get(randomGenerator.nextInt(WORD_LIST.size()));
+		return wordList.get(randomGenerator.nextInt(wordList.size()));
 	}
 
 	/**
@@ -321,10 +320,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			
 			// prevents player from loosing health if same wrong letter was pressed more than once
 			if (guess != previousGuess) {
-				hangmanTextArea.append(HANGMAN_DRAWING[count++]);
+				hangmanTextArea.append(hangmanDrawing[count++]);
 				textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));
 				
-				if (count == HANGMAN_DRAWING.length) {
+				if (count == hangmanDrawing.length) {
 					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
 					playAgain();
 				}

@@ -57,11 +57,11 @@ public class EncryptDecrypt {
 				myWriter.write(data.toString()); // write newly created string of random characters into file
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
+			} finally {
+				myWriter.close();
 			}
 
-			myWriter.close();
-			isEncrypted = true;
-			
+			isEncrypted = true;			
 			return isEncrypted;
 		} 
 	
@@ -86,15 +86,14 @@ public class EncryptDecrypt {
 			myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
 			try {
-				// override with decrypted data
-				myWriter.write(data.toString());
+				myWriter.write(data.toString()); // override with decrypted data
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
+			} finally {
+				myWriter.close();
 			}
 	
-			myWriter.close();
 			isEncrypted = false;
-			
 			return !isEncrypted;
 		}
 		
@@ -126,15 +125,14 @@ public class EncryptDecrypt {
 			}
 		}
 					
-		formatData(unmaskedData); 
-		return unmaskedData;
+		return formatData(unmaskedData);
 	}
 
 	/**
 	 * Formats the decrypted data
 	 * @param unmaskedData data in it's original (decrypted) form
 	 */
-	public void formatData(StringBuilder unmaskedData) {
+	public StringBuilder formatData(StringBuilder unmaskedData) {
 		// checks that every sentence starts with a single space
 		for (int index = 0; index < unmaskedData.length() - 1; index++) {				
 			// if current character detected is a '.' and the next character is not a space then...
@@ -148,6 +146,8 @@ public class EncryptDecrypt {
 				}
 			}
 		}
+		
+		return unmaskedData;
 	}
 
 	@Override

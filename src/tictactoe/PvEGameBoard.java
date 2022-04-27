@@ -66,7 +66,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (int x = 0; x < gameBoardTiles.length; x++) {
-			if (ae.getSource() == gameBoardTiles[x] && gameBoardTiles[x].getText().isEmpty()) {
+			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
 				if (isPlayerOnesTurn) {
 					super.completePlayersTurn(gameBoardTiles[x], LIGHT_RED, PLAYER_TWO_LETTER, getPlayerOnesName());
 					shouldRun = true;
@@ -174,7 +174,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			return 7;
 		} 
 		// if player has pressed buttons 0, 6 and computer hasn't pressed button 3
-		else if (tile[0].equals("X") && tile[6].equals("X") && !tile[3].equals("O")) {
+		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER) && !tile[3].equals(PLAYER_TWO_LETTER)) {
 			return 3;
 		} 
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4

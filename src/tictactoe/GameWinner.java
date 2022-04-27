@@ -92,13 +92,13 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {	
 		f2.dispose();
-		PvPGameBoard.f.dispose();
 		
 		if (e.getSource() == btnPlayAgain) {
 			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				new PvEGameBoard(false, false, true).shouldRun = true;
 			}
 			else {
+				PvPGameBoard.f.dispose();
 				new PvPGameBoard(false, false, true);
 			}
 		} 
@@ -112,7 +112,6 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		f2.dispose();
-		PvPGameBoard.f.dispose();
 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			if (e.getSource() == btnPlayAgain) {
@@ -120,6 +119,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 					new PvEGameBoard(false, false, true).shouldRun = true;				
 				}
 				else {
+					PvPGameBoard.f.dispose();
 					new PvPGameBoard(false, false, true);
 				}
 			} 
