@@ -3,7 +3,6 @@ package calculator;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Performs all calculator operations. <br>

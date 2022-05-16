@@ -3,7 +3,7 @@ Manifest-Version: 1.0
 Created-By: Brian Perel
 Class-Path: lib/log4j-1.2.17.jar
 
-Main-Class: calculator.App
+Main-Class: calculator.MyCalculatorGui
 
 Main-Class: stopwatch.StopWatch
 
@@ -25,7 +25,7 @@ Main-Class: numberguessing.AdvancedGuessingGame
 Main-Class: encryption.EncryptDecryptGui
 Resource: res/graphics/bg-image-encryption
 
-Main-Class: tictactoe.Menu
+Main-Class: tictactoe.StartMenu
 Resource: res/graphics/bg-image-tac
 
 Main-Class: clock.Clock

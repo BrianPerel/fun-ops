@@ -3,9 +3,10 @@ package tictactoe;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-
-// import org.apache.log4j.Logger;
+import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  * Implementation for tic tac toe game board. Initiates the game. Has functionality to support player vs computer game mode<br>
@@ -18,8 +19,9 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	private int randomCell;
 	private int[] freeEmptyTiles;
 	protected boolean shouldRun = true; // enforces the computer to only do 1 click inside the new thread
-	// private static final Logger logger = Logger.getLogger(GameBoardTwo.class);
-	private static final SecureRandom randomGenerator = new SecureRandom();
+	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
+	private static final SecureRandom randomGenerator = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	/**
 	 * Builds the game's GUI board
@@ -33,10 +35,10 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	 */
 	public PvEGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		setPlayerOnesName(StartMenu.PLAYER);
 		setPlayerTwosName(StartMenu.COMPUTER);
-		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn");
+		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
 	}
 
 	@Override
@@ -52,13 +54,6 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
-		// enforces player1 to always start first: Sets p1's and p2's turns for first round
-		if (isStart) {
-			isPlayerOnesTurn = !isPlayerOnesTurn;
-			isPlayerTwosTurn = !isPlayerTwosTurn;
-			isStart = false;
-		}
 				
 		makeMoveComputer();
 		
@@ -84,11 +79,11 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			} 
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
-				// logger.warn("Invalid Move!");
+				logger_.warning("Invalid Move!");
 			}
 		}
 		
-		checkForWinner();
+		super.checkForWinner();
 	}
 	
 	/**
@@ -110,6 +105,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
             		try {
 						Thread.sleep(300);
 					} catch (InterruptedException ie) {
+						logger_.severe("Error: " + ie.toString());
 						ie.printStackTrace();
 						Thread.currentThread().interrupt();
 					}
@@ -149,7 +145,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	
 	/**
 	 * Checks whether the player can win in there next move (1 move)
-	 * @return recommended button for AI to select
+	 * @return recommended button for AI to select to prevent player from winning in their next move
 	 */
 	public int canPlayerWinInOneMove(String[] tile) {
 		

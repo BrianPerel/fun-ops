@@ -22,10 +22,10 @@ import javax.swing.WindowConstants;
  */
 public class GameWinner extends KeyAdapter implements ActionListener {
 
-	private String gameResult;
 	private JFrame f2;
-	private JButton btnPlayAgain;
 	private JButton btnQuit;
+	private String gameResult;
+	private JButton btnPlayAgain;
 	private static final String GAME_OVER = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 
@@ -92,21 +92,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {	
 		f2.dispose();
-		
-		if (e.getSource() == btnPlayAgain) {
-			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-				new PvEGameBoard(false, false, true).shouldRun = true;
-			}
-			else {
-				PvPGameBoard.f.dispose();
-				new PvPGameBoard(false, false, true);
-			}
-		} 
-		else if (e.getSource() == btnQuit && gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) 
-				|| gameResult.equals("Game Over! It's a draw!!")) {
-			
-			System.exit(0);		
-		}
+		determineEndGameAction(e.getSource());
 	}
 	
 	@Override
@@ -114,20 +100,27 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		f2.dispose();
 
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			if (e.getSource() == btnPlayAgain) {
-				if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-					new PvEGameBoard(false, false, true).shouldRun = true;				
-				}
-				else {
-					PvPGameBoard.f.dispose();
-					new PvPGameBoard(false, false, true);
-				}
-			} 
-			else if (e.getSource() == btnQuit && gameResult.equals(StartMenu.PLAYER) 
-					|| gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-				
-				System.exit(0);
+			determineEndGameAction(e.getSource());
+		}
+		else {
+			System.exit(0); // if any other key is pressed here, game ends
+		}
+	}
+
+	public void determineEndGameAction(Object source) {
+		if (source == btnPlayAgain) {
+			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
+				new PvEGameBoard(false, false, true).shouldRun = true;				
 			}
+			else {
+				PvPGameBoard.f.dispose();
+				new PvPGameBoard(false, false, true);
+			}
+		} 
+		else if (source == btnQuit || (gameResult.equals(StartMenu.PLAYER)
+				|| gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!"))) {
+			
+			System.exit(0);
 		}
 	}
 }

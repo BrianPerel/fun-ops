@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Robot;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -70,8 +69,8 @@ public class WiggleMouse {
 		btnStart.setBounds(215, 78, 99, 23);
 		frame.getContentPane().add(btnStart);
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnStart.addActionListener((ActionEvent ae) -> {
-			if (ae.getSource() == btnStart) {
+		btnStart.addActionListener(actionEvent -> {
+			if (actionEvent.getSource() == btnStart) {
 				timeToWait = updateIdleTime();
 			}
 		});
@@ -87,7 +86,7 @@ public class WiggleMouse {
 	    frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	
-		moveMouse();
+		moveMouse(new Robot());
 	}
 	
 	/**
@@ -108,10 +107,8 @@ public class WiggleMouse {
 			return 300000;
 		
 		default:
-			break;
+			return timeToWait;
 		}
-		
-		return timeToWait;
 	}
 
 	/**
@@ -119,10 +116,9 @@ public class WiggleMouse {
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
 	 * @throws AWTException 
 	 */
-	public void moveMouse() throws InterruptedException, AWTException {
+	public void moveMouse(Robot robot) throws InterruptedException {
 		
 		timeToWait = 30000; // default wait time before wiggling your mouse
-		Robot robot = new Robot();
 		
 		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done

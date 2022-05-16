@@ -9,7 +9,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -53,7 +55,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain = new JButton("Play again?");
 	protected JButton btnGuess = new JButton("Guess");
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
-	protected static final SecureRandom randomGenerator = new SecureRandom();
+	protected static final SecureRandom randomGenerator = new SecureRandom(
+				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));	
+	
 	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 
 	public static void main(String[] args) {
@@ -175,13 +179,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
 
-		boolean isOutOfTime = false;
+		boolean isTimeout = false;
 		StopWatchPanel.btnStop.doClick();
 
 		// if the timer is greater than 10 seconds when the user guesses
 		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain)
 				&& !closeTimerCheckBox.isSelected()) {
-			isOutOfTime = true;
+			isTimeout = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time.");
 
@@ -190,7 +194,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 
-		performGuiButtonAction(source, isOutOfTime);
+		performGuiButtonAction(source, isTimeout);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -215,14 +219,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent e) {
 		Object source = e.getSource();
 
-		boolean isOutOfTime = false;
+		boolean isTimeout = false;
 		StopWatchPanel.btnStop.doClick();
 
 		// if the timer is greater than 10 seconds when the user guesses
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
 				&& !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
 
-			isOutOfTime = true;
+			isTimeout = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time.");
 
@@ -231,7 +235,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 
-		performGuiButtonAction(source, isOutOfTime);
+		performGuiButtonAction(source, isTimeout);
 
 		// reset the timer
 		StopWatchPanel.btnReset.doClick();
@@ -256,13 +260,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Performs associated action of the GUI button that is clicked
 	 * 
 	 * @param ae          the action event triggered
-	 * @param isOutOfTime boolean keeping track of whether or not timer has hit 10
+	 * @param isTimeout boolean keeping track of whether or not timer has hit 10
 	 *                    seconds
 	 */
-	public void performGuiButtonAction(Object source, boolean isOutOfTime) {
+	public void performGuiButtonAction(Object source, boolean isTimeout) {
 		// if guess btn is pushed and input is numeric data
 		if (source == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			evaluateGuess(isOutOfTime, 100);
+			evaluateGuess(isTimeout, 100);
 		}
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
@@ -284,12 +288,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Evaluates the user's guess value
 	 */
-	public void evaluateGuess(boolean isOutOfTime, final int MAX_LIMIT) {
+	public void evaluateGuess(boolean isTimeout, final int MAX_LIMIT) {
 
 		totalGuessesMade++;
+		int textFieldGuessTheNumberInt = 0;
 
-		int textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
-
+		try {
+			textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
+		} catch(NumberFormatException nfe) {
+			System.out.println("Error: NumberFormatException caught. Number entered is too large");
+		}
+		
 		// if input remainder entered is outside of range 1-99 or 100-999
 		if (textFieldGuessTheNumberInt >= MAX_LIMIT || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
@@ -304,7 +313,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			randomNumber = randomGenerator.nextInt(MAX_LIMIT);
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 
-			if (!isOutOfTime) {
+			if (!isTimeout) {
 				totalGameScore += 10;
 			}
 		} else if (textFieldGuessTheNumberInt + randomNumber != MAX_LIMIT) {

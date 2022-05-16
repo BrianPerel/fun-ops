@@ -3,7 +3,10 @@ package pingpong;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Ball extends Rectangle {
 
@@ -21,7 +24,7 @@ public class Ball extends Rectangle {
 	 */
 	public Ball(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		SecureRandom random = new SecureRandom();
+		SecureRandom random = new SecureRandom(LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 		int randomXDirection = random.nextInt(2);
 		
 		if (randomXDirection == 0) {
@@ -36,6 +39,29 @@ public class Ball extends Rectangle {
 		}
 		
 		setYDirection(randomYDirection * initialBallSpeed);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		return prime * super.hashCode() + Objects.hash(initialBallSpeed, xVelocityOfBall, yVelocityOfBall);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ball other = (Ball) obj;
+		return java.lang.Double.doubleToLongBits(initialBallSpeed) == java.lang.Double
+				.doubleToLongBits(other.initialBallSpeed)
+				&& java.lang.Double.doubleToLongBits(xVelocityOfBall) == java.lang.Double
+						.doubleToLongBits(other.xVelocityOfBall)
+				&& java.lang.Double.doubleToLongBits(yVelocityOfBall) == java.lang.Double
+						.doubleToLongBits(other.yVelocityOfBall);
 	}
 
 	/**

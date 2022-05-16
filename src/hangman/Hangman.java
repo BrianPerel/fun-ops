@@ -10,10 +10,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,8 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
-// import org.apache.log4j.Logger;
-
 /**
  * App simulating a traditional hangman game with a 4-letter car theme. <br>
  * @author Brian Perel
@@ -36,7 +37,7 @@ import javax.swing.text.MaskFormatter;
 public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
-	// private static final Logger logger = Logger.getLogger(Hangman.class);
+	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
 	private JTextArea hangmanTextArea;
 	private JTextField textFieldGuessesLeft;
@@ -60,8 +61,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// printed
 	private boolean w, o, r, d;
 	private boolean[] textFieldHasFocus = new boolean[4]; 
-	private static final SecureRandom randomGenerator = new SecureRandom();
 	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
+	private static final SecureRandom randomGenerator = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	
 	// store hangman drawing in an array, each part is to be displayed is in a separate
 	// space of the array
@@ -78,7 +80,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public static void main(String[] args) {
 		new Hangman();
 	}
-
+	
 	/**
 	 * Creates the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
 	 */
@@ -155,7 +157,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		secretWord = getSecretWord();
 		
 		// reveal the hangman word to the console 
-		System.out.println(secretWord);
+		logger_.info(secretWord);
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -187,7 +189,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness 
 			
 		} catch (FileNotFoundException e) {
-			// logger.error("Error: File not found. " + e.toString());
+			logger_.severe("Error: File not found. " + e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -201,7 +203,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		try {
 			return new MaskFormatter(argString);
 		} catch (java.text.ParseException exc) {
-			// logger.error("formatter is bad: " + exc.getMessage());
+			logger_.severe("formatter is bad: " + exc.getMessage());
 			exc.printStackTrace();
 			System.exit(-1);
 			return null;
@@ -247,7 +249,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 		
 		// reveal the hangman word to the console 
-		System.out.println(secretWord);
+		logger_.info(secretWord);
 		
 		count = 0;
 	}
@@ -318,7 +320,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		else if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
 				&& (guess != secretWord.charAt(1)) && (guess != secretWord.charAt(2))) {
 			
-			// prevents player from loosing health if same wrong letter was pressed more than once
+			// prevents player from loosing health if the same wrong letter was pressed more than once
 			if (guess != previousGuess) {
 				hangmanTextArea.append(hangmanDrawing[count++]);
 				textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));

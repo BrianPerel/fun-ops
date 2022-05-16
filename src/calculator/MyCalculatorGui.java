@@ -46,7 +46,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Error ClassNotFoundException: " + e.getMessage());
 		}
 		
 		new MyCalculatorGui();
@@ -147,6 +147,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
+	
+	public MyCalculatorGui(String a) {}
 
 	/**
 	 * This is responsible for listening to when buttons are clicked via the mouse (which represent actions).
@@ -246,7 +248,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 
 		case "1/x":		
-			if(textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().trim().equals("0")) {
 				double value = 1 / Double.valueOf(textFieldUserInput.getText());
 				
 				// validate that the current text in textField isn't blank
@@ -259,11 +261,11 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				if ((value * 10) % 10 == 0) { // if value calculated is whole number
 					textFieldUserInput.setText(df.format(value)); // removes zero's after decimal point
 				} 
+				
+				break;
 			}
-			else {
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-			}
-			
+
+			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
 		case "=":
@@ -295,7 +297,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// x\u00B2 -> X^2 symbol
 		case "x\u00B2":		
-			if(textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().trim().equals("0")) {
 				double valueSquared = Math.pow(Double.valueOf(textFieldUserInput.getText()), 2);
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
@@ -306,16 +308,16 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				if ((valueSquared * 10) % 10 == 0) { // if value calculated is whole number
 					textFieldUserInput.setText(df.format(valueSquared)); // removes zero's after decimal point
 				}
+				
+				break;
 			}
-			else {
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-			}
-			
+				
+			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
 		// 2\u221Ax -> 2 square root x symbol
 		case "2\u221Ax":	
-			if(textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().trim().equals("0")) {
 				double valueSquareRooted = Math.sqrt(Double.valueOf(textFieldUserInput.getText()));
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
@@ -326,12 +328,11 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				if ((valueSquareRooted * 10) % 10 == 0) { // if value calculated is whole number
 					textFieldUserInput.setText(df.format(valueSquareRooted)); // removes zero's after decimal point
 				}
-			}
-			else {
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
+				
+				break;
 			}
 			
-
+			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
 		case "+/-":

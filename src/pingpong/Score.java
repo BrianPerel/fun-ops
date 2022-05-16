@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Score {
+public class Score implements Serializable {
 
+	private static final long serialVersionUID = -5644331063151255153L;
 	private int playerOneScore;
 	private int playerTwoScore;
 

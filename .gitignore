@@ -1,9 +1,12 @@
 /bin/
 /build/
+/classes/
 /jar/
+/dist/
 /Launch4j/
 /docs/
 /target/
 *.jar
 *.log
 *.class
+*.zip

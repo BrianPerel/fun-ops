@@ -23,9 +23,9 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	@Override
-	public void performGuiButtonAction(Object source, boolean isOutOfTime) {
+	public void performGuiButtonAction(Object source, boolean isTimeout) {
 		
-		super.performGuiButtonAction(source, isOutOfTime);
+		super.performGuiButtonAction(source, isTimeout);
 		
 		if (source == btnPlayAgain) {
 			randomNumber = randomGenerator.nextInt(899) + 100;
@@ -34,7 +34,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	@Override
-	public void evaluateGuess(boolean isOutOfTime, final int MAX_LIMIT) {	
-		super.evaluateGuess(isOutOfTime, 1000);
+	public void evaluateGuess(boolean isTimeout, final int MAX_LIMIT) {	
+		super.evaluateGuess(isTimeout, 1000);
 	}
 }

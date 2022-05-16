@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -72,7 +72,7 @@ public class StopWatch extends JFrame {
 		/** Timer to be used for watch */
 		private Timer timer;
 		/** Button listener */
-		private ActionListener buttonListener = new ButtonListener();
+		private ButtonListener buttonListener = new ButtonListener();
 
 		/**
 		 * Constructor: Sets up this panel to listen for mouse events
@@ -108,7 +108,7 @@ public class StopWatch extends JFrame {
 			}
 			
 			for(JButton button : buttons) {
-				button.addKeyListener((KeyListener) buttonListener);
+				button.addKeyListener(buttonListener);
 				button.setFont(new Font("Georgia", Font.PLAIN, 15));
 				button.addActionListener(buttonListener);
 				button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -120,65 +120,25 @@ public class StopWatch extends JFrame {
 		 * Represents a listener for button push (action) events.
 		 * This is an inner class of StopWatchPanel
 		 */
-		class ButtonListener extends KeyAdapter implements ActionListener {
+		class ButtonListener extends KeyAdapter implements ActionListener, Serializable {
 			
+			private static final long serialVersionUID = 1905122041950251207L;
 			private static final int TIMEBASE = 60;
 			private static final int CENTSECBASE = 99;
 			private static final int SHOWBASE = 10;
-
-			@Override
-			public void actionPerformed(ActionEvent event) {	
-				Object source = event.getSource();
-				
-				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
-					hour = minute = second = 0;
-				}
-				
-				centisecond++;
-				
-				if (minute == TIMEBASE) {
-					hour++;
-					minute = 0;
-				}
-				if (second == TIMEBASE) {
-					minute++;
-					second = 0;
-				}
-				if (centisecond == CENTSECBASE) {
-					second++;
-					centisecond = 0;
-				}
-				if (source == btnStart) {
-					btnStart.setEnabled(false);
-					btnStop.setEnabled(true);
-					timer.start();
-				} 
-				else if (source == btnStop) {
-					btnStart.setEnabled(true);
-					btnStop.setEnabled(false);
-					timer.stop();
-				} 
-				else if (source == btnReset) { 
-					btnStart.setEnabled(true);
-					btnStop.setEnabled(true);
-					btnStart.requestFocus();
-					timer.stop();
-					hour = minute = second = 0;
-					watch.setText(START_TIME);
-					
-					if(isRedFontEnabled) {
-						watch.setForeground(Color.BLACK);
-					}
-				}
-				
-				setWatchText();
-			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				Object source = e.getSource();
-				char keyChar = e.getKeyChar();
-				
+				eventHandler(e.getSource(), e.getKeyChar());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent event) {	
+				eventHandler(event.getSource(), (char) KeyEvent.VK_ENTER);
+			}
+
+			public void eventHandler(Object source, char keyChar) {
+
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}

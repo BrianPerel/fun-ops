@@ -4,7 +4,7 @@
 
 	<description>
 		My Custom Ant Build Script for all 6 projects. Includes compile, jar, 
-		run, create exe, javadoc, unjar tasks for all projects
+		run, create exe, javadoc, unjar tasks for build generation for all projects
 	</description>
 
 	<property name="version.num" value="v1.0" />
@@ -71,7 +71,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="calculator.App" />
+				<attribute name="Main-Class" value="calculator.MyCalculatorGui" />
 			</manifest>
 		</jar>
 	</target>
@@ -105,7 +105,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="encryption.EncryptionGui" />
+				<attribute name="Main-Class" value="encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption" />
 			</manifest>
 		</jar>
@@ -152,9 +152,7 @@
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern">
-			<classpath refid="build.classpath" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="create associated .jar file">
@@ -355,24 +353,21 @@
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/tictactoe" destdir="${classes.dir}" compiler="modern">
-			<classpath refid="build.classpath" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/tictactoe" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="tictactoe.Menu" />
+				<attribute name="Main-Class" value="tictactoe.StartMenu" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac" />
-				<attribute name="Class-Path" value="lib/log4j-1.2.17.jar" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-tic tac toe" depends="jar-tic tac toe" description="run the program">
-		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" classpathref="build.classpath" fork="true" />
+		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip tic tac toe program -->

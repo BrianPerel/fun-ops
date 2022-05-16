@@ -42,7 +42,7 @@ public class Clock implements ActionListener {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			System.out.println("Error ClassNotFoundException" + e.getMessage());
 		}
 		
 		new Clock();
@@ -66,7 +66,7 @@ public class Clock implements ActionListener {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Alarm");
 		menu.setFont(custFont);
-		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/ keyboard mnemonic
+		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1);
 		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menu.setToolTipText("Sets an alarm time");
@@ -84,12 +84,12 @@ public class Clock implements ActionListener {
 		lblClockTime.setForeground(WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
 
-		Font font = null;
+		Font font;
 
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf"));
-			font = font.deriveFont(Font.BOLD, 110);
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf")).deriveFont(Font.BOLD, 110);
 		} catch (FontFormatException | IOException e) {
+			font = custFont;
 			e.printStackTrace();
 		}
 
@@ -118,23 +118,15 @@ public class Clock implements ActionListener {
 	 */
 	public void getTime(JCheckBox militaryTimeFormatCheckBox) {
 		
-		String time;
+		String time = "";
 
 		while (true) {			
-			time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) 
-					? "HH:mm" : "hh:mm a"));
-			
-			// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
-			if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
-				time = time.substring(1);
-			}	
-			
+			time = obtainTime(militaryTimeFormatCheckBox);
+
 			if(!hasAlarmRung && time.equalsIgnoreCase(alarmTime)) {
 				ringAlarm(time);
 			}
 
-			lblClockTime.setText(time);
-			
 			// updates the time every second
 			try {
 				Thread.sleep(1000); 
@@ -143,6 +135,19 @@ public class Clock implements ActionListener {
 				Thread.currentThread().interrupt();
 			}
 		}
+	}
+
+	public String obtainTime(JCheckBox militaryTimeFormatCheckBox) {
+		String time = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) 
+				? "HH:mm" : "hh:mm a"));
+		
+		// current time (not 11 or 12 o'clock) will show up with a 0 in front of the time by default, this prevents that
+		if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
+			time = time.substring(1);
+		}	
+		
+		lblClockTime.setText(time);
+		return time;
 	}
 
 	/**
@@ -170,10 +175,10 @@ public class Clock implements ActionListener {
 			alarmTime = JOptionPane.showInputDialog("Alarm time: ");
 						
 			// first 2 and 4 index of alarmTime string should be numbers only
-			if(alarmTime != null) {
+			if(alarmTime != null && !alarmTime.isBlank()) {
 				alarmTime = alarmTime.trim();
 								
-				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 7
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 8
 						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);

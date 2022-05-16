@@ -7,11 +7,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
 import javax.swing.JPanel;
 
-public class GameBoard extends JPanel implements Runnable {
+public class GameBoard extends JPanel implements Runnable, Serializable {
 
 	private static final long serialVersionUID = 1871004171456570750L;
 	private static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
@@ -19,19 +22,31 @@ public class GameBoard extends JPanel implements Runnable {
 	private Paddle paddleOne, paddleTwo;
 	private Ball pongBall;
 	private Score gameScore;
-	private Thread gameThread;
 
 	/**
 	 * Sets up the game and the GUI
 	 */
 	public GameBoard() {
-		gameThread = new Thread(this);
+		Thread gameThread = new Thread(this);
 		gameThread.start();
 		gameScore = new Score();
 		createPongPaddles();
 		createPongBall();
 		this.setFocusable(true);
-		this.addKeyListener(new ActionListener());
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				paddleOne.keyPressed(e);
+				paddleTwo.keyPressed(e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				paddleOne.keyReleased(e);
+				paddleTwo.keyReleased(e);
+			}
+		});
+		
 		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 	}
 
@@ -39,7 +54,8 @@ public class GameBoard extends JPanel implements Runnable {
 	 * Creates the pong ball
 	 */
 	public void createPongBall() {
-		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2),  new SecureRandom().nextInt(GAME_HEIGHT - BALL_DIAMETER),
+		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), new SecureRandom(
+				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII)).nextInt(GAME_HEIGHT - BALL_DIAMETER),
 				BALL_DIAMETER, BALL_DIAMETER);
 	}
 
@@ -119,19 +135,8 @@ public class GameBoard extends JPanel implements Runnable {
 			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
-		// stops paddles at window edges
-		if (paddleOne.y <= 0) {
-			paddleOne.y = 0;
-		}
-		if (paddleOne.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
-			paddleOne.y = GAME_HEIGHT - PADDLE_HEIGHT;
-		}
-		if (paddleTwo.y <= 0) {
-			paddleTwo.y = 0;
-		}
-		if (paddleTwo.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
-			paddleTwo.y = GAME_HEIGHT - PADDLE_HEIGHT;
-		}
+		edgeChecker(paddleOne);
+		edgeChecker(paddleTwo);
 		
 		// give player 1 a point and create new paddles & ball
 		if (pongBall.x <= -22) {
@@ -157,6 +162,16 @@ public class GameBoard extends JPanel implements Runnable {
 			}
 			
 			createPongBall();
+		}
+	}
+
+	public void edgeChecker(Paddle paddleNumber) {
+		// stops paddles at window edges
+		if (paddleNumber.y <= 0) {
+			paddleNumber.y = 0;
+		}
+		if (paddleNumber.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
+			paddleNumber.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
 	}
 
@@ -188,21 +203,4 @@ public class GameBoard extends JPanel implements Runnable {
 			}
 		}
 	}
-
-	/**
-	 * A action listener class that listens to keys pressed and released on the pong table
-	 */
-	private class ActionListener extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			paddleOne.keyPressed(e);
-			paddleTwo.keyPressed(e);
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			paddleOne.keyReleased(e);
-			paddleTwo.keyReleased(e);
-		}
-	}	
 }
