@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -123,13 +124,13 @@ public class Clock implements ActionListener {
 		while (true) {			
 			time = obtainTime(militaryTimeFormatCheckBox);
 
-			if(!hasAlarmRung && time.equalsIgnoreCase(alarmTime)) {
+			if(alarmTime != null && !hasAlarmRung && (time.equalsIgnoreCase(alarmTime))) {
 				ringAlarm(time);
 			}
 
 			// updates the time every second
 			try {
-				Thread.sleep(1000); 
+				TimeUnit.SECONDS.sleep(1);
 			} catch (final InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -172,20 +173,24 @@ public class Clock implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == menuOption)  {  
-			alarmTime = JOptionPane.showInputDialog("Alarm time: ");
+			alarmTime = JOptionPane.showInputDialog("Alarm time (in AM/PM format): ");
 						
 			// first 2 and 4 index of alarmTime string should be numbers only
 			if(alarmTime != null && !alarmTime.isBlank()) {
 				alarmTime = alarmTime.trim();
 								
-				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 8
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 7
 						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				} 	
 				else {
+					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(null, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
+			else {
+				Toolkit.getDefaultToolkit().beep();
 			}
 		}		
 	}

@@ -3,6 +3,7 @@ package encryption;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -36,7 +37,7 @@ public class EncryptDecryptGui implements ActionListener {
 
 	private JFrame frame;
 	private JButton btnBrowse;
-	private boolean hasFileBeenLoaded;
+	private boolean isFileLoaded;
 	private static String fileName;
 	private EncryptDecrypt dataSet;
 	private JTextField textFieldLoading;
@@ -134,18 +135,21 @@ public class EncryptDecryptGui implements ActionListener {
 		
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
-			if(!fileToLoad.isEmpty() && !hasFileBeenLoaded) {
+			if(!fileToLoad.isEmpty() && !isFileLoaded) {
 				loadFileData(fileToLoad);
 				return; // prevent below statements from executing if we fall to here
 			}
 			
+			Toolkit.getDefaultToolkit().beep();
+			
 			// if file has been already been loaded and load file btn pushed
 			// or if file load textfield is empty while load file btn is pushed
-			JOptionPane.showMessageDialog(frame.getComponent(0), hasFileBeenLoaded ? "A file has already been loaded" 
+			JOptionPane.showMessageDialog(frame.getComponent(0), isFileLoaded ? "A file has already been loaded" 
 					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
 		}		
 		// if encrypt/decrypt btn pushed and file has not been loaded
-		else if ((source == btnEncrypt || source == btnDecrypt) && !hasFileBeenLoaded) {
+		else if ((source == btnEncrypt || source == btnDecrypt) && !isFileLoaded) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -165,6 +169,7 @@ public class EncryptDecryptGui implements ActionListener {
 		// if loaded file isn't blank, allow encryption op
 		if (source == btnEncrypt && !data.isEmpty()) {
 			try {
+				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(frame.getComponent(0), 
 					dataSet.encrypt() ? "File succesfully encrypted" : "File already encrypted. Could not encrypt");
 			} catch (IOException ioe) {
@@ -174,6 +179,7 @@ public class EncryptDecryptGui implements ActionListener {
 		// if loaded file isn't blank, allow decryption operation
 		else if (source == btnDecrypt && !data.isEmpty()) {
 			try {
+				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(frame.getComponent(0), 
 					dataSet.decrypt() ? "File succesfully decrypted" : "File already decrypted. Could not decrypt");
 			} catch (IOException ioe) {
@@ -182,6 +188,7 @@ public class EncryptDecryptGui implements ActionListener {
 		}
 		// if loaded file is blank and encrypt/decrypt btn pushed
 		else if (!fileToLoad.isEmpty() && data.isEmpty() && (source == btnEncrypt || source == btnDecrypt)) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -200,9 +207,7 @@ public class EncryptDecryptGui implements ActionListener {
 		File file = new File(fileToLoad);
 
 		// use try with resources here, which will auto close resources
-		try (
-			  Scanner read = new Scanner(file);
-			) {
+		try (Scanner read = new Scanner(file)) {
 
 			// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
 			while (read.hasNextLine()) {
@@ -212,10 +217,11 @@ public class EncryptDecryptGui implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
 			setFileName(file.toString());
 			dataSet = new EncryptDecrypt(data);
-			hasFileBeenLoaded = true;
+			isFileLoaded = true;
 
 			// check if Desktop is supported by this Platform or not
 			if (!Desktop.isDesktopSupported()) {
+				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
 						ERROR, JOptionPane.ERROR_MESSAGE);
 				return;
@@ -227,6 +233,7 @@ public class EncryptDecryptGui implements ActionListener {
 			}
 
 		} catch (FileNotFoundException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
 			textFieldLoading.setText("");
 		} catch (IOException ioe) {

@@ -47,7 +47,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private int guessesLeft;
 
 	// store contents of random words in arraylist to give ability to extract txt at
-	// specific line
+	// specific line. Using an arraylist because this will allow us to modify our hangman 
+	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
+	// requiring us to change array size if we modify the txt file
 	private final ArrayList<String> wordList = new ArrayList<>();
 
 	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
@@ -156,7 +158,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		getRandomWords();
 		secretWord = getSecretWord();
 		
-		// reveal the hangman word to the console 
+		// log the hangman word 
 		logger_.info(secretWord);
 		
 		frame.setVisible(true);
@@ -248,7 +250,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			secretWord = getSecretWord();
 		}
 		
-		// reveal the hangman word to the console 
+		// log the hangman word
 		logger_.info(secretWord);
 		
 		count = 0;

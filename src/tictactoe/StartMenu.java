@@ -3,6 +3,7 @@ package tictactoe;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -37,9 +38,16 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	protected static final String COMPUTER = "Computer";
 	protected JRadioButton playAgainstComputerRadioButton;
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
-	private static final Logger logger_ = Logger.getLogger(StartMenu.class.toString());
+	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {			
+		new StartMenu();
+	}
+
+	/**
+	 * Create the application. Build all components
+	 */
+	public StartMenu() {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
 			logger_.info("Starting tic tac toe log");
@@ -48,13 +56,6 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 		
-		new StartMenu();
-	}
-
-	/**
-	 * Create the application. Build all components
-	 */
-	public StartMenu() {
 		frame = new JFrame("Tic Tac Toe App by: Brian Perel");
 		frame.setResizable(false);
 		frame.setSize(399, 358);
@@ -153,11 +154,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		} 
 		// if one or both name textfields are empty
 		else if (nameOne.isEmpty() || nameTwo.isEmpty()) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} 
 		// if first name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo)) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");

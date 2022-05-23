@@ -44,20 +44,22 @@ public class Paddle extends Rectangle {
 	 * @param e the key event 
 	 */
 	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		
 		if (id.equals("Paddle1")) {
-			if (e.getKeyCode() == KeyEvent.VK_W) {
+			if (keyCode == KeyEvent.VK_W) {
 				setYDirection(-speed);
 			}
-			if (e.getKeyCode() == KeyEvent.VK_S) {
+			if (keyCode == KeyEvent.VK_S) {
 				setYDirection(speed);
 			}
 		} 
 		else if (id.equals("Paddle2")) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (keyCode == KeyEvent.VK_UP) {
 				setYDirection(-speed);
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (keyCode == KeyEvent.VK_DOWN) {
 				setYDirection(speed);
 			}
 		}
@@ -69,19 +71,21 @@ public class Paddle extends Rectangle {
 	 * @param e the key event
 	 */
 	public void keyReleased(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		
 		if (id.equals("Paddle1")) {
-			if (e.getKeyCode() == KeyEvent.VK_W) {
+			if (keyCode == KeyEvent.VK_W) {
 				setYDirection(0);
 			}
-			if (e.getKeyCode() == KeyEvent.VK_S) {
+			if (keyCode == KeyEvent.VK_S) {
 				setYDirection(0);
 			}
 		}
 		else if (id.equals("Paddle2")) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (keyCode == KeyEvent.VK_UP) {
 				setYDirection(0);
 			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (keyCode == KeyEvent.VK_DOWN) {
 				setYDirection(0);
 			}
 		}

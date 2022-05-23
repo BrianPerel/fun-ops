@@ -1,11 +1,14 @@
 package tictactoe;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -62,14 +65,11 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (int x = 0; x < gameBoardTiles.length; x++) {
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
-				if (isPlayerOnesTurn) {
-					super.completePlayersTurn(gameBoardTiles[x], LIGHT_RED, PLAYER_TWO_LETTER, getPlayerOnesName());
-					shouldRun = true;
-				} 
-				else if (isPlayerTwosTurn) {
-					super.completePlayersTurn(gameBoardTiles[x], Color.BLUE, PLAYER_ONE_LETTER, getPlayerTwosName());
-					shouldRun = false;
-				} 		
+				super.completePlayersTurn(gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE, 
+					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER, 
+					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
+				
+				shouldRun = isPlayerOnesTurn;
 				
 				freeEmptyTiles[x] = -99; // prevents computer from choosing a tile that player has chosen
 				isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -80,6 +80,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				logger_.warning("Invalid Move!");
+				Toolkit.getDefaultToolkit().beep();
 			}
 		}
 		
@@ -103,7 +104,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
             		makeBestMove();
             		
             		try {
-						Thread.sleep(300);
+						TimeUnit.MILLISECONDS.sleep(300);
 					} catch (InterruptedException ie) {
 						logger_.severe("Error: " + ie.toString());
 						ie.printStackTrace();

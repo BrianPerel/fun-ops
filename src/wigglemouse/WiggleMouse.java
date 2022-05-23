@@ -7,6 +7,7 @@ import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -25,9 +26,9 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse {
 
-	private int x;
-	private int y;
-	private int timeToWait;
+	private int xCoordinate;
+	private int yCoordinate;
+	private int waitTime = 30;
 	private final String[] waitTimeChoices = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private final JComboBox<String> waitTimeOptionsComboBox = new JComboBox<>(new DefaultComboBoxModel<>(waitTimeChoices));
 
@@ -71,14 +72,14 @@ public class WiggleMouse {
 	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnStart.addActionListener(actionEvent -> {
 			if (actionEvent.getSource() == btnStart) {
-				timeToWait = updateIdleTime();
+				waitTime = updateIdleTime();
 			}
 		});
 		btnStart.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
-					timeToWait = updateIdleTime();
+					waitTime = updateIdleTime();
 				}
 			}
 		});
@@ -95,19 +96,19 @@ public class WiggleMouse {
 	public int updateIdleTime() {
 		switch ((String) waitTimeOptionsComboBox.getSelectedItem()) {
 		case "1/2 minute":
-			return 30000;
+			return 30;
 
 		case "1 minute":
-			return 60000;
+			return 60;
 
 		case "3 minutes":
-			return 180000;
+			return 180;
 
 		case "5 minutes":
-			return 300000;
+			return 300;
 		
 		default:
-			return timeToWait;
+			return waitTime;
 		}
 	}
 
@@ -117,23 +118,20 @@ public class WiggleMouse {
 	 * @throws AWTException 
 	 */
 	public void moveMouse(Robot robot) throws InterruptedException {
-		
-		timeToWait = 30000; // default wait time before wiggling your mouse
-		
+
 		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done
 			// twice in loop so that if user moves the mouse, the pointer doesn't jump back to the original point
 			setMouseLocation();
-			Thread.sleep(timeToWait); // time to wait before next mouse move
+			TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
 			setMouseLocation();
 
-			// move the mouse to specified x,y coordinates with a shift value -- Wiggle
-			// Mouse action
-			robot.mouseMove(x, y++);
-			Thread.sleep(50);
-			robot.mouseMove(x, y--);
-			Thread.sleep(50);
-			robot.mouseMove(x, y);
+			// move the mouse to specified x,y coordinates with a shift value -- Wiggle Mouse action
+			robot.mouseMove(xCoordinate, yCoordinate++);
+			TimeUnit.MILLISECONDS.sleep(50);
+			robot.mouseMove(xCoordinate, yCoordinate--);
+			TimeUnit.MILLISECONDS.sleep(50);
+			robot.mouseMove(xCoordinate, yCoordinate);
 		}
 	}
 
@@ -141,7 +139,7 @@ public class WiggleMouse {
 	 * Sets the current mouse's position into variables (x, y coordinates)
 	 */
 	public void setMouseLocation() {
-		x = (int) MouseInfo.getPointerInfo().getLocation().getX();
-		y = (int) MouseInfo.getPointerInfo().getLocation().getY();
+		xCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
+		yCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
 	}
 }

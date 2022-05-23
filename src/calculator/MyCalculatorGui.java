@@ -34,7 +34,7 @@ import javax.swing.WindowConstants;
 public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 	private JFormattedTextField textFieldUserInput;
-	private static final String CURSOR_RIGHT_POSITION = String.format("%31s", "");
+	private static final String CURSOR_RIGHT_POSITION = String.format("%31s", ""); 
 	private static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
 	private static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is
@@ -155,11 +155,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {		
-		// remove the auto display '0' value from the main number entry textField box so that
-		// this '0' is not included in calculations. Since it's only needed for display purposes
-		if (textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO) && !hasUserEnteredZero) {
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
-		}
+		removeAutoDisplayZero();
 
 		// actions for numbers 0-9 buttons and all calculator operators/symbol buttons
 		switch (ae.getActionCommand()) {
@@ -209,34 +205,30 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// actions for symbol buttons
 		case "*":
-			MyCalculator.setNumber(textFieldUserInput.getText());
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+			setNumberText();
 			operatorFlags[1] = true;
 			break;
 
 		// division symbol
 		case "\u00F7":
-			MyCalculator.setNumber(textFieldUserInput.getText());
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+			setNumberText();
 			operatorFlags[0] = true;
 			break;
 
 		case "+":
-			MyCalculator.setNumber(textFieldUserInput.getText());
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+			setNumberText();
 			operatorFlags[3] = true;
 			break;
 
 		case "-":
-			MyCalculator.setNumber(textFieldUserInput.getText());
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+			setNumberText();
 			operatorFlags[2] = true;
 			break;
 
 		// backspace symbol
 		case "\u232B":
 			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-			if (textFieldUserInput.getText().trim().length() == 1) {
+			if (textFieldUserInput.getText().length() == 1) {
 				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 				break;
 			}
@@ -248,7 +240,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 
 		case "1/x":		
-			if(!textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
 				double value = 1 / Double.valueOf(textFieldUserInput.getText());
 				
 				// validate that the current text in textField isn't blank
@@ -297,7 +289,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// x\u00B2 -> X^2 symbol
 		case "x\u00B2":		
-			if(!textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
 				double valueSquared = Math.pow(Double.valueOf(textFieldUserInput.getText()), 2);
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
@@ -317,7 +309,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// 2\u221Ax -> 2 square root x symbol
 		case "2\u221Ax":	
-			if(!textFieldUserInput.getText().trim().equals("0")) {
+			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
 				double valueSquareRooted = Math.sqrt(Double.valueOf(textFieldUserInput.getText()));
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
@@ -338,7 +330,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		case "+/-":
 			if (!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)) {
 				// if current number is positive, number becomes negative (minus is
-				// prepended) else if number is negative, number becomes positive (minues is
+				// prepended) else if number is negative, number becomes positive (minus is
 				// removed)
 				textFieldUserInput.setText(textFieldUserInput.getText().trim().startsWith("-")
 						? CURSOR_RIGHT_POSITION.concat(textFieldUserInput.getText().replace("-", ""))
@@ -351,19 +343,26 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		} // end switch
 	}
 
+	public void setNumberText() {
+		MyCalculator.setNumber(textFieldUserInput.getText());
+		textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+	}
+
+	public void removeAutoDisplayZero() {
+		// remove the auto display '0' value from the main number entry textField box so that
+		// this '0' is not included in calculations. Since it's only needed for display purposes
+		if (textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO) && !hasUserEnteredZero) {
+			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+		}
+	}
+
 	/**
 	 * This is responsible for listening to all keyboard input.
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char keyChar = e.getKeyChar();
-
-		// remove auto display '0' value from main number entry textField box so that
-		// '0' is not included in calculation
-		// Since it's only needed for display purposes
-		if (textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO) && !hasUserEnteredZero) {
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
-		}
+		removeAutoDisplayZero();
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons
 		// are utilized as a case
@@ -412,8 +411,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// actions for symbol buttons
 				
 			case KeyEvent.VK_SLASH: // VK_SLASH indicates '/' or division
-				MyCalculator.setNumber(textFieldUserInput.getText());
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+				setNumberText();
 				operatorFlags[0] = true;
 				break;
 	
@@ -421,14 +419,12 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// would look like in
 			// KeyEvent code
 			case KeyEvent.VK_PLUS:
-				MyCalculator.setNumber(textFieldUserInput.getText());
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+				setNumberText();
 				operatorFlags[3] = true;
 				break;
 	
 			case KeyEvent.VK_MINUS:
-				MyCalculator.setNumber(textFieldUserInput.getText());
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+				setNumberText();
 				operatorFlags[2] = true;
 				break;
 	
@@ -438,7 +434,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	
 			case KeyEvent.VK_BACK_SPACE:				
 				// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-				if (textFieldUserInput.getText().trim().length() == 1) {
+				if (textFieldUserInput.getText().length() == 1) {
 					textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 					break;
 				}
@@ -472,8 +468,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 
 		if (keyChar == '*' || keyChar == '+') {
-			MyCalculator.setNumber(textFieldUserInput.getText());
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
+			setNumberText();
 
 			if (keyChar == '*') {
 				operatorFlags[1] = true;

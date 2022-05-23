@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
@@ -106,33 +107,35 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	public void checkCollision() {
 
 		// bounce ball off top & bottom window edges
+		double getyVelocityOfBall = pongBall.getyVelocityOfBall(), getxVelocityOfBall = pongBall.getxVelocityOfBall();
+		
 		if (pongBall.y <= 0) {
-			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
+			pongBall.setYDirection(-getyVelocityOfBall);
 		}
 
 		if (pongBall.y >= GAME_HEIGHT - BALL_DIAMETER) {
-			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
+			pongBall.setYDirection(-getyVelocityOfBall);
 		}
 
 		// bounce ball off paddles
 		if (pongBall.intersects(paddleOne)) {
-			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
-			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 0.2); // optional for more difficulty - increases the balls speed
+			pongBall.setxVelocityOfBall(Math.abs(getxVelocityOfBall));
+			pongBall.setxVelocityOfBall(getxVelocityOfBall + 0.2); // optional for more difficulty - increases the balls speed
 			
-			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 0.2 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
+			pongBall.setyVelocityOfBall((getyVelocityOfBall > 0) ? getyVelocityOfBall + 0.2 : getyVelocityOfBall - 1); // optional for more difficulty
 
-			pongBall.setXDirection(pongBall.getxVelocityOfBall());
-			pongBall.setYDirection(pongBall.getyVelocityOfBall());
+			pongBall.setXDirection(getxVelocityOfBall);
+			pongBall.setYDirection(getyVelocityOfBall);
 		}
 
 		if (pongBall.intersects(paddleTwo)) {
-			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
-			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty
+			pongBall.setxVelocityOfBall(Math.abs(getxVelocityOfBall));
+			pongBall.setxVelocityOfBall(getxVelocityOfBall + 1); // optional for more difficulty
 
-			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 1 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
+			pongBall.setyVelocityOfBall((getyVelocityOfBall > 0) ? getyVelocityOfBall + 1 : getyVelocityOfBall - 1); // optional for more difficulty
 			
-			pongBall.setXDirection(-pongBall.getxVelocityOfBall());
-			pongBall.setYDirection(pongBall.getyVelocityOfBall());
+			pongBall.setXDirection(-getxVelocityOfBall);
+			pongBall.setYDirection(getyVelocityOfBall);
 		}
 
 		edgeChecker(paddleOne);
@@ -143,7 +146,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			gameScore.setPlayerTwoScore(gameScore.getPlayerTwoScore() + 1);
 			
 			try {
-				Thread.sleep(300);
+				TimeUnit.MILLISECONDS.sleep(300);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -155,7 +158,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			gameScore.setPlayerOneScore(gameScore.getPlayerOneScore() + 1);
 			
 			try {
-				Thread.sleep(300);
+				TimeUnit.MILLISECONDS.sleep(300);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -180,7 +183,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	 */
 	public void run() {
 		try {
-			Thread.sleep(800);
+			TimeUnit.MILLISECONDS.sleep(300);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 			Thread.currentThread().interrupt();

@@ -4,8 +4,10 @@ import static java.awt.Color.GREEN;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -35,8 +37,6 @@ public class PvPGameBoard implements ActionListener {
 	protected JButton[] gameBoardTiles = new JButton[9];
 	protected JButton[] highlightWinnersTiles = new JButton[3];
 	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
-	protected String playerOneWinsMessage;
-	protected String playerTwoWinsMessage;
 	private static String playerOnesName;
 	private static String playerTwosName;
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
@@ -83,12 +83,12 @@ public class PvPGameBoard implements ActionListener {
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
-				public void mouseEntered(java.awt.event.MouseEvent evt) {
+				public void mouseEntered(MouseEvent evt) {
 					gameBoardTiles[x].setBackground(LIGHT_ORANGE);
 				}
 
 				@Override
-				public void mouseExited(java.awt.event.MouseEvent evt) {
+				public void mouseExited(MouseEvent evt) {
 					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE);
 				}
 			});
@@ -148,9 +148,6 @@ public class PvPGameBoard implements ActionListener {
 		isPlayerOnesTurn = argIsPlayerOnesTurn;
 		isPlayerTwosTurn = argIsPlayerTwosTurn;
 		
-		playerOneWinsMessage = getPlayerOnesName() + " wins!";
-		playerTwoWinsMessage = getPlayerTwosName() + " wins!";
-		
 		// enforces player1 to always start first: Sets p1 and p2's turns for first round
 		if (isStart) {
 			isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -165,12 +162,9 @@ public class PvPGameBoard implements ActionListener {
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (JButton button : gameBoardTiles) {
 			if (ae.getSource() == button && button.getText().isEmpty()) {				
-				if (isPlayerOnesTurn) {
-					completePlayersTurn(button, LIGHT_RED, PLAYER_TWO_LETTER, getPlayerOnesName());
-				} 
-				else if (isPlayerTwosTurn) {
-					completePlayersTurn(button, Color.BLUE, PLAYER_ONE_LETTER, getPlayerTwosName());
-				} 	
+				completePlayersTurn(button, isPlayerOnesTurn ? LIGHT_RED : Color.BLUE, 
+					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER, 
+					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
 				
 				isPlayerOnesTurn = !isPlayerOnesTurn;
 				isPlayerTwosTurn = !isPlayerTwosTurn;
@@ -179,6 +173,7 @@ public class PvPGameBoard implements ActionListener {
 			} 
 			else if (ae.getSource() == button && !button.getText().isEmpty()) {
 				logger_.warning("Invalid Move!");
+				Toolkit.getDefaultToolkit().beep();
 			}
 		}
 		
@@ -190,66 +185,66 @@ public class PvPGameBoard implements ActionListener {
 		// if buttons 0, 1, 2 are triggered - 3 in a row down the left side column
 		if (tile[0].equals(playerLetter) && tile[1].equals(playerLetter) && tile[2].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
+			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 3, 4, 5 are triggered - 3 in a row down the middle column
 		else if (tile[3].equals(playerLetter) && tile[4].equals(playerLetter) && tile[5].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
+			displayWinnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 6, 7, 8 are triggered - 3 in a row down the right side column
 		else if (tile[6].equals(playerLetter) && tile[7].equals(playerLetter) && tile[8].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
+			displayWinnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 0, 3, 6 are triggered - 3 in a row across the top row
 		else if (tile[0].equals(playerLetter) && tile[3].equals(playerLetter) && tile[6].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
+			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 1, 4, 7 are triggered - 3 in a row across the middle row 
 		else if (tile[1].equals(playerLetter) && tile[4].equals(playerLetter) && tile[7].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
+			displayWinnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 2, 5, 8 are triggered - 3 in a row across the bottom row
 		else if (tile[2].equals(playerLetter) && tile[5].equals(playerLetter) && tile[8].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
+			displayWinnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		else if (tile[0].equals(playerLetter) && tile[4].equals(playerLetter) && tile[8].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
+			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
 		else if (tile[2].equals(playerLetter) && tile[4].equals(playerLetter) && tile[6].equals(playerLetter)) {
 			logWinner(playerLetter);
-			updateBoardWithWinnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
+			displayWinnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 	}
 
 	public void logWinner(String playerLetter) {
 		if(playerLetter.equals(PLAYER_ONE_LETTER)) {
-			logger_.info(playerOneWinsMessage);
+			logger_.info(getPlayerOnesName() + " wins!");
 		}
 		else {
-			logger_.info(playerTwoWinsMessage);
+			logger_.info(getPlayerTwosName() + " wins!");
 		}
 	}
 	
@@ -301,7 +296,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param two   second tile clicked
 	 * @param three third tile clicked
 	 */
-	public void updateBoardWithWinnersPattern(JButton one, JButton two, JButton three) {
+	public void displayWinnersPattern(JButton one, JButton two, JButton three) {
 		isGameFinished = true; 
 		
 		highlightWinnersTiles[0] = one;
@@ -314,12 +309,12 @@ public class PvPGameBoard implements ActionListener {
 			// this will prevent the program from changing colors when you hover after winning
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
-				public void mouseEntered(java.awt.event.MouseEvent evt) {
+				public void mouseEntered(MouseEvent evt) {
 					button.setBackground(GREEN);
 				}
 
 				@Override
-				public void mouseExited(java.awt.event.MouseEvent evt) {
+				public void mouseExited(MouseEvent evt) {
 					button.setBackground(GREEN);
 				}
 			});

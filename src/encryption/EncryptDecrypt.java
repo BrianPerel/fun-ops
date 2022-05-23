@@ -14,7 +14,6 @@ public class EncryptDecrypt {
 
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
-	private FileWriter myWriter; // creates the file writer object to write to files
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
@@ -51,16 +50,13 @@ public class EncryptDecrypt {
 			}
 			
 			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption
-			myWriter = new FileWriter(EncryptDecryptGui.getFileName()); // access the existing txt file
 
-			try {
+			try(FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName())) {
 				myWriter.write(data.toString()); // write newly created string of random characters into file
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
-			} finally {
-				myWriter.close();
 			}
-
+			
 			isEncrypted = true;			
 			return isEncrypted;
 		} 
@@ -83,14 +79,11 @@ public class EncryptDecrypt {
 		if (isEncrypted) {	
 			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
 			data = decryptAndFormat(0); // perform decryption process and format the data, the 0 value is used to count the words 
-			myWriter = new FileWriter(EncryptDecryptGui.getFileName());
 	
-			try {
+			try(FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName())) {
 				myWriter.write(data.toString()); // override with decrypted data
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
-			} finally {
-				myWriter.close();
 			}
 	
 			isEncrypted = false;

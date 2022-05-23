@@ -25,8 +25,9 @@ import javax.swing.WindowConstants;
  * Stop-watch app in the format 00:00:00 (hh:mm:ss).
  * Classes are nested to support multiple inheritance
  */
-@SuppressWarnings("serial")
 public class StopWatch extends JFrame {
+	
+	private static final long serialVersionUID = -75355816260383730L;
 	
 	public static void main(String[] args) {
 		try {
@@ -56,6 +57,9 @@ public class StopWatch extends JFrame {
 	 * This is an inner class of StopWatch
 	 */
 	public class StopWatchPanel extends JPanel {
+		
+		private static final long serialVersionUID = -6217657906467075510L;
+		
 		/** represent the hours, minutes, and seconds in the watch */
 		private int hour;
 		private int minute;

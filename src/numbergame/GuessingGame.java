@@ -26,7 +26,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.text.AbstractDocument;
 
 import stopwatch.StopWatch;
 import stopwatch.StopWatch.StopWatchPanel;
@@ -52,13 +54,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JTextField textFieldScore;
 	protected JTextField textFieldGuesses;
 	protected JTextField textFieldRandomNumber;
-	protected JButton btnPlayAgain = new JButton("Play again?");
-	protected JButton btnGuess = new JButton("Guess");
+	protected JButton btnPlayAgain; 
+	protected JButton btnGuess;
+	
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
+	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 	protected static final SecureRandom randomGenerator = new SecureRandom(
 				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));	
-	
-	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -125,6 +127,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblGuess.setBounds(240, 140, 275, 37);
 		frame.getContentPane().add(lblGuess);
 
+		btnGuess = new JButton("Guess");
 		btnGuess.setBounds(255, 230, 105, 23);
 		btnGuess.addActionListener(this);
 		btnGuess.setBackground(Color.GREEN);
@@ -134,11 +137,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
+		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new SizeFilter(3));
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-
+		
+		btnPlayAgain = new JButton("Play again?");
 		btnPlayAgain.setBounds(382, 230, 105, 23);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -157,12 +162,15 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		
 		StopWatchPanel.isRedFontEnabled = true;
 		
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		
 		// setup stop watch implementation for guessing game
 		StopWatch stopWatch = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		stopWatch.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		stopWatch.setLocation(390, 340); // set stop watch to the left of game board
-		
+		stopWatch.setLocation(frame.getX() + frame.getWidth(), frame.getY());
+
 		// hide the stop watch buttons, as we won't be using them here
 		StopWatchPanel.btnStart.setVisible(false);
 		StopWatchPanel.btnStop.setVisible(false);
@@ -170,14 +178,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// timer auto starts as soon as game board appears
 		StopWatchPanel.btnStart.doClick();
-
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent ae) {
-		Object source = ae.getSource();
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
 
 		boolean isTimeout = false;
 		StopWatchPanel.btnStop.doClick();
@@ -259,14 +264,21 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Performs associated action of the GUI button that is clicked
 	 * 
-	 * @param ae          the action event triggered
+	 * @param ae the action event triggered
 	 * @param isTimeout boolean keeping track of whether or not timer has hit 10
 	 *                    seconds
 	 */
 	public void performGuiButtonAction(Object source, boolean isTimeout) {
 		// if guess btn is pushed and input is numeric data
-		if (source == btnGuess && textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
-			evaluateGuess(isTimeout, 100);
+		if(source == btnGuess) {
+			if (textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
+				evaluateGuess(isTimeout, 100);
+			}
+			// if guess btn is pushed and input is empty
+			else if (textFieldGuessTheNumber.getText().isEmpty() || !textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
+				playSound(FAIL_SOUND);
+				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
+			}
 		}
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
@@ -277,11 +289,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 			textFieldScore.setText("0");
 			totalGameScore = totalGuessesMade = 0;
-		}
-		// if guess btn is pushed and input is empty
-		else if (source == btnGuess && textFieldGuessTheNumber.getText().isEmpty()) {
-			playSound(FAIL_SOUND);
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
 		}
 	}
 
