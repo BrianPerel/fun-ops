@@ -1,4 +1,4 @@
-package tictactoe;
+package com.tictactoe;
 
 import static java.awt.Color.GREEN;
 
@@ -29,14 +29,13 @@ import javax.swing.WindowConstants;
 public class PvPGameBoard implements ActionListener {
 
 	boolean isGameFinished;
-	protected boolean isStart;
 	protected JLabel lblPlayersTurn;
 	protected boolean isPlayerOnesTurn;
 	protected boolean isPlayerTwosTurn;
-	protected String[] tile = new String[9];
-	protected JButton[] gameBoardTiles = new JButton[9];
-	protected JButton[] highlightWinnersTiles = new JButton[3];
-	private JSeparator[] gameBoardSeparators = new JSeparator[5]; // game board divider lines (separators)
+	protected String[] tile;
+	protected JButton[] gameBoardTiles;
+	protected JButton[] highlightWinnersTiles;
+	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
 	private static String playerOnesName;
 	private static String playerTwosName;
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
@@ -67,6 +66,11 @@ public class PvPGameBoard implements ActionListener {
 		}
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		
+		tile = new String[9];
+		gameBoardTiles = new JButton[9];
+		highlightWinnersTiles = new JButton[3];
+		gameBoardSeparators = new JSeparator[5];
 		
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
@@ -144,15 +148,10 @@ public class PvPGameBoard implements ActionListener {
 	 *                  game
 	 */
 	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		isStart = argIsStart;
-		isPlayerOnesTurn = argIsPlayerOnesTurn;
-		isPlayerTwosTurn = argIsPlayerTwosTurn;
-		
 		// enforces player1 to always start first: Sets p1 and p2's turns for first round
-		if (isStart) {
-			isPlayerOnesTurn = !isPlayerOnesTurn;
-			isPlayerTwosTurn = !isPlayerTwosTurn;
-			isStart = false;
+		if (argIsStart) {
+			isPlayerOnesTurn = !argIsPlayerOnesTurn;
+			isPlayerTwosTurn = !argIsPlayerTwosTurn;
 		}
 	}
 

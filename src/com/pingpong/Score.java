@@ -1,4 +1,4 @@
-package pingpong;
+package com.pingpong;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

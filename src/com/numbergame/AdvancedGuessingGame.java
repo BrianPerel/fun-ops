@@ -1,4 +1,4 @@
-package numbergame;
+package com.numbergame;
 
 /**
  * An advanced guessing number game in which the user receives a randomly generated number
@@ -15,11 +15,10 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	public AdvancedGuessingGame() {
-		frame.setTitle("Advanced Number Guessing Game by: Brian Perel");
-		randomNumber = randomGenerator.nextInt(899) + 100; // range is set to between 100-999
-		textFieldRandomNumber.setText(Integer.toString(randomNumber));
+		frame.setTitle("Advanced " + frame.getTitle());
+		textFieldRandomNumber.setText(Integer.toString(randomGenerator.nextInt(899) + 100)); // range is set to between 100-999
 		lblGuess.setText("Enter a number b/w 100-999 to make 1000");
-		lblGuess.setBounds(230, 140, 275, 37);
+		lblGuess.setLocation(230, 140);
 	}
 	
 	@Override

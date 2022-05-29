@@ -10,3 +10,6 @@
 *.log
 *.class
 *.zip
+/.scannerwork/
+.scannerwork
+*.settings

@@ -1,4 +1,4 @@
-package calculator;
+package com.calculator;
 
 import static java.awt.Color.WHITE;
 
@@ -44,7 +44,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	
 	public static void main(String[] args) {			
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");	
 		} catch (Exception e) {
 			System.out.println("Error ClassNotFoundException: " + e.getMessage());
 		}
@@ -64,6 +64,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		frame.setSize(400, 436);
 		
 		textFieldUserInput = new JFormattedTextField(CURSOR_RIGHT_POSITION_W_ZERO);
+		textFieldUserInput.requestFocus();
 		textFieldUserInput.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldUserInput.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		textFieldUserInput.setBounds(33, 27, 315, 40);
@@ -240,7 +241,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 
 		case "1/x":		
-			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
+			if(!(textFieldUserInput.getText().isBlank() || textFieldUserInput.getText().equals("0"))) {
 				double value = 1 / Double.valueOf(textFieldUserInput.getText());
 				
 				// validate that the current text in textField isn't blank
@@ -289,7 +290,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// x\u00B2 -> X^2 symbol
 		case "x\u00B2":		
-			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
+			if(!(textFieldUserInput.getText().isBlank() || textFieldUserInput.getText().equals("0"))) {
 				double valueSquared = Math.pow(Double.valueOf(textFieldUserInput.getText()), 2);
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
@@ -309,7 +310,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// 2\u221Ax -> 2 square root x symbol
 		case "2\u221Ax":	
-			if(!textFieldUserInput.getText().isBlank() && !textFieldUserInput.getText().equals("0")) {
+			if(!(textFieldUserInput.getText().isBlank() || textFieldUserInput.getText().equals("0"))) {
 				double valueSquareRooted = Math.sqrt(Double.valueOf(textFieldUserInput.getText()));
 				
 				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)

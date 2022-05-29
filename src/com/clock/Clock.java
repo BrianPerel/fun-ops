@@ -1,4 +1,4 @@
-package clock;
+package com.clock;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
@@ -35,7 +35,7 @@ public class Clock implements ActionListener {
 
 	private JLabel lblClockTime;
 	private String alarmTime;
-	private final JMenuItem menuOption;
+	private JMenuItem menuOption;
 	private boolean hasAlarmRung;
 	
 	public static void main(String[] args) {
@@ -130,7 +130,7 @@ public class Clock implements ActionListener {
 
 			// updates the time every second
 			try {
-				TimeUnit.SECONDS.sleep(1);
+				TimeUnit.SECONDS.sleep(1L);
 			} catch (final InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -161,7 +161,7 @@ public class Clock implements ActionListener {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
 			clip.start();
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
 			hasAlarmRung = true;
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e1) {
@@ -178,8 +178,8 @@ public class Clock implements ActionListener {
 			// first 2 and 4 index of alarmTime string should be numbers only
 			if(alarmTime != null && !alarmTime.isBlank()) {
 				alarmTime = alarmTime.trim();
-								
-				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 7
+
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 8
 						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);

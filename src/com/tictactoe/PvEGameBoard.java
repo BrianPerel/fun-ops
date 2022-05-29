@@ -1,4 +1,4 @@
-package tictactoe;
+package com.tictactoe;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -79,7 +78,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 			} 
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
-				logger_.warning("Invalid Move!");
+				logger_.warning("Invalid Move.");
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
@@ -104,7 +103,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
             		makeBestMove();
             		
             		try {
-						TimeUnit.MILLISECONDS.sleep(300);
+						TimeUnit.MILLISECONDS.sleep(300L);
 					} catch (InterruptedException ie) {
 						logger_.severe("Error: " + ie.toString());
 						ie.printStackTrace();

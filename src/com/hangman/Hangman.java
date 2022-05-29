@@ -1,4 +1,4 @@
-package hangman;
+package com.hangman;
 
 import static java.awt.Color.WHITE;
 
@@ -38,7 +38,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	private JFrame frame;
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
-	private JFormattedTextField[] letterTextFields = new JFormattedTextField[4];
+	private JFormattedTextField[] letterTextFields;
 	private JTextArea hangmanTextArea;
 	private JTextField textFieldGuessesLeft;
 	private JTextField textFieldHangmanWord;
@@ -69,15 +69,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	
 	// store hangman drawing in an array, each part is to be displayed is in a separate
 	// space of the array
-	private final String[] hangmanDrawing = { "  ___________",
-											  "\n |         |",
-											  "\n |         O",
-											  "\n |         | ",
-											  "\n |        /|\\",
-											  "\n |       / | \\",
-											  "\n |         |",
-											  "\n |        / \\",
-											  "\n |       /   \\ \n |" };
+	private final String[] HANGMAN_DRAWING = { "  ___________",
+											   "\n |         |",
+											   "\n |         O",
+											   "\n |         | ",
+											   "\n |        /|\\",
+											   "\n |       / | \\",
+											   "\n |         |",
+											   "\n |        / \\",
+											   "\n |       /   \\ \n |" };
 	
 	public static void main(String[] args) {
 		new Hangman();
@@ -142,6 +142,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		separator.setBounds(272, 168, 171, 7);
 		frame.getContentPane().add(separator);
 		
+		letterTextFields = new JFormattedTextField[4];
+		
 		for (int x = 0; x < letterTextFields.length; x++) {
 			letterTextFields[x] = new JFormattedTextField(createFormatter("U"));
 			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
@@ -155,7 +157,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[2].setBounds(360, 186, 17, 20);
 		letterTextFields[3].setBounds(387, 186, 17, 20);
 		
-		getRandomWords();
+		obtainRandomWords();
 		secretWord = getSecretWord();
 		
 		// log the hangman word 
@@ -168,7 +170,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Loads file and obtains a list of hangman words
 	 */
-	public void getRandomWords() {
+	public void obtainRandomWords() {
 		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
 			// read file of random hangman words
 			while (myReader.hasNext()) {
@@ -216,7 +218,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Read and randomly select a word from a loaded file with a list of hangman words
 	 */
 	public String getSecretWord() {
-		guessesLeft = hangmanDrawing.length; // initializes the tracker for the number of guesses you have at start
+		guessesLeft = HANGMAN_DRAWING.length; // initializes the tracker for the number of guesses you have at start
 		textFieldGuessesLeft.setText(String.valueOf(guessesLeft)); 
 		
 		maskingAsterisk = new String(new char[letterTextFields.length]).replace("\0", "*");
@@ -252,7 +254,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		// log the hangman word
 		logger_.info(secretWord);
-		
 		count = 0;
 	}
 	
@@ -324,10 +325,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			
 			// prevents player from loosing health if the same wrong letter was pressed more than once
 			if (guess != previousGuess) {
-				hangmanTextArea.append(hangmanDrawing[count++]);
+				hangmanTextArea.append(HANGMAN_DRAWING[count++]);
 				textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));
 				
-				if (count == hangmanDrawing.length) {
+				if (count == HANGMAN_DRAWING.length) {
 					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
 					playAgain();
 				}

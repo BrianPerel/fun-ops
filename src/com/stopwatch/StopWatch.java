@@ -1,4 +1,4 @@
-package stopwatch;
+package com.stopwatch;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

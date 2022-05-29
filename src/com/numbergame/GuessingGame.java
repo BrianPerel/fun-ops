@@ -1,4 +1,4 @@
-package numbergame;
+package com.numbergame;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,12 +26,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.text.AbstractDocument;
 
-import stopwatch.StopWatch;
-import stopwatch.StopWatch.StopWatchPanel;
+import com.stopwatch.StopWatch;
+import com.stopwatch.StopWatch.StopWatchPanel;
 
 /**
  * A guessing number game in which the user receives a randomly generated secret
@@ -56,6 +55,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JTextField textFieldRandomNumber;
 	protected JButton btnPlayAgain; 
 	protected JButton btnGuess;
+	private StopWatch stopWatch;
 	
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
 	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
@@ -114,8 +114,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblNumberIs.setBounds(302, 80, 102, 37);
 		frame.getContentPane().add(lblNumberIs);
 
-		randomNumber = randomGenerator.nextInt(89) + 10;
-		textFieldRandomNumber = new JTextField(Integer.toString(randomNumber));
+		textFieldRandomNumber = new JTextField(Integer.toString(randomGenerator.nextInt(89) + 10));
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);
 		textFieldRandomNumber.setBounds(400, 90, 34, 20);
@@ -162,13 +161,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		
 		StopWatchPanel.isRedFontEnabled = true;
 		
-		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
 		// setup stop watch implementation for guessing game
-		StopWatch stopWatch = new StopWatch(300, 110); // launch the stop watch
+		stopWatch = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
-		stopWatch.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		stopWatch.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		stopWatch.setLocation(frame.getX() + frame.getWidth(), frame.getY());
 
 		// hide the stop watch buttons, as we won't be using them here
@@ -178,6 +176,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// timer auto starts as soon as game board appears
 		StopWatchPanel.btnStart.doClick();
+		
+		textFieldGuessTheNumber.requestFocus();
+		
+		frame.setVisible(true);
 	}
 
 	@Override
@@ -188,8 +190,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnStop.doClick();
 
 		// if the timer is greater than 10 seconds when the user guesses
-		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !source.equals(btnPlayAgain)
-				&& !closeTimerCheckBox.isSelected()) {
+		if (StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !(source.equals(btnPlayAgain)
+				|| closeTimerCheckBox.isSelected())) {
 			isTimeout = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time.");
@@ -206,9 +208,15 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		StopWatchPanel.btnStart.setEnabled(!closeTimerCheckBox.isSelected());
 		StopWatchPanel.watch.setEnabled(!closeTimerCheckBox.isSelected());
+		
+		if(closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
+			stopWatch.setVisible(true);		
+		}
 
 		// start the timer from 0
-		StopWatchPanel.btnStart.doClick();
+		if(!closeTimerCheckBox.isSelected()) {
+			StopWatchPanel.btnStart.doClick();
+		}
 
 		// set guess text field to blank
 		textFieldGuessTheNumber.setText("");
@@ -223,13 +231,15 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		Object source = e.getSource();
-
+		
 		boolean isTimeout = false;
-		StopWatchPanel.btnStop.doClick();
+		StopWatchPanel.btnReset.doClick();
 
 		// if the timer is greater than 10 seconds when the user guesses
 		if (e.getKeyChar() == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
-				&& !source.equals(btnPlayAgain) && !closeTimerCheckBox.isSelected()) {
+				&& !(source.equals(btnPlayAgain) || closeTimerCheckBox.isSelected())) {
+			
+			StopWatchPanel.btnStop.doClick();
 
 			isTimeout = true;
 			playSound(FAIL_SOUND);
@@ -242,23 +252,35 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		performGuiButtonAction(source, isTimeout);
 
-		// reset the timer
-		StopWatchPanel.btnReset.doClick();
+		if(e.getKeyChar() == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
+			StopWatchPanel.btnStop.doClick();
+			
+			if(StopWatchPanel.watch.isEnabled()) {
+				StopWatchPanel.watch.setEnabled(false);
+				closeTimerCheckBox.setSelected(true);
+			}
+			else {
+				StopWatchPanel.watch.setEnabled(true);
+				closeTimerCheckBox.setSelected(false);
+				
+				// start the timer from 0
+				StopWatchPanel.btnStart.doClick();
+			}
+			
+			// set guess text field to blank
+			textFieldGuessTheNumber.setText("");
 
-		if (e.getKeyChar() == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
-			StopWatchPanel.btnStart.setEnabled(false);
-			closeTimerCheckBox.setEnabled(false);
-			StopWatchPanel.watch.setEnabled(false);
-		} else if (closeTimerCheckBox.isEnabled()) {
-			// start the timer from 0
+			// forces focus to jump from button pressed to guessing text field again
+			textFieldGuessTheNumber.requestFocus();
+		} 
+		
+		if(closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
+			stopWatch.setVisible(true);		
+		}
+		
+		if(!closeTimerCheckBox.isSelected()) {
 			StopWatchPanel.btnStart.doClick();
 		}
-
-		// set guess text field to blank
-		textFieldGuessTheNumber.setText("");
-
-		// forces focus to jump from button pressed to guessing text field again
-		textFieldGuessTheNumber.requestFocus();
 	}
 
 	/**
@@ -269,6 +291,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 *                    seconds
 	 */
 	public void performGuiButtonAction(Object source, boolean isTimeout) {
+		StopWatchPanel.btnReset.doClick();
+		
 		// if guess btn is pushed and input is numeric data
 		if(source == btnGuess) {
 			if (textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {

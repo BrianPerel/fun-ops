@@ -1,4 +1,4 @@
-package pingpong;
+package com.pingpong;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -146,7 +146,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			gameScore.setPlayerTwoScore(gameScore.getPlayerTwoScore() + 1);
 			
 			try {
-				TimeUnit.MILLISECONDS.sleep(300);
+				TimeUnit.MILLISECONDS.sleep(300L);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -158,7 +158,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			gameScore.setPlayerOneScore(gameScore.getPlayerOneScore() + 1);
 			
 			try {
-				TimeUnit.MILLISECONDS.sleep(300);
+				TimeUnit.MILLISECONDS.sleep(300L);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
@@ -183,7 +183,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	 */
 	public void run() {
 		try {
-			TimeUnit.MILLISECONDS.sleep(300);
+			TimeUnit.MILLISECONDS.sleep(300L);
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 			Thread.currentThread().interrupt();

@@ -1,4 +1,4 @@
-package encryption;
+package com.encryption;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -135,7 +135,7 @@ public class EncryptDecryptGui implements ActionListener {
 		
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
-			if(!fileToLoad.isEmpty() && !isFileLoaded) {
+			if(!(fileToLoad.isEmpty() || isFileLoaded)) {
 				loadFileData(fileToLoad);
 				return; // prevent below statements from executing if we fall to here
 			}

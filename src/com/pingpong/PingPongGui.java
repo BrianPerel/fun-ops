@@ -1,4 +1,4 @@
-package pingpong;
+package com.pingpong;
 
 import java.awt.Color;
 import java.awt.Cursor;

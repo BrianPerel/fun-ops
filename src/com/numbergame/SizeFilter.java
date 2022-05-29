@@ -1,4 +1,4 @@
-package numbergame;
+package com.numbergame;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -21,16 +21,9 @@ public class SizeFilter extends DocumentFilter {
 	@Override
 	public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 			throws BadLocationException {
-		if ((fb.getDocument().getLength() + text.length() - length) <= maxChars && text.matches("^[0-9]+[.]?[0-9]{0,1}$")) {
+		if ((fb.getDocument().getLength() + text.length() - length) <= maxChars && !text.matches("[a-zA-Z]+")
+				&& !text.matches("[^a-zA-Z0-9]+")) {
 			super.replace(fb, offset, length, text, attrs);
-		}
-	}
-
-	@Override
-	public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr)
-			throws BadLocationException {
-		if ((fb.getDocument().getLength() + text.length()) <= maxChars && text.matches("^[0-9]+[.]?[0-9]{0,1}$")) {
-			super.insertString(fb, offset, text, attr);
 		}
 	}
 }
