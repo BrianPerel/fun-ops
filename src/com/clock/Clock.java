@@ -68,7 +68,7 @@ public class Clock implements ActionListener {
 		JMenu menu = new JMenu("Alarm");
 		menu.setFont(custFont);
 		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/keyboard mnemonic
-		menu.setDisplayedMnemonicIndex(-1);
+		menu.setDisplayedMnemonicIndex(-1); // force program to not decorate (don't underline) mnemonic 
 		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menu.setToolTipText("Sets an alarm time");
 		

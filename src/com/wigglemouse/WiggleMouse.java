@@ -31,13 +31,13 @@ public class WiggleMouse {
 	private long waitTime = 30L;
 	private final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
 	private final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
-
+	
 	/**
 	 * Launch the application.
 	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
 	 * @throws AWTException 
 	 */
-	public static void main(String[] args) throws InterruptedException, AWTException {		
+	public static void main(String[] args) throws InterruptedException, AWTException {	
 		new WiggleMouse();
 	}
 
@@ -51,7 +51,7 @@ public class WiggleMouse {
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
@@ -86,7 +86,7 @@ public class WiggleMouse {
 		
 	    frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-	
+		
 		moveMouse(new Robot());
 	}
 	
@@ -96,16 +96,16 @@ public class WiggleMouse {
 	public long updateIdleTime() {
 		switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
 		case "1/2 minute":
-			return 30;
+			return 30L;
 
 		case "1 minute":
-			return 60;
+			return 60L;
 
 		case "3 minutes":
-			return 180;
+			return 180L;
 
 		case "5 minutes":
-			return 300;
+			return 300L;
 		
 		default:
 			return waitTime;
@@ -126,10 +126,11 @@ public class WiggleMouse {
 			setMouseLocation();
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle Mouse action
-			robot.mouseMove(xCoordinate, yCoordinate++);
-			TimeUnit.MILLISECONDS.sleep(50L);
-			robot.mouseMove(xCoordinate, yCoordinate--);
-			TimeUnit.MILLISECONDS.sleep(50L);
+			for(int x = 0; x < 2; x++) {
+				robot.mouseMove(xCoordinate, x == 0 ? yCoordinate++ : yCoordinate--);
+				TimeUnit.MILLISECONDS.sleep(50L);
+			}
+			
 			robot.mouseMove(xCoordinate, yCoordinate);
 		}
 	}

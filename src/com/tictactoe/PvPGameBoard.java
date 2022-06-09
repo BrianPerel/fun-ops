@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -19,6 +20,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 
 /**
  * Implementation for 3x3 tic tac toe game board. Initiates the game. Player 1 will go first.<br>
@@ -209,15 +211,13 @@ public class PvPGameBoard implements ActionListener {
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
-		// if buttons 1, 4, 7 are triggered - 3 in a row across the middle row 
-		else if (tile[1].equals(playerLetter) && tile[4].equals(playerLetter) && tile[7].equals(playerLetter)) {
-			logWinner(playerLetter);
-			displayWinnersPattern(gameBoardTiles[1], gameBoardTiles[4], gameBoardTiles[7]);
-			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
-		} 
+		checkFurtherForPattern(playerLetter);
+	}
+
+	public void checkFurtherForPattern(String playerLetter) {
 		
 		// if buttons 2, 5, 8 are triggered - 3 in a row across the bottom row
-		else if (tile[2].equals(playerLetter) && tile[5].equals(playerLetter) && tile[8].equals(playerLetter)) {
+		if (tile[2].equals(playerLetter) && tile[5].equals(playerLetter) && tile[8].equals(playerLetter)) {
 			logWinner(playerLetter);
 			displayWinnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
@@ -263,7 +263,7 @@ public class PvPGameBoard implements ActionListener {
 		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
-		
+	
 		checkForPattern(PLAYER_ONE_LETTER);
 		checkForPattern(PLAYER_TWO_LETTER);
 		
@@ -279,14 +279,8 @@ public class PvPGameBoard implements ActionListener {
 	 * Checks if game board is full, displays game over - tie (draw)
 	 */
 	public boolean isBoardFull() {
-		for(JButton x : gameBoardTiles) {
-			// return false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
-			if (x.getText().isEmpty()) {
-				return false;
-			}
-		}
-		
-		return true;
+		// return false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
+		return Arrays.stream(gameBoardTiles).noneMatch(x -> x.getText().isEmpty());
 	}
 
 	/**
@@ -304,6 +298,7 @@ public class PvPGameBoard implements ActionListener {
 		
 		for (JButton button : highlightWinnersTiles) {
 			button.setBackground(GREEN);
+			button.setBorder(new LineBorder(Color.BLUE, 3, true));
 			
 			// this will prevent the program from changing colors when you hover after winning
 			button.addMouseListener(new java.awt.event.MouseAdapter() {

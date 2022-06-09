@@ -3,32 +3,32 @@ Manifest-Version: 1.0
 Created-By: Brian Perel
 Class-Path: lib/log4j-1.2.17.jar
 
-Main-Class: calculator.MyCalculatorGui
+Main-Class: com.calculator.MyCalculatorGui
 
-Main-Class: stopwatch.StopWatch
+Main-Class: com.stopwatch.StopWatch
 
-Main-Class: hangman.Hangman
+Main-Class: com.hangman.Hangman
 Resource: res/graphics/bg-image-hangman
 
-Main-Class: wigglemouse.WiggleMouse 
+Main-Class: com.wigglemouse.WiggleMouse 
 Resource: res/graphics/image-mouse-shake
 
-Main-Class: numberguessing.GuessingGame
+Main-Class: com.numberguessing.GuessingGame
 Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
 Resource4: res/graphics/bg-image-guessing-figure
 Resource5: res/graphics/bg-image-guess
 
-Main-Class: numberguessing.AdvancedGuessingGame
+Main-Class: com.numberguessing.AdvancedGuessingGame
 
-Main-Class: encryption.EncryptDecryptGui
+Main-Class: com.encryption.EncryptDecryptGui
 Resource: res/graphics/bg-image-encryption
 
-Main-Class: tictactoe.StartMenu
+Main-Class: com.tictactoe.StartMenu
 Resource: res/graphics/bg-image-tac
 
-Main-Class: clock.Clock
+Main-Class: com.clock.Clock
 Resource: res/fonts/clock-font.tff
 
-Main-Class: pingpong.PingPongGUI
+Main-Class: com.pingpong.PingPongGUI

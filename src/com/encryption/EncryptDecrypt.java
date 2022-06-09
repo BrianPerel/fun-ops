@@ -139,12 +139,7 @@ public class EncryptDecrypt {
 				}
 			}
 		}
-		
+				
 		return unmaskedData;
-	}
-
-	@Override
-	public String toString() {
-		return data.toString();
 	}
 }

@@ -36,8 +36,6 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	public GameWinner(String argGameResult) {
 		gameResult = argGameResult;
 		
-		JLabel lblGameResult = new JLabel();
-		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
 		f2 = new JFrame("Tic Tac Toe");
@@ -50,8 +48,6 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		    }
 		});
 		
-		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
-		
 		f2.setResizable(false);
 		f2.setSize(315, 167);
 		f2.getContentPane().setLayout(null);
@@ -59,9 +55,9 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
 		// 2 '!' at the end of the string indicates the result comes from tictactoe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
-		String message = argGameResult.equals(GAME_OVER)
-				|| argGameResult.equals(GAME_OVER + "!") ? argGameResult : (argGameResult + " wins!");
-		lblGameResult.setText(message);
+		JLabel lblGameResult = new JLabel(argGameResult.equals(GAME_OVER)
+				|| argGameResult.equals(GAME_OVER + "!") ? argGameResult : (argGameResult + " wins!"));
+		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
 		f2.getContentPane().add(lblGameResult);
@@ -98,20 +94,16 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		f2.dispose();
-
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+			f2.dispose();
 			determineEndGameAction(e.getSource());
-		}
-		else {
-			System.exit(0); // if any other key is pressed here, game ends
 		}
 	}
 
 	public void determineEndGameAction(Object source) {
 		if (source == btnPlayAgain) {
 			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-				new PvEGameBoard(false, false, true).shouldRun = true;				
+				new CvPGameBoard(false, false, true).shouldRun = true;				
 			}
 			else {
 				PvPGameBoard.f.dispose();

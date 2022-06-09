@@ -28,6 +28,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -41,10 +42,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFormattedTextField[] letterTextFields;
 	private JTextArea hangmanTextArea;
 	private JTextField textFieldGuessesLeft;
+	private JTextField textFieldGameScore;
 	private JTextField textFieldHangmanWord;
-	private String secretWord;
 	private String maskingAsterisk;
+	private JLabel lblGameScore;
+	private String secretWord;
 	private int guessesLeft;
+	private int gameScore;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line. Using an arraylist because this will allow us to modify our hangman 
@@ -69,15 +73,16 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	
 	// store hangman drawing in an array, each part is to be displayed is in a separate
 	// space of the array
-	private final String[] HANGMAN_DRAWING = { "  ___________",
-											   "\n |         |",
-											   "\n |         O",
-											   "\n |         | ",
+	private final String[] HANGMAN_DRAWING = { "  ____________",
+											   "\n |  /      |",
+											   "\n | /       O",
+											   "\n |/        | ",
 											   "\n |        /|\\",
 											   "\n |       / | \\",
 											   "\n |         |",
 											   "\n |        / \\",
-											   "\n |       /   \\ \n |" };
+											   "\n |       /   \\",
+											   "\n |____________" };
 	
 	public static void main(String[] args) {
 		new Hangman();
@@ -98,12 +103,13 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextArea = new JTextArea();
 		hangmanTextArea.setBackground(Color.LIGHT_GRAY);
 		hangmanTextArea.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		hangmanTextArea.setBounds(59, 21, 142, 239);
+		hangmanTextArea.setBounds(59, 21, 150, 239);
 		frame.getContentPane().add(hangmanTextArea);
 		hangmanTextArea.setEditable(false);
 		hangmanTextArea.setFocusable(false);
 		hangmanTextArea.setToolTipText("Your health");
 		hangmanTextArea.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+		hangmanTextArea.setForeground(Color.BLUE);
 		
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
 		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
@@ -156,6 +162,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[1].setBounds(333, 186, 17, 20);
 		letterTextFields[2].setBounds(360, 186, 17, 20);
 		letterTextFields[3].setBounds(387, 186, 17, 20);
+		
+		lblGameScore = new JLabel("Total Score:");
+		lblGameScore.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
+		lblGameScore.setForeground(WHITE);
+		lblGameScore.setBounds(370, 44, 183, 430);
+		frame.getContentPane().add(lblGameScore);
+		
+		textFieldGameScore = new JTextField("0");
+		textFieldGameScore.setEditable(false);
+		textFieldGameScore.setFont(new Font("MV Boli", Font.BOLD, 15));
+		textFieldGameScore.setBounds(465, 250, 40, 20);
+		frame.getContentPane().add(textFieldGameScore);
+		textFieldGameScore.setFocusable(false);
+		textFieldGameScore.setBackground(Color.GRAY);
 		
 		obtainRandomWords();
 		secretWord = getSecretWord();
@@ -252,6 +272,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			secretWord = getSecretWord();
 		}
 		
+		textFieldGuessesLeft.setBorder(new LineBorder(Color.BLACK, 0, true));
+		
 		// log the hangman word
 		logger_.info(secretWord);
 		count = 0;
@@ -282,6 +304,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(Integer.parseInt(textFieldGuessesLeft.getText()) <= 3) {
+			textFieldGuessesLeft.setBorder(new LineBorder(Color.RED, 2, true));
+		}
+		
 		// accept only letters from user
 		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
 			analyzeGuess(Character.toUpperCase(e.getKeyChar()));
@@ -289,6 +316,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// if all letters are found
 			if (w && o && r && d) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The secret word is: " + secretWord);
+				textFieldGameScore.setText(Integer.toString(++gameScore));
 				playAgain();	
 			}
 		}
@@ -330,6 +358,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				
 				if (count == HANGMAN_DRAWING.length) {
 					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
+					
+					if(!textFieldGameScore.getText().equals("0")) {
+						textFieldGameScore.setText(Integer.toString(--gameScore));
+					}
 					playAgain();
 				}
 			} 

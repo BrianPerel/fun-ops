@@ -142,7 +142,6 @@ public class StopWatch extends JFrame {
 			}
 
 			public void eventHandler(Object source, char keyChar) {
-
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}

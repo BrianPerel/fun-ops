@@ -107,36 +107,35 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	public void checkCollision() {
 
 		// bounce ball off top & bottom window edges
-		double getyVelocityOfBall = pongBall.getyVelocityOfBall(), getxVelocityOfBall = pongBall.getxVelocityOfBall();
-		
 		if (pongBall.y <= 0) {
-			pongBall.setYDirection(-getyVelocityOfBall);
+			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
 		}
 
 		if (pongBall.y >= GAME_HEIGHT - BALL_DIAMETER) {
-			pongBall.setYDirection(-getyVelocityOfBall);
+			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
 		}
 
 		// bounce ball off paddles
 		if (pongBall.intersects(paddleOne)) {
-			pongBall.setxVelocityOfBall(Math.abs(getxVelocityOfBall));
-			pongBall.setxVelocityOfBall(getxVelocityOfBall + 0.2); // optional for more difficulty - increases the balls speed
+			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
+			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 0.2); // optional for more difficulty - increases the balls speed
 			
-			pongBall.setyVelocityOfBall((getyVelocityOfBall > 0) ? getyVelocityOfBall + 0.2 : getyVelocityOfBall - 1); // optional for more difficulty
+			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 0.2 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
 
-			pongBall.setXDirection(getxVelocityOfBall);
-			pongBall.setYDirection(getyVelocityOfBall);
+			pongBall.setXDirection(pongBall.getxVelocityOfBall());
+			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
 		if (pongBall.intersects(paddleTwo)) {
-			pongBall.setxVelocityOfBall(Math.abs(getxVelocityOfBall));
-			pongBall.setxVelocityOfBall(getxVelocityOfBall + 1); // optional for more difficulty
+			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
+			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty
 
-			pongBall.setyVelocityOfBall((getyVelocityOfBall > 0) ? getyVelocityOfBall + 1 : getyVelocityOfBall - 1); // optional for more difficulty
+			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 1 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
 			
-			pongBall.setXDirection(-getxVelocityOfBall);
-			pongBall.setYDirection(getyVelocityOfBall);
+			pongBall.setXDirection(-pongBall.getxVelocityOfBall());
+			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
+
 
 		edgeChecker(paddleOne);
 		edgeChecker(paddleTwo);

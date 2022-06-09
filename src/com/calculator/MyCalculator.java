@@ -85,7 +85,7 @@ public class MyCalculator {
 	 * Calculator subtraction operation
 	 * @return the difference
 	 */
-	public static BigDecimal subtract() {		
+	public static BigDecimal subtract() {	
 		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
 			answer = answer.subtract(bigDecimalNumbers.get(i));
 		}

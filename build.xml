@@ -64,14 +64,14 @@
 	<!-- targets for calculator -->
 	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/calculator" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="create associated .jar file for the specified application">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="calculator.MyCalculatorGui" />
+				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
 			</manifest>
 		</jar>
 	</target>
@@ -98,14 +98,14 @@
 	<!-- targets for encryption program -->
 	<target name="compile-encryption program" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/encryption" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-encryption program" depends="compile-encryption program" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="encryption.EncryptDecryptGui" />
+				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption" />
 			</manifest>
 		</jar>
@@ -152,14 +152,14 @@
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/hangman" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="hangman.Hangman" />
+				<attribute name="Main-Class" value="com.hangman.Hangman" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman" />
 			</manifest>
 		</jar>
@@ -221,15 +221,15 @@
 	<!-- targets for guessing game and advanced guessing game -->
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
-		<javac includeantruntime="false" srcdir="${src.dir}/numbergame" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/numbergame" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="numbergame.GuessingGame" />
+				<attribute name="Main-Class" value="com.numbergame.GuessingGame" />
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
@@ -247,7 +247,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="numbergame.AdvancedGuessingGame" />
+				<attribute name="Main-Class" value="com.numbergame.AdvancedGuessingGame" />
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
@@ -264,14 +264,14 @@
 	<!-- targets for ping pong game -->
 	<target name="compile-pong" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/pingpong" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-pong" depends="compile-pong" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/pong-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="pingpong.PingPongGui" />
+				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
 			</manifest>
 		</jar>
 	</target>
@@ -334,14 +334,14 @@
 	<!-- targets for stopwatch -->
 	<target name="compile-stopwatch" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/stopwatch" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/stopwatch-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="stopwatch.StopWatch" />
+				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
 			</manifest>
 		</jar>
 	</target>
@@ -353,14 +353,14 @@
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/tictactoe" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="tictactoe.StartMenu" />
+				<attribute name="Main-Class" value="com.tictactoe.StartMenu" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac" />
 			</manifest>
 		</jar>
@@ -405,14 +405,14 @@
 	<!-- targets for wiggle mouse -->
 	<target name="compile-wiggle mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/wigglemouse" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="wigglemouse.WiggleMouse" />
+				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
 				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake" />
 			</manifest>
 		</jar>
@@ -492,14 +492,14 @@
 	<!-- targets for clock -->
 	<target name="compile-clock" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/clock" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" compiler="modern" />
 	</target>
 
 	<target name="jar-clock" depends="compile-clock" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/clock-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="clock.Clock" />
+				<attribute name="Main-Class" value="com.clock.Clock" />
 				<attribute name="Resource" value="res/fonts/clock-font.tff" />
 			</manifest>
 		</jar>

@@ -74,7 +74,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		textFieldUserInput.setEditable(false);
 		textFieldUserInput.addKeyListener(this);
 
-		JButton[] buttons = new JButton[25];
+		JButton[] buttons = new JButton[24];
 		buttons[0] = new JButton("1/x");
 		buttons[1] = new JButton("CE");
 		buttons[2] = new JButton("C");
@@ -95,7 +95,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		buttons[21] = new JButton("+/-");
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
-		buttons[24] = new JButton(); // fixes an issue caused when commenting out 		frame.getContentPane().setLayout(null);
+		// buttons[24] = new JButton(); // fixes an issue caused when commenting out 		frame.getContentPane().setLayout(null);
 		
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
@@ -103,6 +103,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			frame.getContentPane().add(button);
 			button.addActionListener(this);
 			button.addKeyListener(this);
+			button.setSize(80, 40);
 			button.setHorizontalAlignment(SwingConstants.CENTER);
 			// below code is used to create the button hover effect
 			button.addMouseListener(new MouseAdapter() {
@@ -118,32 +119,33 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			});
 		}
 		
-		buttons[3].setFont(new Font("SansSerif", Font.BOLD, 12)); // need to custom add default font details for the backspace button, as the font details applied from above prevent the backspace symbol from being displayed
-
-		buttons[0].setBounds(31, 141, 80, 40);
-		buttons[1].setBounds(110, 100, 80, 40);
-		buttons[2].setBounds(189, 100, 80, 40);
-		buttons[3].setBounds(268, 100, 80, 40);
-		buttons[4].setBounds(31, 100, 80, 40);
-		buttons[5].setBounds(110, 141, 80, 40);
-		buttons[6].setBounds(189, 141, 80, 40);
-		buttons[7].setBounds(268, 141, 80, 40);
-		buttons[8].setBounds(268, 182, 80, 40);
-		buttons[9].setBounds(110, 304, 80, 40);
-		buttons[10].setBounds(31, 263, 80, 40);
-		buttons[11].setBounds(110, 263, 80, 40);
-		buttons[12].setBounds(189, 263, 80, 40);
-		buttons[13].setBounds(31, 222, 80, 40);
-		buttons[14].setBounds(110, 222, 80, 40);
-		buttons[15].setBounds(189, 222, 80, 40);
-		buttons[16].setBounds(31, 182, 80, 40);
-		buttons[17].setBounds(110, 182, 80, 40);
-		buttons[18].setBounds(189, 182, 80, 40);
-		buttons[19].setBounds(268, 222, 80, 40);
-		buttons[20].setBounds(268, 263, 80, 40);
-		buttons[21].setBounds(31, 304, 80, 40);
-		buttons[22].setBounds(189, 304, 80, 40);
-		buttons[23].setBounds(268, 304, 80, 40);		
+		// need to custom add default font details for the backspace button, as the font details applied from above prevent the backspace symbol from being displayed
+		buttons[3].setFont(new Font("SansSerif", Font.BOLD, 12));
+		
+		buttons[0].setLocation(31, 141);
+		buttons[1].setLocation(110, 100);
+		buttons[2].setLocation(189, 100);
+		buttons[3].setLocation(268, 100);
+		buttons[4].setLocation(31, 100);
+		buttons[5].setLocation(110, 141);
+		buttons[6].setLocation(189, 141);
+		buttons[7].setLocation(268, 141);
+		buttons[8].setLocation(268, 182);
+		buttons[9].setLocation(110, 304);
+		buttons[10].setLocation(31, 263);
+		buttons[11].setLocation(110, 263);
+		buttons[12].setLocation(189, 263);
+		buttons[13].setLocation(31, 222);
+		buttons[14].setLocation(110, 222);
+		buttons[15].setLocation(189, 222);
+		buttons[16].setLocation(31, 182);
+		buttons[17].setLocation(110, 182);
+		buttons[18].setLocation(189, 182);
+		buttons[19].setLocation(268, 222);
+		buttons[20].setLocation(268, 263);
+		buttons[21].setLocation(31, 304);
+		buttons[22].setLocation(189, 304);
+		buttons[23].setLocation(268, 304);		
 		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -157,53 +159,60 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {		
 		removeAutoDisplayZero();
-
+		
+		if(textFieldUserInput.getText().trim().length() <= 29) {
+			switch(ae.getActionCommand()) {
+			case "0":
+				// if 0 button is clicked and the main number entry textField box doesn't have the auto display 0
+				if (!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO)) {
+					textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
+					hasUserEnteredZero = true;
+				}
+				break;
+	
+			case "1":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("1"));
+				break;
+	
+			case "2":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("2"));
+				break;
+	
+			case "3":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("3"));
+				break;
+	
+			case "4":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("4"));
+				break;
+	
+			case "5":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("5"));
+				break;
+	
+			case "6":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("6"));
+				break;
+	
+			case "7":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("7"));
+				break;
+	
+			case "8":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("8"));
+				break;
+	
+			case "9":
+				textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
+				break;
+			
+			default:
+				break;
+			}
+		}
+		
 		// actions for numbers 0-9 buttons and all calculator operators/symbol buttons
 		switch (ae.getActionCommand()) {
-		case "0":
-			// if 0 button is clicked and the main number entry textField box doesn't have the auto display 0
-			if (!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO)) {
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
-				hasUserEnteredZero = true;
-			}
-			break;
-
-		case "1":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("1"));
-			break;
-
-		case "2":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("2"));
-			break;
-
-		case "3":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("3"));
-			break;
-
-		case "4":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("4"));
-			break;
-
-		case "5":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("5"));
-			break;
-
-		case "6":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("6"));
-			break;
-
-		case "7":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("7"));
-			break;
-
-		case "8":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("8"));
-			break;
-
-		case "9":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
-			break;
-
 		// actions for symbol buttons
 		case "*":
 			setNumberText();
@@ -288,7 +297,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
-		// x\u00B2 -> X^2 symbol
+		// x\u00B2 = X^2 symbol
 		case "x\u00B2":		
 			if(!(textFieldUserInput.getText().isBlank() || textFieldUserInput.getText().equals("0"))) {
 				double valueSquared = Math.pow(Double.valueOf(textFieldUserInput.getText()), 2);
@@ -308,7 +317,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
-		// 2\u221Ax -> 2 square root x symbol
+		// 2\u221Ax = 2 square root x symbol
 		case "2\u221Ax":	
 			if(!(textFieldUserInput.getText().isBlank() || textFieldUserInput.getText().equals("0"))) {
 				double valueSquareRooted = Math.sqrt(Double.valueOf(textFieldUserInput.getText()));
@@ -364,10 +373,9 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent e) {
 		char keyChar = e.getKeyChar();
 		removeAutoDisplayZero();
-
-		// actions for numbers 0-9 buttons. No need for default case since all buttons
-		// are utilized as a case
-		switch (keyChar) {
+		
+		if(textFieldUserInput.getText().trim().length() <= 29) {
+			switch(keyChar) {
 			case KeyEvent.VK_0: 
 				textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
 				hasUserEnteredZero = true;
@@ -408,7 +416,15 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			case KeyEvent.VK_9:
 				textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
 				break;
-	
+				
+			default:
+				break;
+			}
+		}
+
+		// actions for numbers 0-9 buttons. No need for default case since all buttons
+		// are utilized as a case
+		switch (keyChar) {
 			// actions for symbol buttons
 				
 			case KeyEvent.VK_SLASH: // VK_SLASH indicates '/' or division
@@ -454,7 +470,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				break;
 	
 			default:
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
+//				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 				break;
 		}
 

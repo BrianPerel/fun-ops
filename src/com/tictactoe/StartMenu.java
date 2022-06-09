@@ -120,7 +120,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	public void eventHandler(Object source, char keyChar) {
 		if (keyChar == KeyEvent.VK_ENTER && source == playAgainstComputerRadioButton) {
 			frame.dispose();
-			new PvEGameBoard(true, true, false);
+			new CvPGameBoard(true, true, false);
 			return;
 		}
 		

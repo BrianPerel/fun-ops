@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  * @author Brian Perel
  *
  */
-public class PvEGameBoard extends PvPGameBoard implements ActionListener {
+public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	private int randomCell;
 	private int[] freeEmptyTiles;
@@ -35,7 +36,7 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public PvEGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 		setPlayerOnesName(StartMenu.PLAYER);
 		setPlayerTwosName(StartMenu.COMPUTER);
@@ -58,7 +59,6 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 				
 		makeMoveComputer();
-		
 		freeEmptyTiles[randomCell] = -99; // prevents tic-tac-toe AI from choosing the same button it just clicked on it's next turn
 
 		// scans through the game board and performs all actions needed to complete a player's turn
@@ -117,7 +117,6 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 	}
 	
 	public void makeBestMove() {
-		
 		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
@@ -125,22 +124,16 @@ public class PvEGameBoard extends PvPGameBoard implements ActionListener {
 		do {	
 			int tmp = canPlayerWinInOneMove(tile);
 			
-			if(tmp != -99) {
-    			for(int x = 0; x < freeEmptyTiles.length; x++) {
-    				if(tmp == freeEmptyTiles[x]) {
-    					randomCell = tmp;
-    					break;
-    				}
-    			}
-    			
+			if(tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(x -> x == tmp)) {
+				// loop through int array if tmp variable is in the array (meaning it's a free empty cell tile number, then randomCell gets tmp's value
+    			randomCell = tmp;
     			break;
-			} 
+			}		
 			
 			// use random generator to choose an empty cell from the above array and click it
 			randomCell = freeEmptyTiles[randomGenerator.nextInt(freeEmptyTiles.length)];
 			
 		} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
-	
 	}
 	
 	/**
