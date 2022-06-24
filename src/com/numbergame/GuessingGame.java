@@ -49,6 +49,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JFrame frame;
 	protected JLabel lblGuess;
 	private JCheckBox closeTimerCheckBox;
+	protected static int maxChars = 2;
 	protected JFormattedTextField textFieldGuessTheNumber;
 	protected int totalGuessesMade;
 	protected int totalGameScore;
@@ -59,6 +60,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain; 
 	protected JButton btnGuess;
 	private StopWatch stopWatch;
+
 	
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
 	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
@@ -137,20 +139,18 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(btnGuess);
 		btnGuess.addKeyListener(this);
-
+		
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		// Use document filter to limit user entry box component input size
 		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new DocumentFilter() {
-			private int maxChars = 3;
-
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= maxChars && !text.matches("[a-zA-Z]+")
-						&& !text.matches("[^a-zA-Z0-9]+")) {
+				if ((fb.getDocument().getLength() + text.length() - length) <= GuessingGame.maxChars 
+						&& !text.matches("[a-zA-Z]+") && !text.matches("[^a-zA-Z0-9]+")) {
 					super.replace(fb, offset, length, text, attrs);
-				}
+				} 
 			}
 		});
 		frame.getContentPane().add(textFieldGuessTheNumber);

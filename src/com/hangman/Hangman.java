@@ -1,6 +1,8 @@
 package com.hangman;
 
 import static java.awt.Color.WHITE;
+import static java.awt.Font.BOLD;
+import static java.awt.Font.PLAIN;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,7 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -27,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
@@ -54,7 +59,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// specific line. Using an arraylist because this will allow us to modify our hangman 
 	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
 	// requiring us to change array size if we modify the txt file
-	private final ArrayList<String> wordList = new ArrayList<>();
+	private final List<String> wordList = new ArrayList<>();
 
 	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
 	private int count;
@@ -86,6 +91,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	
 	public static void main(String[] args) {
 		new Hangman();
+		UIManager.put("ToolTip.background", Color.ORANGE);
 	}
 	
 	/**
@@ -102,43 +108,44 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		hangmanTextArea = new JTextArea();
 		hangmanTextArea.setBackground(Color.LIGHT_GRAY);
-		hangmanTextArea.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		hangmanTextArea.setFont(new Font("Tahoma", PLAIN, 18));
 		hangmanTextArea.setBounds(59, 21, 150, 239);
 		frame.getContentPane().add(hangmanTextArea);
 		hangmanTextArea.setEditable(false);
 		hangmanTextArea.setFocusable(false);
 		hangmanTextArea.setToolTipText("Your health");
+		
 		hangmanTextArea.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 		hangmanTextArea.setForeground(Color.BLUE);
 		
 		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
-		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
+		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", PLAIN, 16));
 		lblHangmanTheme.setForeground(WHITE);
 		lblHangmanTheme.setBounds(270, 44, 183, 29);
 		frame.getContentPane().add(lblHangmanTheme);
 		
 		JLabel lblGuessesLeft = new JLabel("Guesses left:");
-		lblGuessesLeft.setFont(new Font("Century Schoolbook", Font.PLAIN, 16));
+		lblGuessesLeft.setFont(new Font("Century Schoolbook", PLAIN, 16));
 		lblGuessesLeft.setForeground(WHITE);
 		lblGuessesLeft.setBounds(280, 44, 183, 100);
 		frame.getContentPane().add(lblGuessesLeft);
 		
 		textFieldGuessesLeft = new JTextField();
 		textFieldGuessesLeft.setEditable(false);
-		textFieldGuessesLeft.setFont(new Font("MV Boli", Font.BOLD, 15));
+		textFieldGuessesLeft.setFont(new Font("MV Boli", BOLD, 15));
 		textFieldGuessesLeft.setBounds(375, 85, 40, 20);
 		frame.getContentPane().add(textFieldGuessesLeft);
 		textFieldGuessesLeft.setFocusable(false);
 		
 		JLabel lblWordText = new JLabel("WORD:");
-		lblWordText.setFont(new Font("Century Schoolbook", Font.PLAIN, 14));
+		lblWordText.setFont(new Font("Century Schoolbook", PLAIN, 14));
 		lblWordText.setForeground(WHITE);
 		lblWordText.setBounds(310, 102, 126, 72);
 		frame.getContentPane().add(lblWordText);
 		
 		textFieldHangmanWord = new JTextField("****");
 		textFieldHangmanWord.setEditable(false);
-		textFieldHangmanWord.setFont(new Font("MV Boli", Font.BOLD, 15));
+		textFieldHangmanWord.setFont(new Font("MV Boli", BOLD, 15));
 		textFieldHangmanWord.setBounds(368, 125, 50, 27);
 		frame.getContentPane().add(textFieldHangmanWord);
 		textFieldHangmanWord.setFocusable(false);
@@ -164,14 +171,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[3].setBounds(387, 186, 17, 20);
 		
 		lblGameScore = new JLabel("Total Score:");
-		lblGameScore.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
+		lblGameScore.setFont(new Font("Segoe UI Semibold", PLAIN, 16));
 		lblGameScore.setForeground(WHITE);
 		lblGameScore.setBounds(370, 44, 183, 430);
 		frame.getContentPane().add(lblGameScore);
 		
 		textFieldGameScore = new JTextField("0");
 		textFieldGameScore.setEditable(false);
-		textFieldGameScore.setFont(new Font("MV Boli", Font.BOLD, 15));
+		textFieldGameScore.setFont(new Font("MV Boli", BOLD, 15));
 		textFieldGameScore.setBounds(465, 250, 40, 20);
 		frame.getContentPane().add(textFieldGameScore);
 		textFieldGameScore.setFocusable(false);
@@ -190,14 +197,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Loads file and obtains a list of hangman words
 	 */
-	public void obtainRandomWords() {
+	public void obtainRandomWords() {		
 		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
 			// read file of random hangman words
 			while (myReader.hasNext()) {
 				// store every line in arraylist
 				// to attach a line number to each element
 				String word = myReader.next();
-				
+
 				// in case player loads a file with words that include lower case letters
 				for(int x = 0; x < word.length(); x++) {
 					// if a letter in the word is found to be lower case, make the whole word upper case 
@@ -304,7 +311,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
 		if(Integer.parseInt(textFieldGuessesLeft.getText()) <= 3) {
 			textFieldGuessesLeft.setBorder(new LineBorder(Color.RED, 2, true));
 		}
@@ -350,24 +356,28 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		} 
 		else if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
 				&& (guess != secretWord.charAt(1)) && (guess != secretWord.charAt(2))) {
-			
-			// prevents player from loosing health if the same wrong letter was pressed more than once
-			if (guess != previousGuess) {
-				hangmanTextArea.append(HANGMAN_DRAWING[count++]);
-				textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));
-				
-				if (count == HANGMAN_DRAWING.length) {
-					JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
-					
-					if(!textFieldGameScore.getText().equals("0")) {
-						textFieldGameScore.setText(Integer.toString(--gameScore));
-					}
-					playAgain();
-				}
-			} 
-			
-			previousGuess = guess;
+			handleIncorrectGuess(guess);
 		}
+	}
+
+	private void handleIncorrectGuess(char guess) {
+		// prevents player from loosing health if the same wrong letter was pressed more than once
+		if (guess != previousGuess) {
+			hangmanTextArea.append(HANGMAN_DRAWING[count++]);
+			textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));
+			
+			// handles game over checking and response
+			if (count == HANGMAN_DRAWING.length) {
+				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
+				
+				if(!textFieldGameScore.getText().equals("0")) {
+					textFieldGameScore.setText(Integer.toString(--gameScore));
+				}
+				
+				playAgain();
+			}
+		} 
+		previousGuess = guess;
 	}
 
 	/**
@@ -376,9 +386,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
-		for (JFormattedTextField textField : letterTextFields) {
-			textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		}
+		Arrays.stream(letterTextFields).forEach(textField -> textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)));
 		
 		for (int i = 0; i < letterTextFields.length; i++) {
 			if (letterTextFields[i].hasFocus()) {
@@ -394,7 +402,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * moment)
 	 */
 	@Override
-	public void focusLost(FocusEvent e) {
+	public void focusLost(FocusEvent e) {		
 		for (int x = 0; x < textFieldHasFocus.length; x++) {
 			if (!letterTextFields[x].hasFocus()) {
 				textFieldHasFocus[x] = false;

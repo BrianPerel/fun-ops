@@ -153,7 +153,7 @@ public class Clock implements ActionListener {
 
 	/**
 	 * Rings the alarm if conditions are met
-	 * @param time the alarm time
+	 * @param time the set alarm time
 	 */
 	public void ringAlarm(String time) {
 		// play alarm wav file
@@ -175,11 +175,11 @@ public class Clock implements ActionListener {
 		if (ae.getSource() == menuOption)  {  
 			alarmTime = JOptionPane.showInputDialog("Alarm time (in AM/PM format): ");
 						
-			// first 2 and 4 index of alarmTime string should be numbers only
-			if(alarmTime != null && !alarmTime.isBlank()) {
+			// index 0, 1, 3, and 4 of alarmTime string should be numbers only
+			if(alarmTime != null && !alarmTime.isBlank() && alarmTime.length() == 8) {
 				alarmTime = alarmTime.trim();
 
-				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+") && alarmTime.length() == 8
+				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
 						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);

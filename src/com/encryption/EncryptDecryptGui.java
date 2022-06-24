@@ -6,6 +6,8 @@ import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,18 +35,18 @@ import javax.swing.WindowConstants;
  * @author Brian Perel
  *
  */
-public class EncryptDecryptGui implements ActionListener {
+public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 	private JFrame frame;
 	private JButton btnBrowse;
-	private boolean isFileLoaded;
-	private static String fileName;
-	private EncryptDecrypt dataSet;
-	private JTextField textFieldLoading;
 	private StringBuilder data;
 	private JButton btnEncrypt;
 	private JButton btnDecrypt;
 	private JButton btnLoadFile;
+	private boolean isFileLoaded;
+	private static String fileName;
+	private EncryptDecrypt dataSet;
+	private JTextField textFieldLoading;
 	private static final String ERROR = "ERROR";
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of gui buttons
 	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of gui buttons when hovering 
@@ -77,11 +79,22 @@ public class EncryptDecryptGui implements ActionListener {
 		
 		btnLoadFile = buttons[0] = new JButton("Load file");
 		
-		textFieldLoading = new JTextField();
+		textFieldLoading = new JTextField("Enter file name...");
 		textFieldLoading.setBounds(148, 44, 112, 26);
+		textFieldLoading.setForeground(Color.GRAY);
 		frame.getContentPane().add(textFieldLoading);
 		textFieldLoading.setColumns(10);
-		
+		textFieldLoading.setToolTipText("Enter name of file to load");
+		textFieldLoading.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(textFieldLoading.getText().equals("Enter file name...")) {
+					textFieldLoading.setForeground(Color.BLACK);
+					textFieldLoading.setText("");
+				}
+			}
+		});
+
 		btnBrowse = buttons[1] = new JButton("Browse");
 		btnEncrypt = buttons[2] = new JButton("Encrypt");
 		btnDecrypt = buttons[3] = new JButton("Decrypt");
@@ -137,7 +150,7 @@ public class EncryptDecryptGui implements ActionListener {
 			// if filename isn't empty or file hasn't yet been loaded
 			if(!(fileToLoad.isEmpty() || isFileLoaded)) {
 				loadFileData(fileToLoad);
-				return; // prevent below statements from executing if we fall to here
+				return; // prevent below statements from executing if we fall into here
 			}
 			
 			Toolkit.getDefaultToolkit().beep();
@@ -215,6 +228,8 @@ public class EncryptDecryptGui implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
+			textFieldLoading.setEditable(false);
+			textFieldLoading.setBackground(Color.LIGHT_GRAY);
 			setFileName(file.toString());
 			dataSet = new EncryptDecrypt(data);
 			isFileLoaded = true;

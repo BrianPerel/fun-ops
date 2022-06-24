@@ -149,13 +149,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			new PvPGameBoard(true, true, false);
 		} 
 		// if one or both name textfields are empty
-		else if (nameOne.isEmpty() || nameTwo.isEmpty()) {
+		else if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		} 
 		// if first name field equals the second one
-		else if (nameOne.equalsIgnoreCase(nameTwo)) {
+		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
 					JOptionPane.ERROR_MESSAGE);

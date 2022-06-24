@@ -3,6 +3,7 @@ package com.calculator;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Performs all calculator operations. <br>
@@ -15,9 +16,8 @@ public class MyCalculator {
 
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to BigDecimal
-	protected static ArrayList<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point
-													// values
-	protected static ArrayList<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted
+	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point values
+	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted
 	
 	private static BigDecimal answer;
 	

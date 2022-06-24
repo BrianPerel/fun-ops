@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- * Implementation for tic tac toe game board. Initiates the game. Has functionality to support player vs computer game mode<br>
+ * Implementation for tic tac toe game board. Initiates the game and has functionality to support player vs computer game mode<br>
  * 
  * @author Brian Perel
  *
@@ -94,8 +94,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		if (shouldRun) {		
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
-			 * doClick's timeout gets checked inside the event thread, so it won't get released 
-			 * until the actionPerformed method exits (and so the event thread can continue its event processing)
+			 * doClick method's timeout gets checked inside the event thread, so it won't get released 
+			 * until the parent calling method (actionPerformed) exits (and so the event thread can continue its event processing)
 			 */
 			new Thread(() -> {
             	// check that the current turn is the computer's turn
@@ -109,9 +109,11 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 						ie.printStackTrace();
 						Thread.currentThread().interrupt();
 					}
-            		
- 					gameBoardTiles[randomCell].doClick();  	
- 				}
+            	
+            		// solution to doClick() not releasing button until the parent calling method
+            		// (actionPerformed) finishes: doClick was moved to another thread here
+ 					gameBoardTiles[randomCell].doClick(); 
+            	}
 			}).start();					
 		}
 	}
