@@ -22,12 +22,13 @@ import javax.swing.WindowConstants;
  */
 public class GameWinner extends KeyAdapter implements ActionListener {
 
+	private static final String GAME_OVER = "Game Over! It's a draw!";
+	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
+	
 	private JFrame f2;
 	private JButton btnQuit;
 	private String gameResult;
 	private JButton btnPlayAgain;
-	private static final String GAME_OVER = "Game Over! It's a draw!";
-	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
@@ -35,6 +36,8 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	 */
 	public GameWinner(String argGameResult) {
 		gameResult = argGameResult;
+		
+		PvPGameBoard.gameOver = true; // prevents code that switches gameboard name label from running
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
@@ -54,9 +57,10 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
-		// 2 '!' at the end of the string indicates the result comes from tictactoe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
+		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
 		JLabel lblGameResult = new JLabel(argGameResult.equals(GAME_OVER)
 				|| argGameResult.equals(GAME_OVER + "!") ? argGameResult : (argGameResult + " wins!"));
+		
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
@@ -82,25 +86,25 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnQuit.addKeyListener(this);
 		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		f2.setLocationRelativeTo(null);
+		f2.setLocation(StartMenu.frame.getX() + StartMenu.frame.getWidth(), StartMenu.frame.getY());
 		f2.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {	
-		f2.dispose();
 		determineEndGameAction(e.getSource());
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			f2.dispose();
 			determineEndGameAction(e.getSource());
 		}
 	}
 
 	public void determineEndGameAction(Object source) {
+		f2.dispose();
+		
 		if (source == btnPlayAgain) {
 			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
 				new CvPGameBoard(false, false, true).shouldRun = true;				

@@ -32,3 +32,4 @@ Main-Class: com.clock.Clock
 Resource: res/fonts/clock-font.tff
 
 Main-Class: com.pingpong.PingPongGUI
+Resource: res/graphics/restart-icon

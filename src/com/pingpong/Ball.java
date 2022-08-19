@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Ball extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
+	
 	private double xVelocityOfBall;
 	private double yVelocityOfBall;
 	private double initialBallSpeed = 2;

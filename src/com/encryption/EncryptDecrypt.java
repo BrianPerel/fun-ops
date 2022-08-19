@@ -57,6 +57,8 @@ public class EncryptDecrypt {
 				ioe.printStackTrace();
 			}
 			
+			EncryptDecryptGui.openFile();
+			
 			isEncrypted = true;			
 			return isEncrypted;
 		} 
@@ -85,6 +87,8 @@ public class EncryptDecrypt {
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
+			
+			EncryptDecryptGui.openFile();
 	
 			isEncrypted = false;
 			return !isEncrypted;

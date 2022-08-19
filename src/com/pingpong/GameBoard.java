@@ -20,6 +20,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	private static final long serialVersionUID = 1871004171456570750L;
 	private static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
 	private static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
+	
 	private Paddle paddleOne, paddleTwo;
 	private Ball pongBall;
 	private Score gameScore;

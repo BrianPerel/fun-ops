@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -45,11 +47,16 @@ import com.stopwatch.StopWatch.StopWatchPanel;
  *
  */
 public class GuessingGame extends KeyAdapter implements ActionListener {
+	
+	protected static int maxChars = 2;
+	protected static final String FAIL_SOUND = "res/audio/fail.wav";
+	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
+	protected static final SecureRandom randomGenerator = new SecureRandom(
+				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));	
 
 	protected JFrame frame;
 	protected JLabel lblGuess;
 	private JCheckBox closeTimerCheckBox;
-	protected static int maxChars = 2;
 	protected JFormattedTextField textFieldGuessTheNumber;
 	protected int totalGuessesMade;
 	protected int totalGameScore;
@@ -60,12 +67,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain; 
 	protected JButton btnGuess;
 	private StopWatch stopWatch;
-
-	
-	protected static final String FAIL_SOUND = "res/audio/fail.wav";
-	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
-	protected static final SecureRandom randomGenerator = new SecureRandom(
-				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));	
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -215,7 +216,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	public void eventHandler(Object source, char keyChar) {
 		boolean isTimeout = false;
 		StopWatchPanel.btnStop.doClick();
-
+		
 		// if the timer is greater than 10 seconds when the user guesses
 		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !(source.equals(btnPlayAgain)
 				|| closeTimerCheckBox.isSelected())) {

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -41,8 +42,11 @@ import javax.swing.text.MaskFormatter;
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
+	
+	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
+	private static final SecureRandom randomGenerator = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
-	private JFrame frame;
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 	private JFormattedTextField[] letterTextFields;
 	private JTextArea hangmanTextArea;
@@ -54,6 +58,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String secretWord;
 	private int guessesLeft;
 	private int gameScore;
+	private JFrame frame;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line. Using an arraylist because this will allow us to modify our hangman 
@@ -72,9 +77,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// printed
 	private boolean w, o, r, d;
 	private boolean[] textFieldHasFocus = new boolean[4]; 
-	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
-	private static final SecureRandom randomGenerator = new SecureRandom(
-			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	
 	// store hangman drawing in an array, each part is to be displayed is in a separate
 	// space of the array
@@ -95,7 +97,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 	
 	/**
-	 * Creates the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
+	 * Creates the application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
 	 */
 	public Hangman() {
 		frame = new JFrame("Hangman App by: Brian Perel");
@@ -130,9 +132,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		lblGuessesLeft.setBounds(280, 44, 183, 100);
 		frame.getContentPane().add(lblGuessesLeft);
 		
+		Font customFont = new Font("MV Boli", BOLD, 15);
+		
 		textFieldGuessesLeft = new JTextField();
 		textFieldGuessesLeft.setEditable(false);
-		textFieldGuessesLeft.setFont(new Font("MV Boli", BOLD, 15));
+		textFieldGuessesLeft.setFont(customFont);
 		textFieldGuessesLeft.setBounds(375, 85, 40, 20);
 		frame.getContentPane().add(textFieldGuessesLeft);
 		textFieldGuessesLeft.setFocusable(false);
@@ -145,7 +149,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		textFieldHangmanWord = new JTextField("****");
 		textFieldHangmanWord.setEditable(false);
-		textFieldHangmanWord.setFont(new Font("MV Boli", BOLD, 15));
+		textFieldHangmanWord.setFont(customFont);
 		textFieldHangmanWord.setBounds(368, 125, 50, 27);
 		frame.getContentPane().add(textFieldHangmanWord);
 		textFieldHangmanWord.setFocusable(false);
@@ -161,14 +165,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			letterTextFields[x] = new JFormattedTextField(createFormatter("U"));
 			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
 			frame.getContentPane().add(letterTextFields[x]);
+			letterTextFields[x].setSize(17, 20);
 			letterTextFields[x].addKeyListener(this);
 			letterTextFields[x].addFocusListener(this);
 		}
 
-		letterTextFields[0].setBounds(306, 186, 17, 20);
-		letterTextFields[1].setBounds(333, 186, 17, 20);
-		letterTextFields[2].setBounds(360, 186, 17, 20);
-		letterTextFields[3].setBounds(387, 186, 17, 20);
+		letterTextFields[0].setLocation(306, 186);
+		letterTextFields[1].setLocation(333, 186);
+		letterTextFields[2].setLocation(360, 186);
+		letterTextFields[3].setLocation(387, 186);
 		
 		lblGameScore = new JLabel("Total Score:");
 		lblGameScore.setFont(new Font("Segoe UI Semibold", PLAIN, 16));
@@ -178,20 +183,26 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		textFieldGameScore = new JTextField("0");
 		textFieldGameScore.setEditable(false);
-		textFieldGameScore.setFont(new Font("MV Boli", BOLD, 15));
+		textFieldGameScore.setFont(customFont);
 		textFieldGameScore.setBounds(465, 250, 40, 20);
 		frame.getContentPane().add(textFieldGameScore);
 		textFieldGameScore.setFocusable(false);
 		textFieldGameScore.setBackground(Color.GRAY);
 		
 		obtainRandomWords();
-		secretWord = getSecretWord();
 		
-		// log the hangman word 
-		logger_.info(secretWord);
-		
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		if(wordList.isEmpty()) {
+			logger_.severe("Error: File of secret words to load is empty");
+		}
+		else {
+			secretWord = getSecretWord();
+			
+			// log the hangman word 
+			logger_.log(Level.INFO, "Secret word \"{0}\"", secretWord);
+			
+			frame.setVisible(true);
+			frame.setLocationRelativeTo(null);
+		}
 	}
 	
 	/**
@@ -201,21 +212,26 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
 			// read file of random hangman words
 			while (myReader.hasNext()) {
-				// store every line in arraylist
+				// store every line (secret word) in an arraylist
 				// to attach a line number to each element
 				String word = myReader.next();
+				
+				if(wordList.contains(word.toUpperCase())) {
+					continue;
+				}
 
 				// in case player loads a file with words that include lower case letters
 				for(int x = 0; x < word.length(); x++) {
 					// if a letter in the word is found to be lower case, make the whole word upper case 
 					if(Character.isLowerCase(word.charAt(x))) {
+						logger_.warning("Word loaded from file was lowercase. Loading in uppercase form");
 						word = word.toUpperCase();
 						break;
 					}
 				}
 				
-				wordList.add(word);				
-			}			
+				wordList.add(word);
+			}		
 			
 			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness 
 			
@@ -276,6 +292,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		secretWord = getSecretWord();
 		
 		if (secretWord.equals(previousSecretWord)) {
+			logger_.warning("Chosen word was same as previously chosen word. Choosing a different word");
 			secretWord = getSecretWord();
 		}
 		
@@ -368,7 +385,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			
 			// handles game over checking and response
 			if (count == HANGMAN_DRAWING.length) {
-				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The word is: " + secretWord);
+				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The secret word is: " + secretWord);
 				
 				if(!textFieldGameScore.getText().equals("0")) {
 					textFieldGameScore.setText(Integer.toString(--gameScore));

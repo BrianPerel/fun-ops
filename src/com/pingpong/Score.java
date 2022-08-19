@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Score implements Serializable {
 
 	private static final long serialVersionUID = -5644331063151255153L;
+	
 	private int playerOneScore;
 	private int playerTwoScore;
 

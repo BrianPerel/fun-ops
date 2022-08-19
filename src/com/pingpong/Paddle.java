@@ -1,5 +1,10 @@
 package com.pingpong;
 
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_S;
+import static java.awt.event.KeyEvent.VK_UP;
+import static java.awt.event.KeyEvent.VK_W;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -47,19 +52,19 @@ public class Paddle extends Rectangle {
 		int keyCode = e.getKeyCode();
 		
 		if (id.equals("Paddle1")) {
-			if (keyCode == KeyEvent.VK_W) {
+			if (keyCode == VK_W) {
 				setYDirection(-speed);
 			}
-			if (keyCode == KeyEvent.VK_S) {
+			if (keyCode == VK_S) {
 				setYDirection(speed);
 			}
 		} 
 		else if (id.equals("Paddle2")) {
-			if (keyCode == KeyEvent.VK_UP) {
+			if (keyCode == VK_UP) {
 				setYDirection(-speed);
 			}
 
-			if (keyCode == KeyEvent.VK_DOWN) {
+			if (keyCode == VK_DOWN) {
 				setYDirection(speed);
 			}
 		}
@@ -74,18 +79,18 @@ public class Paddle extends Rectangle {
 		int keyCode = e.getKeyCode();
 		
 		if (id.equals("Paddle1")) {
-			if (keyCode == KeyEvent.VK_W) {
+			if (keyCode == VK_W) {
 				setYDirection(0);
 			}
-			if (keyCode == KeyEvent.VK_S) {
+			if (keyCode == VK_S) {
 				setYDirection(0);
 			}
 		}
 		else if (id.equals("Paddle2")) {
-			if (keyCode == KeyEvent.VK_UP) {
+			if (keyCode == VK_UP) {
 				setYDirection(0);
 			}
-			if (keyCode == KeyEvent.VK_DOWN) {
+			if (keyCode == VK_DOWN) {
 				setYDirection(0);
 			}
 		}

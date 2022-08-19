@@ -11,14 +11,11 @@ import java.util.List;
  */
 public class MyCalculator {
 	
-	private static final DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
-	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
-
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to BigDecimal
 	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point values
-	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted
-	
+	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted	private static final DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
+	protected static boolean divideByZeroflag; // if user divides by 0, raise flag	
 	private static BigDecimal answer;
 	
 	private MyCalculator() {
@@ -34,6 +31,8 @@ public class MyCalculator {
 		// do not set number in memory if % is still attached to number (enforces fact
 		// that code must remove % before this step) or if string
 		// includes a character
+		argNumber = argNumber.replace(",", "");
+		
 		if (!argNumber.endsWith("%")) {			
 			stringNumbers.add(argNumber.trim());
 		}
@@ -43,7 +42,7 @@ public class MyCalculator {
 	 * Calculator division operation
 	 * @return the quotient
 	 */
-	public static BigDecimal divide() {
+	public static BigDecimal divide() {		
 		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
 			if (BigDecimal.ZERO.equals(bigDecimalNumbers.get(1))) {
 				divideByZeroflag = true;

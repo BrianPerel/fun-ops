@@ -19,6 +19,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,8 +34,9 @@ import javax.swing.WindowConstants;
 
 public class Clock implements ActionListener {
 
-	private JLabel lblClockTime;
+	private JFrame frame;
 	private String alarmTime;
+	private JLabel lblClockTime;
 	private JMenuItem menuOption;
 	private boolean hasAlarmRung;
 	
@@ -50,10 +52,11 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Create the clock application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
+	 * Create the clock application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
 	 */
+	@SuppressWarnings("deprecation")
 	public Clock() {
-		JFrame frame = new JFrame("Clock");
+		frame = new JFrame("Clock");
 		frame.setSize(450, 280);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -74,8 +77,11 @@ public class Clock implements ActionListener {
 		
 		menuOption = new JMenuItem("Set Alarm Time");
 		menuOption.setFont(custFont);
+		menuOption.setIcon(new ImageIcon("res/graphics/alarm-clock-icon.png"));
 		menuOption.addActionListener(this);
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
 	
 		menu.add(menuOption);
 		menuBar.add(menu);
@@ -173,20 +179,20 @@ public class Clock implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == menuOption)  {  
-			alarmTime = JOptionPane.showInputDialog("Alarm time (in AM/PM format): ");
+			alarmTime = JOptionPane.showInputDialog(frame, "Alarm time (AM/PM format): ");
 						
 			// index 0, 1, 3, and 4 of alarmTime string should be numbers only
-			if(alarmTime != null && !alarmTime.isBlank() && alarmTime.length() == 8) {
+			if(alarmTime != null && !alarmTime.isBlank() && (alarmTime.trim().length() == 7 || alarmTime.trim().length() == 8)) {
 				alarmTime = alarmTime.trim();
 
 				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
 						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
 					hasAlarmRung = false;
-					JOptionPane.showMessageDialog(null, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				} 	
 				else {
 					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(null, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else {

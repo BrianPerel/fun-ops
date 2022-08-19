@@ -49,7 +49,7 @@ public class StopWatch extends JFrame {
 		setResizable(false);
 		setSize(x, y);
 		setVisible(true);
-		setLocation(390, 345); // position the gui on the screen at custom location (x, y)
+		setLocation(390, 345); // position the GUI on the screen at custom location (x, y)
 	}
 
 	/**
@@ -58,24 +58,21 @@ public class StopWatch extends JFrame {
 	 */
 	public class StopWatchPanel extends JPanel {
 		
+		public static boolean isRedFontEnabled;
+		private static final String START_TIME = "00:00:00";
+		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER); // show the timer
 		private static final long serialVersionUID = -6217657906467075510L;
+		public static final JButton btnStart = new JButton("START");
+		public static final JButton btnStop = new JButton("STOP");
+		public static final JButton btnReset = new JButton("RESET");
 		
 		/** represent the hours, minutes, and seconds in the watch */
 		private int hour;
 		private int minute;
 		private int second;
 		private int centisecond;
-		public static boolean isRedFontEnabled;
-		private static final String START_TIME = "00:00:00";
-		/** Show the timer */
-		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER);
-		/** btns - start, stop, reset */
-		public static final JButton btnStart = new JButton("START");
-		public static final JButton btnStop = new JButton("STOP");
-		public static final JButton btnReset = new JButton("RESET");
-		/** Timer to be used for watch */
-		private Timer timer;
-		/** Button listener */
+	
+		private Timer timer; // watch timer
 		private ButtonListener buttonListener = new ButtonListener();
 
 		/**
@@ -124,7 +121,7 @@ public class StopWatch extends JFrame {
 		 * Represents a listener for button push (action) events.
 		 * This is an inner class of StopWatchPanel
 		 */
-		class ButtonListener extends KeyAdapter implements ActionListener, Serializable {
+		private class ButtonListener extends KeyAdapter implements ActionListener, Serializable {
 			
 			private static final long serialVersionUID = 1905122041950251207L;
 			private static final int TIMEBASE = 60;

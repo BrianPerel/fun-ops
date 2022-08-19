@@ -12,19 +12,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- * Implementation for tic tac toe game board. Initiates the game and has functionality to support player vs computer game mode<br>
+ * Implementation for tic-tac-toe game board. Initiates the game and has functionality to support player vs computer game mode<br>
  * 
  * @author Brian Perel
  *
  */
 public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
+	private static final SecureRandom randomGenerator = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
+	
 	private int randomCell;
 	private int[] freeEmptyTiles;
 	protected boolean shouldRun = true; // enforces the computer to only do 1 click inside the new thread
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
-	private static final SecureRandom randomGenerator = new SecureRandom(
-			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	/**
 	 * Builds the game's GUI board
@@ -82,8 +83,6 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
-		
-		super.checkForWinner();
 	}
 	
 	/**
@@ -98,22 +97,19 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			 * until the parent calling method (actionPerformed) exits (and so the event thread can continue its event processing)
 			 */
 			new Thread(() -> {
-            	// check that the current turn is the computer's turn
-            	if (lblPlayersTurn.getText().equals("Computer's turn:")) {  
-            		makeBestMove();
-            		
-            		try {
-						TimeUnit.MILLISECONDS.sleep(300L);
-					} catch (InterruptedException ie) {
-						logger_.severe("Error: " + ie.toString());
-						ie.printStackTrace();
-						Thread.currentThread().interrupt();
-					}
-            	
-            		// solution to doClick() not releasing button until the parent calling method
-            		// (actionPerformed) finishes: doClick was moved to another thread here
- 					gameBoardTiles[randomCell].doClick(); 
-            	}
+        		makeBestMove();
+        		
+        		try {
+					TimeUnit.MILLISECONDS.sleep(300L);
+				} catch (InterruptedException ie) {
+					logger_.severe("Error: " + ie.toString());
+					ie.printStackTrace();
+					Thread.currentThread().interrupt();
+				}
+        	
+        		// solution to doClick() not releasing button until the parent calling method
+        		// (actionPerformed) finishes: doClick was moved to another thread here
+				gameBoardTiles[randomCell].doClick(); 
 			}).start();					
 		}
 	}

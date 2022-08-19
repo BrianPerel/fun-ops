@@ -127,7 +127,7 @@ public class WiggleMouse {
 
 			// move the mouse to specified x,y coordinates with a shift value -- Wiggle Mouse action
 			for(int x = 0; x < 2; x++) {
-				robot.mouseMove(xCoordinate, x == 0 ? yCoordinate++ : yCoordinate--);
+				robot.mouseMove(xCoordinate, (x == 0) ? yCoordinate++ : yCoordinate--);
 				TimeUnit.MILLISECONDS.sleep(50L);
 			}
 			

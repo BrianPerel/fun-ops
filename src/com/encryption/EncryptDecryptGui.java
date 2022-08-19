@@ -36,20 +36,22 @@ import javax.swing.WindowConstants;
  *
  */
 public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
+	
+	private static File file;
+	private static JFrame frame;
+	private static String fileName;
+	private static final String ERROR = "ERROR";
+	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of GUI buttons
+	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of GUI buttons when hovering 
 
-	private JFrame frame;
 	private JButton btnBrowse;
 	private StringBuilder data;
 	private JButton btnEncrypt;
 	private JButton btnDecrypt;
 	private JButton btnLoadFile;
 	private boolean isFileLoaded;
-	private static String fileName;
 	private EncryptDecrypt dataSet;
 	private JTextField textFieldLoading;
-	private static final String ERROR = "ERROR";
-	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of gui buttons
-	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of gui buttons when hovering 
 
 	public static void main(String[] args) {	
 		try {
@@ -63,7 +65,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Create the application. Places all the buttons on the app's board and initializes the contents of the frame, building the gui.
+	 * Create the application. Places all the buttons on the app's board and initializes the contents of the frame, building the GUI.
 	 */
 	public EncryptDecryptGui() {
 		frame = new JFrame("Encrypt-decrypt App by: Brian Perel");
@@ -84,7 +86,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldLoading.setForeground(Color.GRAY);
 		frame.getContentPane().add(textFieldLoading);
 		textFieldLoading.setColumns(10);
-		textFieldLoading.setToolTipText("Enter name of file to load");
+		textFieldLoading.setToolTipText("Enter file name to load");
 		textFieldLoading.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -103,6 +105,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			frame.getContentPane().add(button);
 			button.addActionListener(this);
 			button.setFocusable(false);
+			button.setSize(89, 28);
 			button.setBackground(LIGHT_BLUE);
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -118,11 +121,11 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			});
 		}
 		
-		buttons[0].setBounds(49, 43, 89, 28);
-		buttons[1].setBounds(270, 43, 86, 28);
-		buttons[2].setBounds(84, 140, 89, 28);
-		buttons[3].setBounds(235, 139, 89, 28);
-
+		buttons[0].setLocation(49, 43);
+		buttons[1].setLocation(270, 43);
+		buttons[2].setLocation(84, 140);
+		buttons[3].setLocation(235, 139);
+		
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
@@ -144,7 +147,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
-		String fileToLoad = textFieldLoading.getText();
+		String fileToLoad = textFieldLoading.getText().trim();
 		
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
@@ -169,8 +172,9 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		else if (source == btnBrowse) {
 			fileBrowse();
 		}
-
-		checkOtherActions(source, fileToLoad);
+		else {
+			checkOtherActions(source, fileToLoad);
+		}
 	}
 	
 	/**
@@ -215,9 +219,10 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		// append .txt to the filename entered if entered without .txt 
 		if (!fileToLoad.endsWith(".txt")) {
 			fileToLoad += ".txt";
+			textFieldLoading.setText(fileToLoad);
 		}
 		
-		File file = new File(fileToLoad);
+		file = new File(fileToLoad);
 
 		// use try with resources here, which will auto close resources
 		try (Scanner read = new Scanner(file)) {
@@ -225,6 +230,12 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
 			while (read.hasNextLine()) {
 				data.append(read.nextLine());
+			}
+			
+			if(data.isEmpty()) {
+				Toolkit.getDefaultToolkit().beep();
+				JOptionPane.showMessageDialog(frame.getComponent(0), "File is empty");
+				return;
 			}
 
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
@@ -241,11 +252,8 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 						ERROR, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
-			// check if this file exists
-			if (file.exists()) {
-				Desktop.getDesktop().open(file);
-			}
+			
+			openFile();
 
 		} catch (FileNotFoundException e) {
 			Toolkit.getDefaultToolkit().beep();
@@ -257,7 +265,27 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Returns name of file to be encrypted
+	 * Opens the loaded data file and brings back the GUI to the front 
+	 * @throws IOException file io exception
+	 */
+	public static void openFile() throws IOException {
+		// check if this file exists
+		if (file.exists()) {
+			Desktop.getDesktop().open(file);
+			
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				Thread.currentThread().interrupt();
+			}
+			
+			frame.toFront();
+		}
+	}
+
+	/**
+	 * Returns file name to be encrypted
 	 * @return filename to be encrypted
 	 */
 	public static String getFileName() {
@@ -265,7 +293,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Sets the name of the file to be encrypted
+	 * Sets the file name to be encrypted
 	 * @param argFileName that will be encrypted
 	 */
 	public static void setFileName(String argFileName) {

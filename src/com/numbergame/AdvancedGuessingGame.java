@@ -5,7 +5,8 @@ package com.numbergame;
  * between 10-999 and he/she must guess what the remainder is. Every correct guess
  * equates to 10 points, every incorrect guess equates to -10 points. Score is
  * kept for every session. <br>
- * @author Brian
+ * 
+ * @author Brian Perel
  *
  */
 public class AdvancedGuessingGame extends GuessingGame {
@@ -15,10 +16,10 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 	
 	public AdvancedGuessingGame() {
-		frame.setTitle("Advanced " + frame.getTitle());
+		frame.setTitle("Advanced ".concat(frame.getTitle()));
 		randomNumber = randomGenerator.nextInt(899) + 100;
 		textFieldRandomNumber.setText(Integer.toString(randomNumber)); // range is set to between 100-999
-		lblGuess.setText("Enter a number b/w 100-999 to make 1000");
+		lblGuess.setText(lblGuess.getText().substring(0, lblGuess.getText().indexOf("1-99")).concat("100-999 to make 1000"));
 		lblGuess.setLocation(230, 140);
 		maxChars = 3;
 	}

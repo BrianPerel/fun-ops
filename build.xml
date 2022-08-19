@@ -272,6 +272,7 @@
 		<jar destfile="${jar.dir}/pong-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
+				<attribute name="Resource" value="${res.graphics.dir}/restart-icon" />
 			</manifest>
 		</jar>
 	</target>

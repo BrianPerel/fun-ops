@@ -23,30 +23,32 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
 /**
- * Implementation for 3x3 tic tac toe game board. Initiates the game. Player 1 will go first.<br>
+ * Implementation for 3x3 tic-tac-toe game board. Initiates the game. Player 1 will go first.<br>
  * 
  * @author Brian Perel
  * 
  */
 public class PvPGameBoard implements ActionListener {
 
-	boolean isGameFinished;
-	protected JLabel lblPlayersTurn;
-	protected boolean isPlayerOnesTurn;
-	protected boolean isPlayerTwosTurn;
-	protected String[] tile;
-	protected JButton[] gameBoardTiles;
-	protected JButton[] highlightWinnersTiles;
-	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
-	private static String playerOnesName;
-	private static String playerTwosName;
-	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 	protected static final JFrame f = new JFrame("Tic Tac Toe");
 	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
 	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
 	protected static final Color LIGHT_RED = new Color(232, 46, 6);
 	public static final String PLAYER_ONE_LETTER = "X";
 	public static final String PLAYER_TWO_LETTER = "O";
+	protected static boolean gameOver = false;
+	private static String playerOnesName;
+	private static String playerTwosName;
+
+	protected String[] tile;
+	protected JLabel lblPlayersTurn;
+	private boolean isGameFinished;
+	protected boolean isPlayerOnesTurn;
+	protected boolean isPlayerTwosTurn;
+	protected JButton[] gameBoardTiles;
+	protected JButton[] highlightWinnersTiles;
+	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
+	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * Builds the game's GUI board
@@ -68,11 +70,13 @@ public class PvPGameBoard implements ActionListener {
 		}
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+
+		gameOver = false; // need to set variable to false here to avoid name label not changing bug
 		
 		tile = new String[9];
 		gameBoardTiles = new JButton[9];
 		highlightWinnersTiles = new JButton[3];
-		gameBoardSeparators = new JSeparator[5];
+		gameBoardSeparators = new JSeparator[4];
 		
 		// assigning a background image to the app
 		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
@@ -82,6 +86,7 @@ public class PvPGameBoard implements ActionListener {
 			gameBoardTiles[i] = new JButton();
 			f.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
+			gameBoardTiles[i].setSize(80, 70);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
 			gameBoardTiles[i].setBackground(ULTRA_LIGHT_ORANGE);
 			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY));
@@ -100,15 +105,15 @@ public class PvPGameBoard implements ActionListener {
 			});
 		}
 		
-		gameBoardTiles[0].setBounds(63, 64, 80, 70);
-		gameBoardTiles[1].setBounds(63, 145, 80, 70);
-		gameBoardTiles[2].setBounds(63, 226, 80, 70);
-		gameBoardTiles[3].setBounds(153, 64, 80, 70);
-		gameBoardTiles[4].setBounds(153, 145, 80, 70);
-		gameBoardTiles[5].setBounds(153, 226, 80, 70);
-		gameBoardTiles[6].setBounds(243, 64, 80, 70);
-		gameBoardTiles[7].setBounds(243, 145, 80, 70);
-		gameBoardTiles[8].setBounds(243, 226, 80, 70);
+		gameBoardTiles[0].setLocation(63, 64);
+		gameBoardTiles[1].setLocation(63, 145);
+		gameBoardTiles[2].setLocation(63, 226);
+		gameBoardTiles[3].setLocation(153, 64);
+		gameBoardTiles[4].setLocation(153, 145);
+		gameBoardTiles[5].setLocation(153, 226);
+		gameBoardTiles[6].setLocation(243, 64);
+		gameBoardTiles[7].setLocation(243, 145);
+		gameBoardTiles[8].setLocation(243, 226);
 		
 		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
@@ -123,13 +128,17 @@ public class PvPGameBoard implements ActionListener {
 			
 			if (x == 2 || x == 3) {
 				gameBoardSeparators[x].setOrientation(SwingConstants.VERTICAL);
+				gameBoardSeparators[x].setSize(7, 232);
+			}
+			else {
+				gameBoardSeparators[x].setSize(260, 11);
 			}
 		}
 
-		gameBoardSeparators[0].setBounds(63, 138, 260, 11);
-		gameBoardSeparators[1].setBounds(63, 220, 260, 11);
-		gameBoardSeparators[2].setBounds(148, 64, 7, 232);
-		gameBoardSeparators[3].setBounds(237, 64, 7, 232);
+		gameBoardSeparators[0].setLocation(63, 138);
+		gameBoardSeparators[1].setLocation(63, 220);
+		gameBoardSeparators[2].setLocation(148, 64);
+		gameBoardSeparators[3].setLocation(237, 64);
 		
 		f.setResizable(false);
 		f.setSize(399, 358);
@@ -178,35 +187,33 @@ public class PvPGameBoard implements ActionListener {
 			}
 		}
 		
-		checkForWinner();
 	}
 	
 	public void checkForPattern(String playerLetter) {
 		
 		// if buttons 0, 1, 2 are triggered - 3 in a row down the left side column
 		if (tile[0].equals(playerLetter) && tile[1].equals(playerLetter) && tile[2].equals(playerLetter)) {
-			logWinner(playerLetter);
 			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 3, 4, 5 are triggered - 3 in a row down the middle column
 		else if (tile[3].equals(playerLetter) && tile[4].equals(playerLetter) && tile[5].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[3], gameBoardTiles[4], gameBoardTiles[5]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 6, 7, 8 are triggered - 3 in a row down the right side column
 		else if (tile[6].equals(playerLetter) && tile[7].equals(playerLetter) && tile[8].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[6], gameBoardTiles[7], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 0, 3, 6 are triggered - 3 in a row across the top row
 		else if (tile[0].equals(playerLetter) && tile[3].equals(playerLetter) && tile[6].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[3], gameBoardTiles[6]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
@@ -218,21 +225,21 @@ public class PvPGameBoard implements ActionListener {
 		
 		// if buttons 2, 5, 8 are triggered - 3 in a row across the bottom row
 		if (tile[2].equals(playerLetter) && tile[5].equals(playerLetter) && tile[8].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[2], gameBoardTiles[5], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		else if (tile[0].equals(playerLetter) && tile[4].equals(playerLetter) && tile[8].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[4], gameBoardTiles[8]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
 		
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
 		else if (tile[2].equals(playerLetter) && tile[4].equals(playerLetter) && tile[6].equals(playerLetter)) {
-			logWinner(playerLetter);
+			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[2], gameBoardTiles[4], gameBoardTiles[6]);
 			new GameWinner(playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName() : getPlayerTwosName());
 		} 
@@ -271,6 +278,7 @@ public class PvPGameBoard implements ActionListener {
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row 
 		// from displaying player won and draw at the same time error
 		if(!isGameFinished && isBoardFull()) {
+			logger_.info("Game Over! It's a draw!");
 			new GameWinner("Game Over! It's a draw!");
 		}
 	}
@@ -327,7 +335,12 @@ public class PvPGameBoard implements ActionListener {
 	public void completePlayersTurn(JButton buttonPressed, Color color, String playersLetter, String playersName) {
 		buttonPressed.setForeground(color);
 		buttonPressed.setText(playersLetter);
-		lblPlayersTurn.setText(playersName + "'s turn:");
+		
+		checkForWinner();
+
+		if(!gameOver) {
+			lblPlayersTurn.setText(playersName + "'s turn:");
+		}
 	}
 
 	/**

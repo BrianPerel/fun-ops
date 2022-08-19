@@ -21,23 +21,24 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
- * Implementation for start window. Prompts for player's 1 and 2's names.
- * Comment out log4j2 statements when creating a .jar <br>
+ * Implementation for app's start window. Prompts for player's 1 and 2's names.
  * 
  * @author Brian Perel
  *
  */
 public class StartMenu extends KeyAdapter implements ActionListener {
 
-	private JFrame frame;
-	private JButton btnStart;
-	private JTextField nameOneTextField;
-	private JTextField nameTwoTextField;
 	private static final String ERROR = "ERROR";
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
-	protected JRadioButton playAgainstComputerRadioButton;
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
+	
+	protected static JFrame frame;
+	private JButton btnStart;
+	private JTextField nameOneTextField;
+	private JTextField nameTwoTextField;
+
+	private JRadioButton playAgainstComputerRadioButton;
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {			
