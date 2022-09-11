@@ -156,12 +156,11 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 				return; // prevent below statements from executing if we fall into here
 			}
 			
-			Toolkit.getDefaultToolkit().beep();
-			
 			// if file has been already been loaded and load file btn pushed
 			// or if file load textfield is empty while load file btn is pushed
 			JOptionPane.showMessageDialog(frame.getComponent(0), isFileLoaded ? "A file has already been loaded" 
 					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
+			Toolkit.getDefaultToolkit().beep();
 		}		
 		// if encrypt/decrypt btn pushed and file has not been loaded
 		else if ((source == btnEncrypt || source == btnDecrypt) && !isFileLoaded) {
@@ -170,7 +169,14 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else if (source == btnBrowse) {
-			fileBrowse();
+			if(isFileLoaded) {
+				// if file has been already been loaded and load file btn pushed
+				JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", ERROR, JOptionPane.ERROR_MESSAGE);
+				Toolkit.getDefaultToolkit().beep();
+			}
+			else {
+				fileBrowse();
+			}
 		}
 		else {
 			checkOtherActions(source, fileToLoad);

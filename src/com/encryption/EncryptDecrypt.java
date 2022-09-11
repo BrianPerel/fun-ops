@@ -4,11 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Class performs encryption and decryption process. Note: file to encrypt or
- * decrypt must be kept in same directory as this .jar file
- * 
+ * Class performs encryption and decryption process. 
  * @author Brian Perel
- *
  */
 public class EncryptDecrypt {
 
@@ -20,7 +17,7 @@ public class EncryptDecrypt {
 	 * @param argData the user data to be encrypted/decrypted
 	 */
 	public EncryptDecrypt(StringBuilder argData) {
-		this.data = argData;
+		data = argData;
 	}
 
 	/**

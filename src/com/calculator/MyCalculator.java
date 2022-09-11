@@ -105,19 +105,10 @@ public class MyCalculator {
 	}
 
 	/**
-	 * Calculator '%' operation
-	 * @param argNumber the value positioned before the % sign in user input
-	 * @return the percent result
-	 */
-	public static BigDecimal calculatePercentage(double argNumber) {
-		return BigDecimal.valueOf(argNumber).divide(new BigDecimal(100));
-	}
-
-	/**
 	 * Fills up the BigDecimal array with String array values after being casted to
 	 * BigDecimal. This is performed when equals operator is hit
 	 */
-	public static void applyStringToBigDecimalConversion() {
+	public static void toBigDecimalConversion() {
 		for (String i : stringNumbers) { // get String value
 			bigDecimalNumbers.add(new BigDecimal(stringNumbers.get(stringNumbers.indexOf(i))));
 		}
@@ -131,7 +122,7 @@ public class MyCalculator {
 	 * @return formatted result value after performing operation
 	 */
 	public static String compute() {
-		applyStringToBigDecimalConversion();
+		toBigDecimalConversion();
 
 		if (MyCalculatorGui.operatorFlags[0]) {
 			return df.format(divide());

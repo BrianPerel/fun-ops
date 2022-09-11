@@ -198,7 +198,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			secretWord = getSecretWord();
 			
 			// log the hangman word 
-			logger_.log(Level.INFO, "Secret word \"{0}\"", secretWord);
+			logger_.log(Level.INFO, "The secret word is \"{0}\"", secretWord);
 			
 			frame.setVisible(true);
 			frame.setLocationRelativeTo(null);
@@ -211,12 +211,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	public void obtainRandomWords() {		
 		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
 			// read file of random hangman words
-			while (myReader.hasNext()) {
+			while (myReader.hasNextLine()) {
 				// store every line (secret word) in an arraylist
 				// to attach a line number to each element
-				String word = myReader.next();
+				String word = myReader.nextLine();
 				
-				if(wordList.contains(word.toUpperCase())) {
+				// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars
+				// also allow txt file to contain comments by ignoring anything that starts with '#'
+				if(wordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")
+						|| word.startsWith("#")) {
 					continue;
 				}
 
@@ -224,7 +227,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				for(int x = 0; x < word.length(); x++) {
 					// if a letter in the word is found to be lower case, make the whole word upper case 
 					if(Character.isLowerCase(word.charAt(x))) {
-						logger_.warning("Word loaded from file was lowercase. Loading in uppercase form");
+						logger_.warning("Word loaded from file was lowercase. Loading in uppercase format");
 						word = word.toUpperCase();
 						break;
 					}
@@ -291,7 +294,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		
 		secretWord = getSecretWord();
 		
-		if (secretWord.equals(previousSecretWord)) {
+		// fall into here only if provided word list file contains more than 1 word to avoid errors
+		if (secretWord.equals(previousSecretWord) && wordList.size() > 1) {
 			logger_.warning("Chosen word was same as previously chosen word. Choosing a different word");
 			secretWord = getSecretWord();
 		}

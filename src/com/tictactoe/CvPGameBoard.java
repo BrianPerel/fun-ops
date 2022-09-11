@@ -24,7 +24,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	
 	private int randomCell;
 	private int[] freeEmptyTiles;
-	protected boolean shouldRun = true; // enforces the computer to only do 1 click inside the new thread
+	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
+	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
 	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	/**
@@ -58,18 +59,18 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-				
-		makeMoveComputer();
-		freeEmptyTiles[randomCell] = -99; // prevents tic-tac-toe AI from choosing the same button it just clicked on it's next turn
-
+		
+		isCvPGame = true;
+	
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (int x = 0; x < gameBoardTiles.length; x++) {
+			
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
-				super.completePlayersTurn(gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE, 
+				super.completePlayersTurn(isCvPGame, gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE, 
 					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER, 
 					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
 				
-				shouldRun = isPlayerOnesTurn;
+				shouldRun = !isPlayerOnesTurn;
 				
 				freeEmptyTiles[x] = -99; // prevents computer from choosing a tile that player has chosen
 				isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -79,10 +80,14 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			} 
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
+				invalidMoveSelected = true;
 				logger_.warning("Invalid Move.");
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
+		
+		makeMoveComputer();
+		freeEmptyTiles[randomCell] = -99; // prevents tic-tac-toe AI from choosing the same button it just clicked on it's next turn
 	}
 	
 	/**
@@ -90,7 +95,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 */
 	public void makeMoveComputer() { 
 		// toRun enforces the computer to only do 1 click inside the new thread
-		if (shouldRun) {		
+		if (shouldRun && !invalidMoveSelected) {		
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
 			 * doClick method's timeout gets checked inside the event thread, so it won't get released 
@@ -112,6 +117,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 				gameBoardTiles[randomCell].doClick(); 
 			}).start();					
 		}
+		
+		invalidMoveSelected = false;
 	}
 	
 	public void makeBestMove() {

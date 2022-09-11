@@ -22,10 +22,10 @@ import javax.swing.WindowConstants;
  */
 public class GameWinner extends KeyAdapter implements ActionListener {
 
-	private static final String GAME_OVER = "Game Over! It's a draw!";
+	private static final String GAME_OVER_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 	
-	private JFrame f2;
+	private JFrame frame2;
 	private JButton btnQuit;
 	private String gameResult;
 	private JButton btnPlayAgain;
@@ -37,13 +37,13 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	public GameWinner(String argGameResult) {
 		gameResult = argGameResult;
 		
-		PvPGameBoard.gameOver = true; // prevents code that switches gameboard name label from running
+		PvPGameBoard.isGameOver = true; // prevents code that switches gameboard name label from running
 		
 		// if exit button is clicked, dispose of this frame 
 		// and create a new GameBoard frame
-		f2 = new JFrame("Tic Tac Toe");
-		f2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		f2.addWindowListener(new java.awt.event.WindowAdapter() {
+		frame2 = new JFrame("Tic Tac Toe");
+		frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
 				PvPGameBoard.f.dispose();
@@ -51,20 +51,20 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		    }
 		});
 		
-		f2.setResizable(false);
-		f2.setSize(315, 167);
-		f2.getContentPane().setLayout(null);
+		frame2.setResizable(false);
+		frame2.setSize(315, 167);
+		frame2.getContentPane().setLayout(null);
 
-		f2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		frame2.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 		
 		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
-		JLabel lblGameResult = new JLabel(argGameResult.equals(GAME_OVER)
-				|| argGameResult.equals(GAME_OVER + "!") ? argGameResult : (argGameResult + " wins!"));
+		JLabel lblGameResult = new JLabel(argGameResult.equals(GAME_OVER_MSG)
+				|| argGameResult.equals(GAME_OVER_MSG + "!") ? argGameResult : (argGameResult + " wins!"));
 		
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameResult.setBounds(0, 0, 310, 57);
-		f2.getContentPane().add(lblGameResult);
+		frame2.getContentPane().add(lblGameResult);
 		
 		Font customFont = new Font("Lucida Fax", Font.BOLD, 12);
 		
@@ -72,7 +72,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnPlayAgain.setFont(customFont);
 		btnPlayAgain.setBounds(39, 68, 100, 34);
 		btnPlayAgain.setBackground(LIGHT_GREEN);
-		f2.getContentPane().add(btnPlayAgain);
+		frame2.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -80,14 +80,14 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnQuit = new JButton("Quit");
 		btnQuit.setFont(customFont);
 		btnQuit.setBackground(LIGHT_GREEN);
-		f2.getContentPane().add(btnQuit);
+		frame2.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
 		btnQuit.addActionListener(this);
 		btnQuit.addKeyListener(this);
 		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		f2.setLocation(StartMenu.frame.getX() + StartMenu.frame.getWidth(), StartMenu.frame.getY());
-		f2.setVisible(true);
+		frame2.setLocation(StartMenu.frame.getX() + StartMenu.frame.getWidth(), StartMenu.frame.getY());
+		frame2.setVisible(true);
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	}
 
 	public void determineEndGameAction(Object source) {
-		f2.dispose();
+		frame2.dispose();
 		
 		if (source == btnPlayAgain) {
-			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!")) {
-				new CvPGameBoard(false, false, true).shouldRun = true;				
+			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_MSG + "!")) {
+				new CvPGameBoard(false, false, true);				
 			}
 			else {
 				PvPGameBoard.f.dispose();
@@ -115,7 +115,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 			}
 		} 
 		else if (source == btnQuit || (gameResult.equals(StartMenu.PLAYER)
-				|| gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER + "!"))) {
+				|| gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_MSG + "!"))) {
 			
 			System.exit(0);
 		}

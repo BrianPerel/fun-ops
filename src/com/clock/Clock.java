@@ -60,9 +60,9 @@ public class Clock implements ActionListener {
 		frame.setSize(450, 280);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().setBackground(BLACK);
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars.gif")));
+		
 		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
 		
 		Font custFont = new Font("Bookman Old Style", Font.PLAIN, 14);
@@ -105,7 +105,7 @@ public class Clock implements ActionListener {
 		lblClockTime.setBounds(32, 23, 365, 123);
 		frame.getContentPane().add(lblClockTime);
 		
-		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour time");
+		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour clock");
 		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
 		militaryTimeFormatCheckBox.setBackground(BLACK);
 		militaryTimeFormatCheckBox.setForeground(WHITE);
@@ -115,6 +115,8 @@ public class Clock implements ActionListener {
 		militaryTimeFormatCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
 		militaryTimeFormatCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		militaryTimeFormatCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		frame.setVisible(true);
 				
 		getTime(militaryTimeFormatCheckBox);
 	}

@@ -130,8 +130,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		
 		if (nameOne.equalsIgnoreCase(PLAYER) || nameOne.equalsIgnoreCase(COMPUTER)
 				|| nameTwo.equalsIgnoreCase(PLAYER) || nameTwo.equalsIgnoreCase(COMPUTER)) {
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use 'player' or 'computer' as a name", ERROR,
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use \'" + PLAYER + "\' or \'" + COMPUTER + "\' as a name",
+					ERROR, JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");
 			nameOneTextField.requestFocus();

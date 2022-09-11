@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 public class PingPongGui extends JFrame {
@@ -16,6 +18,13 @@ public class PingPongGui extends JFrame {
 	private static final Color DARK_GREEN = new Color(0, 78, 3);
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			System.out.println("Error ClassNotFoundException" + e.getMessage());
+		}
+		
 		new PingPongGui();
 	}
 
