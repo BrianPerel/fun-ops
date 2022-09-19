@@ -30,6 +30,8 @@ Resource: res/graphics/bg-image-tac
 
 Main-Class: com.clock.Clock
 Resource: res/fonts/clock-font.tff
+Resource2: res/graphics/alarm-click-icon.png
+Resource3: res/graphics/night-sky-stars.gif
 
 Main-Class: com.pingpong.PingPongGUI
 Resource: res/graphics/restart-icon

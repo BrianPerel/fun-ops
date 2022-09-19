@@ -46,8 +46,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
+	private static final Logger logger_ = Logger.getLogger(Hangman.class.getName());
 
-	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 	private JFormattedTextField[] letterTextFields;
 	private JTextArea hangmanTextArea;
 	private JTextField textFieldGuessesLeft;
@@ -209,7 +209,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Loads file and obtains a list of hangman words
 	 */
 	public void obtainRandomWords() {		
-		try (Scanner myReader = new Scanner(new File("Hangman.txt"))) { 
+		try (Scanner myReader = new Scanner(new File("hangman.txt"))) { 
 			// read file of random hangman words
 			while (myReader.hasNextLine()) {
 				// store every line (secret word) in an arraylist

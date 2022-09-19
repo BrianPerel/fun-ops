@@ -28,10 +28,11 @@ import javax.swing.WindowConstants;
  */
 public class StartMenu extends KeyAdapter implements ActionListener {
 
-	private static final String ERROR = "ERROR";
+	private static final String ERROR_TITLE = "ERROR";
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
+	private static final Logger logger_ = Logger.getLogger(StartMenu.class.getName());
 	
 	protected static JFrame frame;
 	private JButton btnStart;
@@ -39,7 +40,6 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private JTextField nameTwoTextField;
 
 	private JRadioButton playAgainstComputerRadioButton;
-	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {			
 		new StartMenu();
@@ -131,7 +131,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		if (nameOne.equalsIgnoreCase(PLAYER) || nameOne.equalsIgnoreCase(COMPUTER)
 				|| nameTwo.equalsIgnoreCase(PLAYER) || nameTwo.equalsIgnoreCase(COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use \'" + PLAYER + "\' or \'" + COMPUTER + "\' as a name",
-					ERROR, JOptionPane.ERROR_MESSAGE);
+					ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");
 			nameOneTextField.requestFocus();
@@ -143,8 +143,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			PvPGameBoard.setPlayerOnesName(nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase());
 			PvPGameBoard.setPlayerTwosName(nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase());
 
-			logger_.info("Player 1: " + PvPGameBoard.getPlayerOnesName());
-			logger_.info("Player 2: " + PvPGameBoard.getPlayerTwosName());
+			logger_.info("Player 1: " + PvPGameBoard.getPlayerOnesName() + ", Player 2: " + PvPGameBoard.getPlayerTwosName());
 
 			frame.dispose();
 			new PvPGameBoard(true, true, false);
@@ -152,13 +151,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if one or both name textfields are empty
 		else if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR,
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		} 
 		// if first name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR,
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");

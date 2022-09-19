@@ -7,7 +7,7 @@ import java.io.IOException;
  * Class performs encryption and decryption process. 
  * @author Brian Perel
  */
-public class EncryptDecrypt {
+public class EncryptDecryptOp {
 
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
@@ -16,7 +16,7 @@ public class EncryptDecrypt {
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
 	 * @param argData the user data to be encrypted/decrypted
 	 */
-	public EncryptDecrypt(StringBuilder argData) {
+	public EncryptDecryptOp(StringBuilder argData) {
 		data = argData;
 	}
 
@@ -48,13 +48,13 @@ public class EncryptDecrypt {
 			
 			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption
 
-			try(FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName())) {
+			try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
 				myWriter.write(data.toString()); // write newly created string of random characters into file
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
 			
-			EncryptDecryptGui.openFile();
+			EncryptDecryptFileUtils.openFile();
 			
 			isEncrypted = true;			
 			return isEncrypted;
@@ -79,13 +79,13 @@ public class EncryptDecrypt {
 			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
 			data = decryptAndFormat(0); // perform decryption process and format the data, the 0 value is used to count the words 
 	
-			try(FileWriter myWriter = new FileWriter(EncryptDecryptGui.getFileName())) {
+			try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
 				myWriter.write(data.toString()); // override with decrypted data
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
 			
-			EncryptDecryptGui.openFile();
+			EncryptDecryptFileUtils.openFile();
 	
 			isEncrypted = false;
 			return !isEncrypted;

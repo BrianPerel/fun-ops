@@ -31,25 +31,24 @@ import javax.swing.border.LineBorder;
  */
 public class PvPGameBoard implements ActionListener {
 
-	protected static final JFrame f = new JFrame("Tic Tac Toe");
+	protected static final JFrame frame = new JFrame("Tic Tac Toe");
 	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
 	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
+	private static final Logger logger_ = Logger.getLogger(PvPGameBoard.class.getName());
 	protected static final Color LIGHT_RED = new Color(232, 46, 6);
 	public static final String PLAYER_ONE_LETTER = "X";
 	public static final String PLAYER_TWO_LETTER = "O";
-	protected static boolean isGameOver = false;
+	protected static JButton[] gameBoardTiles; // the clickable board buttons
+	protected static boolean isGameOver;
 	private static String playerOnesName;
 	private static String playerTwosName;
 
-	protected String[] tile;
+	protected String[] tile; // the String version of the clickable board buttons
 	protected boolean isCvPGame;
 	protected JLabel lblPlayersTurn;
-	private boolean isGameFinished;
 	protected boolean isPlayerOnesTurn;
 	protected boolean isPlayerTwosTurn;
-	protected JButton[] gameBoardTiles;
 	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
-	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * Builds the game's GUI board
@@ -79,12 +78,12 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators = new JSeparator[4];
 		
 		// assigning a background image to the app
-		f.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		// creates and sets up the board tiles
 		for (int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();
-			f.getContentPane().add(gameBoardTiles[i]);
+			frame.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setSize(80, 70);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
@@ -118,13 +117,13 @@ public class PvPGameBoard implements ActionListener {
 		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		lblPlayersTurn.setOpaque(false);
-		f.getContentPane().add(lblPlayersTurn);
+		frame.getContentPane().add(lblPlayersTurn);
 		
 		// creates and sets up the board line dividers
 		for (int x = 0; x < gameBoardSeparators.length; x++) {
 			gameBoardSeparators[x] = new JSeparator();
 			gameBoardSeparators[x].setBackground(Color.BLUE);
-			f.getContentPane().add(gameBoardSeparators[x]);
+			frame.getContentPane().add(gameBoardSeparators[x]);
 			
 			if (x == 2 || x == 3) {
 				gameBoardSeparators[x].setOrientation(SwingConstants.VERTICAL);
@@ -140,11 +139,11 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators[2].setLocation(148, 64);
 		gameBoardSeparators[3].setLocation(237, 64);
 		
-		f.setResizable(false);
-		f.setSize(399, 358);
-		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		f.setLocationRelativeTo(null);
-		f.setVisible(true);
+		frame.setResizable(false);
+		frame.setSize(399, 358);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 	
 	/**
@@ -168,7 +167,6 @@ public class PvPGameBoard implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (JButton button : gameBoardTiles) {
 			if (ae.getSource() == button && button.getText().isEmpty()) {				
@@ -186,7 +184,6 @@ public class PvPGameBoard implements ActionListener {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
-		
 	}
 	
 	public void checkForPattern(String playerLetter) {
@@ -254,10 +251,8 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	public void logWinner(String playerLetter) {
-		String logMessage = playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName()
-				: getPlayerTwosName();
-		
-		logger_.log(Level.INFO, "{0} wins!", logMessage);
+		logger_.log(Level.INFO, "{0} wins!", playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName()
+				: getPlayerTwosName());
 	}
 	
 	/**
@@ -283,7 +278,7 @@ public class PvPGameBoard implements ActionListener {
 		// isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls 
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row 
 		// from displaying player won and draw at the same time error
-		if(!isGameFinished && isBoardFull()) {
+		if(!isGameOver && isBoardFull()) {
 			new GameWinner(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!");
 			logger_.info("Game Over! It's a draw!");
 		}
@@ -303,8 +298,8 @@ public class PvPGameBoard implements ActionListener {
 	 * @param tileTwo   second tile clicked
 	 * @param tileThree third tile clicked
 	 */
-	public void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
-		isGameFinished = true; 
+	public static void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
+		isGameOver = true; 
 		
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
 		

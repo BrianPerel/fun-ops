@@ -46,7 +46,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		frame2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
-				PvPGameBoard.f.dispose();
+				PvPGameBoard.frame.dispose();
 				new PvPGameBoard(false, false, true);
 		    }
 		});
@@ -102,6 +102,10 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		}
 	}
 
+	/**
+	 * Determines and makes necessary action associated to the button that was pressed when the game ends (play again or quit)
+	 * @param source the object on which the Event initially occurred
+	 */
 	public void determineEndGameAction(Object source) {
 		frame2.dispose();
 		
@@ -110,7 +114,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 				new CvPGameBoard(false, false, true);				
 			}
 			else {
-				PvPGameBoard.f.dispose();
+				PvPGameBoard.frame.dispose();
 				new PvPGameBoard(false, false, true);
 			}
 		} 

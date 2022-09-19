@@ -2,16 +2,13 @@ package com.encryption;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,21 +34,19 @@ import javax.swing.WindowConstants;
  */
 public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	
-	private static File file;
-	private static JFrame frame;
-	private static String fileName;
-	private static final String ERROR = "ERROR";
+	protected static JFrame frame;
+	protected static JTextField textFieldLoading;
+	protected static final String ERROR = "ERROR";
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of GUI buttons
 	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of GUI buttons when hovering 
 
 	private JButton btnBrowse;
-	private StringBuilder data;
+	static StringBuilder data;
 	private JButton btnEncrypt;
 	private JButton btnDecrypt;
 	private JButton btnLoadFile;
-	private boolean isFileLoaded;
-	private EncryptDecrypt dataSet;
-	private JTextField textFieldLoading;
+	protected static boolean isFileLoaded;
+	protected static EncryptDecryptOp dataSet;
 
 	public static void main(String[] args) {	
 		try {
@@ -152,7 +147,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
 			if(!(fileToLoad.isEmpty() || isFileLoaded)) {
-				loadFileData(fileToLoad);
+				EncryptDecryptFileUtils.loadFileData(fileToLoad);
 				return; // prevent below statements from executing if we fall into here
 			}
 			
@@ -215,94 +210,5 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	/**
-	 * Loads the desired file and obtains the contents within
-	 * @param fileToLoad the file we're gonna encrypt/decrypt
-	 */
-	public void loadFileData(String fileToLoad) {
-		// append .txt to the filename entered if entered without .txt 
-		if (!fileToLoad.endsWith(".txt")) {
-			fileToLoad += ".txt";
-			textFieldLoading.setText(fileToLoad);
-		}
-		
-		file = new File(fileToLoad);
-
-		// use try with resources here, which will auto close resources
-		try (Scanner read = new Scanner(file)) {
-
-			// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
-			while (read.hasNextLine()) {
-				data.append(read.nextLine());
-			}
-			
-			if(data.isEmpty()) {
-				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(frame.getComponent(0), "File is empty");
-				return;
-			}
-
-			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
-			textFieldLoading.setEditable(false);
-			textFieldLoading.setBackground(Color.LIGHT_GRAY);
-			setFileName(file.toString());
-			dataSet = new EncryptDecrypt(data);
-			isFileLoaded = true;
-
-			// check if Desktop is supported by this Platform or not
-			if (!Desktop.isDesktopSupported()) {
-				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
-						ERROR, JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			
-			openFile();
-
-		} catch (FileNotFoundException e) {
-			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "File not found");
-			textFieldLoading.setText("");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-	}
-
-	/**
-	 * Opens the loaded data file and brings back the GUI to the front 
-	 * @throws IOException file io exception
-	 */
-	public static void openFile() throws IOException {
-		// check if this file exists
-		if (file.exists()) {
-			Desktop.getDesktop().open(file);
-			
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				Thread.currentThread().interrupt();
-			}
-			
-			frame.toFront();
-		}
-	}
-
-	/**
-	 * Returns file name to be encrypted
-	 * @return filename to be encrypted
-	 */
-	public static String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * Sets the file name to be encrypted
-	 * @param argFileName that will be encrypted
-	 */
-	public static void setFileName(String argFileName) {
-		EncryptDecryptGui.fileName = argFileName;
 	}
 }

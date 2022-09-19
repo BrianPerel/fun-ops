@@ -27,9 +27,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -51,14 +49,16 @@ import javax.swing.WindowConstants;
  */
 public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
-	private static final String CURSOR_RIGHT_POSITION = String.format("%31s", ""); 
-	private static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
+	protected static final String CURSOR_RIGHT_POSITION = String.format("%31s", ""); 
+	protected static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
 	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
-	private static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
+	protected static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked
 	
-	private JFormattedTextField textFieldUserInput;
-	private boolean hasUserEnteredZero;
+	protected static JFormattedTextField textFieldUserInput;
+	protected static boolean hasUserEnteredZero;
+	
+	private MyCalculatorHelper helper = new MyCalculatorHelper();
 	
 	public static void main(String[] args) {			
 		try {
@@ -175,7 +175,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {	
 		String userInput = textFieldUserInput.getText();		
-		removeAutoDisplayZero();
+		helper.removeAutoDisplayZero(hasUserEnteredZero);
 				
 		if(userInput.trim().length() <= 29) {
 			numberActionButtons(ae);
@@ -189,7 +189,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		case "CE", "C":
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			MyCalculator.divideByZeroflag = false;
-			resetValues();
+			helper.resetValues();
 			break;
 
 		case ".":
@@ -201,7 +201,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		case "%":
 			if (!userInput.equals(CURSOR_RIGHT_POSITION)) {
 				// save num in calc's memory then display the % sign on calc display to avoid exception
-				MyCalculator.setNumber(String.valueOf(calculatePercentage(Double.parseDouble(userInput))));
+				MyCalculator.setNumber(String.valueOf(helper.calculatePercentage(Double.parseDouble(userInput))));
 				textFieldUserInput.setText(userInput.concat("%"));
 					
 				break;
@@ -252,28 +252,28 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	private void operatorActionButtons(ActionEvent ae) {
 		switch(ae.getActionCommand()) {
 			case "*":
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[1] = true;
 				break;
 		
 			// division symbol
 			case "\u00F7":
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[0] = true;
 				break;
 		
 			case "+":
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[3] = true;
 				break;
 		
 			case "-":
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[2] = true;
 				break;
 				
 			case "=":
-				performEnterOrEquals();
+				helper.performEnterOrEquals();
 				break;
 				
 			default:
@@ -356,47 +356,47 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case "1":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("1"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "2":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("2"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "3":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("3"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "4":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("4"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "5":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("5"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "6":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("6"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "7":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("7"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "8":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("8"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 
 		case "9":
 			textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
-			removeIllegalZero();
+			helper.removeIllegalZero();
 			break;
 		
 		default:
@@ -410,7 +410,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char keyChar = e.getKeyChar();
-		removeAutoDisplayZero();
+		helper.removeAutoDisplayZero(hasUserEnteredZero);
 		
 		// bug fix: prevents user from prepending a zero before a number
 		if(textFieldUserInput.getText().trim().equals("0")) {
@@ -471,7 +471,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// actions for symbol buttons
 				
 			case VK_SLASH: // VK_SLASH indicates '/' or division
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[0] = true;
 				break;
 	
@@ -479,17 +479,17 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			// would look like in
 			// KeyEvent code
 			case VK_PLUS:
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[3] = true;
 				break;
 	
 			case VK_MINUS:
-				setNumberText();
+				helper.setNumberText();
 				operatorFlags[2] = true;
 				break;
 	
 			case VK_ENTER, VK_EQUALS:
-				performEnterOrEquals();
+				helper.performEnterOrEquals();
 				break; // break statement for case enter key button
 	
 			case VK_BACK_SPACE:				
@@ -523,83 +523,13 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		if (Character.toUpperCase(keyChar) == 'C') {
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-			resetValues();
+			helper.resetValues();
 		}
 
 		if (keyChar == '*' || keyChar == '+') {
-			setNumberText();
+			helper.setNumberText();
 			operatorFlags[(keyChar == '*') ? 1 : 3] = true;
 		}
 	}
-	
-	/**
-	 * Resets all calculator's arrays (memory).
-	 */
-	public void resetValues() {
-		Arrays.fill(operatorFlags, false);
-		hasUserEnteredZero = false;
-		MyCalculator.stringNumbers.clear();
-		MyCalculator.bigDecimalNumbers.clear();
-	}
 
-	/**
-	 * Performs actions responsible for when the calculator's equals button is hit
-	 */
-	public void performEnterOrEquals() {
-		// if textField label is blank, then no action has been done by user.
-		// Hence in that scenario equal operation isn't performed
-		if (!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)) {
-			MyCalculator.setNumber(textFieldUserInput.getText());
-
-			// perform computation to make and get the value
-			String value = MyCalculator.compute();
-
-			// if value is whole then don't display 0's after decimal; ex. instead of 25.00
-			// display 25
-			double v = Double.parseDouble(value);
-			if ((v * 10) % 10 == 0) { // if value calculated is whole number
-				value = df.format(v); // removes zero's after decimal point
-			}
-			
-			// check for division by zero. Avoids exception being flagged
-			textFieldUserInput.setText(
-					(MyCalculator.divideByZeroflag) ? "Cannot divide by zero" : CURSOR_RIGHT_POSITION.concat(value));
-
-			resetValues(); // reset all array/memory values
-		} 
-		else if (textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)) {
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-		} 
-	}
-	
-	public void setNumberText() {
-		MyCalculator.setNumber(textFieldUserInput.getText());
-		textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
-	}
-
-	public void removeAutoDisplayZero() {
-		// remove the auto display '0' value from the main number entry textField box so that
-		// this '0' is not included in calculations. Since it's only needed for display purposes
-		if (textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO) && !hasUserEnteredZero) {
-			textFieldUserInput.setText(CURSOR_RIGHT_POSITION);
-		}
-	}
-	
-	/**
-	 * Calculator '%' operation
-	 * @param argNumber the value positioned before the % sign in user input
-	 * @return the percent result
-	 */
-	public BigDecimal calculatePercentage(double argNumber) {
-		return BigDecimal.valueOf(argNumber).divide(new BigDecimal(100));
-	}
-	
-	/**
-	 * Prevents user from adding a leading zero to an input number (prevents ex. 04)
-	 */
-	public void removeIllegalZero() {
-		if(textFieldUserInput.getText().trim().length() > 1 && textFieldUserInput.getText().trim().substring(0, 1).equals("0")) {
-			textFieldUserInput.setText(textFieldUserInput.getText().trim().substring(1));
-		}
-	}
 }

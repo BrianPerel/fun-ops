@@ -471,6 +471,9 @@
 		<copy todir="build/release/clock/res">
 			<fileset dir="res" includes="fonts/" />
 		</copy>
+		<copy todir="build/release/clock/res/graphics">
+			<fileset dir="res/graphics" includes="alarm-clock-icon.png, night-sky-stars.gif" />
+		</copy>
 		<zip destfile="build/release/clock.zip" basedir="build/release/clock" update="true" />
 		<delete dir="build/release/clock" />
 	</target>
@@ -502,6 +505,8 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
 				<attribute name="Resource" value="res/fonts/clock-font.tff" />
+				<attribute name="Resource2" value="res/graphics/alarm-click-icon.png" />
+				<attribute name="Resource3" value="res/graphics/night-sky-stars.gif" />
 			</manifest>
 		</jar>
 	</target>
@@ -512,7 +517,7 @@
 
 	<!-- javadoc target -->
 	<target name="create Javadoc for all programs" description="generate Javadoc for applications">
-		<javadoc sourcepath="src" destdir="docs/api" author="true" version="true" windowtitle="My API Page" />	
+		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" author="true" version="true" windowtitle="My API Page" />	
 	</target>
 
 	<!-- unjar target -->

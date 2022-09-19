@@ -21,12 +21,12 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
+	private static final Logger logger_ = Logger.getLogger(CvPGameBoard.class.getName());
 	
 	private int randomCell;
 	private int[] freeEmptyTiles;
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
 	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
-	private final Logger logger_ = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * Builds the game's GUI board
