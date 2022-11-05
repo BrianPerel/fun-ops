@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
- * Stop-watch app in the format 00:00:00 (hh:mm:ss).
+ * Stopwatch app in the format 00:00:00 (hh:mm:ss).
  * Classes are nested to support multiple inheritance
  */
 public class StopWatch extends JFrame {
@@ -33,6 +33,7 @@ public class StopWatch extends JFrame {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Exception e) {
+			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -138,7 +139,7 @@ public class StopWatch extends JFrame {
 				eventHandler(event.getSource(), (char) KeyEvent.VK_ENTER);
 			}
 
-			public void eventHandler(Object source, char keyChar) {
+			private void eventHandler(Object source, char keyChar) {
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
@@ -186,7 +187,7 @@ public class StopWatch extends JFrame {
 			/**
 			 * Sets the watch's time
 			 */
-			public void setWatchText() {
+			private void setWatchText() {
 				if(watch.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
 					watch.setForeground(Color.RED);
 				}

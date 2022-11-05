@@ -40,17 +40,17 @@ import com.stopwatch.StopWatch.StopWatchPanel;
  * number between 1-99 and he/she must guess what the remainder is. Every
  * correct guess gives the player 10 points, every incorrect guess takes away 10
  * points. Score is kept for every session. <br>
- * 
+ *
  * @author Brian Perel
  *
  */
 public class GuessingGame extends KeyAdapter implements ActionListener {
-	
+
 	protected static int maxChars = 2;
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
 	protected static final Color LIGHT_GREEN = new Color(50, 205, 50);
 	protected static final SecureRandom randomGenerator = new SecureRandom(
-				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));	
+				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	protected JFrame frame;
 	protected JLabel lblGuess;
@@ -62,7 +62,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JTextField textFieldScore;
 	protected JTextField textFieldGuesses;
 	protected JTextField textFieldRandomNumber;
-	protected JButton btnPlayAgain; 
+	protected JButton btnPlayAgain;
 	protected JButton btnGuess;
 	private StopWatch stopWatch;
 
@@ -138,7 +138,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(btnGuess);
 		btnGuess.addKeyListener(this);
-		
+
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		// Use document filter to limit user entry box component input size
@@ -146,17 +146,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= GuessingGame.maxChars 
+				if ((fb.getDocument().getLength() + text.length() - length) <= GuessingGame.maxChars
 						&& !text.matches("[a-zA-Z]+") && !text.matches("[^a-zA-Z0-9]+")) {
 					super.replace(fb, offset, length, text, attrs);
-				} 
+				}
 			}
 		});
 		frame.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		
+
 		btnPlayAgain = new JButton("Play again?");
 		btnPlayAgain.setBounds(382, 230, 105, 23);
 		btnPlayAgain.addActionListener(this);
@@ -173,9 +173,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.addActionListener(this);
 		closeTimerCheckBox.addKeyListener(this);
 		closeTimerCheckBox.setOpaque(false);
-		
+
 		frame.setLocationRelativeTo(null);
-		
+
 		// setup stop watch implementation for guessing game
 		stopWatch = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
@@ -190,12 +190,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// timer auto starts as soon as game board appears
 		StopWatchPanel.btnStart.doClick();
-		
+
 		textFieldGuessTheNumber.requestFocus();
-		
+
 		frame.setVisible(true);
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		eventHandler(e.getSource(), e.getKeyChar());
@@ -211,14 +211,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * @param source the object on which the Event initially occurred
 	 * @param keyChar the character associated with the key in this event
 	 */
-	public void eventHandler(Object source, char keyChar) {
+	private void eventHandler(Object source, char keyChar) {
 		boolean isTimeout = false;
 		StopWatchPanel.btnStop.doClick();
-		
+
 		// if the timer is greater than 10 seconds when the user guesses
 		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0 && !(source.equals(btnPlayAgain)
 				|| closeTimerCheckBox.isSelected())) {
-			
+
 			StopWatchPanel.btnStop.doClick();
 			isTimeout = true;
 			playSound(FAIL_SOUND);
@@ -228,17 +228,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 				totalGameScore -= 10;
 			}
 		}
-		
+
 		if(keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
 			StopWatchPanel.btnStop.doClick();
-			
+
 			StopWatchPanel.watch.setEnabled(StopWatchPanel.watch.isEnabled());
 			closeTimerCheckBox.setSelected(StopWatchPanel.watch.isEnabled());
-			
+
 			if(StopWatchPanel.watch.isEnabled()) {
 				StopWatchPanel.btnStart.doClick(); // start the timer from 0
 			}
-		} 
+		}
 
 		performGuiButtonAction(source, isTimeout);
 
@@ -246,9 +246,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnReset.doClick();
 		StopWatchPanel.btnStart.setEnabled(!closeTimerCheckBox.isSelected());
 		StopWatchPanel.watch.setEnabled(!closeTimerCheckBox.isSelected());
-		
+
 		if(closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
-			stopWatch.setVisible(true);		
+			stopWatch.setVisible(true);
 		}
 
 		// start the timer from 0
@@ -265,14 +265,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	/**
 	 * Performs associated action of the GUI button that is clicked
-	 * 
+	 *
 	 * @param ae the action event triggered
 	 * @param isTimeout boolean keeping track of whether or not timer has hit 10
 	 *                    seconds
 	 */
-	public void performGuiButtonAction(Object source, boolean isTimeout) {
+	protected void performGuiButtonAction(Object source, boolean isTimeout) {
 		StopWatchPanel.btnReset.doClick();
-		
+
 		// if guess btn is pushed and input is numeric data
 		if(source == btnGuess) {
 			if (textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
@@ -299,7 +299,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Evaluates the user's guess value
 	 */
-	public void evaluateGuess(boolean isTimeout, final int MAX_LIMIT) {
+	protected void evaluateGuess(boolean isTimeout, final int MAX_LIMIT) {
 
 		totalGuessesMade++;
 		int textFieldGuessTheNumberInt = 0;
@@ -309,7 +309,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		} catch(NumberFormatException nfe) {
 			System.out.println("Error: NumberFormatException caught. Number entered is too large");
 		}
-		
+
 		// if input remainder entered is outside of range 1-99 or 100-999
 		if (textFieldGuessTheNumberInt >= MAX_LIMIT || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
@@ -347,10 +347,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	/**
 	 * Performs actions to play specific audio that is called upon
-	 * 
+	 *
 	 * @param fileToPlay the audio requested to play
 	 */
-	public void playSound(String fileToPlay) {
+	private void playSound(String fileToPlay) {
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(new File(fileToPlay)));

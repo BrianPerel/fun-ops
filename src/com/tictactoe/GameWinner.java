@@ -43,6 +43,8 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		// and create a new GameBoard frame
 		frame2 = new JFrame("Tic Tac Toe");
 		frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		// if we close the game's winner window frame then close the other main game frame too
 		frame2.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -103,13 +105,14 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Determines and makes necessary action associated to the button that was pressed when the game ends (play again or quit)
+	 * Determines and makes the necessary action associated to the button that was pressed when the game ends (play again or quit)
 	 * @param source the object on which the Event initially occurred
 	 */
-	public void determineEndGameAction(Object source) {
+	private void determineEndGameAction(Object source) {
 		frame2.dispose();
 		
 		if (source == btnPlayAgain) {
+			// launches appropriate game mode when play again btn is pressed
 			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_MSG + "!")) {
 				new CvPGameBoard(false, false, true);				
 			}

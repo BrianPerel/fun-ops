@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Paddle extends Rectangle {
 
 	private static final long serialVersionUID = -7099975578602496893L;
-	
+
 	private int yVelocity, speed = 10;
 	private String id;
 
@@ -22,7 +22,7 @@ public class Paddle extends Rectangle {
 		super(xCoordinate, yCoordinate, PADDLE_WIDTH, PADDLE_HEIGHT);
 		this.id = id;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -45,21 +45,21 @@ public class Paddle extends Rectangle {
 
 	/**
 	 * Controls the movement of the paddles when a key is pressed
-	 * 
-	 * @param e the key event 
+	 *
+	 * @param e the key event
 	 */
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		
-		if (id.equals("Paddle1")) {
+
+		if ("Paddle1".equals(id)) {
 			if (keyCode == VK_W) {
 				setYDirection(-speed);
 			}
 			if (keyCode == VK_S) {
 				setYDirection(speed);
 			}
-		} 
-		else if (id.equals("Paddle2")) {
+		}
+		else if ("Paddle2".equals(id)) {
 			if (keyCode == VK_UP) {
 				setYDirection(-speed);
 			}
@@ -72,13 +72,13 @@ public class Paddle extends Rectangle {
 
 	/**
 	 * Controls the movement of the paddles when a key is released
-	 * 
+	 *
 	 * @param e the key event
 	 */
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		
-		if (id.equals("Paddle1")) {
+
+		if ("Paddle1".equals(id)) {
 			if (keyCode == VK_W) {
 				setYDirection(0);
 			}
@@ -86,7 +86,7 @@ public class Paddle extends Rectangle {
 				setYDirection(0);
 			}
 		}
-		else if (id.equals("Paddle2")) {
+		else if ("Paddle2".equals(id)) {
 			if (keyCode == VK_UP) {
 				setYDirection(0);
 			}
@@ -98,7 +98,7 @@ public class Paddle extends Rectangle {
 
 	/**
 	 * Sets the y-coordinate direction of specified paddle
-	 * 
+	 *
 	 * @param yDirection
 	 */
 	public void setYDirection(int yDirection) {
@@ -116,8 +116,8 @@ public class Paddle extends Rectangle {
 	 * Draws the game paddles
 	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {		
-		g.setColor(id.equals("Paddle1") ? Color.RED : Color.BLUE);
+	public void draw(Graphics g) {
+		g.setColor("Paddle1".equals(id) ? Color.RED : Color.BLUE);
 		g.fillOval(x, y, width, height);
 	}
 }

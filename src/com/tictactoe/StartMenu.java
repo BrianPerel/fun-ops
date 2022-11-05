@@ -33,12 +33,11 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	protected static final String COMPUTER = "Computer";
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 	private static final Logger logger_ = Logger.getLogger(StartMenu.class.getName());
-	
 	protected static JFrame frame;
+	
 	private JButton btnStart;
 	private JTextField nameOneTextField;
 	private JTextField nameTwoTextField;
-
 	private JRadioButton playAgainstComputerRadioButton;
 
 	public static void main(String[] args) {			
@@ -53,7 +52,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");			
 			logger_.info("Starting tic tac toe log");
 		} catch (Exception e) {
-			logger_.severe("Error: " + e.toString());
+			logger_.severe("Failed to set LookAndFeel\n" + e.toString());
 			e.printStackTrace();
 		}
 		
@@ -118,8 +117,14 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		eventHandler(ae.getSource(), (char) KeyEvent.VK_ENTER);
 	}
 
-	public void eventHandler(Object source, char keyChar) {
+	/**
+	 * A common method used by both types of listeners (for keys and action buttons) that handles an event
+	 * @param source the object on which the event initially occurred
+	 * @param keyChar the character associated with the key in this event
+	 */
+	private void eventHandler(Object source, char keyChar) {
 		if (keyChar == KeyEvent.VK_ENTER && source == playAgainstComputerRadioButton) {
+			// play against computer game flow
 			frame.dispose();
 			new CvPGameBoard(true, true, false);
 			return;
@@ -128,7 +133,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText().trim();
 		String nameTwo = nameTwoTextField.getText().trim();
 		
-		if (nameOne.equalsIgnoreCase(PLAYER) || nameOne.equalsIgnoreCase(COMPUTER)
+		// if one or both name textfields are empty
+		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
+			Toolkit.getDefaultToolkit().beep();
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR_TITLE,
+					JOptionPane.ERROR_MESSAGE);
+		} 
+		else if (nameOne.equalsIgnoreCase(PLAYER) || nameOne.equalsIgnoreCase(COMPUTER)
 				|| nameTwo.equalsIgnoreCase(PLAYER) || nameTwo.equalsIgnoreCase(COMPUTER)) {
 			JOptionPane.showMessageDialog(frame.getComponent(0), "Please don't use \'" + PLAYER + "\' or \'" + COMPUTER + "\' as a name",
 					ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
@@ -136,6 +147,15 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			nameTwoTextField.setText("");
 			nameOneTextField.requestFocus();
 		}		
+		// if first player's name field equals the second one
+		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
+			Toolkit.getDefaultToolkit().beep();
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR_TITLE,
+					JOptionPane.ERROR_MESSAGE);
+			nameOneTextField.setText("");
+			nameTwoTextField.setText("");
+			nameOneTextField.requestFocus();
+		}
 		// if start button is pushed and both name fields arn't empty and both names are different
 		else if (keyChar == KeyEvent.VK_ENTER && source == btnStart && !nameOne.isEmpty()
 				&& !(nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))) {
@@ -148,20 +168,5 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			frame.dispose();
 			new PvPGameBoard(true, true, false);
 		} 
-		// if one or both name textfields are empty
-		else if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
-			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR_TITLE,
-					JOptionPane.ERROR_MESSAGE);
-		} 
-		// if first name field equals the second one
-		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
-			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR_TITLE,
-					JOptionPane.ERROR_MESSAGE);
-			nameOneTextField.setText("");
-			nameTwoTextField.setText("");
-			nameOneTextField.requestFocus();
-		}
 	}
 }

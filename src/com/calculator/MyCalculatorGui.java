@@ -64,7 +64,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");	
 		} catch (Exception e) {
-			System.out.println("Error ClassNotFoundException: " + e.getMessage());
+			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
 		}
 		
 		new MyCalculatorGui();

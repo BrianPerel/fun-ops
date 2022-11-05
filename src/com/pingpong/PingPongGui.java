@@ -22,9 +22,9 @@ public class PingPongGui extends JFrame {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			System.out.println("Error ClassNotFoundException" + e.getMessage());
+			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
 		}
-		
+
 		new PingPongGui();
 	}
 
@@ -35,7 +35,7 @@ public class PingPongGui extends JFrame {
 	public PingPongGui() {
 		super("Pong Game");
 		this.add(new GameBoard());
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Menu");
 		menu.setMnemonic('r'); // alt+r = menu keyboard shortcut/ keyboard mnemonic
@@ -46,22 +46,22 @@ public class PingPongGui extends JFrame {
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
-		
+
 		menu.add(menuOption);
 		menuBar.add(menu);
 		this.setJMenuBar(menuBar);
 		menuOption.addActionListener(actionEvent -> {
-			if (actionEvent.getSource() == menuOption)  {  
+			if (actionEvent.getSource() == menuOption)  {
 				this.dispose();
 				new PingPongGui();
 			}
 		});
-		
+
 		this.setResizable(false);
 		this.setBackground(DARK_GREEN);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
-		this.setLocationRelativeTo(null);	
+		this.setLocationRelativeTo(null);
 	}
 }

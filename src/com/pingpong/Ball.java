@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Ball extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private double xVelocityOfBall;
 	private double yVelocityOfBall;
 	private double initialBallSpeed = 2;
@@ -27,18 +27,18 @@ public class Ball extends Rectangle {
 		super(x, y, width, height);
 		SecureRandom random = new SecureRandom(LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 		int randomXDirection = random.nextInt(2);
-		
+
 		if (randomXDirection == 0) {
 			randomXDirection--;
 		}
-		
+
 		setXDirection(randomXDirection * initialBallSpeed);
 		int randomYDirection = random.nextInt(2);
-		
+
 		if (randomYDirection == 0) {
 			randomYDirection--;
 		}
-		
+
 		setYDirection(randomYDirection * initialBallSpeed);
 	}
 
@@ -95,7 +95,7 @@ public class Ball extends Rectangle {
 	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.fillOval(x, y, height, width);	
+		g.fillOval(x, y, height, width);
 	}
 
 	/**

@@ -44,8 +44,8 @@ public class PvPGameBoard implements ActionListener {
 	private static String playerTwosName;
 
 	protected String[] tile; // the String version of the clickable board buttons
-	protected boolean isCvPGame;
-	protected JLabel lblPlayersTurn;
+	protected boolean isCvPGame; // determines current game mode, used to prevent bug
+	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
 	protected boolean isPlayerTwosTurn;
 	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
@@ -65,7 +65,7 @@ public class PvPGameBoard implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (Exception e) {
-			logger_.severe("Error: " + e.toString());
+			logger_.severe("Failed to set LookAndFeel\n" + e.toString());
 			e.printStackTrace();
 		}
 
@@ -157,7 +157,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
-	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		// enforces player1 to always start first: Sets p1 and p2's turns for first round
 		if (argIsStart) {
 			isPlayerOnesTurn = !argIsPlayerOnesTurn;
@@ -186,9 +186,13 @@ public class PvPGameBoard implements ActionListener {
 		}
 	}
 	
-	public void checkForPattern(String playerLetter) {
+	/**
+	 * Scans board for any 3 in a row combos made by either a player
+	 * @param playerLetter player's board letter type
+	 */
+	private void checkForPattern(String playerLetter) {
 		
-		// if buttons 0, 1, 2 are triggered - 3 in a row vertically - down the left side column
+		// if buttons 0, 1, 2 are triggered (pressed) - 3 in a row vertically - down the left side column
 		if (tile[0].equals(playerLetter) && tile[1].equals(playerLetter) && tile[2].equals(playerLetter)) {
 			logWinner(playerLetter);			
 			displayWinnersPattern(gameBoardTiles[0], gameBoardTiles[1], gameBoardTiles[2]);
@@ -226,7 +230,7 @@ public class PvPGameBoard implements ActionListener {
 		checkFurtherForPattern(playerLetter);
 	}
 
-	public void checkFurtherForPattern(String playerLetter) {
+	private void checkFurtherForPattern(String playerLetter) {
 		
 		// if buttons 2, 5, 8 are triggered - 3 in a row horizontally - across the bottom row
 		if (tile[2].equals(playerLetter) && tile[5].equals(playerLetter) && tile[8].equals(playerLetter)) {
@@ -250,7 +254,11 @@ public class PvPGameBoard implements ActionListener {
 		} 
 	}
 
-	public void logWinner(String playerLetter) {
+	/**
+	 * Logs the current game's winner
+	 * @param playerLetter player's letter type - used to get the winner's name
+	 */
+	private void logWinner(String playerLetter) {
 		logger_.log(Level.INFO, "{0} wins!", playerLetter.equals(PLAYER_ONE_LETTER) ? getPlayerOnesName()
 				: getPlayerTwosName());
 	}
@@ -258,7 +266,7 @@ public class PvPGameBoard implements ActionListener {
 	/**
 	 * Scans board after every move to see if a pattern of 3 has been made in a row, column, or diagonally or if all tiles have been clicked
 	 */
-	public void checkForWinner(boolean isCvPGame) {
+	private void checkForWinner(boolean isCvPGame) {
 		
 		/*
 		 * Game board's tile/button index numbers
@@ -287,7 +295,7 @@ public class PvPGameBoard implements ActionListener {
 	/**
 	 * Checks if game board is full, displays game over - tie (draw)
 	 */
-	public boolean isBoardFull() {
+	private boolean isBoardFull() {
 		// return false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
 		return Arrays.stream(gameBoardTiles).noneMatch(x -> x.getText().isEmpty());
 	}
@@ -298,7 +306,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param tileTwo   second tile clicked
 	 * @param tileThree third tile clicked
 	 */
-	public static void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
+	private static void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
 		isGameOver = true; 
 		
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
@@ -328,10 +336,10 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Performs actions after player turn
+	 * Performs actions after player's turn
 	 * @param buttonPressed button that was just pressed by player 
 	 */
-	public void completePlayersTurn(boolean isCvPGame, JButton buttonPressed, Color color, String playersLetter, String playersName) {
+	protected void completePlayersTurn(boolean isCvPGame, JButton buttonPressed, Color color, String playersLetter, String playersName) {
 		buttonPressed.setForeground(color);
 		buttonPressed.setText(playersLetter);
 		

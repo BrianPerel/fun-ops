@@ -20,7 +20,7 @@ import javax.swing.WindowConstants;
 /**
  * Mouse wiggle program. Useful for when you want to be away from your computer
  * however appear to be available. <br>
- * 
+ *
  * @author Brian Perel
  *
  */
@@ -29,15 +29,15 @@ public class WiggleMouse {
 	private int xCoordinate;
 	private int yCoordinate;
 	private long waitTime = 30L;
-	private final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};	
+	private final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};
 	private final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
-	
+
 	/**
 	 * Launch the application.
 	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
-	 * @throws AWTException 
+	 * @throws AWTException
 	 */
-	public static void main(String[] args) throws InterruptedException, AWTException {	
+	public static void main(String[] args) throws InterruptedException, AWTException {
 		new WiggleMouse();
 	}
 
@@ -51,7 +51,7 @@ public class WiggleMouse {
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
@@ -63,8 +63,8 @@ public class WiggleMouse {
 
 		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
 		lblArrowIcon.setBounds(35, 64, 80, 55);
-		frame.getContentPane().add(lblArrowIcon);	
-		
+		frame.getContentPane().add(lblArrowIcon);
+
 		JButton btnStart = new JButton("SET TIME");
 		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
 		btnStart.setBounds(215, 78, 99, 23);
@@ -83,17 +83,17 @@ public class WiggleMouse {
 				}
 			}
 		});
-		
+
 	    frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-		
+
 		moveMouse(new Robot());
 	}
-	
+
 	/**
 	 * Updates the time to wait before wiggling the mouse
 	 */
-	public long updateIdleTime() {
+	private long updateIdleTime() {
 		switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
 		case "1/2 minute":
 			return 30L;
@@ -106,22 +106,22 @@ public class WiggleMouse {
 
 		case "5 minutes":
 			return 300L;
-		
+
 		default:
 			return waitTime;
 		}
 	}
 
 	/**
-	 * Performs mouse movement actions
+	 * Performs mouse movement actions by getting current mouse coordinates, waiting the allotted time, then moving the mouse to the new coordinates
 	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
-	 * @throws AWTException 
+	 * @throws AWTException
 	 */
-	public void moveMouse(Robot robot) throws InterruptedException {
+	private void moveMouse(Robot robot) throws InterruptedException {
 		while (true) {
 			// get current mouse pointer coordinates and set them. This needs to be done
 			// twice in loop so that if user moves the mouse, the pointer doesn't jump back to the original point
-			setMouseLocation(); 
+			setMouseLocation();
 			TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
 			setMouseLocation();
 
@@ -130,15 +130,15 @@ public class WiggleMouse {
 				robot.mouseMove(xCoordinate, (x == 0) ? yCoordinate++ : yCoordinate--);
 				TimeUnit.MILLISECONDS.sleep(50L);
 			}
-			
+
 			robot.mouseMove(xCoordinate, yCoordinate);
 		}
 	}
 
 	/**
-	 * Sets the current mouse's position into variables (x, y coordinates)
+	 * Obtains and sets the current mouse's position into variables (x, y coordinates)
 	 */
-	public void setMouseLocation() {
+	private void setMouseLocation() {
 		xCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
 		yCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
 	}

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * Implementation for tic-tac-toe game board. Initiates the game and has functionality to support player vs computer game mode<br>
- * 
+ *
  * @author Brian Perel
  *
  */
@@ -22,7 +22,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger logger_ = Logger.getLogger(CvPGameBoard.class.getName());
-	
+
 	private int randomCell;
 	private int[] freeEmptyTiles;
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
@@ -30,7 +30,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	/**
 	 * Builds the game's GUI board
-	 * 
+	 *
 	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
@@ -49,9 +49,9 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	@Override
 	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		
+
 		freeEmptyTiles = new int[9];
-		
+
 		for (int x = 0; x < freeEmptyTiles.length; x++) {
 			freeEmptyTiles[x] = x;
 		}
@@ -59,25 +59,25 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
+
 		isCvPGame = true;
-	
+
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (int x = 0; x < gameBoardTiles.length; x++) {
-			
+
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
-				super.completePlayersTurn(isCvPGame, gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE, 
-					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER, 
+				super.completePlayersTurn(isCvPGame, gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE,
+					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
 					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
-				
+
 				shouldRun = !isPlayerOnesTurn;
-				
+
 				freeEmptyTiles[x] = -99; // prevents computer from choosing a tile that player has chosen
 				isPlayerOnesTurn = !isPlayerOnesTurn;
-				isPlayerTwosTurn = !isPlayerTwosTurn;	
-				
+				isPlayerTwosTurn = !isPlayerTwosTurn;
+
 				break;
-			} 
+			}
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				invalidMoveSelected = true;
@@ -85,105 +85,117 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
-		
+
 		makeMoveComputer();
 		freeEmptyTiles[randomCell] = -99; // prevents tic-tac-toe AI from choosing the same button it just clicked on it's next turn
 	}
-	
+
 	/**
 	 * Creates a new thread when it's the tic-tac-toe AI's turn to have it select a free/empty tile on the gameboard
 	 */
-	public void makeMoveComputer() { 
+	private void makeMoveComputer() {
 		// toRun enforces the computer to only do 1 click inside the new thread
-		if (shouldRun && !invalidMoveSelected) {		
+		if (shouldRun && !invalidMoveSelected) {
 			/*
 			 * create another thread and have doClick() called from within that new thread. This is needed because
-			 * doClick method's timeout gets checked inside the event thread, so it won't get released 
+			 * doClick method's timeout gets checked inside the event thread, so it won't get released
 			 * until the parent calling method (actionPerformed) exits (and so the event thread can continue its event processing)
+			 *
+			 * relates to: https://stackoverflow.com/questions/9866456/doclick-not-releasing-keys-until-loop-ends
 			 */
-			new Thread(() -> {
-        		makeBestMove();
-        		
-        		try {
-					TimeUnit.MILLISECONDS.sleep(300L);
-				} catch (InterruptedException ie) {
-					logger_.severe("Error: " + ie.toString());
-					ie.printStackTrace();
-					Thread.currentThread().interrupt();
-				}
-        	
-        		// solution to doClick() not releasing button until the parent calling method
-        		// (actionPerformed) finishes: doClick was moved to another thread here
-				gameBoardTiles[randomCell].doClick(); 
-			}).start();					
+			new Thread(this::doClickThread).start();
 		}
-		
+
 		invalidMoveSelected = false;
 	}
-	
-	public void makeBestMove() {
+
+	/**
+	 * Assist AI in choosing the best move to make in it's current turn by calling makeBestMoveComputer().
+	 * This secondary thread calls doClick on the randomly picked game board tile
+	 */
+	public synchronized void doClickThread() {
+		makeBestMoveComputer();
+
+		try {
+			TimeUnit.MILLISECONDS.sleep(300L);
+		} catch (InterruptedException ie) {
+			logger_.severe("Error: " + ie.toString());
+			ie.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
+
+		// solution to doClick() not releasing button until the parent calling method
+		// (actionPerformed) finishes: doClick was moved to another thread here
+		gameBoardTiles[randomCell].doClick();
+	}
+
+	/**
+	 * Assist AI in choosing the best move to make in it's current turn. This is done by scanning the board to see if other
+	 * player can win in their next move. If so code will block that combo from completing by placing AIs letter their
+	 */
+	private void makeBestMoveComputer() {
 		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
-		
-		do {	
+
+		do {
 			int tmp = canPlayerWinInOneMove(tile);
-			
+
 			if(tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(x -> x == tmp)) {
 				// loop through int array if tmp variable is in the array (meaning it's a free empty cell tile number, then randomCell gets tmp's value
     			randomCell = tmp;
     			break;
-			}		
-			
+			}
+
 			// use random generator to choose an empty cell from the above array and click it
 			randomCell = freeEmptyTiles[randomGenerator.nextInt(freeEmptyTiles.length)];
-			
+
 		} while(randomCell == -99); // -99 is our special value indicating that the array index number can't be picked in next turn. Can't use 0 because 0 is a possible array index number
 	}
-	
+
 	/**
-	 * Checks whether the player can win in there next move (1 move)
+	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo
 	 * @return recommended button for AI to select to prevent player from winning in their next move
 	 */
-	public int canPlayerWinInOneMove(String[] tile) {
-		
+	private int canPlayerWinInOneMove(String[] tile) {
+
 		/*
 		 * Game board's tile/button index numbers
-		 * 
+		 *
 		 * 0 3 6
 		 * 1 4 7
 		 * 2 5 8
 		 */
-		
+
 		// if player has pressed buttons 0, 2 and computer hasn't pressed button 1
 		if (tile[0].equals(PLAYER_ONE_LETTER) && tile[2].equals(PLAYER_ONE_LETTER) && !tile[1].equals(PLAYER_TWO_LETTER)) {
 			return 1;
-		} 
+		}
 		// if player has pressed buttons 3, 5 and computer hasn't pressed button 4
 		else if (tile[3].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER) && !tile[4].equals(PLAYER_TWO_LETTER)) {
 			return 6;
-		} 
+		}
 		// if player has pressed buttons 6, 8 and computer hasn't pressed button 7
 		else if (tile[6].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && !tile[7].equals(PLAYER_TWO_LETTER)) {
 			return 7;
-		} 
+		}
 		// if player has pressed buttons 0, 6 and computer hasn't pressed button 3
 		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER) && !tile[3].equals(PLAYER_TWO_LETTER)) {
 			return 3;
-		} 
+		}
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4
 		// or if player has pressed buttons 0, 8 and computer hasn't pressed button 4
 		else if ((tile[1].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) || (tile[0].equals(PLAYER_ONE_LETTER)
 				&& tile[8].equals(PLAYER_ONE_LETTER)) && !tile[4].equals(PLAYER_TWO_LETTER)) {
 			return 4;
-		} 
-		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5 
+		}
+		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5
 		// or if player has pressed buttons 2, 8 and computer hasn't pressed button 4
 		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && (!tile[5].equals(PLAYER_TWO_LETTER)
 				|| !tile[4].equals(PLAYER_TWO_LETTER))) {
 			return 5;
-		} 
-		
+		}
+
 		return -99; // this is an indication that the player hasn't chosen 2 spaces in a row yet
 	}
 }
