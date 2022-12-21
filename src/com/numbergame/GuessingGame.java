@@ -65,6 +65,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain;
 	protected JButton btnGuess;
 	private StopWatch stopWatch;
+	private int previousRandomNum;
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -118,7 +119,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblNumberIs.setBounds(302, 80, 102, 37);
 		frame.getContentPane().add(lblNumberIs);
 
-		randomNumber = randomGenerator.nextInt(100);
+		previousRandomNum = randomNumber = randomGenerator.nextInt(99) + 1;
 		textFieldRandomNumber = new JTextField(Integer.toString(randomNumber));
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);
@@ -131,14 +132,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblGuess.setBounds(240, 140, 275, 37);
 		frame.getContentPane().add(lblGuess);
 
-		btnGuess = new JButton("Guess");
-		btnGuess.setBounds(255, 230, 105, 23);
-		btnGuess.addActionListener(this);
-		btnGuess.setBackground(Color.GREEN);
-		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		frame.getContentPane().add(btnGuess);
-		btnGuess.addKeyListener(this);
-
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		// Use document filter to limit user entry box component input size
@@ -146,8 +139,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= GuessingGame.maxChars
-						&& !text.matches("[a-zA-Z]+") && !text.matches("[^a-zA-Z0-9]+")) {
+				if ((fb.getDocument().getLength() + text.length() - length) <= maxChars && text.matches("\\d+")) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -156,6 +148,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+		btnGuess = new JButton("Guess");
+		btnGuess.setBounds(255, 230, 105, 23);
+		btnGuess.addActionListener(this);
+		btnGuess.setBackground(Color.GREEN);
+		btnGuess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		frame.getContentPane().add(btnGuess);
+		btnGuess.addKeyListener(this);
 
 		btnPlayAgain = new JButton("Play again?");
 		btnPlayAgain.setBounds(382, 230, 105, 23);
@@ -176,7 +176,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		frame.setLocationRelativeTo(null);
 
-		// setup stop watch implementation for guessing game
+		setStopWatchImpl();
+
+		textFieldGuessTheNumber.requestFocus();
+
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Setup stop watch implementation for guessing game
+	 */
+	private void setStopWatchImpl() {
 		stopWatch = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		stopWatch.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -190,20 +200,16 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// timer auto starts as soon as game board appears
 		StopWatchPanel.btnStart.doClick();
-
-		textFieldGuessTheNumber.requestFocus();
-
-		frame.setVisible(true);
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		eventHandler(e.getSource(), e.getKeyChar());
+	public void keyPressed(KeyEvent ke) {
+		eventHandler(ke.getSource(), ke.getKeyChar());
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		eventHandler(e.getSource(), (char) KeyEvent.VK_ENTER);
+	public void actionPerformed(ActionEvent ae) {
+		eventHandler(ae.getSource(), (char) KeyEvent.VK_ENTER);
 	}
 
 	/**
@@ -222,13 +228,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			StopWatchPanel.btnStop.doClick();
 			isTimeout = true;
 			playSound(FAIL_SOUND);
-			JOptionPane.showMessageDialog(frame.getComponent(0), "You ran out of time.");
+			JOptionPane.showMessageDialog(frame.getComponent(0), "Your out of time.");
 
 			if (totalGameScore != 0) {
 				totalGameScore -= 10;
 			}
 		}
 
+		// if you want to turn off the timer
 		if(keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
 			StopWatchPanel.btnStop.doClick();
 
@@ -256,8 +263,21 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			StopWatchPanel.btnStart.doClick();
 		}
 
-		// set guess text field to blank
-		textFieldGuessTheNumber.setText("");
+		// set guess text field to blank. Can't just use setText("") because doing that has no effect on text box
+		textFieldGuessTheNumber = new JFormattedTextField("");
+		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
+		// Use document filter to limit user entry box component input size
+		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new DocumentFilter() {
+			@Override
+			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+					throws BadLocationException {
+				if ((fb.getDocument().getLength() + text.length() - length) <= maxChars && text.matches("\\d+")) {
+					super.replace(fb, offset, length, text, attrs);
+				}
+			}
+		});
+		frame.getContentPane().add(textFieldGuessTheNumber);
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		// forces focus to jump from button pressed to guessing text field again
 		textFieldGuessTheNumber.requestFocus();
@@ -281,57 +301,62 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			// if guess btn is pushed and input is empty
 			else if (textFieldGuessTheNumber.getText().isEmpty() || !textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 				playSound(FAIL_SOUND);
+				textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 				JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter a number");
+				textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 			}
 		}
 		// if play again btn is pushed
 		else if (source == btnPlayAgain) {
-			playSound("res/audio/chimes.wav");
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
-			textFieldGuesses.setText("0");
-			randomNumber = randomGenerator.nextInt(100);
-			textFieldRandomNumber.setText(Integer.toString(randomNumber));
-			textFieldScore.setText("0");
-			totalGameScore = totalGuessesMade = 0;
+			playAgain();
 		}
+	}
+
+	private void playAgain() {
+		playSound("res/audio/chimes.wav");
+		JOptionPane.showMessageDialog(frame.getComponent(0), "Game reset");
+		textFieldGuesses.setText("0");
+		randomNumber = randomGenerator.nextInt(99) + 1;
+
+		// adds an extra layer of security - prevents random number chosen from being the previous number used
+		if(randomNumber == previousRandomNum) {
+			randomNumber = randomGenerator.nextInt(99) + 1;
+		}
+
+		textFieldRandomNumber.setText(Integer.toString(randomNumber));
+		textFieldScore.setText("0");
+		totalGameScore = totalGuessesMade = 0;
 	}
 
 	/**
 	 * Evaluates the user's guess value
+	 *
+	 * @param isTimeout is the user out of time
+	 * @param TOTAL_SUM game mode's correct guess + random number's sum (which is either 100 or 1000)
 	 */
-	protected void evaluateGuess(boolean isTimeout, final int MAX_LIMIT) {
-
-		totalGuessesMade++;
+	protected void evaluateGuess(boolean isTimeout, final int TOTAL_SUM) {
 		int textFieldGuessTheNumberInt = 0;
 
 		try {
 			textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
 		} catch(NumberFormatException nfe) {
 			System.out.println("Error: NumberFormatException caught. Number entered is too large");
+			nfe.printStackTrace();
 		}
 
 		// if input remainder entered is outside of range 1-99 or 100-999
-		if (textFieldGuessTheNumberInt >= MAX_LIMIT || textFieldGuessTheNumberInt <= 0) {
+		if (textFieldGuessTheNumberInt >= TOTAL_SUM || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0),
-					"Please enter a valid number " + ((MAX_LIMIT == 100) ? "(1-99)" : "(100-999)"));
-		} else if (textFieldGuessTheNumberInt + randomNumber == MAX_LIMIT) {
-			playSound("res/audio/win.wav");
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
-			JOptionPane.showMessageDialog(frame.getComponent(0),
-					"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1000"));
-			randomNumber = randomGenerator.nextInt(MAX_LIMIT);
-			textFieldRandomNumber.setText(Integer.toString(randomNumber));
-
-			if (!isTimeout) {
-				totalGameScore += 10;
-			}
-		} else if (textFieldGuessTheNumberInt + randomNumber != MAX_LIMIT) {
+					"Please enter a valid number " + ((TOTAL_SUM == 100) ? "(1-99)" : "(100-999)"));
+		} else if (textFieldGuessTheNumberInt + randomNumber == TOTAL_SUM) {
+			gameWonCompleteSession(TOTAL_SUM, isTimeout);
+		} else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(frame.getComponent(0),
-					"Incorrect. That doesn't sum to " + ((MAX_LIMIT == 100) ? "100" : "1000"));
+					"Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1000"));
 
 			if (totalGameScore != 0) {
 				totalGameScore -= 10;
@@ -342,7 +367,26 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(totalGameScore));
-		textFieldGuesses.setText(Integer.toString(totalGuessesMade));
+		textFieldGuesses.setText(Integer.toString(++totalGuessesMade));
+	}
+
+	private void gameWonCompleteSession(final int MAX_LIMIT, boolean isTimeout) {
+		playSound("res/audio/win.wav");
+		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
+		JOptionPane.showMessageDialog(frame.getComponent(0),
+				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1000"));
+		randomNumber = randomGenerator.nextInt(99) + 1;
+
+		// adds an extra layer of security - prevents random number chosen from being the previous number used
+		if(randomNumber == previousRandomNum) {
+			randomNumber = randomGenerator.nextInt(99) + 1;
+		}
+
+		textFieldRandomNumber.setText(Integer.toString(randomNumber));
+
+		if (!isTimeout) {
+			totalGameScore += 10;
+		}
 	}
 
 	/**

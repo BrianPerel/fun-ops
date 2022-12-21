@@ -54,7 +54,6 @@ public class Clock implements ActionListener {
 	/**
 	 * Create the clock application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
 	 */
-	@SuppressWarnings("deprecation")
 	public Clock() {
 		frame = new JFrame("Clock");
 		frame.setSize(450, 280);
@@ -81,7 +80,7 @@ public class Clock implements ActionListener {
 		menuOption.addActionListener(this);
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+				java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_DOWN_MASK));
 
 		menu.add(menuOption);
 		menuBar.add(menu);
@@ -126,22 +125,21 @@ public class Clock implements ActionListener {
 		if (ae.getSource() == menuOption)  {
 			alarmTime = JOptionPane.showInputDialog(frame, "Alarm time (AM/PM format): ");
 
-			// index 0, 1, 3, and 4 of alarmTime string should be numbers only
 			if(alarmTime != null && !alarmTime.isBlank() && (alarmTime.trim().length() == 7 || alarmTime.trim().length() == 8)) {
-				alarmTime = alarmTime.trim();
+				alarmTime = alarmTime.trim().toUpperCase();
 
+				// index 0, 1, 3, and 4 of alarmTime string should be numbers only
 				if(alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
-						&& (alarmTime.toUpperCase().endsWith("AM") || alarmTime.toUpperCase().endsWith("PM"))) {
+						&& (alarmTime.endsWith("AM") || alarmTime.endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(frame, "Alarm time has been set", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				}
-				else {
+			}
+			else {
+				if(alarmTime != null) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(frame, "Alarm time could not be set. Please enter time of the appropriate format (x:xx AM or PM)", "Alarm time set", JOptionPane.INFORMATION_MESSAGE);
 				}
-			}
-			else {
-				Toolkit.getDefaultToolkit().beep();
 			}
 		}
 	}
@@ -158,13 +156,13 @@ public class Clock implements ActionListener {
 			time = obtainTime(militaryTimeFormatCheckBox);
 
 			if(alarmTime != null && !hasAlarmRung && (time.equalsIgnoreCase(alarmTime))) {
-				ringAlarm(time);
+				ringAlarm();
 			}
 
 			// updates the time every second
 			try {
 				TimeUnit.SECONDS.sleep(1L);
-			} catch (final InterruptedException ie) {
+			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
@@ -188,7 +186,7 @@ public class Clock implements ActionListener {
 	 * Rings the alarm if conditions are met
 	 * @param time the set alarm time
 	 */
-	private void ringAlarm(String time) {
+	private void ringAlarm() {
 		// play alarm wav file
 		try {
 			Clip clip = AudioSystem.getClip();
@@ -196,11 +194,14 @@ public class Clock implements ActionListener {
 			clip.start();
 			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
-			hasAlarmRung = true;
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e1) {
-			Thread.currentThread().interrupt();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 			e1.printStackTrace();
+		} catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+			ie.printStackTrace();
 		}
+
+		hasAlarmRung = true;
 	}
 
 }

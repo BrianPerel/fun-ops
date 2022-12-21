@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Encryption-decryption application. The idea is that the user can load a file,
@@ -39,6 +41,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	protected static final String ERROR = "ERROR";
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of GUI buttons
 	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of GUI buttons when hovering
+	protected static final String DEFAULT_FILENAME_ENTRY_TEXT = "Enter file name...";
 
 	private JButton btnBrowse;
 	static StringBuilder data;
@@ -77,7 +80,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 		btnLoadFile = buttons[0] = new JButton("Load file");
 
-		textFieldLoading = new JTextField("Enter file name...");
+		textFieldLoading = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
 		textFieldLoading.setBounds(148, 44, 112, 26);
 		textFieldLoading.setForeground(Color.GRAY);
 		frame.getContentPane().add(textFieldLoading);
@@ -85,10 +88,16 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldLoading.setToolTipText("Enter file name to load");
 		textFieldLoading.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if("Enter file name...".equals(textFieldLoading.getText())) {
+			public void keyPressed(KeyEvent ke) {
+				if(DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldLoading.getText())) {
 					textFieldLoading.setForeground(Color.BLACK);
 					textFieldLoading.setText("");
+				}
+
+				if(ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldLoading.getText().length() <= 1) {
+					textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+					textFieldLoading.setForeground(Color.GRAY);
+					textFieldLoading.setCaretPosition(0);
 				}
 			}
 		});
@@ -106,12 +115,12 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
-			    public void mouseEntered(java.awt.event.MouseEvent evt) {
+			    public void mouseEntered(MouseEvent evt) {
 					button.setBackground(DARK_LIGHT_BLUE);
 			    }
 
 				@Override
-			    public void mouseExited(java.awt.event.MouseEvent evt) {
+			    public void mouseExited(MouseEvent evt) {
 					button.setBackground(LIGHT_BLUE);
 			    }
 			});
@@ -129,13 +138,16 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	/**
 	 * JFileChooser file browse menu for GUI
 	 */
-	public void fileBrowse() {
+	private void fileBrowse() {
 		JFileChooser fileChooser = new JFileChooser();
 		// browse menu's default look in location is set to the user's home (C:\Users\example)
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setDialogTitle("Browse for file to encrypt");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
 
-		// creates the JFileChooser browse menu window that pops up when browse is hit
+        // creates the JFileChooser browse menu window that pops up when browse is hit
 		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+			textFieldLoading.setForeground(Color.BLACK);
 			textFieldLoading.setText(fileChooser.getSelectedFile().getName());
 		}
 	}
@@ -147,7 +159,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 		if (source == btnLoadFile) {
 			// if filename isn't empty or file hasn't yet been loaded
-			if(!(fileToLoad.isEmpty() || isFileLoaded)) {
+			if(!(fileToLoad.isEmpty() || isFileLoaded || fileToLoad.contains(DEFAULT_FILENAME_ENTRY_TEXT))) {
 				EncryptDecryptFileUtils.loadFileData(fileToLoad);
 				return; // prevent below statements from executing if we fall into here
 			}
@@ -175,7 +187,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			}
 		}
 		else {
-			checkOtherActions(source, fileToLoad);
+			checkOtherMenuActions(source, fileToLoad);
 		}
 	}
 
@@ -184,7 +196,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	 * @param source the object on which the Event initially occurred
 	 * @param fileToLoad the we're going to encrypt/decrypt
 	 */
-	public void checkOtherActions(Object source, String fileToLoad) {
+	private void checkOtherMenuActions(Object source, String fileToLoad) {
 		// if loaded file isn't blank, allow encryption op
 		if (source == btnEncrypt && !data.isEmpty()) {
 			try {

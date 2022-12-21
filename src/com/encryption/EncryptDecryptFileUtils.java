@@ -6,6 +6,7 @@ import static com.encryption.EncryptDecryptGui.dataSet;
 import static com.encryption.EncryptDecryptGui.frame;
 import static com.encryption.EncryptDecryptGui.isFileLoaded;
 import static com.encryption.EncryptDecryptGui.textFieldLoading;
+import static com.encryption.EncryptDecryptGui.DEFAULT_FILENAME_ENTRY_TEXT;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -19,20 +20,20 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 public class EncryptDecryptFileUtils {
-	
+
 	private static File file;
 	private static String fileName;
-	
+
 	private EncryptDecryptFileUtils() {
 		// private constructor will hide the implicit public one, b/c utility classes like this should not have public constructors
 	}
-	
+
 	/**
 	 * Loads the desired file and obtains the contents within
 	 * @param fileToLoad the file we're gonna encrypt/decrypt
 	 */
-	public static void loadFileData(String fileToLoad) {
-		// append .txt to the filename entered if entered without .txt 
+	protected static void loadFileData(String fileToLoad) {
+		// append .txt to the filename entered if entered without .txt
 		loadFile(fileToLoad);
 
 		// use try with resources here, which will auto close resources
@@ -42,7 +43,7 @@ public class EncryptDecryptFileUtils {
 			while (read.hasNextLine()) {
 				data.append(read.nextLine());
 			}
-			
+
 			if(data.isEmpty()) {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(EncryptDecryptGui.frame.getComponent(0), "File is empty");
@@ -63,13 +64,15 @@ public class EncryptDecryptFileUtils {
 						ERROR, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			openFile();
 
 		} catch (FileNotFoundException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(EncryptDecryptGui.frame.getComponent(0), "File not found");
-			textFieldLoading.setText("");
+			textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+			textFieldLoading.setForeground(Color.GRAY);
+			textFieldLoading.setCaretPosition(0);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -84,26 +87,26 @@ public class EncryptDecryptFileUtils {
 			fileToLoad += ".txt";
 			textFieldLoading.setText(fileToLoad);
 		}
-		
-		file = new File(fileToLoad);		
+
+		file = new File(fileToLoad);
 	}
 
 	/**
-	 * Opens the loaded data file and brings back the GUI to the front 
+	 * Opens the loaded data file and brings back the GUI to the front
 	 * @throws IOException file io exception
 	 */
-	public static void openFile() throws IOException {
+	protected static void openFile() throws IOException {
 		// check if this file exists
 		if (file.exists()) {
 			Desktop.getDesktop().open(file);
-			
+
 			try {
 				TimeUnit.MILLISECONDS.sleep(300L);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
-			
+
 			frame.toFront();
 		}
 	}

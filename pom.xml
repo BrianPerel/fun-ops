@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fun-ops</groupId> <!-- Project package name -->
 	<artifactId>src</artifactId> <!-- Project name -->
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version> <!-- Snapshot version -->
 	<packaging>jar</packaging>
 
 	<properties>

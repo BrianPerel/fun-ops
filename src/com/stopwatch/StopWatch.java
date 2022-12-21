@@ -26,9 +26,9 @@ import javax.swing.WindowConstants;
  * Classes are nested to support multiple inheritance
  */
 public class StopWatch extends JFrame {
-	
+
 	private static final long serialVersionUID = -75355816260383730L;
-	
+
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -36,13 +36,13 @@ public class StopWatch extends JFrame {
 			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		new StopWatch(300, 150); // 300 x 150 = default requested window measurements (width x height)
 	}
 
 	/**
 	 * Creates the GUI frame (box)
-	 */	
+	 */
 	public StopWatch(int x, int y) {
 		super("Stopwatch");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -58,21 +58,21 @@ public class StopWatch extends JFrame {
 	 * This is an inner class of StopWatch
 	 */
 	public class StopWatchPanel extends JPanel {
-		
-		public static boolean isRedFontEnabled;
+
 		private static final String START_TIME = "00:00:00";
 		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER); // show the timer
 		private static final long serialVersionUID = -6217657906467075510L;
 		public static final JButton btnStart = new JButton("START");
 		public static final JButton btnStop = new JButton("STOP");
 		public static final JButton btnReset = new JButton("RESET");
-		
+		public static boolean isRedFontEnabled;
+
 		/** represent the hours, minutes, and seconds in the watch */
 		private int hour;
 		private int minute;
 		private int second;
 		private int centisecond;
-	
+
 		private Timer timer; // watch timer
 		private ButtonListener buttonListener = new ButtonListener();
 
@@ -98,9 +98,9 @@ public class StopWatch extends JFrame {
 			add(buttonPanel, BorderLayout.CENTER);
 			timer = new Timer(0, buttonListener);
 			JButton[] buttons = {btnStart, btnStop, btnReset};
-			
+
 			// when running the guessing games, if user closes the timer window stop counting the time
-			if(isRedFontEnabled) {				
+			if(isRedFontEnabled) {
 				addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent e) {
@@ -108,7 +108,7 @@ public class StopWatch extends JFrame {
 					}
 				});
 			}
-			
+
 			for(JButton button : buttons) {
 				button.addKeyListener(buttonListener);
 				button.setFont(new Font("Georgia", Font.PLAIN, 15));
@@ -123,29 +123,29 @@ public class StopWatch extends JFrame {
 		 * This is an inner class of StopWatchPanel
 		 */
 		private class ButtonListener extends KeyAdapter implements ActionListener, Serializable {
-			
+
 			private static final long serialVersionUID = 1905122041950251207L;
 			private static final int TIMEBASE = 60;
 			private static final int CENTSECBASE = 99;
 			private static final int SHOWBASE = 10;
-			
+
 			@Override
-			public void keyPressed(KeyEvent e) {
-				eventHandler(e.getSource(), e.getKeyChar());
+			public void keyPressed(KeyEvent ke) {
+				eventHandler(ke.getSource(), ke.getKeyChar());
 			}
 
 			@Override
-			public void actionPerformed(ActionEvent event) {	
-				eventHandler(event.getSource(), (char) KeyEvent.VK_ENTER);
+			public void actionPerformed(ActionEvent ae) {
+				eventHandler(ae.getSource(), (char) KeyEvent.VK_ENTER);
 			}
 
 			private void eventHandler(Object source, char keyChar) {
 				if (hour == TIMEBASE && minute == TIMEBASE && second == TIMEBASE) {
 					hour = minute = second = 0;
 				}
-				
+
 				centisecond++;
-				
+
 				if (minute == TIMEBASE) {
 					hour++;
 					minute = 0;
@@ -158,29 +158,31 @@ public class StopWatch extends JFrame {
 					second++;
 					centisecond = 0;
 				}
-				if (keyChar == KeyEvent.VK_ENTER && source == btnStart) {
-					btnStart.setEnabled(false);
-					btnStop.setEnabled(true);
-					timer.start();
-				} 
-				else if (keyChar == KeyEvent.VK_ENTER && source == btnStop) {
-					btnStart.setEnabled(true);
-					btnStop.setEnabled(false);
-					timer.stop();
-				} 
-				else if (keyChar == KeyEvent.VK_ENTER && source == btnReset) { 
-					btnStart.setEnabled(true);
-					btnStop.setEnabled(true);
-					btnStart.requestFocus();
-					timer.stop();
-					hour = minute = second = 0;
-					watch.setText(START_TIME);
-					
-					if(isRedFontEnabled) {
-						watch.setForeground(Color.BLACK);
+				if(keyChar == KeyEvent.VK_ENTER) {
+					if (source == btnStart) {
+						btnStart.setEnabled(false);
+						btnStop.setEnabled(true);
+						timer.start();
+					}
+					else if (source == btnStop) {
+						btnStart.setEnabled(true);
+						btnStop.setEnabled(false);
+						timer.stop();
+					}
+					else if (source == btnReset) {
+						btnStart.setEnabled(true);
+						btnStop.setEnabled(true);
+						btnStart.requestFocus();
+						timer.stop();
+						hour = minute = second = 0;
+						watch.setText(START_TIME);
+
+						if(isRedFontEnabled) {
+							watch.setForeground(Color.BLACK);
+						}
 					}
 				}
-				
+
 				setWatchText();
 			}
 
@@ -191,7 +193,7 @@ public class StopWatch extends JFrame {
 				if(watch.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
 					watch.setForeground(Color.RED);
 				}
-				
+
 				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
 						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}

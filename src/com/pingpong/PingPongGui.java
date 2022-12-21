@@ -31,7 +31,6 @@ public class PingPongGui extends JFrame {
 	/**
 	 * Setups and creates the GUI
 	 */
-	@SuppressWarnings("deprecation")
 	public PingPongGui() {
 		super("Pong Game");
 		this.add(new GameBoard());
@@ -45,7 +44,7 @@ public class PingPongGui extends JFrame {
 		menuOption.setIcon(new ImageIcon("res/graphics/restart-icon.png"));
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+				java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
 
 		menu.add(menuOption);
 		menuBar.add(menu);

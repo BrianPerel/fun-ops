@@ -10,8 +10,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -19,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +40,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 /**
- * App simulating a traditional hangman game with a 4-letter car theme. <br>
+ * Hangman game app with a 4-letter car theme. <br>
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
@@ -54,7 +56,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JTextField textFieldGameScore;
 	private JTextField textFieldHangmanWord;
 	private String maskingAsterisk;
-	private JLabel lblGameScore;
 	private String secretWord;
 	private int guessesLeft;
 	private int gameScore;
@@ -66,34 +67,35 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// requiring us to change array size if we modify the txt file
 	private final List<String> wordList = new ArrayList<>();
 
-	// placeholder for a counter which tells which part of the hangman figure to display in the game from the hangmanDrawing
-	private int count;
+	// counter that tells which part of the hangman part to display in the game from the hangman drawing
+	private int wongWordCount;
 
-	// placeholder for defect fix - prevent loosing health when same button is continuously pressed
+	// prevents player from loosing health when same button is continuously pressed
 	private char previousGuess;
 
 	// textFieldHasFocus: flags to indicate which of the 4 user guessing text fields have the insertion
-	// pointer. w-d: flags to indicate this particular letter has been discovered by user and
+	// pointer. letter[0-3]: flags to indicate this particular letter has been discovered by user and
 	// printed
-	private boolean w, o, r, d;
+	private boolean[] letter = new boolean[4];
 	private boolean[] textFieldHasFocus = new boolean[4];
 
-	// store hangman drawing in an array, each part is to be displayed is in a separate
+	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
 	// space of the array
-	private final String[] HANGMAN_DRAWING = { "  ____________",
-											   "\n |  /      |",
-											   "\n | /       O",
-											   "\n |/        | ",
-											   "\n |        /|\\",
-											   "\n |       / | \\",
-											   "\n |         |",
-											   "\n |        / \\",
-											   "\n |       /   \\",
-											   "\n |____________" };
+	private final List<String> HANGMAN_DRAWING = Collections.unmodifiableList(List.of(
+			   "  ____________",
+			   "\n |  /      |",
+			   "\n | /       O",
+			   "\n |/        | ",
+			   "\n |        /|\\",
+			   "\n |       / | \\",
+			   "\n |         |",
+			   "\n |        / \\",
+			   "\n |       /   \\",
+			   "\n |____________" ));
 
 	public static void main(String[] args) {
-		new Hangman();
 		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to given custom color
+		new Hangman();
 	}
 
 	/**
@@ -116,7 +118,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextArea.setEditable(false);
 		hangmanTextArea.setFocusable(false);
 		hangmanTextArea.setToolTipText("Your health");
-
 		hangmanTextArea.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 		hangmanTextArea.setForeground(Color.BLUE);
 
@@ -155,10 +156,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		textFieldHangmanWord.setFocusable(false);
 		textFieldHangmanWord.setToolTipText("Secret Word");
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(272, 168, 171, 7);
-		frame.getContentPane().add(separator);
+		JSeparator separatorLine = new JSeparator();
+		separatorLine.setBounds(272, 168, 171, 7);
+		frame.getContentPane().add(separatorLine);
 
+		// text fields (holders) for letter guesses
 		letterTextFields = new JFormattedTextField[4];
 
 		for (int x = 0; x < letterTextFields.length; x++) {
@@ -175,7 +177,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields[2].setLocation(360, 186);
 		letterTextFields[3].setLocation(387, 186);
 
-		lblGameScore = new JLabel("Total Score:");
+		JLabel lblGameScore = new JLabel("Total Score:");
 		lblGameScore.setFont(new Font("Segoe UI Semibold", PLAIN, 16));
 		lblGameScore.setForeground(WHITE);
 		lblGameScore.setBounds(370, 44, 183, 430);
@@ -189,8 +191,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		textFieldGameScore.setFocusable(false);
 		textFieldGameScore.setBackground(Color.GRAY);
 
-		obtainRandomWords();
+		boolean loadSuccessful = obtainRandomWords();
 
+		if(loadSuccessful) {
+			makeSecretWord();
+		}
+	}
+
+	private void makeSecretWord() {
 		if(wordList.isEmpty()) {
 			logger_.severe("Error: File of secret words to load is empty");
 		}
@@ -208,40 +216,53 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Loads file and obtains a list of hangman words
 	 */
-	private void obtainRandomWords() {
-		try (Scanner myReader = new Scanner(new File("hangman.txt"))) {
+	private boolean obtainRandomWords() {
+		try (BufferedReader reader = new BufferedReader(new FileReader(new File("hangman.txt")))) {
+			String line;
+
 			// read file of random hangman words
-			while (myReader.hasNextLine()) {
+			while ((line = reader.readLine()) != null) {
 				// store every line (secret word) in an arraylist
 				// to attach a line number to each element
-				String word = myReader.nextLine();
+				String word = validateWord(line);
 
-				// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars
-				// also allow txt file to contain comments by ignoring anything that starts with '#'
-				if(wordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")
-						|| word.startsWith("#")) {
-					continue;
+				if(!word.isBlank()) {
+					wordList.add(word);
 				}
-
-				// in case player loads a file with words that include lower case letters
-				for(int x = 0; x < word.length(); x++) {
-					// if a letter in the word is found to be lower case, make the whole word upper case
-					if(Character.isLowerCase(word.charAt(x))) {
-						logger_.warning("Word loaded from file was lowercase. Loading in uppercase format");
-						word = word.toUpperCase();
-						break;
-					}
-				}
-
-				wordList.add(word);
 			}
 
-			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness
+			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness to when selecting a secret word
+
+			return true;
 
 		} catch (FileNotFoundException e) {
-			logger_.severe("Error: File not found. " + e.toString());
+			logger_.severe("Error: File not found");
 			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+
+		return false;
+	}
+
+	private String validateWord(String word) {
+		// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars
+		// also allow txt file to contain comments by ignoring anything that starts with '#'
+		if(wordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")
+				|| word.startsWith("#")) {
+			return "";
+		}
+
+		// in case player loads a file with words that include lower case letters
+		for(int x = 0; x < word.length(); x++) {
+			// if a letter in the word is found to be lower case, make the whole word upper case
+			if(Character.isLowerCase(word.charAt(x))) {
+				logger_.warning("Word loaded from the file had lowercase letters. Loading in uppercase format");
+				return word.toUpperCase();
+			}
+		}
+
+		return word;
 	}
 
 	/**
@@ -264,7 +285,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Read and randomly select a word from a loaded file with a list of hangman words
 	 */
 	private String getSecretWord() {
-		guessesLeft = HANGMAN_DRAWING.length; // initializes the tracker for the number of guesses you have at start
+		guessesLeft = HANGMAN_DRAWING.size(); // initializes the tracker for the number of guesses you have at start
 		textFieldGuessesLeft.setText(String.valueOf(guessesLeft));
 
 		maskingAsterisk = new String(new char[letterTextFields.length]).replace("\0", "*");
@@ -287,24 +308,36 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 
 		letterTextFields[0].requestFocus();
-		w = o = r = d = false;
 
-		// enforces the program from choosing the same word as previously chosen from the hangman word list file
-		String previousSecretWord = secretWord;
-
-		secretWord = getSecretWord();
-
-		// fall into here only if provided word list file contains more than 1 word to avoid errors
-		if (secretWord.equals(previousSecretWord) && wordList.size() > 1) {
-			logger_.warning("Chosen word was same as previously chosen word. Choosing a different word");
-			secretWord = getSecretWord();
+		for (int i = 0; i < letter.length; i++) {
+			letter[i] = false;
 		}
+
+		avoidDuplicateWord();
 
 		textFieldGuessesLeft.setBorder(new LineBorder(Color.BLACK, 0, true));
 
 		// log the hangman word
 		logger_.info(secretWord);
-		count = 0;
+		wongWordCount = 0;
+	}
+
+	private void avoidDuplicateWord() {
+		// enforces the program from choosing the same word as previously chosen from the hangman word list file
+		String previousSecretWord = secretWord;
+
+		// use counter var to tell if loop is being used again, if it is then that means we had to choose another word
+		int counter = 0;
+
+		do {
+
+			if(++counter > 1) {
+				logger_.info("Chosen word was same as previously chosen word. Choosing a different word");
+			}
+
+			secretWord = getSecretWord();
+
+		} while((wordList.size() > 1) && secretWord.equals(previousSecretWord));
 	}
 
 	/**
@@ -331,17 +364,17 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent ke) {
 		if(Integer.parseInt(textFieldGuessesLeft.getText()) <= 3) {
 			textFieldGuessesLeft.setBorder(new LineBorder(Color.RED, 2, true));
 		}
 
 		// accept only letters from user
-		if (KeyEvent.getKeyText(e.getKeyCode()).matches("[a-zA-Z]")) {
-			analyzeGuess(Character.toUpperCase(e.getKeyChar()));
+		if (KeyEvent.getKeyText(ke.getKeyCode()).matches("[a-zA-Z]")) {
+			analyzeGuess(Character.toUpperCase(ke.getKeyChar()));
 
 			// if all letters are found
-			if (w && o && r && d) {
+			if (letter[0] && letter[1] && letter[2] && letter[3]) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "CORRECT! YOU WIN! The secret word is: " + secretWord);
 				textFieldGameScore.setText(Integer.toString(++gameScore));
 				playAgain();
@@ -355,49 +388,48 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	private void analyzeGuess(char guess) {
 		// text field 1 chosen + letter entered matches first char of
-		// hangman word + the letter hasn't been guessed yet
-		if (textFieldHasFocus[0] && (guess == secretWord.charAt(0)) && !w) {
-			textFieldHangmanWord.setText(maskHangmanWord(guess)); // x000
-			w = true;
+		// hangman word + the letter that hasn't been guessed yet
+		for (int i = 0; i <= 3; i++) {
+			if(isGuessCorrect(guess, i)) {
+				return;
+			}
 		}
-		else if (textFieldHasFocus[1] && (guess == secretWord.charAt(1)) && !o) {
-			textFieldHangmanWord.setText(maskHangmanWord(guess)); // 0x00
-			o = true;
-		}
-		else if (textFieldHasFocus[2] && (guess == secretWord.charAt(2)) && !r) {
-			textFieldHangmanWord.setText(maskHangmanWord(guess)); // 00x0
-			r = true;
-		}
-		else if (textFieldHasFocus[3] && (guess == secretWord.charAt(3)) && !d) {
-			textFieldHangmanWord.setText(maskHangmanWord(guess)); // 000x
-			// below line is a code fix: will force set/display final letter if correct before
-			// trigger of winner message appears
-			letterTextFields[3].setText(letterTextFields[3].getText());
-			d = true;
-		}
-		else if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
+
+		if (letterTextFields[0].getText().length() <= 1 && (guess != secretWord.charAt(0))
 				&& (guess != secretWord.charAt(1)) && (guess != secretWord.charAt(2))) {
-			handleIncorrectGuess(guess);
+			handleWrongGuess(guess);
 		}
 	}
 
-	private void handleIncorrectGuess(char guess) {
+	private boolean isGuessCorrect(char guess, int x) {
+		if (textFieldHasFocus[x] && (guess == secretWord.charAt(x)) && !letter[x]) {
+			textFieldHangmanWord.setText(maskHangmanWord(guess)); // x000, 0x00, 00x0, or 000x
+
+			letter[x] = true;
+			return true;
+		}
+
+		return false;
+	}
+
+	private void handleWrongGuess(char guess) {
 		// prevents player from loosing health if the same wrong letter was pressed more than once
 		if (guess != previousGuess) {
-			hangmanTextArea.append(HANGMAN_DRAWING[count++]);
+			hangmanTextArea.append(HANGMAN_DRAWING.get(wongWordCount++));
 			textFieldGuessesLeft.setText(String.valueOf(--guessesLeft));
 
 			// handles game over checking and response
-			if (count == HANGMAN_DRAWING.length) {
+			if (wongWordCount == HANGMAN_DRAWING.size()) {
 				JOptionPane.showMessageDialog(frame.getComponent(0), "GAME OVER! The secret word is: " + secretWord);
 
-				if(!"0".equals(textFieldGameScore.getText())) {
+				if(!("0".equals(textFieldGameScore.getText()))) {
 					textFieldGameScore.setText(Integer.toString(--gameScore));
 				}
 
 				playAgain();
 			}
 		}
+
 		previousGuess = guess;
 	}
 

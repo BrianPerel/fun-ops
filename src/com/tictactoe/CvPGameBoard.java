@@ -23,8 +23,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger logger_ = Logger.getLogger(CvPGameBoard.class.getName());
 
-	private int randomCell;
-	private int[] freeEmptyTiles;
+	private int randomCell; 
+	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
 	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
 
@@ -46,8 +46,13 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
 	}
 
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
+		this(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		frame.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
+	}
+
 	@Override
-	public void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		super.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 
 		freeEmptyTiles = new int[9];
@@ -66,9 +71,10 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		for (int x = 0; x < gameBoardTiles.length; x++) {
 
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
-				super.completePlayersTurn(isCvPGame, gameBoardTiles[x], isPlayerOnesTurn ? LIGHT_RED : Color.BLUE,
-					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
-					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
+				super.completePlayersTurn(isCvPGame, gameBoardTiles[x],
+					(isPlayerOnesTurn) ? LIGHT_RED : Color.BLUE,
+					(isPlayerOnesTurn) ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
+					(isPlayerOnesTurn) ? getPlayerOnesName() : getPlayerTwosName());
 
 				shouldRun = !isPlayerOnesTurn;
 
@@ -113,7 +119,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 * Assist AI in choosing the best move to make in it's current turn by calling makeBestMoveComputer().
 	 * This secondary thread calls doClick on the randomly picked game board tile
 	 */
-	public synchronized void doClickThread() {
+	private synchronized void doClickThread() {
 		makeBestMoveComputer();
 
 		try {
@@ -125,7 +131,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		}
 
 		// solution to doClick() not releasing button until the parent calling method
-		// (actionPerformed) finishes: doClick was moved to another thread here
+		// (actionPerformed) finishes: doClick was moved to another thread (to this thread)
 		gameBoardTiles[randomCell].doClick();
 	}
 
@@ -141,7 +147,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		do {
 			int tmp = canPlayerWinInOneMove(tile);
 
-			if(tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(x -> x == tmp)) {
+			if(tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(i -> i == tmp)) {
 				// loop through int array if tmp variable is in the array (meaning it's a free empty cell tile number, then randomCell gets tmp's value
     			randomCell = tmp;
     			break;
@@ -156,6 +162,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	/**
 	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo
 	 * @return recommended button for AI to select to prevent player from winning in their next move
+	 * (returns button that hasn't been pressed yet to prevent player's 3 in a row pattern)
 	 */
 	private int canPlayerWinInOneMove(String[] tile) {
 
