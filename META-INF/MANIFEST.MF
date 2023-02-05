@@ -1,7 +1,6 @@
 # jar file specifications
 Manifest-Version: 1.0
 Created-By: Brian Perel
-Class-Path: lib/log4j-1.2.17.jar
 
 Main-Class: com.calculator.MyCalculatorGui
 

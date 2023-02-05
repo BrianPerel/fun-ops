@@ -20,7 +20,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	private static final long serialVersionUID = 1871004171456570750L;
 	private static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
 	private static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
-	
+
 	private Paddle paddleOne, paddleTwo;
 	private Ball pongBall;
 	private Score gameScore;
@@ -38,24 +38,24 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				paddleOne.keyPressed(e);
-				paddleTwo.keyPressed(e);
+				paddleOne.keyWasPressed(e);
+				paddleTwo.keyWasPressed(e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				paddleOne.keyReleased(e);
-				paddleTwo.keyReleased(e);
+				paddleOne.keyWasReleased(e);
+				paddleTwo.keyWasReleased(e);
 			}
 		});
-		
+
 		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 	}
 
 	/**
 	 * Creates the pong ball
 	 */
-	public void createPongBall() {
+	private void createPongBall() {
 		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), new SecureRandom(
 				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII)).nextInt(GAME_HEIGHT - BALL_DIAMETER),
 				BALL_DIAMETER, BALL_DIAMETER);
@@ -64,7 +64,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	/**
 	 * Creates the pong game paddles
 	 */
-	public void createPongPaddles() {
+	private void createPongPaddles() {
 		paddleOne = new Paddle(0, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, "Paddle1");
 		paddleTwo = new Paddle(GAME_WIDTH - PADDLE_WIDTH, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH,
 				PADDLE_HEIGHT, "Paddle2");
@@ -86,7 +86,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	 * Draws the paddles, ball, and game score
 	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {
+	private void draw(Graphics g) {
 		gameScore.draw(g);
 		paddleOne.draw(g);
 		paddleTwo.draw(g);
@@ -96,7 +96,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	/**
 	 * Controls the movement for both paddles and the ball
 	 */
-	public void move() {
+	private void move() {
 		paddleOne.move();
 		paddleTwo.move();
 		pongBall.move();
@@ -105,8 +105,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	/**
 	 * Detects edges and manages collision
 	 */
-	public void checkCollision() {
-
+	private void checkCollision() {
 		// bounce ball off top & bottom window edges
 		if (pongBall.y <= 0) {
 			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
@@ -120,7 +119,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 		if (pongBall.intersects(paddleOne)) {
 			pongBall.setxVelocityOfBall(Math.abs(pongBall.getxVelocityOfBall()));
 			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 0.2); // optional for more difficulty - increases the balls speed
-			
+
 			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 0.2 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
 
 			pongBall.setXDirection(pongBall.getxVelocityOfBall());
@@ -132,47 +131,47 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			pongBall.setxVelocityOfBall(pongBall.getxVelocityOfBall() + 1); // optional for more difficulty
 
 			pongBall.setyVelocityOfBall((pongBall.getyVelocityOfBall() > 0) ? pongBall.getyVelocityOfBall() + 1 : pongBall.getyVelocityOfBall() - 1); // optional for more difficulty
-			
+
 			pongBall.setXDirection(-pongBall.getxVelocityOfBall());
 			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
-
 		edgeChecker(paddleOne);
 		edgeChecker(paddleTwo);
-		
+
 		// give player 1 a point and create new paddles & ball
 		if (pongBall.x <= -22) {
 			gameScore.setPlayerTwoScore(gameScore.getPlayerTwoScore() + 1);
-			
+
 			try {
 				TimeUnit.MILLISECONDS.sleep(300L);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
-			
+
 			createPongBall();
 		}
 		if (pongBall.x >= (GAME_WIDTH - BALL_DIAMETER) + 22) {
 			gameScore.setPlayerOneScore(gameScore.getPlayerOneScore() + 1);
-			
+
 			try {
 				TimeUnit.MILLISECONDS.sleep(300L);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
-			
+
 			createPongBall();
 		}
 	}
 
-	public void edgeChecker(Paddle paddleNumber) {
+	private void edgeChecker(Paddle paddleNumber) {
 		// stops paddles at window edges
 		if (paddleNumber.y <= 0) {
 			paddleNumber.y = 0;
 		}
+
 		if (paddleNumber.y >= (GAME_HEIGHT - PADDLE_HEIGHT)) {
 			paddleNumber.y = GAME_HEIGHT - PADDLE_HEIGHT;
 		}
@@ -181,6 +180,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	/**
 	 * Wait 0.8 of a second, launches a loop that moves everything and checks for collision
 	 */
+	@Override
 	public void run() {
 		try {
 			TimeUnit.MILLISECONDS.sleep(300L);
@@ -188,16 +188,16 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			ie.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
-		
+
 		long lastTime = System.nanoTime();
 		double delta = 0;
-		
+
 		// game loop keeps the game running
 		while (true) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / 16666666.66;
 			lastTime = now;
-			
+
 			if (delta >= 1) {
 				move();
 				checkCollision();

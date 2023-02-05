@@ -33,12 +33,16 @@ public class Paddle extends Rectangle {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+
 		Paddle other = (Paddle) obj;
 		return Objects.equals(id, other.id) && speed == other.speed && yVelocity == other.yVelocity;
 	}
@@ -48,13 +52,14 @@ public class Paddle extends Rectangle {
 	 *
 	 * @param e the key event
 	 */
-	public void keyPressed(KeyEvent e) {
+	public void keyWasPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
 		if ("Paddle1".equals(id)) {
 			if (keyCode == VK_W) {
 				setYDirection(-speed);
 			}
+
 			if (keyCode == VK_S) {
 				setYDirection(speed);
 			}
@@ -75,7 +80,7 @@ public class Paddle extends Rectangle {
 	 *
 	 * @param e the key event
 	 */
-	public void keyReleased(KeyEvent e) {
+	public void keyWasReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
 		if ("Paddle1".equals(id)) {
@@ -101,7 +106,7 @@ public class Paddle extends Rectangle {
 	 *
 	 * @param yDirection
 	 */
-	public void setYDirection(int yDirection) {
+	private void setYDirection(int yDirection) {
 		yVelocity = yDirection;
 	}
 

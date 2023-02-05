@@ -3,8 +3,8 @@
 <project name="fun-ops" default="clean" basedir=".">
 
 	<description>
-		My Custom Ant Build Script for all 6 projects. Includes compile, jar, 
-		run, create exe, javadoc, unjar tasks for build generation for all projects
+		My Custom Ant Build Script for all fun-ops apps. Includes compile, jar,
+		run, create exe, javadoc, unjar tasks for build generation for all apps
 	</description>
 
 	<property name="version.num" value="v1.0" />
@@ -42,14 +42,13 @@
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" verbose="true" />
-		<delete dir="docs" verbose="true" />
 		<delete dir="log" verbose="true" />
 	</target>
 
 	<!-- target to create all project executables -->
 	<target name="create ALL project executables" description="create all project executables" depends="jar-calculator, jar-encryption program,
 			jar-clock, jar-guessing game, jar-hangman, jar-pong, jar-stopwatch, jar-tic tac toe, jar-wiggle mouse">
-			
+
 		<antcall target="create calculator.exe" />
 		<antcall target="create and zip encryption.exe" />
 		<antcall target="create and zip clock.exe" />
@@ -242,7 +241,7 @@
 	<target name="run-guessing game" depends="jar-guessing game" description="run the program">
 		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<target name="jar-adv-guessing game" depends="compile-guessing game" description="create associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar" basedir="${classes.dir}">
@@ -256,7 +255,7 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="run-adv-guessing game" depends="jar-adv-guessing game" description="run the program">
 		<java jar="${jar.dir}/adv-guessingGame-${version.num}.jar" fork="true" />
 	</target>
@@ -305,7 +304,7 @@
 				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
 			</config>
 		</launch4j>
-		
+
 		<launch4j>
 			<config headerType="gui" outfile="adv_number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/adv-guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
 				<jre minVersion="${min.jre.version}">
@@ -329,7 +328,7 @@
 			<fileset dir="${res.audio.dir}" includes="*" />
 		</copy>
 		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
-		<delete dir="${release.dir}/number_game" />		
+		<delete dir="${release.dir}/number_game" />
 	</target>
 
 	<!-- targets for stopwatch -->
@@ -422,7 +421,7 @@
 	<target name="run-wiggle mouse" depends="jar-wiggle mouse" description="run the program">
 		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
-	
+
 	<!-- zip wigglemouse program -->
 	<target name="zip-wigglemouse-jar w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle mouse">
 		<copy todir="${dist.dir}/wigglemouse">
@@ -446,7 +445,7 @@
 				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
 			</config>
 		</launch4j>
-		
+
 		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse" />
 		<copy todir="build/release/wigglemouse/res/graphics">
 			<fileset dir="res/graphics" includes="image-mouse-shake.jpg" />
@@ -517,13 +516,13 @@
 
 	<!-- javadoc target -->
 	<target name="create Javadoc for all programs" description="generate Javadoc for applications">
-		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" author="true" version="true" windowtitle="My API Page" />	
+		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" author="true" version="true" windowtitle="My API Page" />
 	</target>
 
 	<!-- unjar target -->
-	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program, 
+	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program,
 		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
-		
+
 		<unjar dest="${unjar.dir}">
 			<fileset dir="${jar.dir}" />
 		</unjar>

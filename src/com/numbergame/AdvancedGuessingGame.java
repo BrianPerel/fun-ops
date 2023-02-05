@@ -16,7 +16,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 	}
 
 	public AdvancedGuessingGame() {
-		frame.setTitle("Advanced ".concat(frame.getTitle()));
+		window.setTitle("Advanced ".concat(window.getTitle()));
 		randomNumber = randomGenerator.nextInt(899) + 100;
 		textFieldRandomNumber.setText(Integer.toString(randomNumber)); // range is set to between 100-999
 		lblGuess.setText(lblGuess.getText().substring(0, lblGuess.getText().indexOf("1-99")).concat("100-999 to make 1000"));

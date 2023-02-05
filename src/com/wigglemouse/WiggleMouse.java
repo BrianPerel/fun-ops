@@ -1,12 +1,15 @@
 package com.wigglemouse;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultComboBoxModel;
@@ -15,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
@@ -45,47 +49,62 @@ public class WiggleMouse {
 	 * Initialize the contents of the frame.
 	 */
 	public WiggleMouse() throws InterruptedException, AWTException {
-		JFrame frame = new JFrame("Wiggle mouse by B. Perel");
-		frame.setResizable(false);
-		frame.setSize(550, 182);
-		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+
+		JFrame window = new JFrame("Wiggle mouse by B. Perel");
+		window.setResizable(false);
+		window.setSize(550, 182);
+		window.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.getContentPane().setLayout(null);
 
 		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
 		lblDisplayMessage.setBounds(35, 23, 370, 23);
-		frame.getContentPane().add(lblDisplayMessage);
+		window.getContentPane().add(lblDisplayMessage);
 
 		WAIT_TIME_OPTIONS_COMBO_BOX.setBounds(395, 23, 100, 22);
-		frame.getContentPane().add(WAIT_TIME_OPTIONS_COMBO_BOX);
+		window.getContentPane().add(WAIT_TIME_OPTIONS_COMBO_BOX);
 		WAIT_TIME_OPTIONS_COMBO_BOX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
 		lblArrowIcon.setBounds(35, 64, 80, 55);
-		frame.getContentPane().add(lblArrowIcon);
+		window.getContentPane().add(lblArrowIcon);
 
-		JButton btnStart = new JButton("SET TIME");
-		btnStart.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
-		btnStart.setBounds(215, 78, 99, 23);
-		frame.getContentPane().add(btnStart);
-	    btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnStart.addActionListener(actionEvent -> {
-			if (actionEvent.getSource() == btnStart) {
+		JButton btnSetTime = new JButton("SET TIME");
+		btnSetTime.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
+		btnSetTime.setBounds(215, 78, 99, 23);
+		window.getContentPane().add(btnSetTime);
+	    btnSetTime.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSetTime.addActionListener(actionEvent -> {
+			if (actionEvent.getSource() == btnSetTime) {
 				waitTime = updateIdleTime();
 			}
 		});
-		btnStart.addKeyListener(new KeyAdapter() {
+		btnSetTime.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnStart) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnSetTime) {
 					waitTime = updateIdleTime();
 				}
 			}
 		});
+		btnSetTime.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSetTime.setBackground(new Color(200, 203, 232));
+			}
 
-	    frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSetTime.setBackground(UIManager.getColor(btnSetTime));
+			}
+		});
+
+	    window.setVisible(true);
+		window.setLocationRelativeTo(null);
+
+		btnSetTime.doClick();
+		window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
 
 		moveMouse(new Robot());
 	}
@@ -94,22 +113,13 @@ public class WiggleMouse {
 	 * Updates the time to wait before wiggling the mouse
 	 */
 	private long updateIdleTime() {
-		switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
-		case "1/2 minute":
-			return 30L;
-
-		case "1 minute":
-			return 60L;
-
-		case "3 minutes":
-			return 180L;
-
-		case "5 minutes":
-			return 300L;
-
-		default:
-			return waitTime;
-		}
+		return switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
+			case "1/2 minute" -> 30L;
+			case "1 minute" -> 60L;
+			case "3 minutes" -> 180L;
+			case "5 minutes" -> 300L;
+			default -> waitTime;
+		};
 	}
 
 	/**

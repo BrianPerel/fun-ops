@@ -31,7 +31,7 @@ import javax.swing.border.LineBorder;
  */
 public class PvPGameBoard implements ActionListener {
 
-	protected static final JFrame frame = new JFrame("Tic Tac Toe");
+	protected static final JFrame window = new JFrame("Tic Tac Toe");
 	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
 	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
 	private static final Logger logger_ = Logger.getLogger(PvPGameBoard.class.getName());
@@ -78,12 +78,12 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators = new JSeparator[4];
 
 		// assigning a background image to the app
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		// creates and sets up the board tiles
 		for (int i = 0; i < gameBoardTiles.length; i++) {
 			gameBoardTiles[i] = new JButton();
-			frame.getContentPane().add(gameBoardTiles[i]);
+			window.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setSize(80, 70);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
@@ -117,13 +117,13 @@ public class PvPGameBoard implements ActionListener {
 		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		lblPlayersTurn.setOpaque(false);
-		frame.getContentPane().add(lblPlayersTurn);
+		window.getContentPane().add(lblPlayersTurn);
 
 		// creates and sets up the board line dividers
 		for (int x = 0; x < gameBoardSeparators.length; x++) {
 			gameBoardSeparators[x] = new JSeparator();
 			gameBoardSeparators[x].setBackground(Color.BLUE);
-			frame.getContentPane().add(gameBoardSeparators[x]);
+			window.getContentPane().add(gameBoardSeparators[x]);
 
 			if (x == 2 || x == 3) {
 				gameBoardSeparators[x].setOrientation(SwingConstants.VERTICAL);
@@ -139,16 +139,16 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators[2].setLocation(148, 64);
 		gameBoardSeparators[3].setLocation(237, 64);
 
-		frame.setResizable(false);
-		frame.setSize(399, 358);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setLocation(StartMenu.frame.getX(), StartMenu.frame.getY());
-		frame.setVisible(true);
+		window.setResizable(false);
+		window.setSize(399, 358);
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.setLocation(StartMenu.window.getX(), StartMenu.window.getY());
+		window.setVisible(true);
 	}
 
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
 		this(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		frame.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
+		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
 
@@ -206,9 +206,9 @@ public class PvPGameBoard implements ActionListener {
 		// if buttons 2, 5, 8 are triggered - 3 in a row horizontally - across the bottom row
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
-		String[] pairArr = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
+		final String[] PAIR_ARR = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
 
-		for (String pair : pairArr) {
+		for (String pair : PAIR_ARR) {
 			checkPair(playerLetter, pair);
 		}
 	}
@@ -283,6 +283,18 @@ public class PvPGameBoard implements ActionListener {
 
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
 
+		// this will prevent game board tiles from changing color when a game is won
+		for (int i = 0; i < gameBoardTiles.length; i++) {
+			final int x = i;
+			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent evt) {
+					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE);
+				}
+			});
+		}
+
+		// makes game board tiles that player won with green when a game is won
 		for (JButton button : highlightWinnersTiles) {
 			button.setBackground(GREEN);
 			button.setBorder(new LineBorder(Color.BLUE, 3, true));

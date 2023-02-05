@@ -3,6 +3,10 @@ package com.encryption;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -36,9 +40,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
-	protected static JFrame frame;
+	protected static JFrame window;
 	protected static JTextField textFieldLoading;
-	protected static final String ERROR = "ERROR";
+	protected static final String ERROR = "Error";
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of GUI buttons
 	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of GUI buttons when hovering
 	protected static final String DEFAULT_FILENAME_ENTRY_TEXT = "Enter file name...";
@@ -67,12 +71,12 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	 * Create the application. Places all the buttons on the app's board and initializes the contents of the frame, building the GUI.
 	 */
 	public EncryptDecryptGui() {
-		frame = new JFrame("Encrypt-decrypt App by: Brian Perel");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
-		frame.getContentPane().setLayout(null);
-		frame.setResizable(false);
-		frame.setSize(421, 264);
+		window = new JFrame("File Ceasar Cipher App by: Brian Perel");
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
+		window.getContentPane().setLayout(null);
+		window.setResizable(false);
+		window.setSize(421, 264);
 
 		data = new StringBuilder();
 
@@ -83,9 +87,10 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldLoading = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
 		textFieldLoading.setBounds(148, 44, 112, 26);
 		textFieldLoading.setForeground(Color.GRAY);
-		frame.getContentPane().add(textFieldLoading);
+		window.getContentPane().add(textFieldLoading);
 		textFieldLoading.setColumns(10);
 		textFieldLoading.setToolTipText("Enter file name to load");
+		allowFileDragNDrop();
 		textFieldLoading.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
@@ -94,7 +99,8 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 					textFieldLoading.setText("");
 				}
 
-				if(ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldLoading.getText().length() <= 1) {
+				if((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldLoading.getText().length() <= 1)
+						|| (ke.isControlDown() && ke.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
 					textFieldLoading.setForeground(Color.GRAY);
 					textFieldLoading.setCaretPosition(0);
@@ -107,7 +113,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		btnDecrypt = buttons[3] = new JButton("Decrypt");
 
 		for(JButton button : buttons) {
-			frame.getContentPane().add(button);
+			window.getContentPane().add(button);
 			button.addActionListener(this);
 			button.setFocusable(false);
 			button.setSize(89, 28);
@@ -131,8 +137,36 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		buttons[2].setLocation(84, 140);
 		buttons[3].setLocation(235, 139);
 
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		window.setVisible(true);
+		window.setLocationRelativeTo(null);
+	}
+
+	/**
+	 * Allows the user to drag and drop a file onto the text field to load
+	 */
+	private void allowFileDragNDrop() {
+
+		textFieldLoading.setDropTarget(new DropTarget() {
+
+			private static final long serialVersionUID = 7192052102451674891L;
+
+			@Override
+			public synchronized void drop(DropTargetDropEvent evt) {
+				try {
+					evt.acceptDrop(DnDConstants.ACTION_COPY);
+
+					String fileName = new File(evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor).toString()).getName();
+
+					if(fileName.contains("]")) {
+						fileName = fileName.replace("]", "");
+					}
+
+					textFieldLoading.setText(fileName);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
@@ -166,20 +200,20 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 			// if file has been already been loaded and load file btn pushed
 			// or if file load textfield is empty while load file btn is pushed
-			JOptionPane.showMessageDialog(frame.getComponent(0), isFileLoaded ? "A file has already been loaded"
+			JOptionPane.showMessageDialog(window.getComponent(0), isFileLoaded ? "A file has already been loaded"
 					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
 			Toolkit.getDefaultToolkit().beep();
 		}
 		// if encrypt/decrypt btn pushed and file has not been loaded
 		else if ((source == btnEncrypt || source == btnDecrypt) && !isFileLoaded) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "No file loaded yet", ERROR,
+			JOptionPane.showMessageDialog(window.getComponent(0), "No file loaded yet", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else if (source == btnBrowse) {
 			if(isFileLoaded) {
 				// if file has been already been loaded and load file btn pushed
-				JOptionPane.showMessageDialog(frame.getComponent(0), "A file has already been loaded", ERROR, JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(window.getComponent(0), "A file has already been loaded", ERROR, JOptionPane.ERROR_MESSAGE);
 				Toolkit.getDefaultToolkit().beep();
 			}
 			else {
@@ -201,7 +235,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		if (source == btnEncrypt && !data.isEmpty()) {
 			try {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(frame.getComponent(0),
+				JOptionPane.showMessageDialog(window.getComponent(0),
 					dataSet.encrypt() ? "File succesfully encrypted" : "File already encrypted. Could not encrypt");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -211,7 +245,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		else if (source == btnDecrypt && !data.isEmpty()) {
 			try {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(frame.getComponent(0),
+				JOptionPane.showMessageDialog(window.getComponent(0),
 					dataSet.decrypt() ? "File succesfully decrypted" : "File already decrypted. Could not decrypt");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -220,7 +254,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		// if loaded file is blank and encrypt/decrypt btn pushed
 		else if (!fileToLoad.isEmpty() && data.isEmpty() && (source == btnEncrypt || source == btnDecrypt)) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "File provided is empty", ERROR,
+			JOptionPane.showMessageDialog(window.getComponent(0), "File provided is empty", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

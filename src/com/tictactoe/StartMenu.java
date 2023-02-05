@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.text.MessageFormat;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -32,12 +34,12 @@ import javax.swing.text.DocumentFilter;
  */
 public class StartMenu extends KeyAdapter implements ActionListener {
 
-	private static final String ERROR_TITLE = "ERROR";
+	private static final String ERROR_TITLE = "Error";
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
 	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
 	private static final Logger logger_ = Logger.getLogger(StartMenu.class.getName());
-	protected static JFrame frame;
+	protected static JFrame window;
 
 	private JButton btnStart;
 	private JFormattedTextField nameOneTextField;
@@ -60,18 +62,18 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
-		frame = new JFrame("Tic Tac Toe App by: Brian Perel");
-		frame.setResizable(false);
-		frame.setSize(399, 358);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		window = new JFrame("Tic Tac Toe App by: Brian Perel");
+		window.setResizable(false);
+		window.setSize(399, 358);
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.getContentPane().setLayout(null);
 
-		frame.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		JLabel lblPlayer1 = new JLabel("Player 1:");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer1.setBounds(87, 56, 83, 25);
-		frame.getContentPane().add(lblPlayer1);
+		window.getContentPane().add(lblPlayer1);
 
 		nameOneTextField = new JFormattedTextField();
 		// Use document filter to limit player 1's name to size of 12
@@ -86,13 +88,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		});
 		nameOneTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
 		nameOneTextField.setBounds(190, 54, 130, 35);
-		frame.getContentPane().add(nameOneTextField);
+		window.getContentPane().add(nameOneTextField);
 		nameOneTextField.setColumns(10);
 
 		JLabel lblPlayer2 = new JLabel("Player 2:");
 		lblPlayer2.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer2.setBounds(87, 114, 98, 25);
-		frame.getContentPane().add(lblPlayer2);
+		window.getContentPane().add(lblPlayer2);
 
 		nameTwoTextField = new JFormattedTextField();
 		// Use document filter to limit player 1's name to size of 12
@@ -108,27 +110,42 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		nameTwoTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
 		nameTwoTextField.setColumns(10);
 		nameTwoTextField.setBounds(190, 112, 130, 35);
-		frame.getContentPane().add(nameTwoTextField);
+		window.getContentPane().add(nameTwoTextField);
 
 		btnStart = new JButton("Start");
 		btnStart.setFont(new Font("Lucida Fax", Font.BOLD + Font.ITALIC, 14));
 		btnStart.setBounds(145, 192, 107, 35);
-		frame.getContentPane().add(btnStart);
+		window.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 		btnStart.setBackground(LIGHT_GREEN);
 		btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		setHoverColor(btnStart);
 
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
 		playAgainstComputerRadioButton.setBounds(207, 268, 157, 23);
 		playAgainstComputerRadioButton.setOpaque(false);
-		frame.getContentPane().add(playAgainstComputerRadioButton);
+		window.getContentPane().add(playAgainstComputerRadioButton);
 		playAgainstComputerRadioButton.addActionListener(this);
 		playAgainstComputerRadioButton.addKeyListener(this);
 		playAgainstComputerRadioButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		window.setVisible(true);
+		window.setLocationRelativeTo(null);
+	}
+
+	protected static void setHoverColor(JButton argBtn) {
+		argBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				argBtn.setBackground(new Color(38, 195, 54));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				argBtn.setBackground(LIGHT_GREEN);
+			}
+		});
 	}
 
 	@Override
@@ -151,7 +168,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private void eventHandler(Object source, char keyChar) {
 		if (keyChar == KeyEvent.VK_ENTER && source == playAgainstComputerRadioButton) {
 			// play against computer game flow
-			frame.dispose();
+			window.dispose();
 			new CvPGameBoard(true, true, false);
 			return; // prevents below code from running
 		}
@@ -162,16 +179,15 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if start button is pushed and both name fields arn't empty and both names are
 		// different
 		if (keyChar == KeyEvent.VK_ENTER && source == btnStart
-				&& !(nameOne.isEmpty() && nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))) {
+				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))) {
 			// first letter of name should be capitalized, and the rest of the name should
 			// be in lowercase
 			PvPGameBoard.setPlayerOnesName(nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase());
 			PvPGameBoard.setPlayerTwosName(nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase());
 
-			logger_.info("Player 1: " + PvPGameBoard.getPlayerOnesName() + ", Player 2: "
-					+ PvPGameBoard.getPlayerTwosName());
+			logger_.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", PvPGameBoard.getPlayerOnesName(), PvPGameBoard.getPlayerTwosName()));
 
-			frame.dispose();
+			window.dispose();
 			new PvPGameBoard(true, true, false);
 
 		} else {
@@ -183,13 +199,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if one or both name textfields are empty
 		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter names for both players", ERROR_TITLE,
+			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 		// if entered player 1 or 2's name equals 'PLAYER' or 'COMPUTER'
 		else if (PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
 				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo)) {
-			JOptionPane.showMessageDialog(frame.getComponent(0),
+			JOptionPane.showMessageDialog(window.getComponent(0),
 					"Please don't use \'" + PLAYER + "\' or \'" + COMPUTER + "\' as a name", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
@@ -199,7 +215,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if first player's name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(frame.getComponent(0), "Please enter different player names", ERROR_TITLE,
+			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");

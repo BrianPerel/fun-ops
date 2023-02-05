@@ -23,7 +23,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger logger_ = Logger.getLogger(CvPGameBoard.class.getName());
 
-	private int randomCell; 
+	private int randomCell;
 	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
 	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
@@ -48,7 +48,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
 		this(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		frame.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
+		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
 	@Override

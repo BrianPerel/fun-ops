@@ -74,12 +74,12 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 * Places all the buttons on the app's board and initializes the contents of the frame, building the GUI.
 	 */
 	public MyCalculatorGui() {
-		JFrame frame = new JFrame("Calculator App by: Brian Perel");
-		frame.getContentPane().setBackground(Color.DARK_GRAY);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setResizable(false);
-		frame.setSize(400, 436);
+		JFrame window = new JFrame("Calculator App by: Brian Perel");
+		window.getContentPane().setBackground(Color.DARK_GRAY);
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.getContentPane().setLayout(null);
+		window.setResizable(false);
+		window.setSize(400, 436);
 
 		textFieldUserInput = new JFormattedTextField(CURSOR_RIGHT_POSITION_W_ZERO);
 		textFieldUserInput.requestFocus();
@@ -87,7 +87,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		textFieldUserInput.setFont(new Font("Bookman Old Style", Font.PLAIN, 16));
 		textFieldUserInput.setBounds(33, 27, 315, 40);
 		textFieldUserInput.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
-		frame.getContentPane().add(textFieldUserInput);
+		window.getContentPane().add(textFieldUserInput);
 		textFieldUserInput.setColumns(10);
 		textFieldUserInput.setEditable(false);
 		textFieldUserInput.addKeyListener(this);
@@ -118,7 +118,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
 			button.setBackground(WHITE);
-			frame.getContentPane().add(button);
+			window.getContentPane().add(button);
 			button.addActionListener(this);
 			button.addKeyListener(this);
 			button.setSize(80, 40);
@@ -165,8 +165,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		buttons[22].setLocation(189, 304);
 		buttons[23].setLocation(268, 304);
 
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		window.setVisible(true);
+		window.setLocationRelativeTo(null);
 	}
 
 	/**

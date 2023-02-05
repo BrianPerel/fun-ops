@@ -1,12 +1,12 @@
 package com.encryption;
 
+import static com.encryption.EncryptDecryptGui.DEFAULT_FILENAME_ENTRY_TEXT;
 import static com.encryption.EncryptDecryptGui.ERROR;
 import static com.encryption.EncryptDecryptGui.data;
 import static com.encryption.EncryptDecryptGui.dataSet;
-import static com.encryption.EncryptDecryptGui.frame;
+import static com.encryption.EncryptDecryptGui.window;
 import static com.encryption.EncryptDecryptGui.isFileLoaded;
 import static com.encryption.EncryptDecryptGui.textFieldLoading;
-import static com.encryption.EncryptDecryptGui.DEFAULT_FILENAME_ENTRY_TEXT;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -46,11 +46,11 @@ public class EncryptDecryptFileUtils {
 
 			if(data.isEmpty()) {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(EncryptDecryptGui.frame.getComponent(0), "File is empty");
+				JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File is empty");
 				return;
 			}
 
-			JOptionPane.showMessageDialog(frame.getComponent(0), "File succesfully loaded");
+			JOptionPane.showMessageDialog(window.getComponent(0), "File succesfully loaded");
 			textFieldLoading.setEditable(false);
 			textFieldLoading.setBackground(Color.LIGHT_GRAY);
 			setFileName(file.toString());
@@ -60,7 +60,7 @@ public class EncryptDecryptFileUtils {
 			// check if Desktop is supported by this Platform or not
 			if (!Desktop.isDesktopSupported()) {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(frame.getComponent(0), "Desktop is not supported by this application",
+				JOptionPane.showMessageDialog(window.getComponent(0), "Desktop is not supported by this application",
 						ERROR, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -69,7 +69,7 @@ public class EncryptDecryptFileUtils {
 
 		} catch (FileNotFoundException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(EncryptDecryptGui.frame.getComponent(0), "File not found");
+			JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File not found", ERROR, JOptionPane.INFORMATION_MESSAGE);
 			textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
 			textFieldLoading.setForeground(Color.GRAY);
 			textFieldLoading.setCaretPosition(0);
@@ -107,7 +107,7 @@ public class EncryptDecryptFileUtils {
 				Thread.currentThread().interrupt();
 			}
 
-			frame.toFront();
+			window.toFront();
 		}
 	}
 
