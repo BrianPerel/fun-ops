@@ -20,7 +20,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -62,7 +61,7 @@ public class Clock implements ActionListener {
 		window.setSize(450, 280);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars.gif")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars-animation.gif")));
 
 		window.getContentPane().setLayout(null);
 		window.setAlwaysOnTop(true);
@@ -92,7 +91,7 @@ public class Clock implements ActionListener {
 
 		menuOption = new JCheckBoxMenuItem("Set Alarm Time");
 		menuOption.setFont(custFont);
-		menuOption.setIcon(new ImageIcon("res/graphics/alarm-clock-icon.png"));
+		menuOption.setIcon(new ImageIcon("res/graphics/alarm-clock-sign.png"));
 		menuOption.addActionListener(this);
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A,
@@ -128,7 +127,7 @@ public class Clock implements ActionListener {
 		militaryTimeFormatCheckBox.setForeground(WHITE);
 		window.getContentPane().add(militaryTimeFormatCheckBox);
 
-		// adding this code in case frame.getContentPane().setLayout(null); removed
+		// adding this code in case frame.getContentPane().setLayout(null); is removed
 		militaryTimeFormatCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
 		militaryTimeFormatCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		militaryTimeFormatCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -163,7 +162,7 @@ public class Clock implements ActionListener {
 						"Error setting alarm", JOptionPane.INFORMATION_MESSAGE);
 			}
 
-			menuOption.setSelected(false); // removes check mark from the app menu option
+			menuOption.setSelected(false); // removes check mark from the app's menu option
 		}
 	}
 
@@ -178,7 +177,7 @@ public class Clock implements ActionListener {
 		String time = "";
 
 		while (true) {
-			time = obtainTime(militaryTimeFormatCheckBox);
+			time = obtainFormattedTime(militaryTimeFormatCheckBox);
 
 			if (alarmTime != null && !hasAlarmRung && (time.equalsIgnoreCase(alarmTime))) {
 				ringAlarm();
@@ -194,7 +193,14 @@ public class Clock implements ActionListener {
 		}
 	}
 
-	private String obtainTime(JCheckBox militaryTimeFormatCheckBox) {
+	/**
+	 * Formats the clock's current time being displayed to avoid having a zero appear before single digit hour.
+	 * Changes the time to be displayed to 24 hr format if user selects the option
+	 *
+	 * @param militaryTimeFormatCheckBox check box to request 24 hr format time
+	 * @return the formatted current time
+	 */
+	private String obtainFormattedTime(JCheckBox militaryTimeFormatCheckBox) {
 		String time = java.time.LocalDateTime.now()
 				.format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) ? "HH:mm" : "hh:mm a"));
 

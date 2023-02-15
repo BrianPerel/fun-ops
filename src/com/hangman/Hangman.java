@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -48,7 +47,7 @@ import javax.swing.text.MaskFormatter;
  */
 public class Hangman extends KeyAdapter implements FocusListener {
 
-	private static final Color LIGHT_GREEN = new Color(34, 139, 34);
+	private static final Color LIGHT_GREEN_COLOR = new Color(34, 139, 34);
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger logger_ = Logger.getLogger(Hangman.class.getName());
@@ -68,7 +67,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// specific line. Using an arraylist because this will allow us to modify our hangman
 	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
 	// requiring us to change array size if we modify the txt file
-	private final List<String> wordList = new ArrayList<>();
+	private final List<String> secretWordList = new ArrayList<>();
 
 	// counter that tells which part of the hangman part to display in the game from the hangman drawing
 	private int wongWordCount;
@@ -205,7 +204,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	private void makeSecretWord() {
-		if(wordList.isEmpty()) {
+		if(secretWordList.isEmpty()) {
 			logger_.severe("Error: File of secret words to load is empty");
 			JOptionPane.showMessageDialog(window, "File of secret words to load is empty", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -221,7 +220,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Loads file and obtains a list of hangman words
+	 * Loads file and obtains a list of hangman secret words
 	 */
 	private boolean obtainRandomWords() {
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File("hangman.txt")))) {
@@ -235,11 +234,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				String word = validateWord(line);
 
 				if(!word.isBlank()) {
-					wordList.add(word);
+					secretWordList.add(word);
 				}
 			}
 
-			Collections.shuffle(wordList); // shuffle the hangman words list, adding an extra layer of randomness to when selecting a secret word
+			Collections.shuffle(secretWordList); // shuffle the hangman words list, adding an extra layer of randomness to when selecting a secret word
 
 			return true;
 
@@ -254,11 +253,16 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		return false;
 	}
 
+	/**
+	 * Validates every word being loaded from our file of words
+	 *
+	 * @param word a secret hangman word
+	 * @return empty string indicating to not use a secret work or the validated secret word w/o formatting
+	 */
 	private String validateWord(String word) {
-
 		// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars return empty string to avoid adding that String
 		// also allow txt file to contain comments by ignoring anything that starts with '#'
-		if(word.startsWith("#") || wordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")) {
+		if(word.startsWith("#") || secretWordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")) {
 			return "";
 		}
 
@@ -300,7 +304,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		maskingAsterisk = new String(new char[letterTextFields.length]).replace("\0", "*");
 
 		// choose random word from txt file, update the .nextInt() parameter value (line.size()) as you add words to hangman.txt in the future
-		return wordList.get(randomGenerator.nextInt(wordList.size()));
+		return secretWordList.get(randomGenerator.nextInt(secretWordList.size()));
 	}
 
 	/**
@@ -345,7 +349,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 			secretWord = getSecretWord();
 
-		} while((wordList.size() > 1) && secretWord.equals(previousSecretWord));
+		} while((secretWordList.size() > 1) && secretWord.equals(previousSecretWord));
 	}
 
 	/**
@@ -462,7 +466,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		for (int i = 0; i < letterTextFields.length; i++) {
 			if (letterTextFields[i].hasFocus()) {
-				letterTextFields[i].setBorder(BorderFactory.createLineBorder(LIGHT_GREEN, 2));
+				letterTextFields[i].setBorder(BorderFactory.createLineBorder(LIGHT_GREEN_COLOR, 2));
 				textFieldHasFocus[i] = true;
 				break;
 			}

@@ -43,8 +43,8 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	protected static JFrame window;
 	protected static JTextField textFieldLoading;
 	protected static final String ERROR = "Error";
-	private static final Color LIGHT_BLUE = new Color(135, 206, 250); // regular color of GUI buttons
-	private static final Color DARK_LIGHT_BLUE = new Color(102, 178, 255); // color of GUI buttons when hovering
+	private static final Color LIGHT_BLUE_COLOR = new Color(135, 206, 250); // regular color of GUI buttons
+	private static final Color DARK_LIGHT_BLUE_COLOR = new Color(102, 178, 255); // color of GUI buttons when hovering
 	protected static final String DEFAULT_FILENAME_ENTRY_TEXT = "Enter file name...";
 
 	private JButton btnBrowse;
@@ -64,6 +64,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
+		textFieldLoading = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
 		new EncryptDecryptGui();
 	}
 
@@ -84,7 +85,6 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 		btnLoadFile = buttons[0] = new JButton("Load file");
 
-		textFieldLoading = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
 		textFieldLoading.setBounds(148, 44, 112, 26);
 		textFieldLoading.setForeground(Color.GRAY);
 		window.getContentPane().add(textFieldLoading);
@@ -117,17 +117,17 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			button.addActionListener(this);
 			button.setFocusable(false);
 			button.setSize(89, 28);
-			button.setBackground(LIGHT_BLUE);
+			button.setBackground(LIGHT_BLUE_COLOR);
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 			    public void mouseEntered(MouseEvent evt) {
-					button.setBackground(DARK_LIGHT_BLUE);
+					button.setBackground(DARK_LIGHT_BLUE_COLOR);
 			    }
 
 				@Override
 			    public void mouseExited(MouseEvent evt) {
-					button.setBackground(LIGHT_BLUE);
+					button.setBackground(LIGHT_BLUE_COLOR);
 			    }
 			});
 		}

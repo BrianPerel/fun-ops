@@ -4,9 +4,9 @@ import static com.encryption.EncryptDecryptGui.DEFAULT_FILENAME_ENTRY_TEXT;
 import static com.encryption.EncryptDecryptGui.ERROR;
 import static com.encryption.EncryptDecryptGui.data;
 import static com.encryption.EncryptDecryptGui.dataSet;
-import static com.encryption.EncryptDecryptGui.window;
 import static com.encryption.EncryptDecryptGui.isFileLoaded;
 import static com.encryption.EncryptDecryptGui.textFieldLoading;
+import static com.encryption.EncryptDecryptGui.window;
 
 import java.awt.Color;
 import java.awt.Desktop;

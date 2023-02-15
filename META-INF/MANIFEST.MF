@@ -7,30 +7,30 @@ Main-Class: com.calculator.MyCalculatorGui
 Main-Class: com.stopwatch.StopWatch
 
 Main-Class: com.hangman.Hangman
-Resource: res/graphics/bg-image-hangman
+Resource: res/graphics/bg-image-hangman.jpg
 
 Main-Class: com.wigglemouse.WiggleMouse 
-Resource: res/graphics/image-mouse-shake
+Resource: res/graphics/image-mouse-shake.jpg
 
 Main-Class: com.numberguessing.GuessingGame
 Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
-Resource4: res/graphics/bg-image-guessing-figure
-Resource5: res/graphics/bg-image-guess
+Resource4: res/graphics/bg-image-guessing-figure.jpg
+Resource5: res/graphics/bg-image-guess.jpg
 
 Main-Class: com.numberguessing.AdvancedGuessingGame
 
 Main-Class: com.encryption.EncryptDecryptGui
-Resource: res/graphics/bg-image-encryption
+Resource: res/graphics/bg-image-encryption.jpg
 
 Main-Class: com.tictactoe.StartMenu
-Resource: res/graphics/bg-image-tac
+Resource: res/graphics/bg-image-tac.jpg
 
 Main-Class: com.clock.Clock
 Resource: res/fonts/clock-font.tff
 Resource2: res/graphics/alarm-click-icon.png
-Resource3: res/graphics/night-sky-stars.gif
+Resource3: res/graphics/night-sky-stars-animation.gif
 
 Main-Class: com.pingpong.PingPongGUI
-Resource: res/graphics/restart-icon
+Resource: res/graphics/restart-sign.png

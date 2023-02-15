@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
- * Mouse wiggle program. Useful for when you want to be away from your computer
+ * Wiggle mouse program. Useful for when you want to be away from your computer
  * however appear to be available. <br>
  *
  * @author Brian Perel
@@ -30,8 +30,8 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse {
 
-	private int xCoordinate;
-	private int yCoordinate;
+	private int mouseXCoordinate;
+	private int mouseYCoordinate;
 	private long waitTime = 30L;
 	private final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};
 	private final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
@@ -105,7 +105,6 @@ public class WiggleMouse {
 
 		btnSetTime.doClick();
 		window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
-
 		moveMouse(new Robot());
 	}
 
@@ -135,13 +134,13 @@ public class WiggleMouse {
 			TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
 			setMouseLocation();
 
-			// move the mouse to specified x,y coordinates with a shift value -- Wiggle Mouse action
+			// move the mouse to specified (x, y) coordinates with a shift value -- creates the Wiggle Mouse action
 			for(int x = 0; x < 2; x++) {
-				robot.mouseMove(xCoordinate, (x == 0) ? yCoordinate++ : yCoordinate--);
+				robot.mouseMove(mouseXCoordinate, (x == 0) ? mouseYCoordinate++ : mouseYCoordinate--);
 				TimeUnit.MILLISECONDS.sleep(50L);
 			}
 
-			robot.mouseMove(xCoordinate, yCoordinate);
+			robot.mouseMove(mouseXCoordinate, mouseYCoordinate);
 		}
 	}
 
@@ -149,7 +148,7 @@ public class WiggleMouse {
 	 * Obtains and sets the current mouse's position into variables (x, y coordinates)
 	 */
 	private void setMouseLocation() {
-		xCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
-		yCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
+		mouseXCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
+		mouseYCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
 	}
 }

@@ -37,7 +37,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private static final String ERROR_TITLE = "Error";
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
-	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
+	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 	private static final Logger logger_ = Logger.getLogger(StartMenu.class.getName());
 	protected static JFrame window;
 
@@ -47,6 +47,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private JRadioButton playAgainstComputerRadioButton;
 
 	public static void main(String[] args) {
+		window = new JFrame("Tic Tac Toe App by: Brian Perel");
 		new StartMenu();
 	}
 
@@ -62,7 +63,6 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
-		window = new JFrame("Tic Tac Toe App by: Brian Perel");
 		window.setResizable(false);
 		window.setSize(399, 358);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -70,9 +70,9 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
-		JLabel lblPlayer1 = new JLabel("Player 1:");
+		JLabel lblPlayer1 = new JLabel("Player 1 (X):");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));
-		lblPlayer1.setBounds(87, 56, 83, 25);
+		lblPlayer1.setBounds(55, 56, 143, 25);
 		window.getContentPane().add(lblPlayer1);
 
 		nameOneTextField = new JFormattedTextField();
@@ -87,13 +87,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			}
 		});
 		nameOneTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
-		nameOneTextField.setBounds(190, 54, 130, 35);
+		nameOneTextField.setBounds(195, 54, 130, 35);
 		window.getContentPane().add(nameOneTextField);
 		nameOneTextField.setColumns(10);
 
-		JLabel lblPlayer2 = new JLabel("Player 2:");
+		JLabel lblPlayer2 = new JLabel("Player 2 (O):");
 		lblPlayer2.setFont(new Font("MV Boli", Font.PLAIN, 20));
-		lblPlayer2.setBounds(87, 114, 98, 25);
+		lblPlayer2.setBounds(52, 114, 143, 25);
 		window.getContentPane().add(lblPlayer2);
 
 		nameTwoTextField = new JFormattedTextField();
@@ -109,7 +109,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		});
 		nameTwoTextField.setFont(new Font("DialogInput", Font.PLAIN, 14));
 		nameTwoTextField.setColumns(10);
-		nameTwoTextField.setBounds(190, 112, 130, 35);
+		nameTwoTextField.setBounds(195, 112, 130, 35);
 		window.getContentPane().add(nameTwoTextField);
 
 		btnStart = new JButton("Start");
@@ -118,7 +118,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
-		btnStart.setBackground(LIGHT_GREEN);
+		btnStart.setBackground(LIGHT_GREEN_COLOR);
 		btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setHoverColor(btnStart);
 
@@ -134,6 +134,11 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Sets a custom color to appear when you hover over a specific button
+	 *
+	 * @param argBtn button on which you want a different color to appear when hovering
+	 */
 	protected static void setHoverColor(JButton argBtn) {
 		argBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
@@ -143,14 +148,16 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				argBtn.setBackground(LIGHT_GREEN);
+				argBtn.setBackground(LIGHT_GREEN_COLOR);
 			}
 		});
 	}
 
 	@Override
 	public void keyPressed(KeyEvent ke) {
-		eventHandler(ke.getSource(), ke.getKeyChar());
+		if(ke.getKeyChar() != KeyEvent.VK_TAB) {
+			eventHandler(ke.getSource(), ke.getKeyChar());
+		}
 	}
 
 	@Override
@@ -178,8 +185,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 		// if start button is pushed and both name fields arn't empty and both names are
 		// different
-		if (keyChar == KeyEvent.VK_ENTER && source == btnStart
-				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))) {
+		if (validationRulesCheck(keyChar, source, nameOne, nameTwo)) {
 			// first letter of name should be capitalized, and the rest of the name should
 			// be in lowercase
 			PvPGameBoard.setPlayerOnesName(nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase());
@@ -195,6 +201,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		}
 	}
 
+	private boolean validationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
+		return keyChar == KeyEvent.VK_ENTER && source == btnStart
+				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))
+				&& !(PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
+				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo));
+	}
+
 	private void checkInput(String nameOne, String nameTwo, Object source) {
 		// if one or both name textfields are empty
 		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
@@ -206,7 +219,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		else if (PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
 				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo)) {
 			JOptionPane.showMessageDialog(window.getComponent(0),
-					"Please don't use \'" + PLAYER + "\' or \'" + COMPUTER + "\' as a name", ERROR_TITLE,
+					String.format("Please don't use '%s' or '%s' as a name", PLAYER, COMPUTER), ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");

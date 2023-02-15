@@ -24,7 +24,7 @@ import javax.swing.WindowConstants;
 public class GameWinner extends KeyAdapter implements ActionListener {
 
 	private static final String GAME_OVER_MSG = "Game Over! It's a draw!";
-	private static final Color LIGHT_GREEN = new Color(144, 238, 144);
+	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 
 	private JFrame window;
 	private JButton btnQuit;
@@ -79,7 +79,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnPlayAgain = new JButton("Play again");
 		btnPlayAgain.setFont(customFont);
 		btnPlayAgain.setBounds(39, 68, 100, 34);
-		btnPlayAgain.setBackground(LIGHT_GREEN);
+		btnPlayAgain.setBackground(LIGHT_GREEN_COLOR);
 		window.getContentPane().add(btnPlayAgain);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
@@ -88,7 +88,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 		btnQuit = new JButton("Quit");
 		btnQuit.setFont(customFont);
-		btnQuit.setBackground(LIGHT_GREEN);
+		btnQuit.setBackground(LIGHT_GREEN_COLOR);
 		window.getContentPane().add(btnQuit);
 		btnQuit.setBounds(169, 68, 100, 34);
 		btnQuit.addActionListener(this);

@@ -43,7 +43,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		setPlayerOnesName(StartMenu.PLAYER);
 		setPlayerTwosName(StartMenu.COMPUTER);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
-		lblPlayersTurn.setText(getPlayerOnesName() + "'s turn:");
+
+		lblPlayersTurn.setText(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_ONE_LETTER));
 	}
 
 	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
@@ -72,7 +73,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
 				super.completePlayersTurn(isCvPGame, gameBoardTiles[x],
-					(isPlayerOnesTurn) ? LIGHT_RED : Color.BLUE,
+					(isPlayerOnesTurn) ? LIGHT_RED_COLOR : Color.BLUE,
 					(isPlayerOnesTurn) ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
 					(isPlayerOnesTurn) ? getPlayerOnesName() : getPlayerTwosName());
 

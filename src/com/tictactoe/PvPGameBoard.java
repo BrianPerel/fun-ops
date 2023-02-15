@@ -32,12 +32,12 @@ import javax.swing.border.LineBorder;
 public class PvPGameBoard implements ActionListener {
 
 	protected static final JFrame window = new JFrame("Tic Tac Toe");
-	private static final Color LIGHT_ORANGE = new Color(222, 126, 0);
-	private static final Color ULTRA_LIGHT_ORANGE = new Color(244, 164, 96);
+	private static final Color LIGHT_ORANGE_COLOR = new Color(222, 126, 0);
+	private static final Color ULTRA_LIGHT_ORANGE_COLOR = new Color(244, 164, 96);
 	private static final Logger logger_ = Logger.getLogger(PvPGameBoard.class.getName());
-	protected static final Color LIGHT_RED = new Color(232, 46, 6);
-	public static final String PLAYER_ONE_LETTER = "X";
-	public static final String PLAYER_TWO_LETTER = "O";
+	protected static final Color LIGHT_RED_COLOR = new Color(232, 46, 6);
+	protected static final String PLAYER_ONE_LETTER = "X";
+	protected static final String PLAYER_TWO_LETTER = "O";
 	protected static JButton[] gameBoardTiles; // the clickable board buttons
 	protected static boolean isGameOver;
 	private static String playerOnesName;
@@ -87,19 +87,19 @@ public class PvPGameBoard implements ActionListener {
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setSize(80, 70);
 			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
-			gameBoardTiles[i].setBackground(ULTRA_LIGHT_ORANGE);
+			gameBoardTiles[i].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
 			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY));
 
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
-					gameBoardTiles[x].setBackground(LIGHT_ORANGE);
+					gameBoardTiles[x].setBackground(LIGHT_ORANGE_COLOR);
 				}
 
 				@Override
 				public void mouseExited(MouseEvent evt) {
-					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE);
+					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
 				}
 			});
 		}
@@ -114,7 +114,7 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardTiles[7].setLocation(243, 145);
 		gameBoardTiles[8].setLocation(243, 226);
 
-		lblPlayersTurn = new JLabel(getPlayerOnesName() + "'s turn:");
+		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_ONE_LETTER));
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		lblPlayersTurn.setOpaque(false);
 		window.getContentPane().add(lblPlayersTurn);
@@ -154,7 +154,7 @@ public class PvPGameBoard implements ActionListener {
 
 	/**
 	 * Setups the current game: makes decision on who's turn it is and assigns
-	 * player entered names
+	 * player entered names. Enforces player1 to always start first: Sets p1 and p2's turns for first round
 	 *
 	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
@@ -164,7 +164,6 @@ public class PvPGameBoard implements ActionListener {
 	 *                  game
 	 */
 	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		// enforces player1 to always start first: Sets p1 and p2's turns for first round
 		if (argIsStart) {
 			isPlayerOnesTurn = !argIsPlayerOnesTurn;
 			isPlayerTwosTurn = !argIsPlayerTwosTurn;
@@ -176,7 +175,7 @@ public class PvPGameBoard implements ActionListener {
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (JButton button : gameBoardTiles) {
 			if (ae.getSource() == button && button.getText().isEmpty()) {
-				completePlayersTurn(isCvPGame, button, isPlayerOnesTurn ? LIGHT_RED : Color.BLUE,
+				completePlayersTurn(isCvPGame, button, isPlayerOnesTurn ? LIGHT_RED_COLOR : Color.BLUE,
 					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
 					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
 
@@ -289,7 +288,7 @@ public class PvPGameBoard implements ActionListener {
 			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
-					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE);
+					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
 				}
 			});
 		}
@@ -329,8 +328,10 @@ public class PvPGameBoard implements ActionListener {
 
 		checkForWinner(isCvPGame);
 
+		playersLetter = (playersLetter.equals(PLAYER_ONE_LETTER)) ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER;
+
 		if(!isGameOver) {
-			lblPlayersTurn.setText(playersName + "'s turn:");
+			lblPlayersTurn.setText(String.format("%s's turn (%s):", playersName, playersLetter));
 		}
 	}
 
