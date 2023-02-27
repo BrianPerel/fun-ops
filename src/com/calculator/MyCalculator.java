@@ -69,7 +69,7 @@ public class MyCalculator {
 		for (int i = 1; i < bigDecimalNumbers.size(); i++) {
 			// first part of below condition is because: by default double array values have
 			// been initialized to 0,
-			// since we're multiplying we don't want to multiply any random 0's cause we'll
+			// since we're multiplying we don't want to multiply any random 0's because we'll
 			// be getting 0
 			// second and third part of statement are to allow you to do 0 * x or x * 0
 			if (bigDecimalNumbers.get(i) != BigDecimal.ZERO || bigDecimalNumbers.get(0) == BigDecimal.ZERO || bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
@@ -105,7 +105,7 @@ public class MyCalculator {
 	}
 
 	/**
-	 * Fills up the BigDecimal array with String array values after being casted to
+	 * Fills up the BigDecimal array with String array values after being cast to
 	 * BigDecimal. This is performed when equals operator is hit
 	 */
 	private static void toBigDecimalConversion() {

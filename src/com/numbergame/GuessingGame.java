@@ -57,7 +57,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	protected JFrame window;
 	protected JLabel lblGuessInstructions;
-	private JCheckBox closeTimerCheckBox;
+	private JCheckBox closeTimerCheckBox = new JCheckBox("Play without the timer");
 	protected JFormattedTextField textFieldGuessTheNumber;
 	protected int totalGuessesMade;
 	protected int gameScore;
@@ -68,7 +68,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain;
 	protected JButton btnGuess;
 	private StopWatch timeCounter;
-	private int previousRandomNumber;
+	private int previousRandomNumber = 0;
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -78,6 +78,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Creates the application - Builds the GUI
 	 */
 	public GuessingGame() {
+		createGui();
+	}
+
+	private void createGui() {
 		window = new JFrame("Number Guessing Game by: Brian Perel");
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(null);
@@ -170,7 +174,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		this.setBtnHoverColor(btnPlayAgain, new Color(201, 180, 0), Color.ORANGE);
 		window.getContentPane().add(btnPlayAgain);
 
-		closeTimerCheckBox = new JCheckBox("Play without the timer");
 		closeTimerCheckBox.setBackground(Color.WHITE);
 		closeTimerCheckBox.setBounds(296, 260, 158, 23);
 		window.getContentPane().add(closeTimerCheckBox);
@@ -225,7 +228,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Setup the stop watch implementation for the guessing game
+	 * Set up the stop watch implementation for the guessing game
 	 */
 	private void setTimeCounterImpl() {
 		timeCounter = new StopWatch(300, 110); // launch the stop watch
@@ -320,7 +323,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Performs associated action of the GUI button that is clicked
 	 *
-	 * @param ae the action event triggered
+	 * @param source the action event triggered
 	 * @param isTimeout boolean keeping track of whether or not timer has hit 10
 	 *                    seconds
 	 */
@@ -328,7 +331,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.btnReset.doClick();
 
 		// if guess btn is pushed and input is numeric data
-		if(source == btnGuess) {
+		if(source.equals(btnGuess)) {
 			if (textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 				evaluateGuess(isTimeout, 100);
 			}
@@ -341,7 +344,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 		// if play again btn is pushed
-		else if (source == btnPlayAgain) {
+		else if (source.equals(btnPlayAgain)) {
 			playAgain();
 		}
 	}

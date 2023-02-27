@@ -12,7 +12,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -78,15 +77,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// textFieldHasFocus: flags to indicate which of the 4 user guessing text fields have the insertion
 	// pointer. letter[0-3]: flags to indicate this particular letter has been discovered by user and
 	// printed
-	private boolean[] letters = new boolean[4];
-	private boolean[] textFieldHasFocus = new boolean[4];
+	private final boolean[] letters = new boolean[4];
+	private final boolean[] textFieldHasFocus = new boolean[4];
 
 	// custom font for GUI components
 	private Font customFont;
 
 	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
 	// space of the array
-	private final List<String> HANGMAN_DRAWING = Collections.unmodifiableList(List.of(
+	private final List<String> HANGMAN_DRAWING = List.of(
 			   "  ____________",
 			   "\n |  /      |",
 			   "\n | /       O",
@@ -96,7 +95,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			   "\n |         |",
 			   "\n |        / \\",
 			   "\n |       /   \\",
-			   "\n |____________" ));
+			   "\n |____________" );
 
 	public static void main(String[] args) {
 		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to given custom color
@@ -107,6 +106,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * Creates the application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
 	 */
 	public Hangman() {
+		createGui();
+	}
+
+	private void createGui() {
 		window = new JFrame("Hangman App by: Brian Perel");
 		window.setResizable(false);
 		window.setSize(529, 326);
@@ -196,7 +199,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		textFieldGameScore.setFocusable(false);
 		textFieldGameScore.setBackground(Color.GRAY);
 
-		boolean loadSuccessful = obtainRandomWords();
+		boolean loadSuccessful = obtainSecretWords();
 
 		if(loadSuccessful) {
 			makeSecretWord();
@@ -222,8 +225,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	/**
 	 * Loads file and obtains a list of hangman secret words
 	 */
-	private boolean obtainRandomWords() {
-		try (BufferedReader reader = new BufferedReader(new FileReader(new File("hangman.txt")))) {
+	private boolean obtainSecretWords() {
+		try (BufferedReader reader = new BufferedReader(new FileReader("hangman.txt"))) {
 			String line;
 
 			// read file of random hangman words
@@ -231,10 +234,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 				// store every line (secret word) in an arraylist
 				// to attach a line number to each element
-				String word = validateWord(line);
+				String validWord = validateWord(line.trim());
 
-				if(!word.isBlank()) {
-					secretWordList.add(word);
+				if(!validWord.isBlank()) {
+					secretWordList.add(validWord);
 				}
 			}
 
@@ -244,9 +247,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(window, "File of hangman words not found", "Error", JOptionPane.INFORMATION_MESSAGE);
-			logger_.severe("Error: File not found");
+			logger_.severe("Error: File not found" + e);
 			e.printStackTrace();
 		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(window, "Error reading file", "Error", JOptionPane.INFORMATION_MESSAGE);
+	        logger_.severe("Error reading file" + e1);
 			e1.printStackTrace();
 		}
 
@@ -267,9 +272,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 
 		// in case player loads a file with words that include lower case letters
-		for(int x = 0; x < word.length(); x++) {
+		for(char c : word.toCharArray()) {
 			// if a letter in the word is found to be lower case, make the whole word upper case
-			if(Character.isLowerCase(word.charAt(x))) {
+			if(Character.isLowerCase(c)) {
 				logger_.warning("Word loaded from the file had lowercase letters. Loading in uppercase format");
 				return word.toUpperCase();
 			}
@@ -322,9 +327,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		letterTextFields[0].requestFocus();
 
-		for (int i = 0; i < letters.length; i++) {
-			letters[i] = false;
-		}
+		Arrays.fill(letters, false);
 
 		avoidDuplicateWord();
 
@@ -388,7 +391,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// if all letters are found
 			if (letters[0] && letters[1] && letters[2] && letters[3]) {
 				// applies strikethrough text decoration to secret work as it's displayed when user wins
-				textFieldHangmanWord.setFont(customFont.deriveFont(Collections.unmodifiableMap(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON))));
+				textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
 
 				JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.INFORMATION_MESSAGE);
 

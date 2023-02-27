@@ -55,11 +55,15 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * Create the application. Build all components
 	 */
 	public StartMenu() {
+		createGui();
+	}
+
+	private void createGui() {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 			logger_.info("Starting tic-tac-toe log");
 		} catch (Exception e) {
-			logger_.severe("Failed to set LookAndFeel\n" + e.toString());
+			logger_.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
 
@@ -173,7 +177,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * @param keyChar the character associated with the key in this event
 	 */
 	private void eventHandler(Object source, char keyChar) {
-		if (keyChar == KeyEvent.VK_ENTER && source == playAgainstComputerRadioButton) {
+		if (keyChar == KeyEvent.VK_ENTER && source.equals(playAgainstComputerRadioButton)) {
 			// play against computer game flow
 			window.dispose();
 			new CvPGameBoard(true, true, false);
@@ -183,7 +187,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		String nameOne = nameOneTextField.getText().trim();
 		String nameTwo = nameTwoTextField.getText().trim();
 
-		// if start button is pushed and both name fields arn't empty and both names are
+		// if start button is pushed and both name fields aren't empty and both names are
 		// different
 		if (validationRulesCheck(keyChar, source, nameOne, nameTwo)) {
 			// first letter of name should be capitalized, and the rest of the name should
@@ -202,7 +206,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	private boolean validationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
-		return keyChar == KeyEvent.VK_ENTER && source == btnStart
+		return keyChar == KeyEvent.VK_ENTER && source.equals(btnStart)
 				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))
 				&& !(PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
 				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo));
@@ -210,7 +214,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 	private void checkInput(String nameOne, String nameTwo, Object source) {
 		// if one or both name textfields are empty
-		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source == btnStart) {
+		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
@@ -226,7 +230,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			nameOneTextField.requestFocus();
 		}
 		// if first player's name field equals the second one
-		else if (nameOne.equalsIgnoreCase(nameTwo) && source == btnStart) {
+		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);

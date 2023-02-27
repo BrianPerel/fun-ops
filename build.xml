@@ -7,19 +7,7 @@
 		run, create exe, javadoc, unjar tasks for build generation for all apps
 	</description>
 
-	<property name="version.num" value="v1.0" />
-	<property name="src.dir" value="src" />
-	<property name="build.dir" value="build" />
-	<property name="classes.dir" value="${build.dir}/classes" />
-	<property name="jar.dir" value="${build.dir}/jar" />
-	<property name="dist.dir" value="${build.dir}/dist" />
-	<property name="res.graphics.dir" value="res/graphics" />
-	<property name="res.audio.dir" value="res/audio" />
-	<property name="res.graphics.icons.dir" value="${res.graphics.dir}/icons" />
-	<property name="release.dir" value="${build.dir}/release" />
-	<property name="launch4j.dir" value="Launch4j" />
-	<property name="unjar.dir" value="${build.dir}/unjar-classes" />
-	<property name="min.jre.version" value="1.8.0" />
+	<property file="build.properties"/>
 
 	<!-- creates the launch4j task -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
@@ -509,7 +497,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
 				<attribute name="Resource" value="res/fonts/clock-font.tff" />
-				<attribute name="Resource2" value="res/graphics/alarm-click-icon.png" />
+				<attribute name="Resource2" value="res/graphics/alarm-clock-sign.png" />
 				<attribute name="Resource3" value="res/graphics/night-sky-stars-animation.gif" />
 			</manifest>
 		</jar>
@@ -520,7 +508,7 @@
 	</target>
 
 	<!-- javadoc target -->
-	<target name="create Javadoc for all programs" description="generate Javadoc for applications">
+	<target name="create javadoc for all programs" description="generate Javadoc for applications">
 		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" author="true" version="true" windowtitle="My API Page" />
 	</target>
 

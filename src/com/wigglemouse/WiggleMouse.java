@@ -47,9 +47,14 @@ public class WiggleMouse {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws AWTException
+	 * @throws InterruptedException
 	 */
-	public WiggleMouse() throws InterruptedException, AWTException {
+	public WiggleMouse() throws InterruptedException, AWTException  {
+		createGui();
+	}
 
+	private void createGui() throws InterruptedException, AWTException {
 		JFrame window = new JFrame("Wiggle mouse by B. Perel");
 		window.setResizable(false);
 		window.setSize(550, 182);
@@ -147,8 +152,16 @@ public class WiggleMouse {
 	/**
 	 * Obtains and sets the current mouse's position into variables (x, y coordinates)
 	 */
-	private void setMouseLocation() {
+	public void setMouseLocation() {
 		mouseXCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
 		mouseYCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
+	}
+
+	public int getMouseXCoordinate() {
+		return mouseXCoordinate;
+	}
+
+	public int getMouseYCoordinate() {
+		return mouseYCoordinate;
 	}
 }

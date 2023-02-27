@@ -3,6 +3,7 @@ package com.pingpong;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -10,11 +11,12 @@ import java.util.Objects;
 
 public class Ball extends Rectangle {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private double xVelocityOfBall;
 	private double yVelocityOfBall;
-	private double initialBallSpeed = 2;
+	private static final double INITIAL_BALL_SPEED = 2;
 
 	/**
 	 * Creates the ball
@@ -32,20 +34,20 @@ public class Ball extends Rectangle {
 			randomXDirection--;
 		}
 
-		setXDirection(randomXDirection * initialBallSpeed);
+		setXDirection(randomXDirection * INITIAL_BALL_SPEED);
 		int randomYDirection = random.nextInt(2);
 
 		if (randomYDirection == 0) {
 			randomYDirection--;
 		}
 
-		setYDirection(randomYDirection * initialBallSpeed);
+		setYDirection(randomYDirection * INITIAL_BALL_SPEED);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return prime * super.hashCode() + Objects.hash(initialBallSpeed, xVelocityOfBall, yVelocityOfBall);
+		return prime * super.hashCode() + Objects.hash(INITIAL_BALL_SPEED, xVelocityOfBall, yVelocityOfBall);
 	}
 
 	@Override
@@ -61,8 +63,8 @@ public class Ball extends Rectangle {
 		}
 
 		Ball other = (Ball) obj;
-		return java.lang.Double.doubleToLongBits(initialBallSpeed) == java.lang.Double
-				.doubleToLongBits(other.initialBallSpeed)
+		return java.lang.Double.doubleToLongBits(INITIAL_BALL_SPEED) == java.lang.Double
+				.doubleToLongBits(Ball.INITIAL_BALL_SPEED)
 				&& java.lang.Double.doubleToLongBits(xVelocityOfBall) == java.lang.Double
 						.doubleToLongBits(other.xVelocityOfBall)
 				&& java.lang.Double.doubleToLongBits(yVelocityOfBall) == java.lang.Double
@@ -99,7 +101,7 @@ public class Ball extends Rectangle {
 	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.fillOval(x, y, height, width);
+		g.fillOval(x, y, width, height);
 	}
 
 	/**

@@ -9,10 +9,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 import java.util.Objects;
 
 public class Paddle extends Rectangle {
 
+	@Serial
 	private static final long serialVersionUID = -7099975578602496893L;
 
 	private int yVelocity, speed = 10;

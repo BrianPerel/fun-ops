@@ -37,7 +37,7 @@ public class EncryptDecryptOp {
 															// of same length as original sentence in the file
 
 			// loop to traverse data String provided by user, in order to replace every
-			// character with a random integer number added and casted to char type
+			// character with a random integer number added and cast to char type
 			for (int index = 0; index < data.length(); index++) {
 				// my cipher algorithm = obtain letter at current index of data loaded from user file,
 				// add a value which automatically returns the ASCII value of given character (then adds the value), and cast this int number into a char
@@ -76,8 +76,8 @@ public class EncryptDecryptOp {
 
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if (isEncrypted) {
-			data = data.reverse(); // reverse back the encrypted contents of the string builder for decryption
-			data = decryptAndFormat(0); // perform decryption process and format the data, the 0 value is used to count the words
+			data.reverse(); // reverse back the encrypted contents of the string builder for decryption
+			data = decryptAndFormat(); // perform decryption process and format the data
 
 			try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
 				myWriter.write(data.toString()); // override with decrypted data
@@ -98,18 +98,19 @@ public class EncryptDecryptOp {
 	 * Enforces every sentence to start with a single space, during decryption process
 	 * @return unmaskedData the decrypted data
 	 */
-	private StringBuilder decryptAndFormat(int argWordCount) {
+	private StringBuilder decryptAndFormat() {
 		StringBuilder unmaskedData = new StringBuilder();
+		int wordCount = 0;
 
 		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
 		// values from data variable
-		// with a random integer number subtracted and casted to char type
+		// with a random integer number subtracted and cast to char type
 		for (int index = 0; index < data.length(); index++) {
 			// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
 			// into a char which is 'a'
 			unmaskedData.append((char) (data.charAt(index) - 5));
 
-			if (Character.isWhitespace((char) (data.charAt(index) - 5)) && (++argWordCount % 25 == 0)) {
+			if (Character.isWhitespace((char) (data.charAt(index) - 5)) && (++wordCount % 25 == 0)) {
 				// if the number in wordCount is divisible by 25 (ex. 25, 50, 75, 100, etc.) then add a new line to the file being decrypted
 				unmaskedData.append('\n');
 			}

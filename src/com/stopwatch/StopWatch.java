@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import java.io.Serializable;
 
 import javax.swing.JButton;
@@ -27,6 +28,7 @@ import javax.swing.WindowConstants;
  */
 public class StopWatch extends JFrame {
 
+	@Serial
 	private static final long serialVersionUID = -75355816260383730L;
 
 	public static void main(String[] args) {
@@ -45,6 +47,10 @@ public class StopWatch extends JFrame {
 	 */
 	public StopWatch(int x, int y) {
 		super("Stopwatch");
+		createGui(x, y);
+	}
+
+	private void createGui(int x, int y) {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
 		setResizable(false);
@@ -59,9 +65,11 @@ public class StopWatch extends JFrame {
 	 */
 	public class StopWatchPanel extends JPanel {
 
+		@Serial
+		private static final long serialVersionUID = -6217657906467075510L;
+
 		private static final String START_TIME = "00:00:00";
 		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER); // show the timer
-		private static final long serialVersionUID = -6217657906467075510L;
 		public static final JButton btnStart = new JButton("START");
 		public static final JButton btnStop = new JButton("STOP");
 		public static final JButton btnReset = new JButton("RESET");
@@ -73,8 +81,7 @@ public class StopWatch extends JFrame {
 		private int second;
 		private int centisecond;
 
-		private Timer timer; // watch timer
-		private ButtonListener buttonListener = new ButtonListener();
+		private final Timer timer; // watch timer
 
 		/**
 		 * Constructor: Sets up this panel to listen for mouse events
@@ -96,6 +103,7 @@ public class StopWatch extends JFrame {
 			final Color lightBlue = new Color(146, 205, 255);
 			btnReset.setBackground(lightBlue);
 			add(buttonPanel, BorderLayout.CENTER);
+			ButtonListener buttonListener = new ButtonListener();
 			timer = new Timer(0, buttonListener);
 			JButton[] buttons = {btnStart, btnStop, btnReset};
 
@@ -124,7 +132,9 @@ public class StopWatch extends JFrame {
 		 */
 		private class ButtonListener extends KeyAdapter implements ActionListener, Serializable {
 
+			@Serial
 			private static final long serialVersionUID = 1905122041950251207L;
+
 			private static final int TIMEBASE = 60;
 			private static final int CENTSECBASE = 99;
 			private static final int SHOWBASE = 10;
@@ -159,17 +169,17 @@ public class StopWatch extends JFrame {
 					centisecond = 0;
 				}
 				if(keyChar == KeyEvent.VK_ENTER) {
-					if (source == btnStart) {
+					if (source.equals(btnStart)) {
 						btnStart.setEnabled(false);
 						btnStop.setEnabled(true);
 						timer.start();
 					}
-					else if (source == btnStop) {
+					else if (source.equals(btnStop)) {
 						btnStart.setEnabled(true);
 						btnStop.setEnabled(false);
 						timer.stop();
 					}
-					else if (source == btnReset) {
+					else if (source.equals(btnReset)) {
 						btnStart.setEnabled(true);
 						btnStop.setEnabled(true);
 						btnStart.requestFocus();

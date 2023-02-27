@@ -30,7 +30,7 @@ public class EncryptDecryptFileUtils {
 
 	/**
 	 * Loads the desired file and obtains the contents within
-	 * @param fileToLoad the file we're gonna encrypt/decrypt
+	 * @param fileToLoad the file we're going to encrypt/decrypt
 	 */
 	protected static void loadFileData(String fileToLoad) {
 		// append .txt to the filename entered if entered without .txt
@@ -50,7 +50,7 @@ public class EncryptDecryptFileUtils {
 				return;
 			}
 
-			JOptionPane.showMessageDialog(window.getComponent(0), "File succesfully loaded");
+			JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
 			textFieldLoading.setEditable(false);
 			textFieldLoading.setBackground(Color.LIGHT_GRAY);
 			setFileName(file.toString());

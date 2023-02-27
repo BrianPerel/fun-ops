@@ -26,10 +26,10 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	private static final String GAME_OVER_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 
-	private JFrame window;
-	private JButton btnQuit;
-	private String gameResult;
-	private JButton btnPlayAgain;
+	private final JFrame window;
+	private final JButton btnQuit;
+	private final String gameResult;
+	private final JButton btnPlayAgain;
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
@@ -119,7 +119,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	private void determineEndGameAction(Object source) {
 		window.dispose();
 
-		if (source == btnPlayAgain) {
+		if (source.equals(btnPlayAgain)) {
 			// launches appropriate game mode when play again btn is pressed
 			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_MSG + "!")) {
 				new CvPGameBoard(false, false, true, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
@@ -128,8 +128,8 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 				new PvPGameBoard(false, false, true, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
 			}
 		}
-		else if (source == btnQuit || (StartMenu.PLAYER.equals(gameResult)
-				|| StartMenu.COMPUTER.equals(gameResult) || gameResult.equals(GAME_OVER_MSG + "!"))) {
+		else if (source.equals(btnQuit) || (StartMenu.PLAYER.equals(gameResult)
+				|| StartMenu.COMPUTER.equals(gameResult) || (GAME_OVER_MSG + "!").equals(gameResult))) {
 
 			System.exit(0);
 		}

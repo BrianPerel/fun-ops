@@ -48,7 +48,6 @@ public class PvPGameBoard implements ActionListener {
 	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
 	protected boolean isPlayerTwosTurn;
-	private JSeparator[] gameBoardSeparators; // game board divider lines (separators)
 
 	/**
 	 * Builds the game's GUI board
@@ -61,11 +60,14 @@ public class PvPGameBoard implements ActionListener {
 	 *                  game
 	 */
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+		createGui(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	}
 
+	private void createGui(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (Exception e) {
-			logger_.severe("Failed to set LookAndFeel\n" + e.toString());
+			logger_.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
 
@@ -75,7 +77,7 @@ public class PvPGameBoard implements ActionListener {
 
 		tile = new String[9];
 		gameBoardTiles = new JButton[9];
-		gameBoardSeparators = new JSeparator[4];
+		JSeparator[] gameBoardSeparators = new JSeparator[4]; // game board divider lines (separators)
 
 		// assigning a background image to the app
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
@@ -116,6 +118,7 @@ public class PvPGameBoard implements ActionListener {
 
 		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_ONE_LETTER));
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
+		lblPlayersTurn.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		lblPlayersTurn.setOpaque(false);
 		window.getContentPane().add(lblPlayersTurn);
 
@@ -153,14 +156,14 @@ public class PvPGameBoard implements ActionListener {
 
 
 	/**
-	 * Setups the current game: makes decision on who's turn it is and assigns
+	 * Setups the current game: makes decision on whose turn it is and assigns
 	 * player entered names. Enforces player1 to always start first: Sets p1 and p2's turns for first round
 	 *
 	 * @param argIsStart         boolean flag indicating whether or not the game has just
 	 *                  begun
-	 * @param pOnesTurn boolean flag indicating if it's player one's turn in the
+	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
-	 * @param pTwosTurn boolean flag indicating if it's player two's turn in the
+	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
 	 *                  game
 	 */
 	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {

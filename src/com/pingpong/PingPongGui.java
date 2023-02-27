@@ -3,6 +3,7 @@ package com.pingpong;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,7 +16,9 @@ import javax.swing.WindowConstants;
 
 public class PingPongGui extends JFrame {
 
+	@Serial
 	private static final long serialVersionUID = 8513294011065865486L;
+
 	private static final Color DARK_GREEN = new Color(0, 78, 3);
 
 	public static void main(String[] args) {
@@ -34,6 +37,10 @@ public class PingPongGui extends JFrame {
 	 */
 	public PingPongGui() {
 		super("Pong Game");
+		createGui();
+	}
+
+	private void createGui() {
 		this.add(new GameBoard());
 
 		JMenuBar menuBar = new JMenuBar();
@@ -57,26 +64,28 @@ public class PingPongGui extends JFrame {
 		});
 
 		JMenuItem menuOption = new JMenuItem("Restart Game");
-		menuOption.setIcon(new ImageIcon("res/graphics/restart-icon.png"));
+		menuOption.setIcon(new ImageIcon("res/graphics/restart-sign.png"));
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
 
 		menu.add(menuOption);
 		menuBar.add(menu);
-		this.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		menuOption.addActionListener(actionEvent -> {
 			if (actionEvent.getSource() == menuOption)  {
-				this.dispose();
+				dispose();
 				new PingPongGui();
 			}
 		});
 
-		this.setResizable(false);
-		this.setBackground(DARK_GREEN);
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.pack();
-		this.setVisible(true);
-		this.setLocationRelativeTo(null);
+		setResizable(false);
+		setBackground(DARK_GREEN);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		pack();
+		setVisible(true);
+		setLocationRelativeTo(null);
 	}
+
+
 }

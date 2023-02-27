@@ -58,7 +58,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	protected static JFormattedTextField textFieldUserInput;
 	protected static boolean hasUserEnteredZero;
 
-	private MyCalculatorHelper helper = new MyCalculatorHelper();
+	private final MyCalculatorHelper helper = new MyCalculatorHelper();
 
 	public static void main(String[] args) {
 		try {
@@ -74,6 +74,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 * Places all the buttons on the app's board and initializes the contents of the frame, building the GUI.
 	 */
 	public MyCalculatorGui() {
+		createGui();
+	}
+
+	private void createGui() {
 		JFrame window = new JFrame("Calculator App by: Brian Perel");
 		window.getContentPane().setBackground(Color.DARK_GRAY);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -516,10 +520,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				break;
 		}
 
-		/**
-		 * use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY,
-		 * KeyEvent.VK_ADD, and KeyEvent.C don't work.
-		 */
+		// use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY, KeyEvent.VK_ADD, and KeyEvent.C don't work.
 
 		if (Character.toUpperCase(keyChar) == 'C') {
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);

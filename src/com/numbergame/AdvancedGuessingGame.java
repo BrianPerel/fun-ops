@@ -28,7 +28,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 	public void performGuiButtonAction(Object source, boolean isTimeout) {
 		super.performGuiButtonAction(source, isTimeout);
 
-		if (source == btnPlayAgain) {
+		if (source.equals(btnPlayAgain)) {
 			randomNumber = randomGenerator.nextInt(899) + 100;
 			textFieldRandomNumber.setText(Integer.toString(randomNumber));
 		}

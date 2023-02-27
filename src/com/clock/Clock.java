@@ -10,6 +10,8 @@ import java.awt.FontFormatException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -46,7 +49,7 @@ public class Clock implements ActionListener {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
+			throw new RuntimeException("Failed to set LookAndFeel\n" + e.getMessage());
 		}
 
 		new Clock();
@@ -57,18 +60,22 @@ public class Clock implements ActionListener {
 	 * (initializes the contents of the frame), building the GUI.
 	 */
 	public Clock() {
+		createGui();
+	}
+
+	private void createGui() {
 		window = new JFrame("Clock");
 		window.setSize(450, 280);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars-animation.gif")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars-animation.gif"))); // sets app background
 
 		window.getContentPane().setLayout(null);
 		window.setAlwaysOnTop(true);
 
 		Font custFont = new Font("Bookman Old Style", Font.PLAIN, 13);
 
-		JMenu menu = new JMenu("Alarm \u25BC"); // unicode for drop down arrow (black triangle) = \u25BC
+		JMenu menu = new JMenu("Alarm ▼");
 		menu.setFont(custFont);
 		menu.setMnemonic('a'); // alt+a = alarm keyboard shortcut/keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1); // force program to not decorate (don't underline) mnemonic
@@ -94,8 +101,7 @@ public class Clock implements ActionListener {
 		menuOption.setIcon(new ImageIcon("res/graphics/alarm-clock-sign.png"));
 		menuOption.addActionListener(this);
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A,
-				java.awt.event.InputEvent.ALT_DOWN_MASK));
+		menuOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_DOWN_MASK));
 
 		menu.add(menuOption);
 
@@ -121,26 +127,26 @@ public class Clock implements ActionListener {
 		lblClockTime.setBounds(32, 23, 365, 123);
 		window.getContentPane().add(lblClockTime);
 
-		JCheckBox militaryTimeFormatCheckBox = new JCheckBox("24 hour clock");
-		militaryTimeFormatCheckBox.setBounds(310, 172, 97, 25);
-		militaryTimeFormatCheckBox.setBackground(BLACK);
-		militaryTimeFormatCheckBox.setForeground(WHITE);
-		window.getContentPane().add(militaryTimeFormatCheckBox);
+		JCheckBox militaryTimeCheckBox = new JCheckBox("24 hour clock");
+		militaryTimeCheckBox.setBounds(310, 172, 97, 25);
+		militaryTimeCheckBox.setBackground(BLACK);
+		militaryTimeCheckBox.setForeground(WHITE);
+		window.getContentPane().add(militaryTimeCheckBox);
 
 		// adding this code in case frame.getContentPane().setLayout(null); is removed
-		militaryTimeFormatCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
-		militaryTimeFormatCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
-		militaryTimeFormatCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		militaryTimeCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
+		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
+		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		window.setVisible(true);
 
-		getTime(militaryTimeFormatCheckBox);
+		getTime(militaryTimeCheckBox);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		// sets clock alarm time
-		if (ae.getSource() == menuOption) {
+		if (ae.getSource().equals(menuOption)) {
 			alarmTime = JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): ");
 
 			if (alarmTime != null && !alarmTime.isBlank()
@@ -148,7 +154,7 @@ public class Clock implements ActionListener {
 				alarmTime = alarmTime.trim().toUpperCase();
 
 				// index 0, 1, 3, and 4 of alarmTime string should be numbers only
-				if (alarmTime.substring(0, 1).matches("[0-9]+") && alarmTime.substring(3, 4).matches("[0-9]+")
+				if (alarmTime.substring(0, 1).matches("\\d") && alarmTime.substring(3, 4).matches("\\d")
 						&& (alarmTime.endsWith("AM") || alarmTime.endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(window, "Alarm time has been set", "Alarm time set",
@@ -216,8 +222,6 @@ public class Clock implements ActionListener {
 
 	/**
 	 * Rings the alarm if conditions are met. Plays alarm wav file
-	 *
-	 * @param time user set alarm time
 	 */
 	private void ringAlarm() {
 		try {

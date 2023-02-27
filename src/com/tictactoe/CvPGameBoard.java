@@ -126,7 +126,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		try {
 			TimeUnit.MILLISECONDS.sleep(300L);
 		} catch (InterruptedException ie) {
-			logger_.severe("Error: " + ie.toString());
+			logger_.severe("Error: " + ie);
 			ie.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
