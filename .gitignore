@@ -1,6 +1,7 @@
 /bin/
 /build/
 /classes/
+/src-test/
 /jar/
 /dist/
 /Launch4j/
@@ -10,4 +11,3 @@
 *.log
 *.class
 *.zip
-/src-test/

@@ -152,16 +152,8 @@ public class WiggleMouse {
 	/**
 	 * Obtains and sets the current mouse's position into variables (x, y coordinates)
 	 */
-	public void setMouseLocation() {
+	private void setMouseLocation() {
 		mouseXCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();
 		mouseYCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getY();
-	}
-
-	public int getMouseXCoordinate() {
-		return mouseXCoordinate;
-	}
-
-	public int getMouseYCoordinate() {
-		return mouseYCoordinate;
 	}
 }

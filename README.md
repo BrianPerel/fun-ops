@@ -2,7 +2,7 @@
 
 ## Project Description
 
-A collection of all sorts of different programs I am making that I find interesting. Project start date: Dec 11, 2020
+A collection of all sorts of different Java programs I am making that I find interesting. Project start date: Dec 11, 2020
 
 ## Other Notes
 
