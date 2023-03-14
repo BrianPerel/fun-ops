@@ -237,12 +237,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
 
 		// hide the stop watch buttons, as we won't be using them here
-		StopWatchPanel.btnStart.setVisible(false);
-		StopWatchPanel.btnStop.setVisible(false);
-		StopWatchPanel.btnReset.setVisible(false);
+		StopWatchPanel.BTN_START.setVisible(false);
+		StopWatchPanel.BTN_STOP.setVisible(false);
+		StopWatchPanel.BTN_RESET.setVisible(false);
 
 		// timer auto starts as soon as game board appears
-		StopWatchPanel.btnStart.doClick();
+		StopWatchPanel.BTN_START.doClick();
 	}
 
 	@Override
@@ -266,13 +266,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	private void eventHandler(Object source, char keyChar) {
 		boolean isTimeout = false;
-		StopWatchPanel.btnStop.doClick();
+		StopWatchPanel.BTN_STOP.doClick();
 
 		// if the timer is greater than 10 seconds when the user guesses
-		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.watch.getText().substring(6).compareTo("10") >= 0
+		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.WATCH.getText().substring(6).compareTo("10") >= 0
 				&& !(source.equals(btnPlayAgain) || closeTimerCheckBox.isSelected())) {
 
-			StopWatchPanel.btnStop.doClick();
+			StopWatchPanel.BTN_STOP.doClick();
 			isTimeout = true;
 			playSound(FAIL_SOUND);
 			JOptionPane.showMessageDialog(window.getComponent(0), "Your out of time.");
@@ -284,30 +284,33 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// if you want to turn off the timer
 		if(keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
-			StopWatchPanel.btnStop.doClick();
+			StopWatchPanel.BTN_STOP.doClick();
 
-			StopWatchPanel.watch.setEnabled(StopWatchPanel.watch.isEnabled());
-			closeTimerCheckBox.setSelected(StopWatchPanel.watch.isEnabled());
+			StopWatchPanel.WATCH.setEnabled(StopWatchPanel.WATCH.isEnabled());
+			closeTimerCheckBox.setSelected(StopWatchPanel.WATCH.isEnabled());
 
-			if(StopWatchPanel.watch.isEnabled()) {
-				StopWatchPanel.btnStart.doClick(); // start the timer from 0
+			if(StopWatchPanel.WATCH.isEnabled()) {
+				StopWatchPanel.BTN_START.doClick(); // start the timer from 0
 			}
 		}
 
 		performGuiButtonAction(source, isTimeout);
 
 		// reset the timer
-		StopWatchPanel.btnReset.doClick();
-		StopWatchPanel.btnStart.setEnabled(!closeTimerCheckBox.isSelected());
-		StopWatchPanel.watch.setEnabled(!closeTimerCheckBox.isSelected());
+		StopWatchPanel.BTN_RESET.doClick();
+		StopWatchPanel.BTN_START.setEnabled(!closeTimerCheckBox.isSelected());
+		StopWatchPanel.WATCH.setEnabled(!closeTimerCheckBox.isSelected());
 
 		if(closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
 			timeCounter.setVisible(true);
+
+			// make the second GUI (timer) always appear to the right of the first GUI
+			timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
 		}
 
 		// start the timer from 0
 		if(!closeTimerCheckBox.isSelected()) {
-			StopWatchPanel.btnStart.doClick();
+			StopWatchPanel.BTN_START.doClick();
 		}
 
 		textFieldGuessTheNumber.setText("");
@@ -328,7 +331,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 *                    seconds
 	 */
 	protected void performGuiButtonAction(Object source, boolean isTimeout) {
-		StopWatchPanel.btnReset.doClick();
+		StopWatchPanel.BTN_RESET.doClick();
 
 		// if guess btn is pushed and input is numeric data
 		if(source.equals(btnGuess)) {

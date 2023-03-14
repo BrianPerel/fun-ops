@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
@@ -160,17 +161,24 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			public synchronized void drop(DropTargetDropEvent evt) {
 				try {
 					evt.acceptDrop(DnDConstants.ACTION_COPY);
-
 					String fileName = new File(evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor).toString()).getName();
 
 					if(fileName.contains("]")) {
 						fileName = fileName.replace("]", "");
 					}
 
-					textFieldLoading.setText(fileName);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+					File file = new File(fileName);
+
+					if(file.isFile()) {
+						textFieldLoading.setText(fileName);
+					}
+					else {
+						JOptionPane.showMessageDialog(window.getComponent(0), "Can't load folders, only files",
+								ERROR, JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (UnsupportedFlavorException | IOException e) {
+	                e.printStackTrace();
+	            }
 			}
 		});
 	}

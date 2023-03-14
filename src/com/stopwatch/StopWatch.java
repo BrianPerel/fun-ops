@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -53,7 +56,6 @@ public class StopWatch extends JFrame {
 	private void createGui(int x, int y) {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setContentPane(new StopWatchPanel());
-		setResizable(false);
 		setSize(x, y);
 		setVisible(true);
 		setLocation(390, 345); // position the GUI on the screen at custom location (x, y)
@@ -69,10 +71,10 @@ public class StopWatch extends JFrame {
 		private static final long serialVersionUID = -6217657906467075510L;
 
 		private static final String START_TIME = "00:00:00";
-		public static final JLabel watch = new JLabel(START_TIME, SwingConstants.CENTER); // show the timer
-		public static final JButton btnStart = new JButton("START");
-		public static final JButton btnStop = new JButton("STOP");
-		public static final JButton btnReset = new JButton("RESET");
+		public static final JLabel WATCH = new JLabel(START_TIME, SwingConstants.CENTER); // show the timer
+		public static final JButton BTN_START = new JButton("START");
+		public static final JButton BTN_STOP = new JButton("STOP");
+		public static final JButton BTN_RESET = new JButton("RESET");
 		public static boolean isRedFontEnabled;
 
 		/** represent the hours, minutes, and seconds in the watch */
@@ -87,43 +89,61 @@ public class StopWatch extends JFrame {
 		 * Constructor: Sets up this panel to listen for mouse events
 		 */
 		public StopWatchPanel() {
-			setLayout(new BorderLayout());
-			JPanel watchPanel = new JPanel();
-			watch.setFont(new Font("Helvetica", Font.PLAIN, 36));
-			watchPanel.add(watch);
-			final Color lightGray = new Color(225, 225, 225);
-			watchPanel.setBackground(lightGray);
-			add(watchPanel, BorderLayout.NORTH);
-			JPanel buttonPanel = new JPanel();
-			buttonPanel.setBackground(lightGray);
+		    setLayout(new BorderLayout());
+		    JPanel watchPanel = new JPanel();
+		    WATCH.setFont(new Font("Helvetica", Font.PLAIN, 36));
+		    watchPanel.add(WATCH);
+		    final Color lightGray = new Color(225, 225, 225);
+		    watchPanel.setBackground(lightGray);
+		    add(watchPanel, BorderLayout.NORTH);
+
+		    JPanel buttonPanel = new JPanel(new GridBagLayout());
+		    buttonPanel.setBackground(lightGray);
 		    final Color lightGreen = new Color(0, 255, 128);
-			btnStart.setBackground(lightGreen);
-			final Color lightRed = new Color(255, 98, 98);
-			btnStop.setBackground(lightRed);
-			final Color lightBlue = new Color(146, 205, 255);
-			btnReset.setBackground(lightBlue);
-			add(buttonPanel, BorderLayout.CENTER);
-			ButtonListener buttonListener = new ButtonListener();
-			timer = new Timer(0, buttonListener);
-			JButton[] buttons = {btnStart, btnStop, btnReset};
+		    BTN_START.setBackground(lightGreen);
+		    final Color lightRed = new Color(255, 98, 98);
+		    BTN_STOP.setBackground(lightRed);
+		    final Color lightBlue = new Color(146, 205, 255);
+		    BTN_RESET.setBackground(lightBlue);
 
-			// when running the guessing games, if user closes the timer window stop counting the time
-			if(isRedFontEnabled) {
-				addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosing(WindowEvent e) {
-						btnStop.doClick();
-					}
-				});
-			}
+		    GridBagConstraints gbc = new GridBagConstraints();
+		    gbc.insets = new Insets(10, 10, 10, 10);
+		    gbc.anchor = GridBagConstraints.CENTER;
+		    gbc.fill = GridBagConstraints.HORIZONTAL;
 
-			for(JButton button : buttons) {
-				button.addKeyListener(buttonListener);
-				button.setFont(new Font("Georgia", Font.PLAIN, 15));
-				button.addActionListener(buttonListener);
-				button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				buttonPanel.add(button);
-			}
+		    gbc.weightx = 1;
+		    gbc.weighty = 1;
+		    buttonPanel.add(BTN_START, gbc);
+
+		    gbc.gridx = 1;
+		    gbc.gridy = 0;
+		    buttonPanel.add(BTN_STOP, gbc);
+
+		    gbc.gridx = 2;
+		    gbc.gridy = 0;
+		    buttonPanel.add(BTN_RESET, gbc);
+
+		    add(buttonPanel, BorderLayout.CENTER);
+
+		    ButtonListener buttonListener = new ButtonListener();
+		    timer = new Timer(0, buttonListener);
+
+		    // when running the guessing games, if user closes the timer window stop counting the time
+		    if (isRedFontEnabled) {
+		        addWindowListener(new WindowAdapter() {
+		            @Override
+		            public void windowClosing(WindowEvent e) {
+		                BTN_STOP.doClick();
+		            }
+		        });
+		    }
+
+		    for (JButton button : new JButton[] {BTN_START, BTN_STOP, BTN_RESET}) {
+		        button.addKeyListener(buttonListener);
+		        button.setFont(new Font("Georgia", Font.PLAIN, 15));
+		        button.addActionListener(buttonListener);
+		        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		    }
 		}
 
 		/**
@@ -169,26 +189,26 @@ public class StopWatch extends JFrame {
 					centisecond = 0;
 				}
 				if(keyChar == KeyEvent.VK_ENTER) {
-					if (source.equals(btnStart)) {
-						btnStart.setEnabled(false);
-						btnStop.setEnabled(true);
+					if (BTN_START.equals(source)) {
+						BTN_START.setEnabled(false);
+						BTN_STOP.setEnabled(true);
 						timer.start();
 					}
-					else if (source.equals(btnStop)) {
-						btnStart.setEnabled(true);
-						btnStop.setEnabled(false);
+					else if (BTN_STOP.equals(source)) {
+						BTN_START.setEnabled(true);
+						BTN_STOP.setEnabled(false);
 						timer.stop();
 					}
-					else if (source.equals(btnReset)) {
-						btnStart.setEnabled(true);
-						btnStop.setEnabled(true);
-						btnStart.requestFocus();
+					else if (BTN_RESET.equals(source)) {
+						BTN_START.setEnabled(true);
+						BTN_STOP.setEnabled(true);
+						BTN_START.requestFocus();
 						timer.stop();
 						hour = minute = second = 0;
-						watch.setText(START_TIME);
+						WATCH.setText(START_TIME);
 
 						if(isRedFontEnabled) {
-							watch.setForeground(Color.BLACK);
+							WATCH.setForeground(Color.BLACK);
 						}
 					}
 				}
@@ -200,11 +220,11 @@ public class StopWatch extends JFrame {
 			 * Sets the watch's time
 			 */
 			private void setWatchText() {
-				if(watch.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
-					watch.setForeground(Color.RED);
+				if(WATCH.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
+					WATCH.setForeground(Color.RED);
 				}
 
-				watch.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
+				WATCH.setText(((hour < SHOWBASE) ? "0" : "") + hour + ":" + ((minute < SHOWBASE) ? "0" : "") + minute
 						+ ":" + ((second < SHOWBASE) ? "0" : "") + second);
 			}
 		}

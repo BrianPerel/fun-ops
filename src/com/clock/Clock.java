@@ -44,12 +44,12 @@ public class Clock implements ActionListener {
 	private JCheckBoxMenuItem menuOption;
 	private boolean hasAlarmRung;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			throw new RuntimeException("Failed to set LookAndFeel\n" + e.getMessage());
+			throw new UnsupportedLookAndFeelException("Failed to set LookAndFeel\n" + e.getMessage());
 		}
 
 		new Clock();

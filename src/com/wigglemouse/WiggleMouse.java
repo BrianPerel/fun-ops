@@ -5,10 +5,14 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
@@ -33,8 +38,10 @@ public class WiggleMouse {
 	private int mouseXCoordinate;
 	private int mouseYCoordinate;
 	private long waitTime = 30L;
-	private final String[] WAIT_TIME_CHOICES = {"1/2 minute", "1 minute", "3 minutes", "5 minutes"};
-	private final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(new DefaultComboBoxModel<>(WAIT_TIME_CHOICES));
+
+	// using DefaultComboBoxModel to prevent problem with WindowBuilder
+	private static final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(
+		new DefaultComboBoxModel<>(new String[] {"1/2 minute", "1 minute", "3 minutes", "5 minutes"}));
 
 	/**
 	 * Launch the application.
@@ -55,62 +62,73 @@ public class WiggleMouse {
 	}
 
 	private void createGui() throws InterruptedException, AWTException {
-		JFrame window = new JFrame("Wiggle mouse by B. Perel");
-		window.setResizable(false);
-		window.setSize(550, 182);
-		window.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.getContentPane().setLayout(null);
+	    JFrame window = new JFrame("Wiggle mouse by B. Perel");
+	    window.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
+	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	    window.setSize(550, 182);
 
-		JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
-		lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
-		lblDisplayMessage.setBounds(35, 23, 370, 23);
-		window.getContentPane().add(lblDisplayMessage);
+	    JPanel panel = new JPanel(new GridBagLayout());
+	    window.add(panel);
 
-		WAIT_TIME_OPTIONS_COMBO_BOX.setBounds(395, 23, 100, 22);
-		window.getContentPane().add(WAIT_TIME_OPTIONS_COMBO_BOX);
-		WAIT_TIME_OPTIONS_COMBO_BOX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(5, 5, 5, 5);
 
-		JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
-		lblArrowIcon.setBounds(35, 64, 80, 55);
-		window.getContentPane().add(lblArrowIcon);
+	    JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
+	    lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.gridwidth = 2;
+	    panel.add(lblDisplayMessage, gbc);
 
-		JButton btnSetTime = new JButton("SET TIME");
-		btnSetTime.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
-		btnSetTime.setBounds(215, 78, 99, 23);
-		window.getContentPane().add(btnSetTime);
+	    WAIT_TIME_OPTIONS_COMBO_BOX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	    gbc.gridx = 2;
+	    gbc.gridy = 0;
+	    gbc.gridwidth = 1;
+	    panel.add(WAIT_TIME_OPTIONS_COMBO_BOX, gbc);
+
+	    JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
+	    gbc.gridx = 0;
+	    gbc.gridy = 1;
+	    gbc.gridwidth = 1;
+	    panel.add(lblArrowIcon, gbc);
+
+	    JButton btnSetTime = new JButton("SET TIME");
+	    btnSetTime.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
 	    btnSetTime.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSetTime.addActionListener(actionEvent -> {
-			if (actionEvent.getSource() == btnSetTime) {
-				waitTime = updateIdleTime();
-			}
-		});
-		btnSetTime.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnSetTime) {
-					waitTime = updateIdleTime();
-				}
-			}
-		});
-		btnSetTime.addMouseListener(new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnSetTime.setBackground(new Color(200, 203, 232));
-			}
+	    btnSetTime.addActionListener(actionEvent -> {
+	        if (actionEvent.getSource() == btnSetTime) {
+	            waitTime = updateIdleTime();
+	        }
+	    });
+	    btnSetTime.addKeyListener(new KeyAdapter() {
+	        @Override
+	        public void keyPressed(KeyEvent e) {
+	            if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnSetTime) {
+	                waitTime = updateIdleTime();
+	            }
+	        }
+	    });
+	    btnSetTime.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            btnSetTime.setBackground(new Color(200, 203, 232));
+	        }
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnSetTime.setBackground(UIManager.getColor(btnSetTime));
-			}
-		});
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            btnSetTime.setBackground(UIManager.getColor(btnSetTime));
+	        }
+	    });
+	    gbc.gridx = 1;
+	    gbc.gridy = 1;
+	    gbc.gridwidth = 1;
+	    panel.add(btnSetTime, gbc);
 
 	    window.setVisible(true);
-		window.setLocationRelativeTo(null);
-
-		btnSetTime.doClick();
-		window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
-		moveMouse(new Robot());
+	    window.setLocationRelativeTo(null);
+	    btnSetTime.doClick();
+	    window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
+	    moveMouse(new Robot());
 	}
 
 	/**

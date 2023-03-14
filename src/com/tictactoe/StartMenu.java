@@ -10,6 +10,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.text.MessageFormat;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -59,6 +62,17 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	private void createGui() {
+		// set the console handler to use the custom formatter
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new Formatter() {
+            @Override
+            public String format(LogRecord logRecord) {
+            	// ANSI color code for white (\u001B[37m)
+                return "\u001B[37m";
+            }
+        });
+        logger_.addHandler(consoleHandler);
+
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 			logger_.info("Starting tic-tac-toe log");

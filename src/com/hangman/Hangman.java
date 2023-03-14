@@ -23,7 +23,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -85,7 +88,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
 	// space of the array
-	private final List<String> HANGMAN_DRAWING = List.of(
+	private static final List<String> HANGMAN_DRAWING = List.of(
 			   "  ____________",
 			   "\n |  /      |",
 			   "\n | /       O",
@@ -98,6 +101,17 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			   "\n |____________" );
 
 	public static void main(String[] args) {
+		// set the console handler to use the custom formatter
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new Formatter() {
+            @Override
+            public String format(LogRecord logRecord) {
+            	// ANSI color code for white (\u001B[37m)
+                return "\u001B[37m";
+            }
+        });
+        logger_.addHandler(consoleHandler);
+
 		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to given custom color
 		new Hangman();
 	}
@@ -113,7 +127,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window = new JFrame("Hangman App by: Brian Perel");
 		window.setResizable(false);
 		window.setSize(529, 326);
-		window.getContentPane().setLayout(null);
+		window.getContentPane().setLayout(null); // centers the window
 		window.getContentPane().setBackground(WHITE);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-hangman.jpg")));
