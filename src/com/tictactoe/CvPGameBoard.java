@@ -21,7 +21,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
-	private static final Logger logger_ = Logger.getLogger(CvPGameBoard.class.getName());
+	private static final Logger LOG = Logger.getLogger(CvPGameBoard.class.getName());
 
 	private int randomCell;
 	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
@@ -88,7 +88,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			// if you try to select a tile that is not empty
 			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
 				invalidMoveSelected = true;
-				logger_.warning("Invalid Move.");
+				LOG.warning("Invalid Move.");
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
@@ -126,7 +126,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		try {
 			TimeUnit.MILLISECONDS.sleep(300L);
 		} catch (InterruptedException ie) {
-			logger_.severe("Error: " + ie);
+			LOG.severe("Error: " + ie);
 			ie.printStackTrace();
 			Thread.currentThread().interrupt();
 		}

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.MessageFormat;
 import java.util.logging.ConsoleHandler;
@@ -41,7 +42,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	protected static final String PLAYER = "Player";
 	protected static final String COMPUTER = "Computer";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
-	private static final Logger logger_ = Logger.getLogger(StartMenu.class.getName());
+	private static final Logger LOG = Logger.getLogger(StartMenu.class.getName());
 	protected static JFrame window;
 
 	private JButton btnStart;
@@ -50,6 +51,17 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private JRadioButton playAgainstComputerRadioButton;
 
 	public static void main(String[] args) {
+		// set the console handler to use the custom formatter
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new Formatter() {
+            @Override
+            public String format(LogRecord logRecord) {
+            	// ANSI color code for white (\u001B[37m)
+                return "\u001B[37m";
+            }
+        });
+        LOG.addHandler(consoleHandler);
+
 		window = new JFrame("Tic Tac Toe App by: Brian Perel");
 		new StartMenu();
 	}
@@ -62,24 +74,16 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	private void createGui() {
-		// set the console handler to use the custom formatter
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new Formatter() {
-            @Override
-            public String format(LogRecord logRecord) {
-            	// ANSI color code for white (\u001B[37m)
-                return "\u001B[37m";
-            }
-        });
-        logger_.addHandler(consoleHandler);
-
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			logger_.info("Starting tic-tac-toe log");
+			LOG.info("Starting tic-tac-toe log");
 		} catch (Exception e) {
-			logger_.severe("Failed to set LookAndFeel\n" + e);
+			LOG.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
+
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
 		window.setResizable(false);
 		window.setSize(399, 358);
@@ -158,7 +162,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * @param argBtn button on which you want a different color to appear when hovering
 	 */
 	protected static void setHoverColor(JButton argBtn) {
-		argBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+		argBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				argBtn.setBackground(new Color(38, 195, 54));
@@ -209,7 +213,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			PvPGameBoard.setPlayerOnesName(nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase());
 			PvPGameBoard.setPlayerTwosName(nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase());
 
-			logger_.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", PvPGameBoard.getPlayerOnesName(), PvPGameBoard.getPlayerTwosName()));
+			LOG.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", PvPGameBoard.getPlayerOnesName(), PvPGameBoard.getPlayerTwosName()));
 
 			window.dispose();
 			new PvPGameBoard(true, true, false);
@@ -221,8 +225,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 	private boolean validationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
 		return keyChar == KeyEvent.VK_ENTER && source.equals(btnStart)
-				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo))
-				&& !(PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
+				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo)
+				|| PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
 				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo));
 	}
 

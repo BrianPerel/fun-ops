@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -34,7 +35,7 @@ public class PvPGameBoard implements ActionListener {
 	protected static final JFrame window = new JFrame("Tic Tac Toe");
 	private static final Color LIGHT_ORANGE_COLOR = new Color(222, 126, 0);
 	private static final Color ULTRA_LIGHT_ORANGE_COLOR = new Color(244, 164, 96);
-	private static final Logger logger_ = Logger.getLogger(PvPGameBoard.class.getName());
+	private static final Logger LOG = Logger.getLogger(PvPGameBoard.class.getName());
 	protected static final Color LIGHT_RED_COLOR = new Color(232, 46, 6);
 	protected static final String PLAYER_ONE_LETTER = "X";
 	protected static final String PLAYER_TWO_LETTER = "O";
@@ -67,9 +68,12 @@ public class PvPGameBoard implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (Exception e) {
-			logger_.severe("Failed to set LookAndFeel\n" + e);
+			LOG.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
+
+		// changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
 
@@ -93,7 +97,7 @@ public class PvPGameBoard implements ActionListener {
 			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY));
 
 			final int x = i;
-			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			gameBoardTiles[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
 					gameBoardTiles[x].setBackground(LIGHT_ORANGE_COLOR);
@@ -188,7 +192,7 @@ public class PvPGameBoard implements ActionListener {
 				break;
 			}
 			else if (ae.getSource() == button && !button.getText().isEmpty()) {
-				logger_.warning("Invalid Move!");
+				LOG.warning("Invalid Move!");
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
@@ -216,9 +220,10 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	private void checkPair(String playerLetter, String pairArr) {
-		int button1 = Integer.parseInt(pairArr.split("|")[0]);
-		int button2 = Integer.parseInt(pairArr.split("|")[2]);
-		int button3 = Integer.parseInt(pairArr.split("|")[4]);
+	    String[] buttons = pairArr.split("|");
+		int button1 = Integer.parseInt(buttons[0]);
+		int button2 = Integer.parseInt(buttons[2]);
+		int button3 = Integer.parseInt(buttons[4]);
 
 		// if buttons 0, 1, 2 are triggered (pressed) - 3 in a row vertically - down the left side column
 		if (tile[button1].equals(playerLetter) && tile[button2].equals(playerLetter) && tile[button3].equals(playerLetter)) {
@@ -233,7 +238,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param playerLetter player's letter type - used to get the winner's name
 	 */
 	private void logWinner(String playerLetter) {
-		logger_.log(Level.INFO, "{0} wins!", PLAYER_ONE_LETTER.equals(playerLetter) ? getPlayerOnesName()
+		LOG.log(Level.INFO, "{0} wins!", PLAYER_ONE_LETTER.equals(playerLetter) ? getPlayerOnesName()
 				: getPlayerTwosName());
 	}
 
@@ -262,7 +267,7 @@ public class PvPGameBoard implements ActionListener {
 		// from displaying player won and draw at the same time error
 		if(!isGameOver && isBoardFull()) {
 			new GameWinner(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!");
-			logger_.info("Game Over! It's a draw!");
+			LOG.info("Game Over! It's a draw!");
 		}
 	}
 
@@ -288,7 +293,7 @@ public class PvPGameBoard implements ActionListener {
 		// this will prevent game board tiles from changing color when a game is won
 		for (int i = 0; i < gameBoardTiles.length; i++) {
 			final int x = i;
-			gameBoardTiles[i].addMouseListener(new java.awt.event.MouseAdapter() {
+			gameBoardTiles[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
 					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
@@ -302,7 +307,7 @@ public class PvPGameBoard implements ActionListener {
 			button.setBorder(new LineBorder(Color.BLUE, 3, true));
 
 			// this will prevent the program from changing colors when you hover after winning
-			button.addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
 					button.setBackground(GREEN);

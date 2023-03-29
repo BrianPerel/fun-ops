@@ -12,10 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.AudioSystem;
@@ -39,10 +42,11 @@ import javax.swing.WindowConstants;
 public class Clock implements ActionListener {
 
 	private JFrame window;
-	private String alarmTime;
 	private JLabel lblClockTime;
-	private JCheckBoxMenuItem menuOption;
+	private String alarmTimeString;
 	private boolean hasAlarmRung;
+	private JCheckBoxMenuItem menuOption;
+	private Optional<String> alarmTime = Optional.ofNullable(null);
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		try {
@@ -70,6 +74,9 @@ public class Clock implements ActionListener {
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/night-sky-stars-animation.gif"))); // sets app background
 
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/clock.png").getImage());
+
 		window.getContentPane().setLayout(null);
 		window.setAlwaysOnTop(true);
 
@@ -84,7 +91,7 @@ public class Clock implements ActionListener {
 		menu.setBackground(new Color(0, 126, 210));
 		menu.setForeground(Color.WHITE);
 		menu.setOpaque(true);
-		menu.addMouseListener(new java.awt.event.MouseAdapter() {
+		menu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				menu.setBackground(new Color(31, 83, 162));
@@ -147,22 +154,24 @@ public class Clock implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		// sets clock alarm time
 		if (ae.getSource().equals(menuOption)) {
-			alarmTime = JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): ");
+			alarmTime = Optional.ofNullable(JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): "));
 
-			if (alarmTime != null && !alarmTime.isBlank()
-					&& (alarmTime.trim().length() == 7 || alarmTime.trim().length() == 8)) {
-				alarmTime = alarmTime.trim().toUpperCase();
+			alarmTimeString = alarmTime.toString().replaceAll("(?i)optional", "").replace("[", "").replace("]", "");
+
+			if (alarmTime.isPresent() && !alarmTimeString.isBlank()
+					&& (alarmTimeString.trim().length() == 7 || alarmTimeString.trim().length() == 8)) {
+				alarmTime = Optional.ofNullable(alarmTimeString.trim().toUpperCase());
 
 				// index 0, 1, 3, and 4 of alarmTime string should be numbers only
-				if (alarmTime.substring(0, 1).matches("\\d") && alarmTime.substring(3, 4).matches("\\d")
-						&& (alarmTime.endsWith("AM") || alarmTime.endsWith("PM"))) {
+				if (alarmTimeString.substring(0, 1).matches("\\d") && alarmTimeString.substring(3, 4).matches("\\d")
+						&& (alarmTimeString.endsWith("AM") || alarmTimeString.endsWith("PM"))) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(window, "Alarm time has been set", "Alarm time set",
 							JOptionPane.INFORMATION_MESSAGE);
 
 					return;
 				}
-			} else if (alarmTime != null) {
+			} else if (!alarmTime.isPresent()) {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(window, "Please enter time of the appropriate format (x:xx AM or PM)",
 						"Error setting alarm", JOptionPane.INFORMATION_MESSAGE);
@@ -185,7 +194,7 @@ public class Clock implements ActionListener {
 		while (true) {
 			time = obtainFormattedTime(militaryTimeFormatCheckBox);
 
-			if (alarmTime != null && !hasAlarmRung && (time.equalsIgnoreCase(alarmTime))) {
+			if (alarmTime.isPresent() && !hasAlarmRung && (time.equalsIgnoreCase(alarmTimeString))) {
 				ringAlarm();
 			}
 
@@ -207,13 +216,13 @@ public class Clock implements ActionListener {
 	 * @return the formatted current time
 	 */
 	private String obtainFormattedTime(JCheckBox militaryTimeFormatCheckBox) {
-		String time = java.time.LocalDateTime.now()
+		String time = LocalDateTime.now()
 				.format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) ? "HH:mm" : "hh:mm a"));
 
 		// current time (not 11 or 12 o'clock) will show up with a 0 in front of the
 		// time by default, this prevents that
 		if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
-			time = time.substring(1);
+			time = time.substring(1); // removes leading zero
 		}
 
 		lblClockTime.setText(time);

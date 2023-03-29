@@ -3,7 +3,7 @@
 <project name="fun-ops" default="clean" basedir=".">
 
 	<description>
-		My Custom Ant Build Script for all fun-ops apps. Includes compile, jar,
+		Custom Ant Build Script for all fun-ops apps. Includes compile, jar,
 		run, create exe, javadoc, unjar tasks for build generation for all apps
 	</description>
 
@@ -131,6 +131,9 @@
 		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
+		<copy todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="encryption.png" />
+		</copy>
 		<copy file="secret.txt" todir="${release.dir}/encryption" />
 		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
 		<delete dir="${release.dir}/encryption" />
@@ -184,6 +187,9 @@
 		<move file="hangman.exe" todir="${release.dir}/hangman" />
 		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
+		</copy>
+		<copy todir="${release.dir}/hangman/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="hangman.png" />
 		</copy>
 		<copy file="hangman.txt" todir="${release.dir}/hangman" />
 		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
@@ -315,6 +321,9 @@
 		<copy todir="${release.dir}/number_game/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
 		</copy>
+		<copy todir="${release.dir}/number_game/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png" />
+		</copy>
 		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
 		<delete dir="${release.dir}/number_game" />
 	</target>
@@ -386,6 +395,9 @@
 		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
+		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="tic-tac-toe.png" />
+		</copy>
 		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
 		<delete dir="${release.dir}/tic_tac_toe" />
 	</target>
@@ -438,6 +450,9 @@
 		<copy todir="build/release/wigglemouse/res/graphics">
 			<fileset dir="res/graphics" includes="image-mouse-shake.jpg" />
 		</copy>
+		<copy todir="${release.dir}/wigglemouse/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="mouse.png" />
+		</copy>
 		<zip destfile="build/release/wigglemouse.zip" basedir="build/release/wigglemouse" update="true" />
 		<delete dir="build/release/wigglemouse" />
 	</target>
@@ -461,6 +476,12 @@
 		<copy todir="build/release/clock/res/graphics">
 			<fileset dir="res/graphics" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
 		</copy>
+		<copy todir="${release.dir}/clock/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="clock.png" />
+		</copy>
+		<copy todir="${release.dir}/clock/res/audio">
+			<fileset dir="res/audio" includes="clock-alarm.wav" />
+		</copy>
 		<zip destfile="build/release/clock.zip" basedir="build/release/clock" update="true" />
 		<delete dir="build/release/clock" />
 	</target>
@@ -481,6 +502,9 @@
 		<copy todir="${release.dir}/pong/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="restart-sign.png" />
 		</copy>
+		<copy todir="${release.dir}/pong/${res.graphics.dir}/taskbar_icons">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="pingpong.png" />
+		</copy>
 		<zip destfile="${release.dir}/pong.zip" basedir="${release.dir}/pong" update="true" />
 		<delete dir="${release.dir}/pong" />
 	</target>
@@ -497,8 +521,9 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
 				<attribute name="Resource" value="res/fonts/clock-font.tff" />
-				<attribute name="Resource2" value="res/graphics/alarm-clock-sign.png" />
-				<attribute name="Resource3" value="res/graphics/night-sky-stars-animation.gif" />
+				<attribute name="Resource2" value="res/audio/clock-alarm.wav" />
+				<attribute name="Resource3" value="res/graphics/alarm-clock-sign.png" />
+				<attribute name="Resource4" value="res/graphics/night-sky-stars-animation.gif" />
 			</manifest>
 		</jar>
 	</target>

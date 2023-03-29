@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -85,6 +86,9 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		window.setResizable(false);
 		window.setSize(421, 264);
 
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage());
+
 		data = new StringBuilder();
 
 		JButton[] buttons = new JButton[4];
@@ -125,7 +129,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			button.setSize(89, 28);
 			button.setBackground(LIGHT_BLUE_COLOR);
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			button.addMouseListener(new java.awt.event.MouseAdapter() {
+			button.addMouseListener(new MouseAdapter() {
 				@Override
 			    public void mouseEntered(MouseEvent evt) {
 					button.setBackground(DARK_LIGHT_BLUE_COLOR);

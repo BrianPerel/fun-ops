@@ -2,6 +2,7 @@ package com.pingpong;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
 
@@ -43,6 +44,9 @@ public class PingPongGui extends JFrame {
 	private void createGui() {
 		this.add(new GameBoard());
 
+	    // changes the program's taskbar icon
+	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/pingpong.png").getImage());
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Menu \u25BC"); // unicode for drop down arrow (black triangle) = \u25BC
 		menu.setMnemonic('r'); // alt+r = menu keyboard shortcut/ keyboard mnemonic
@@ -51,7 +55,7 @@ public class PingPongGui extends JFrame {
 		menu.setBackground(new Color(0, 126, 210));
 		menu.setForeground(Color.WHITE);
 		menu.setOpaque(true);
-		menu.addMouseListener(new java.awt.event.MouseAdapter() {
+		menu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				menu.setBackground(new Color(31, 83, 162));

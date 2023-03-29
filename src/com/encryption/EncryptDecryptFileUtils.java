@@ -88,7 +88,13 @@ public class EncryptDecryptFileUtils {
 			textFieldLoading.setText(fileToLoad);
 		}
 
-		file = new File(fileToLoad);
+		if(new File(fileToLoad).canRead()) {
+			file = new File(fileToLoad);
+		}
+		else {
+			 JOptionPane.showMessageDialog(null, "File is not accessible", "Error", JOptionPane.ERROR_MESSAGE);
+			 Toolkit.getDefaultToolkit().beep();
+		}
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,7 +53,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// if we close the game's winner window frame then close the other main game frame too
-		window.addWindowListener(new java.awt.event.WindowAdapter() {
+		window.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
 				new PvPGameBoard(false, false, true);

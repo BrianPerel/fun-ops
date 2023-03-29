@@ -3,6 +3,7 @@ package com.wigglemouse;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -67,8 +68,14 @@ public class WiggleMouse {
 	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    window.setSize(550, 182);
 
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/mouse.png").getImage());
+
 	    JPanel panel = new JPanel(new GridBagLayout());
 	    window.add(panel);
+
+	    // set minimum GUI size
+	    window.setMinimumSize(new Dimension(150, 150));
 
 	    GridBagConstraints gbc = new GridBagConstraints();
 	    gbc.insets = new Insets(5, 5, 5, 5);

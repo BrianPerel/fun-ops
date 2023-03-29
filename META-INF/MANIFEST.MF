@@ -2,16 +2,21 @@
 Manifest-Version: 1.0
 Created-By: Brian Perel
 
+# Calculator app
 Main-Class: com.calculator.MyCalculatorGui
 
+# Stopwatch app
 Main-Class: com.stopwatch.StopWatch
 
+# Hangman app
 Main-Class: com.hangman.Hangman
 Resource: res/graphics/bg-image-hangman.jpg
 
+# Wigglemouse app
 Main-Class: com.wigglemouse.WiggleMouse 
 Resource: res/graphics/image-mouse-shake.jpg
 
+# Guessing game app
 Main-Class: com.numbergame.GuessingGame
 Resource: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
@@ -19,18 +24,24 @@ Resource3: res/audio/win.wav
 Resource4: res/graphics/bg-image-guessing-figure.jpg
 Resource5: res/graphics/bg-image-guess.jpg
 
+# Advanced guessing game app
 Main-Class: com.numbergame.AdvancedGuessingGame
 
+# Encryption app
 Main-Class: com.encryption.EncryptDecryptGui
 Resource: res/graphics/bg-image-encryption.jpg
 
+# Tic-tac-toe app
 Main-Class: com.tictactoe.StartMenu
 Resource: res/graphics/bg-image-tac.jpg
 
+# Clock app
 Main-Class: com.clock.Clock
 Resource: res/fonts/clock-font.tff
-Resource2: res/graphics/alarm-click-sign.png
-Resource3: res/graphics/night-sky-stars-animation.gif
+Resource2: res/audio/clock-alarm.wav
+Resource3: res/graphics/alarm-click-sign.png
+Resource4: res/graphics/night-sky-stars-animation.gif
 
+# Ping Pong app
 Main-Class: com.pingpong.PingPongGui
 Resource: res/graphics/restart-sign.png

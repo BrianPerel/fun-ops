@@ -3,6 +3,7 @@ package com.stopwatch;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,11 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serial;
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,6 +63,12 @@ public class StopWatch extends JFrame {
 		setSize(x, y);
 		setVisible(true);
 		setLocation(390, 345); // position the GUI on the screen at custom location (x, y)
+
+		// set minimum GUI size
+	    setMinimumSize(new Dimension(150, 150));
+
+	    // changes the program's taskbar icon
+	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/stopwatch.png").getImage());
 	}
 
 	/**
@@ -82,6 +92,9 @@ public class StopWatch extends JFrame {
 		private int minute;
 		private int second;
 		private int centisecond;
+	    final Color lightGreenColor = new Color(0, 255, 128);
+	    final Color lightRedColor = new Color(255, 98, 98);
+	    final Color lightBlueColor = new Color(146, 205, 255);
 
 		private final Timer timer; // watch timer
 
@@ -93,18 +106,18 @@ public class StopWatch extends JFrame {
 		    JPanel watchPanel = new JPanel();
 		    WATCH.setFont(new Font("Helvetica", Font.PLAIN, 36));
 		    watchPanel.add(WATCH);
-		    final Color lightGray = new Color(225, 225, 225);
-		    watchPanel.setBackground(lightGray);
+		    final Color lightGrayColor = new Color(225, 225, 225);
+		    watchPanel.setBackground(lightGrayColor);
 		    add(watchPanel, BorderLayout.NORTH);
 
 		    JPanel buttonPanel = new JPanel(new GridBagLayout());
-		    buttonPanel.setBackground(lightGray);
-		    final Color lightGreen = new Color(0, 255, 128);
-		    BTN_START.setBackground(lightGreen);
-		    final Color lightRed = new Color(255, 98, 98);
-		    BTN_STOP.setBackground(lightRed);
-		    final Color lightBlue = new Color(146, 205, 255);
-		    BTN_RESET.setBackground(lightBlue);
+		    buttonPanel.setBackground(lightGrayColor);
+		    BTN_START.setBackground(lightGreenColor);
+		    setHoverColor(BTN_START, lightGreenColor, new Color(0, 168, 49));
+		    BTN_STOP.setBackground(lightRedColor);
+		    setHoverColor(BTN_STOP, lightRedColor, new Color(192, 37, 51));
+		    BTN_RESET.setBackground(lightBlueColor);
+		    setHoverColor(BTN_RESET, lightBlueColor, new Color(60, 125, 171));
 
 		    GridBagConstraints gbc = new GridBagConstraints();
 		    gbc.insets = new Insets(10, 10, 10, 10);
@@ -144,6 +157,27 @@ public class StopWatch extends JFrame {
 		        button.addActionListener(buttonListener);
 		        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		    }
+		}
+
+		/**
+		 * Sets a custom color to appear when you hover over a specific button
+		 *
+		 * @param argBtn button on which you want a different color to appear when hovering
+		 * @param orgColor the original color the button had attached
+		 * @param hoverColor the color you want to appear when hovering over the specific button
+		 */
+		private void setHoverColor(JButton argBtn, Color orgColor, Color hoverColor) {
+			argBtn.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					argBtn.setBackground(hoverColor);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					argBtn.setBackground(orgColor);
+				}
+			});
 		}
 
 		/**

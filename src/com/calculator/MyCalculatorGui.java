@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -84,6 +85,9 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		window.getContentPane().setLayout(null);
 		window.setResizable(false);
 		window.setSize(400, 436);
+
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/calculator.png").getImage());
 
 		textFieldUserInput = new JFormattedTextField(CURSOR_RIGHT_POSITION_W_ZERO);
 		textFieldUserInput.requestFocus();

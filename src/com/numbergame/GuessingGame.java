@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
@@ -86,8 +88,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(null);
 		window.setBackground(Color.WHITE);
+		window.setLocationRelativeTo(null);
 		window.setResizable(false);
 		window.setSize(526, 352);
+
+	    // changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/guessing-game.png").getImage());
 
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
 
@@ -182,24 +188,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.addKeyListener(this);
 		closeTimerCheckBox.setOpaque(false);
 
-		window.setLocationRelativeTo(null);
-
 		StopWatchPanel.isRedFontEnabled = true;
 
 		setTimeCounterImpl();
-
-		// if we minimize the game's winner window frame then minimize the other main game frame too
-		window.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowIconified(WindowEvent e) {
-		    	timeCounter.setExtendedState(Frame.ICONIFIED);
-		    }
-
-		    @Override
-		    public void windowDeiconified(WindowEvent e) {
-		    	timeCounter.setExtendedState(Frame.NORMAL);
-		    }
-		});
 
 		textFieldGuessTheNumber.requestFocus();
 
@@ -214,7 +205,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * @param btnNoHoverColor the color for when not hovering
 	 */
 	private void setBtnHoverColor(JButton argBtn, Color btnHoverColor, Color btnNoHoverColor) {
-		argBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+		argBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				argBtn.setBackground(btnHoverColor);
@@ -235,6 +226,19 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		timeCounter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
+
+		// if we minimize the game's winner window frame then minimize the other main game frame too
+		window.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowIconified(WindowEvent e) {
+		    	timeCounter.setExtendedState(Frame.ICONIFIED);
+		    }
+
+		    @Override
+		    public void windowDeiconified(WindowEvent e) {
+		    	timeCounter.setExtendedState(Frame.NORMAL);
+		    }
+		});
 
 		// hide the stop watch buttons, as we won't be using them here
 		StopWatchPanel.BTN_START.setVisible(false);
@@ -265,6 +269,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * @param keyChar the character associated with the key in this event
 	 */
 	private void eventHandler(Object source, char keyChar) {
+
+		// if enter key was pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
+		if(keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain))) {
+			return;
+		}
+
 		boolean isTimeout = false;
 		StopWatchPanel.BTN_STOP.doClick();
 
@@ -335,7 +345,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// if guess btn is pushed and input is numeric data
 		if(source.equals(btnGuess)) {
-			if (textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
+			if (textFieldGuessTheNumber.getText().matches("-?\\d+")) {
 				evaluateGuess(isTimeout, 100);
 			}
 			// if guess btn is pushed and input is empty
