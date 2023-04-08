@@ -39,6 +39,13 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
+/**
+ * Clock application with an alarm feature. By default time is displayed in 12-hour time format, but user
+ * has the option to switch to and from 24-hour time format. <br>
+ *
+ * @author Brian Perel
+ *
+ */
 public class Clock implements ActionListener {
 
 	private JFrame window;
@@ -156,11 +163,13 @@ public class Clock implements ActionListener {
 		if (ae.getSource().equals(menuOption)) {
 			alarmTime = Optional.ofNullable(JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): "));
 
-			alarmTimeString = alarmTime.toString().replaceAll("(?i)optional", "").replace("[", "").replace("]", "");
+			// (?i) makes the replaceAll() check for the text while being case-insensitive
+			// removes optional, [, ] text/symbols
+			alarmTimeString = alarmTime.toString().replaceAll("(?i)optional", "").replace("[", "").replace("]", "").trim().toUpperCase();
 
 			if (alarmTime.isPresent() && !alarmTimeString.isBlank()
-					&& (alarmTimeString.trim().length() == 7 || alarmTimeString.trim().length() == 8)) {
-				alarmTime = Optional.ofNullable(alarmTimeString.trim().toUpperCase());
+					&& (alarmTimeString.length() == 7 || alarmTimeString.length() == 8)) {
+				alarmTime = Optional.ofNullable(alarmTimeString);
 
 				// index 0, 1, 3, and 4 of alarmTime string should be numbers only
 				if (alarmTimeString.substring(0, 1).matches("\\d") && alarmTimeString.substring(3, 4).matches("\\d")
@@ -182,7 +191,7 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Obtains the current time, applies formatting if needed, listens for if user
+	 * Obtains the current time every second, applies formatting if needed, listens for if user
 	 * enters an alarm time, and repeats these actions every second
 	 *
 	 * @param militaryTimeFormatCheckBox the display military time JCheckBox
@@ -210,9 +219,9 @@ public class Clock implements ActionListener {
 
 	/**
 	 * Formats the clock's current time being displayed to avoid having a zero appear before single digit hour.
-	 * Changes the time to be displayed to 24 hr format if user selects the option
+	 * Changes the time to be displayed to 24 hour format (if user selects the option)
 	 *
-	 * @param militaryTimeFormatCheckBox check box to request 24 hr format time
+	 * @param militaryTimeFormatCheckBox check box to request 24 hour format time
 	 * @return the formatted current time
 	 */
 	private String obtainFormattedTime(JCheckBox militaryTimeFormatCheckBox) {

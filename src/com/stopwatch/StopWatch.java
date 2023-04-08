@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
@@ -41,7 +42,7 @@ public class StopWatch extends JFrame {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
 			e.printStackTrace();
 		}
@@ -65,7 +66,7 @@ public class StopWatch extends JFrame {
 		setLocation(390, 345); // position the GUI on the screen at custom location (x, y)
 
 		// set minimum GUI size
-	    setMinimumSize(new Dimension(150, 150));
+	    setMinimumSize(new Dimension(x, y));
 
 	    // changes the program's taskbar icon
 	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/stopwatch.png").getImage());

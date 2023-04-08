@@ -33,56 +33,60 @@ public class EncryptDecryptFileUtils {
 	 * @param fileToLoad the file we're going to encrypt/decrypt
 	 */
 	protected static void loadFileData(String fileToLoad) {
-		// append .txt to the filename entered if entered without .txt
-		loadFile(fileToLoad);
+		if(loadFile(fileToLoad)) {
 
-		// use try with resources here, which will auto close resources
-		try (Scanner read = new Scanner(file)) {
+			// use try with resources here, which will auto close resources
+			try (Scanner read = new Scanner(file)) {
 
-			// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
-			while (read.hasNextLine()) {
-				data.append(read.nextLine());
-			}
+				// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
+				while (read.hasNextLine()) {
+					data.append(read.nextLine());
+				}
 
-			if(data.isEmpty()) {
+				if(data.isEmpty()) {
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File is empty");
+					return;
+				}
+
+				JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
+				textFieldLoading.setEditable(false);
+				textFieldLoading.setBackground(Color.LIGHT_GRAY);
+				setFileName(file.toString());
+				dataSet = new EncryptDecryptOp(EncryptDecryptGui.data);
+				isFileLoaded = true;
+
+				// check if Desktop is supported by this Platform or not
+				if (!Desktop.isDesktopSupported()) {
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(window.getComponent(0), "Desktop is not supported by this application",
+							ERROR, JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				openFile();
+
+			} catch (FileNotFoundException e) {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File is empty");
-				return;
+				JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File not found", ERROR, JOptionPane.INFORMATION_MESSAGE);
+				textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+				textFieldLoading.setForeground(Color.GRAY);
+				textFieldLoading.setCaretPosition(0);
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			}
 
-			JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
-			textFieldLoading.setEditable(false);
-			textFieldLoading.setBackground(Color.LIGHT_GRAY);
-			setFileName(file.toString());
-			dataSet = new EncryptDecryptOp(EncryptDecryptGui.data);
-			isFileLoaded = true;
-
-			// check if Desktop is supported by this Platform or not
-			if (!Desktop.isDesktopSupported()) {
-				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(window.getComponent(0), "Desktop is not supported by this application",
-						ERROR, JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			openFile();
-
-		} catch (FileNotFoundException e) {
-			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File not found", ERROR, JOptionPane.INFORMATION_MESSAGE);
-			textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
-			textFieldLoading.setForeground(Color.GRAY);
-			textFieldLoading.setCaretPosition(0);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
 		}
 	}
 
 	/**
 	 * Loads the file to be encrypted
 	 * @param fileToLoad file to load
+	 * @return loading result
 	 */
-	private static void loadFile(String fileToLoad) {
+	private static boolean loadFile(String fileToLoad) {
+
+		// append .txt to the filename entered if entered without .txt extension
 		if (!fileToLoad.endsWith(".txt")) {
 			fileToLoad += ".txt";
 			textFieldLoading.setText(fileToLoad);
@@ -90,11 +94,14 @@ public class EncryptDecryptFileUtils {
 
 		if(new File(fileToLoad).canRead()) {
 			file = new File(fileToLoad);
+			return true;
 		}
 		else {
 			 JOptionPane.showMessageDialog(null, "File is not accessible", "Error", JOptionPane.ERROR_MESSAGE);
 			 Toolkit.getDefaultToolkit().beep();
 		}
+
+		return false;
 	}
 
 	/**

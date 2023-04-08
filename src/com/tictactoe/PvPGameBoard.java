@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
@@ -48,7 +49,6 @@ public class PvPGameBoard implements ActionListener {
 	protected boolean isCvPGame; // determines current game mode, used to prevent bug
 	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
-	protected boolean isPlayerTwosTurn;
 
 	/**
 	 * Builds the game's GUI board
@@ -57,25 +57,23 @@ public class PvPGameBoard implements ActionListener {
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag for program indicating if it's player one's turn in the
 	 *                  game
-	 * @param argIsPlayerTwosTurn boolean flag for program indicating if it's player two's turn in the
-	 *                  game
 	 */
-	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		createGui(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn) {
+		createGui(argIsStart, argIsPlayerOnesTurn);
 	}
 
-	private void createGui(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	private void createGui(boolean argIsStart, boolean argIsPlayerOnesTurn) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-		} catch (Exception e) {
-			LOG.severe("Failed to set LookAndFeel\n" + e);
-			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		    LOG.log(Level.SEVERE, "Failed to set LookAndFeel", e);
+		    e.printStackTrace();
 		}
 
 		// changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
-		initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		initializeGame(argIsStart, argIsPlayerOnesTurn);
 
 		isGameOver = false; // need to set variable to false here to avoid name label not changing bug
 
@@ -110,6 +108,7 @@ public class PvPGameBoard implements ActionListener {
 			});
 		}
 
+		// custom coordinates to properly position the tiles on the game board
 		gameBoardTiles[0].setLocation(63, 64);
 		gameBoardTiles[1].setLocation(63, 145);
 		gameBoardTiles[2].setLocation(63, 226);
@@ -153,8 +152,8 @@ public class PvPGameBoard implements ActionListener {
 		window.setVisible(true);
 	}
 
-	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
-		this(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere) {
+		this(argIsStart, argIsPlayerOnesTurn);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
@@ -167,13 +166,10 @@ public class PvPGameBoard implements ActionListener {
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
-	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
-	 *                  game
 	 */
-	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
+	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn) {
 		if (argIsStart) {
 			isPlayerOnesTurn = !argIsPlayerOnesTurn;
-			isPlayerTwosTurn = !argIsPlayerTwosTurn;
 		}
 	}
 
@@ -187,7 +183,6 @@ public class PvPGameBoard implements ActionListener {
 					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
 
 				isPlayerOnesTurn = !isPlayerOnesTurn;
-				isPlayerTwosTurn = !isPlayerTwosTurn;
 
 				break;
 			}
@@ -212,9 +207,9 @@ public class PvPGameBoard implements ActionListener {
 		// if buttons 2, 5, 8 are triggered - 3 in a row horizontally - across the bottom row
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
-		final String[] PAIR_ARR = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
+		final String[] winPatterns = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
 
-		for (String pair : PAIR_ARR) {
+		for (String pair : winPatterns) {
 			checkPair(playerLetter, pair);
 		}
 	}

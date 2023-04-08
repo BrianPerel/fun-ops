@@ -48,7 +48,7 @@ public class PingPongGui extends JFrame {
 	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/pingpong.png").getImage());
 
 		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu("Menu \u25BC"); // unicode for drop down arrow (black triangle) = \u25BC
+		JMenu menu = new JMenu("Menu ▼");
 		menu.setMnemonic('r'); // alt+r = menu keyboard shortcut/ keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1);
 		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

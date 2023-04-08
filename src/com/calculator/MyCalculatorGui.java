@@ -12,9 +12,11 @@ import static java.awt.event.KeyEvent.VK_7;
 import static java.awt.event.KeyEvent.VK_8;
 import static java.awt.event.KeyEvent.VK_9;
 import static java.awt.event.KeyEvent.VK_BACK_SPACE;
+import static java.awt.event.KeyEvent.VK_DIVIDE;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import static java.awt.event.KeyEvent.VK_EQUALS;
 import static java.awt.event.KeyEvent.VK_MINUS;
+import static java.awt.event.KeyEvent.VK_MULTIPLY;
 import static java.awt.event.KeyEvent.VK_PERIOD;
 import static java.awt.event.KeyEvent.VK_PLUS;
 import static java.awt.event.KeyEvent.VK_SLASH;
@@ -36,6 +38,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
@@ -55,7 +58,6 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
 	protected static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked
-
 	protected static JFormattedTextField textFieldUserInput;
 	protected static boolean hasUserEnteredZero;
 
@@ -64,8 +66,9 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
+			e.printStackTrace();
 		}
 
 		new MyCalculatorGui();
@@ -86,7 +89,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		window.setResizable(false);
 		window.setSize(400, 436);
 
-	    // changes the program's taskbar icon
+    	 // changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/calculator.png").getImage());
 
 		textFieldUserInput = new JFormattedTextField(CURSOR_RIGHT_POSITION_W_ZERO);
@@ -100,15 +103,15 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		textFieldUserInput.setEditable(false);
 		textFieldUserInput.addKeyListener(this);
 
-		JButton[] buttons = new JButton[24];
+		JButton[] buttons = new JButton[24]; // change this to 25 if removing frame.getContentPane().setLayout(null)
 		buttons[0] = new JButton("1/x");
 		buttons[1] = new JButton("CE");
 		buttons[2] = new JButton("C");
-		buttons[3] = new JButton("\u232B"); // unicode for backspace symbol = \u232B
+		buttons[3] = new JButton("⌫");
 		buttons[4] = new JButton("%");
-		buttons[5] = new JButton("x\u00B2"); // unicode for X^2 (x squared) = x\u00B2
-		buttons[6] = new JButton("2\u221Ax"); // unicode for 2 square root x symbol = 2\u221Ax
-		buttons[7] = new JButton("\u00F7"); // unicode for division symbol = \u00F7
+		buttons[5] = new JButton("x²");
+		buttons[6] = new JButton("2√x");
+		buttons[7] = new JButton("÷");
 		buttons[8] = new JButton("*");
 
 		// assign numeric keypad button values for buttons 9-18
@@ -121,7 +124,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		buttons[21] = new JButton("+/-");
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
-		// buttons[24] = new JButton(); // fixes an issue caused when commenting out 		frame.getContentPane().setLayout(null);
+//		buttons[24] = new JButton(); // fixes an issue caused when removing frame.getContentPane().setLayout(null)
 
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
@@ -143,6 +146,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 					button.setBackground(WHITE);
 				}
 			});
+
+			setHoverColor(button, WHITE, new Color(160, 160, 160));
 		}
 
 		// need to custom add default font details for the backspace button, as the font details applied from above prevent the backspace symbol from being displayed
@@ -178,11 +183,33 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
+	 * Sets a custom color to appear when you hover over a specific button
+	 *
+	 * @param argBtn button on which you want a different color to appear when hovering
+	 * @param orgColor the original color the button had attached
+	 * @param hoverColor the color you want to appear when hovering over the specific button
+	 */
+	private void setHoverColor(JButton argBtn, Color orgColor, Color hoverColor) {
+		argBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				argBtn.setBackground(hoverColor);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				argBtn.setBackground(orgColor);
+			}
+		});
+	}
+
+	/**
 	 * This is responsible for listening to when buttons are clicked via the mouse (which represent actions).
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		String userInput = textFieldUserInput.getText();
+		final String userInput = textFieldUserInput.getText();
+
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
 		if(userInput.trim().length() <= 29) {
@@ -231,7 +258,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case "1/x":
 			if(!(userInput.isBlank() || "0".equals(userInput))) {
-				double value = 1 / Double.valueOf(userInput);
+				final double value = 1 / Double.valueOf(userInput);
 
 				// validate that the current text in textField isn't blank
 				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(userInput)
@@ -289,29 +316,29 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private void symbolActionButtons(ActionEvent ae, String userInput) {
+	private void symbolActionButtons(ActionEvent ae, String argUserInput) {
 
 		switch(ae.getActionCommand()) {
 		// backspace symbol
 		case "\u232B":
 			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-			if (userInput.length() == 1) {
+			if (argUserInput.length() == 1) {
 				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 				break;
 			}
 
 			// otherwise remove the last digit of the current string in text field
-			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(userInput)
-					? userInput.substring(0, userInput.length() - 1)
+			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
+					? argUserInput.substring(0, argUserInput.length() - 1)
 					: CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
 		// x\u00B2 = X^2 symbol
 		case "x\u00B2":
-			if(!(userInput.isBlank() || "0".equals(userInput))) {
-				double valueSquared = Math.pow(Double.valueOf(userInput), 2);
+			if(!(argUserInput.isBlank() || "0".equals(argUserInput))) {
+				final double valueSquared = Math.pow(Double.valueOf(argUserInput), 2);
 
-				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(userInput)
+				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
 						? CURSOR_RIGHT_POSITION.concat(Double.toString(valueSquared))
 						: CURSOR_RIGHT_POSITION_W_ZERO);
 
@@ -328,10 +355,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// 2\u221Ax = 2 square root x symbol
 		case "2\u221Ax":
-			if(!(userInput.isBlank() || "0".equals(userInput))) {
-				double valueSquareRooted = Math.sqrt(Double.valueOf(userInput));
+			if(!(argUserInput.isBlank() || "0".equals(argUserInput))) {
+				final double valueSquareRooted = Math.sqrt(Double.valueOf(argUserInput));
 
-				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(userInput)
+				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
 						? CURSOR_RIGHT_POSITION.concat(String.valueOf(valueSquareRooted))
 						: CURSOR_RIGHT_POSITION_W_ZERO);
 
@@ -413,11 +440,42 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
+	 * Validates if the key pressed on the keyboard is valid or not
+	 *
+	 * @param argChar the keyboard character pressed
+	 * @return the validation result
+	 */
+	private boolean isValidKeyPressed(char argChar) {
+		// checks if the entered character is a special symbol
+		// need to guard against 'o' because 'o' is equivalent to VK_DIVIDE
+		// need to guard against 'j' because 'j' is equivalent to VK_MULTIPLY
+	    if (argChar != 'o' && argChar != 'j' && (argChar == VK_PLUS || argChar == VK_MINUS
+	        || argChar == VK_EQUALS || argChar == VK_MULTIPLY
+	        || argChar == VK_DIVIDE || argChar == VK_PERIOD
+	        || argChar == VK_BACK_SPACE || argChar == VK_ENTER
+	        || argChar == VK_SLASH || argChar == '*'
+	        || argChar == '+' || argChar == '-'
+	        || Character.toUpperCase(argChar) == 'C')) {
+
+	        return true;
+	    }
+
+	    // checks if the entered character is a number
+	    return Character.isDigit(argChar);
+	}
+
+	/**
 	 * This is responsible for listening to all keyboard input.
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		char keyChar = e.getKeyChar();
+		final char keyChar = e.getKeyChar();
+
+		// prevent user from attempting to enter a non-numeric value
+		if(!isValidKeyPressed(keyChar)) {
+			return;
+		}
+
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
 		// bug fix: prevents user from prepending a zero before a number
@@ -536,5 +594,4 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			operatorFlags[(keyChar == '*') ? 1 : 3] = true;
 		}
 	}
-
 }

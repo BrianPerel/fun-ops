@@ -7,7 +7,7 @@
 		run, create exe, javadoc, unjar tasks for build generation for all apps
 	</description>
 
-	<property file="build.properties"/>
+	<property file="build.properties" />
 
 	<!-- creates the launch4j task -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
@@ -30,7 +30,7 @@
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" verbose="true" />
-		<delete dir="log" verbose="true" />
+		<delete dir="logs" verbose="true" />
 	</target>
 
 	<!-- target to create all project executables -->
@@ -51,7 +51,10 @@
 	<!-- targets for calculator -->
 	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<!-- this will make the compiler add the source code line numbers during the compiling process -->
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="creates associated .jar file for the specified application">
@@ -85,7 +88,9 @@
 	<!-- targets for encryption program -->
 	<target name="compile-encryption program" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-encryption program" depends="compile-encryption program" description="creates associated .jar file">
@@ -104,15 +109,15 @@
 
 	<!-- zip encryption program -->
 	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
-		<copy todir="${dist.dir}/encryption">
+		<copy todir="${dist.dir}/encryption-tmp">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
 		</copy>
-		<copy todir="${dist.dir}/encryption/${res.graphics.dir}">
+		<copy todir="${dist.dir}/encryption-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
-		<copy file="secret.txt" todir="${dist.dir}/encryption" />
-		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
-		<delete dir="${dist.dir}/encryption" />
+		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" />
+		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption-tmp" update="true" />
+		<delete dir="${dist.dir}/encryption-tmp" />
 	</target>
 
 	<!-- create and zip encryption.exe target -->
@@ -127,22 +132,24 @@
 			</config>
 		</launch4j>
 
-		<move file="encryption.exe" todir="${release.dir}/encryption" />
-		<copy todir="${release.dir}/encryption/${res.graphics.dir}">
+		<move file="encryption.exe" todir="${release.dir}/encryption-tmp" />
+		<copy todir="${release.dir}/encryption-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
-		<copy todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="encryption.png" />
 		</copy>
-		<copy file="secret.txt" todir="${release.dir}/encryption" />
-		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption" update="true" />
-		<delete dir="${release.dir}/encryption" />
+		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" />
+		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption-tmp" update="true" />
+		<delete dir="${release.dir}/encryption-tmp" />
 	</target>
 
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="creates associated .jar file">
@@ -161,15 +168,15 @@
 
 	<!-- zip-hangman-jar w/ resources target -->
 	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
-		<copy todir="${dist.dir}/hangman">
+		<copy todir="${dist.dir}/hangman-tmp">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
 		</copy>
-		<copy todir="${dist.dir}/hangman/${res.graphics.dir}">
+		<copy todir="${dist.dir}/hangman-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
-		<copy file="hangman.txt" todir="${dist.dir}/hangman" />
-		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
-		<delete dir="${dist.dir}/hangman" />
+		<copy file="hangman.txt" todir="${dist.dir}/hangman-tmp" />
+		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman-tmp" update="true" />
+		<delete dir="${dist.dir}/hangman-tmp" />
 	</target>
 
 	<!-- create and zip hangman.exe target -->
@@ -184,16 +191,16 @@
 			</config>
 		</launch4j>
 
-		<move file="hangman.exe" todir="${release.dir}/hangman" />
-		<copy todir="${release.dir}/hangman/${res.graphics.dir}">
+		<move file="hangman.exe" todir="${release.dir}/hangman-tmp" />
+		<copy todir="${release.dir}/hangman-tmp/{res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
-		<copy todir="${release.dir}/hangman/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/hangman-tmp/{res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="hangman.png" />
 		</copy>
-		<copy file="hangman.txt" todir="${release.dir}/hangman" />
-		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman" update="true" />
-		<delete dir="${release.dir}/hangman" />
+		<copy file="hangman.txt" todir="${release.dir}/hangman-tmp" />
+		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman-tmp" update="true" />
+		<delete dir="${release.dir}/hangman-tmp" />
 	</target>
 
 	<!-- create stopwatch.exe target -->
@@ -214,8 +221,12 @@
 	<!-- targets for guessing game and advanced guessing game -->
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" compiler="modern" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/numbergame" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/numbergame" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-guessing game" depends="compile-guessing game" description="creates associated .jar file">
@@ -223,7 +234,7 @@
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.GuessingGame" />
-				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
+				<attribute name="Resource1" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
@@ -257,7 +268,9 @@
 	<!-- targets for ping pong game -->
 	<target name="compile-pong" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-pong" depends="compile-pong" description="creates associated .jar file">
@@ -276,15 +289,15 @@
 
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
-		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" />
-		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}">
+		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame-tmp" />
+		<copy todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg" />
 		</copy>
-		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}">
+		<copy todir="${dist.dir}/guessingGame-tmp/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
-		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame" update="true" />
-		<delete dir="${dist.dir}/guessingGame" />
+		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame-tmp" update="true" />
+		<delete dir="${dist.dir}/guessingGame-tmp" />
 	</target>
 
 	<!-- create and zip number game.exe target -->
@@ -309,29 +322,31 @@
 			</config>
 		</launch4j>
 
-		<move todir="${release.dir}/number_game">
+		<move todir="${release.dir}/number_game-tmp">
 			<filelist dir=".">
 				<file name="number_game.exe" />
 				<file name="adv_number_game.exe" />
 			</filelist>
 		</move>
-		<copy todir="${release.dir}/number_game/${res.graphics.dir}">
+		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
-		<copy todir="${release.dir}/number_game/${res.audio.dir}">
+		<copy todir="${release.dir}/number_game-tmp/${res.audio.dir}">
 			<fileset dir="${res.audio.dir}" includes="*" />
 		</copy>
-		<copy todir="${release.dir}/number_game/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png" />
 		</copy>
-		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game" update="true" />
-		<delete dir="${release.dir}/number_game" />
+		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game-tmp" update="true" />
+		<delete dir="${release.dir}/number_game-tmp" />
 	</target>
 
 	<!-- targets for stopwatch -->
 	<target name="compile-stopwatch" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="creates associated .jar file">
@@ -350,7 +365,9 @@
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic tac toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="creates associated .jar file">
@@ -369,14 +386,14 @@
 
 	<!-- zip tic tac toe program -->
 	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
-		<copy todir="${dist.dir}/ticTacToe">
+		<copy todir="${dist.dir}/ticTacToe-tmp">
 			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
 		</copy>
-		<copy todir="${dist.dir}/ticTacToe/${res.graphics.dir}">
+		<copy todir="${dist.dir}/ticTacToe-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
-		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe" update="true" />
-		<delete dir="${dist.dir}/ticTacToe" />
+		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe-tmp" update="true" />
+		<delete dir="${dist.dir}/ticTacToe-tmp" />
 	</target>
 
 	<!-- create tic-tac-toe.exe target -->
@@ -391,21 +408,23 @@
 			</config>
 		</launch4j>
 
-		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe" />
-		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}">
+		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe-tmp" />
+		<copy todir="${release.dir}/tic_tac_toe-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
 		</copy>
-		<copy todir="${release.dir}/tic_tac_toe/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/tic_tac_toe-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="tic-tac-toe.png" />
 		</copy>
-		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe" update="true" />
-		<delete dir="${release.dir}/tic_tac_toe" />
+		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe-tmp" update="true" />
+		<delete dir="${release.dir}/tic_tac_toe-tmp" />
 	</target>
 
 	<!-- targets for wiggle mouse -->
 	<target name="compile-wiggle mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="creates associated .jar file">
@@ -424,14 +443,14 @@
 
 	<!-- zip wigglemouse program -->
 	<target name="zip-wigglemouse-jar w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle mouse">
-		<copy todir="${dist.dir}/wigglemouse">
+		<copy todir="${dist.dir}/wigglemouse-tmp">
 			<fileset dir="${jar.dir}" includes="wigglemouse-${version.num}.jar" />
 		</copy>
-		<copy todir="${dist.dir}/wigglemouse/${res.graphics.dir}">
+		<copy todir="${dist.dir}/wigglemouse-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="image-mouse-shake.jpg" />
 		</copy>
-		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse" update="true" />
-		<delete dir="${dist.dir}/wigglemouse" />
+		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse-tmp" update="true" />
+		<delete dir="${dist.dir}/wigglemouse-tmp" />
 	</target>
 
 	<!-- create wiggle mouse.exe target -->
@@ -446,15 +465,15 @@
 			</config>
 		</launch4j>
 
-		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse" />
-		<copy todir="build/release/wigglemouse/res/graphics">
-			<fileset dir="res/graphics" includes="image-mouse-shake.jpg" />
+		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse-tmp" />
+		<copy todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="image-mouse-shake.jpg" />
 		</copy>
-		<copy todir="${release.dir}/wigglemouse/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="mouse.png" />
 		</copy>
-		<zip destfile="build/release/wigglemouse.zip" basedir="build/release/wigglemouse" update="true" />
-		<delete dir="build/release/wigglemouse" />
+		<zip destfile="${release.dir}/wigglemouse.zip" basedir="${release.dir}/wigglemouse-tmp" update="true" />
+		<delete dir="${release.dir}/wigglemouse-tmp" />
 	</target>
 
 	<!-- create and zip clock.exe target -->
@@ -469,21 +488,21 @@
 			</config>
 		</launch4j>
 
-		<move file="clock.exe" todir="${release.dir}/clock" />
-		<copy todir="build/release/clock/res">
+		<move file="clock.exe" todir="${release.dir}/clock-tmp" />
+		<copy todir="${release.dir}/clock-tmp/res">
 			<fileset dir="res" includes="fonts/" />
 		</copy>
-		<copy todir="build/release/clock/res/graphics">
-			<fileset dir="res/graphics" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
+		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}">
+			<fileset dir="${res.graphics.dir}" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
 		</copy>
-		<copy todir="${release.dir}/clock/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="clock.png" />
 		</copy>
-		<copy todir="${release.dir}/clock/res/audio">
-			<fileset dir="res/audio" includes="clock-alarm.wav" />
+		<copy todir="${release.dir}/clock-tmp/${res.audio.dir}">
+			<fileset dir="${res.audio.dir}" includes="clock-alarm.wav" />
 		</copy>
-		<zip destfile="build/release/clock.zip" basedir="build/release/clock" update="true" />
-		<delete dir="build/release/clock" />
+		<zip destfile="${release.dir}/clock.zip" basedir="${release.dir}/clock-tmp" update="true" />
+		<delete dir="${release.dir}/clock-tmp" />
 	</target>
 
 	<!-- create and zip pong.exe target -->
@@ -498,21 +517,23 @@
 			</config>
 		</launch4j>
 
-		<move file="pong.exe" todir="${release.dir}/pong" />
-		<copy todir="${release.dir}/pong/${res.graphics.dir}">
+		<move file="pong.exe" todir="${release.dir}/pong-tmp" />
+		<copy todir="${release.dir}/pong-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="restart-sign.png" />
 		</copy>
-		<copy todir="${release.dir}/pong/${res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/pong-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="pingpong.png" />
 		</copy>
-		<zip destfile="${release.dir}/pong.zip" basedir="${release.dir}/pong" update="true" />
-		<delete dir="${release.dir}/pong" />
+		<zip destfile="${release.dir}/pong.zip" basedir="${release.dir}/pong-tmp" update="true" />
+		<delete dir="${release.dir}/pong-tmp" />
 	</target>
 
 	<!-- targets for clock -->
 	<target name="compile-clock" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+			<compilerarg value="-g:lines" />
+		</javac>
 	</target>
 
 	<target name="jar-clock" depends="compile-clock" description="creates associated .jar file">
@@ -520,10 +541,10 @@
 		<jar destfile="${jar.dir}/clock-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
-				<attribute name="Resource" value="res/fonts/clock-font.tff" />
-				<attribute name="Resource2" value="res/audio/clock-alarm.wav" />
-				<attribute name="Resource3" value="res/graphics/alarm-clock-sign.png" />
-				<attribute name="Resource4" value="res/graphics/night-sky-stars-animation.gif" />
+				<attribute name="Resource1" value="res/fonts/clock-font.tff" />
+				<attribute name="Resource2" value="${res.audio.dir}/clock-alarm.wav" />
+				<attribute name="Resource3" value="${res.graphics.dir}/alarm-clock-sign.png" />
+				<attribute name="Resource4" value="${res.graphics.dir}/night-sky-stars-animation.gif" />
 			</manifest>
 		</jar>
 	</target>
@@ -534,7 +555,7 @@
 
 	<!-- javadoc target -->
 	<target name="create javadoc for all programs" description="generate Javadoc for applications">
-		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" author="true" version="true" windowtitle="My API Page" />
+		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" classpath="${build.classpath}" docencoding="UTF-8" author="true" version="true" windowtitle="My API Page" />
 	</target>
 
 	<!-- unjar target -->
@@ -542,7 +563,7 @@
 		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
 
 		<unjar dest="${unjar.dir}">
-			<fileset dir="${jar.dir}" />
+			<fileset dir="${jar.dir}" includes="*.jar" />
 		</unjar>
 	</target>
 </project>

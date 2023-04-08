@@ -22,6 +22,8 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(CvPGameBoard.class.getName());
+	private static final String PLAYER_LETTER = PLAYER_ONE_LETTER;
+	private static final String COMPUTER_LETTER = PLAYER_TWO_LETTER;
 
 	private int randomCell;
 	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
@@ -35,26 +37,24 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
-	 * @param argIsPlayerTwosTurn boolean flag indicating if it's player two's turn in the
-	 *                  game
 	 */
-	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		super(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn) {
+		super(argIsStart, argIsPlayerOnesTurn);
 		setPlayerOnesName(StartMenu.PLAYER);
 		setPlayerTwosName(StartMenu.COMPUTER);
-		this.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+		this.initializeGame(argIsStart, argIsPlayerOnesTurn);
 
-		lblPlayersTurn.setText(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_ONE_LETTER));
+		lblPlayersTurn.setText(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_LETTER));
 	}
 
-	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn, String setLocationToHere) {
-		this(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere) {
+		this(argIsStart, argIsPlayerOnesTurn);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
 	@Override
-	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn, boolean argIsPlayerTwosTurn) {
-		super.initializeGame(argIsStart, argIsPlayerOnesTurn, argIsPlayerTwosTurn);
+	protected void initializeGame(boolean argIsStart, boolean argIsPlayerOnesTurn) {
+		super.initializeGame(argIsStart, argIsPlayerOnesTurn);
 
 		freeEmptyTiles = new int[9];
 
@@ -74,14 +74,13 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
 				super.completePlayersTurn(isCvPGame, gameBoardTiles[x],
 					(isPlayerOnesTurn) ? LIGHT_RED_COLOR : Color.BLUE,
-					(isPlayerOnesTurn) ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
+					(isPlayerOnesTurn) ? COMPUTER_LETTER : PLAYER_LETTER,
 					(isPlayerOnesTurn) ? getPlayerOnesName() : getPlayerTwosName());
 
 				shouldRun = !isPlayerOnesTurn;
 
 				freeEmptyTiles[x] = -99; // prevents computer from choosing a tile that player has chosen
 				isPlayerOnesTurn = !isPlayerOnesTurn;
-				isPlayerTwosTurn = !isPlayerTwosTurn;
 
 				break;
 			}
@@ -162,7 +161,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	/**
 	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo
-	 * @return recommended button for AI to select to prevent player from winning in their next move
+	 * @return recommended blocking move for AI to make to prevent player from winning in their next move
 	 * (returns button that hasn't been pressed yet to prevent player's 3 in a row pattern)
 	 */
 	private int canPlayerWinInOneMove(String[] tile) {
@@ -176,31 +175,31 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		 */
 
 		// if player has pressed buttons 0, 2 and computer hasn't pressed button 1
-		if (tile[0].equals(PLAYER_ONE_LETTER) && tile[2].equals(PLAYER_ONE_LETTER) && !tile[1].equals(PLAYER_TWO_LETTER)) {
+		if (tile[0].equals(PLAYER_LETTER) && tile[2].equals(PLAYER_LETTER) && !tile[1].equals(COMPUTER_LETTER)) {
 			return 1;
 		}
 		// if player has pressed buttons 3, 5 and computer hasn't pressed button 4
-		else if (tile[3].equals(PLAYER_ONE_LETTER) && tile[5].equals(PLAYER_ONE_LETTER) && !tile[4].equals(PLAYER_TWO_LETTER)) {
+		else if (tile[3].equals(PLAYER_LETTER) && tile[5].equals(PLAYER_LETTER) && !tile[4].equals(COMPUTER_LETTER)) {
 			return 6;
 		}
 		// if player has pressed buttons 6, 8 and computer hasn't pressed button 7
-		else if (tile[6].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && !tile[7].equals(PLAYER_TWO_LETTER)) {
+		else if (tile[6].equals(PLAYER_LETTER) && tile[8].equals(PLAYER_LETTER) && !tile[7].equals(COMPUTER_LETTER)) {
 			return 7;
 		}
 		// if player has pressed buttons 0, 6 and computer hasn't pressed button 3
-		else if (tile[0].equals(PLAYER_ONE_LETTER) && tile[6].equals(PLAYER_ONE_LETTER) && !tile[3].equals(PLAYER_TWO_LETTER)) {
+		else if (tile[0].equals(PLAYER_LETTER) && tile[6].equals(PLAYER_LETTER) && !tile[3].equals(COMPUTER_LETTER)) {
 			return 3;
 		}
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4
 		// or if player has pressed buttons 0, 8 and computer hasn't pressed button 4
-		else if ((tile[1].equals(PLAYER_ONE_LETTER) && tile[7].equals(PLAYER_ONE_LETTER)) || (tile[0].equals(PLAYER_ONE_LETTER)
-				&& tile[8].equals(PLAYER_ONE_LETTER)) && !tile[4].equals(PLAYER_TWO_LETTER)) {
+		else if ((tile[1].equals(PLAYER_LETTER) && tile[7].equals(PLAYER_LETTER)) || (tile[0].equals(PLAYER_LETTER)
+				&& tile[8].equals(PLAYER_LETTER)) && !tile[4].equals(COMPUTER_LETTER)) {
 			return 4;
 		}
 		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5
 		// or if player has pressed buttons 2, 8 and computer hasn't pressed button 4
-		else if (tile[2].equals(PLAYER_ONE_LETTER) && tile[8].equals(PLAYER_ONE_LETTER) && (!tile[5].equals(PLAYER_TWO_LETTER)
-				|| !tile[4].equals(PLAYER_TWO_LETTER))) {
+		else if (tile[2].equals(PLAYER_LETTER) && tile[8].equals(PLAYER_LETTER) && (!tile[5].equals(COMPUTER_LETTER)
+				|| !tile[4].equals(COMPUTER_LETTER))) {
 			return 5;
 		}
 

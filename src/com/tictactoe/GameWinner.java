@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
@@ -24,7 +25,7 @@ import javax.swing.WindowConstants;
  */
 public class GameWinner extends KeyAdapter implements ActionListener {
 
-	private static final String GAME_OVER_MSG = "Game Over! It's a draw!";
+	private static final String GAME_OVER_DRAW_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 
 	private final JFrame window;
@@ -39,7 +40,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	public GameWinner(String argGameResult) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 
@@ -56,7 +57,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		window.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
-				new PvPGameBoard(false, false, true);
+				new PvPGameBoard(false, false);
 		    }
 		});
 
@@ -67,8 +68,8 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
 		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
-		JLabel lblGameResult = new JLabel(GAME_OVER_MSG.equals(argGameResult)
-				|| argGameResult.equals(GAME_OVER_MSG + "!") ? argGameResult : (argGameResult + " wins!"));
+		JLabel lblGameResult = new JLabel(GAME_OVER_DRAW_MSG.equals(argGameResult)
+				|| argGameResult.equals(GAME_OVER_DRAW_MSG + "!") ? argGameResult : (argGameResult + " wins!"));
 
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,15 +123,15 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 		if (source.equals(btnPlayAgain)) {
 			// launches appropriate game mode when play again btn is pressed
-			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_MSG + "!")) {
-				new CvPGameBoard(false, false, true, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
+			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_DRAW_MSG + "!")) {
+				new CvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
 			}
 			else {
-				new PvPGameBoard(false, false, true, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
+				new PvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
 			}
 		}
 		else if (source.equals(btnQuit) || (StartMenu.PLAYER.equals(gameResult)
-				|| StartMenu.COMPUTER.equals(gameResult) || (GAME_OVER_MSG + "!").equals(gameResult))) {
+				|| StartMenu.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
 
 			System.exit(0);
 		}

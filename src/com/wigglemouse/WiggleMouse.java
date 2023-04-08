@@ -75,7 +75,7 @@ public class WiggleMouse {
 	    window.add(panel);
 
 	    // set minimum GUI size
-	    window.setMinimumSize(new Dimension(150, 150));
+	    window.setMinimumSize(new Dimension(window.getWidth(), window.getHeight()));
 
 	    GridBagConstraints gbc = new GridBagConstraints();
 	    gbc.insets = new Insets(5, 5, 5, 5);

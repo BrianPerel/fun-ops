@@ -66,7 +66,7 @@ public class MyCalculatorHelper {
 
 			// if value is whole then don't display 0's after decimal; ex. instead of 25.00
 			// display 25
-			double v = Double.parseDouble(value);
+			final double v = Double.parseDouble(value);
 			if ((v * 10) % 10 == 0) { // if value calculated is whole number
 				value = MyCalculatorGui.df.format(v); // removes zero's after decimal point
 			}

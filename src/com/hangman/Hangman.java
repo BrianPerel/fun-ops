@@ -45,7 +45,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 /**
- * Hangman game app with a 4-letter car theme. <br>
+ * Hangman game app with a 4-letter car brand theme. <br>
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
@@ -391,9 +391,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String maskHangmanWord(char argUserGuess) {
 		StringBuilder maskedWord = new StringBuilder(secretWord.length());
 
-		for (int i = 0; i < secretWord.length(); i++) {
-	        char currentChar = secretWord.charAt(i);
-	        maskedWord.append(currentChar == argUserGuess || maskingAsterisk.charAt(i) != '*' ? currentChar : '*');
+		// iterate through every letter of the secret word, append to maskedWord as needed depending on the conditions that we're met
+		for (char currentChar : secretWord.toCharArray()) {
+		    maskedWord.append(currentChar == argUserGuess || maskingAsterisk.charAt(maskedWord.length()) != '*' ? currentChar : '*');
 		}
 
 		maskingAsterisk = maskedWord.toString();
@@ -506,10 +506,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-		for (int x = 0; x < textFieldHasFocus.length; x++) {
-			if (!letterTextFields[x].hasFocus()) {
-				textFieldHasFocus[x] = false;
-			}
+		for (JTextField textField : letterTextFields) {
+		    if (!textField.hasFocus()) {
+		        Arrays.fill(textFieldHasFocus, false);
+		        break;
+		    }
 		}
 	}
 }

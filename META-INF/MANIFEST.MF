@@ -18,7 +18,7 @@ Resource: res/graphics/image-mouse-shake.jpg
 
 # Guessing game app
 Main-Class: com.numbergame.GuessingGame
-Resource: res/audio/chimes.wav
+Resource1: res/audio/chimes.wav
 Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
 Resource4: res/graphics/bg-image-guessing-figure.jpg
@@ -37,7 +37,7 @@ Resource: res/graphics/bg-image-tac.jpg
 
 # Clock app
 Main-Class: com.clock.Clock
-Resource: res/fonts/clock-font.tff
+Resource1: res/fonts/clock-font.tff
 Resource2: res/audio/clock-alarm.wav
 Resource3: res/graphics/alarm-click-sign.png
 Resource4: res/graphics/night-sky-stars-animation.gif

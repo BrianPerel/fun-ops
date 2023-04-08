@@ -38,12 +38,12 @@ public class EncryptDecryptOp {
 
 			// loop to traverse data String provided by user, in order to replace every
 			// character with a random integer number added and cast to char type
-			for (int index = 0; index < data.length(); index++) {
-				// my cipher algorithm = obtain letter at current index of data loaded from user file,
-				// add a value which automatically returns the ASCII value of given character (then adds the value), and cast this int number into a char
+			for (char c : data.toString().toCharArray()) {
+			    // my cipher algorithm = obtain letter at current index of data loaded from user file,
+			    // add a value which automatically returns the ASCII value of given character (then adds the value), and cast this int number into a char
 
-				// example: 'a' is replaced with ('a' + 5) then cast a5 (which is type int) into a char which is 'o'
-				maskedData.append((char) (data.charAt(index) + 5));
+			    // example: 'a' is replaced with ('a' + 5) then cast a5 (which is type int) into a char which is 'o'
+			    maskedData.append((char) (c + 5));
 			}
 
 			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption

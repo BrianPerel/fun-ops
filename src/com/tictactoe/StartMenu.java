@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -77,7 +78,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 			LOG.info("Starting tic-tac-toe log");
-		} catch (Exception e) {
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			LOG.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
@@ -198,7 +199,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		if (keyChar == KeyEvent.VK_ENTER && source.equals(playAgainstComputerRadioButton)) {
 			// play against computer game flow
 			window.dispose();
-			new CvPGameBoard(true, true, false);
+			new CvPGameBoard(true, true);
 			return; // prevents below code from running
 		}
 
@@ -216,7 +217,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			LOG.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", PvPGameBoard.getPlayerOnesName(), PvPGameBoard.getPlayerTwosName()));
 
 			window.dispose();
-			new PvPGameBoard(true, true, false);
+			new PvPGameBoard(true, true);
 
 		} else {
 			checkInput(nameOne, nameTwo, source);

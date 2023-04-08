@@ -44,7 +44,8 @@ import com.stopwatch.StopWatch.StopWatchPanel;
  * A guessing number game in which the user receives a randomly generated secret
  * number between 1-99 and he/she must guess what the remainder is. Every
  * correct guess gives the player 10 points, every incorrect guess takes away 10
- * points. Score is kept for every session. <br>
+ * points. Score is kept for every session. The game also features a timer that
+ * is enabled by default, but can be disabled by checking a box. <br>
  *
  * @author Brian Perel
  *
@@ -219,7 +220,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Set up the stop watch implementation for the guessing game
+	 * Set up the stop watch feature implementation for the guessing game
 	 */
 	private void setTimeCounterImpl() {
 		timeCounter = new StopWatch(300, 110); // launch the stop watch
@@ -270,8 +271,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	private void eventHandler(Object source, char keyChar) {
 
-		// if enter key was pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
-		if(keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain))) {
+		// if enter key was accidently pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
+		if(keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain)
+				|| source.equals(closeTimerCheckBox))) {
 			return;
 		}
 
