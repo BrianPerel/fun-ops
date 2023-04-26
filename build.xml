@@ -334,6 +334,7 @@
 		</copy>
 		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png" />
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="stopwatch.png" />
 		</copy>
 		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game-tmp" update="true" />
 		<delete dir="${release.dir}/number_game-tmp" />

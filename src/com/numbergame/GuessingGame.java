@@ -88,10 +88,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		if (turnOn) {  // workaround to avoid GUI launch issue
 			window.setVisible(true); // this needs to stay here, before the setTimeCounterImpl() method call because otherwise
 									 // the counter program GUI appears above this GUI in the computer's taskbar
+			setTimeCounterImpl();
+			textFieldGuessTheNumber.requestFocus();
 		}
-
-		setTimeCounterImpl();
-		textFieldGuessTheNumber.requestFocus();
 	}
 
 	private void createGui() {
@@ -230,7 +229,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	/**
 	 * Set up the stop watch feature implementation for the guessing game
 	 */
-	private void setTimeCounterImpl() {
+	protected void setTimeCounterImpl() {
 		timeCounter = new StopWatch(300, 110); // launch the stop watch
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		timeCounter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
