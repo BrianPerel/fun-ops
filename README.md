@@ -6,8 +6,8 @@ A collection of all sorts of different Java programs I am making that I find int
 
 ## Other Notes
 
-* Please comment out taskdef name="launch4j" in build.xml unless your going to create executables
-for the projects through ANT. In that case make sure to download
+* Please comment out taskdef name="launch4j" in build.xml unless you're going to create executables
+for the projects through ANT. In that case, make sure to download
 (https://sourceforge.net/projects/launch4j/files/launch4j) and paste a copy of the Launch4j folder into the root of the IDE workspace
 
 * List of apps in project: Calculator, Data encryption-decryption, Stop watch, Guessing number game, Hangman, Tic tac toe, Wiggle Mouse, Clock, Ping Pong

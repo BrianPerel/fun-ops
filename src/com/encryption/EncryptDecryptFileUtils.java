@@ -33,7 +33,7 @@ public class EncryptDecryptFileUtils {
 	 * @param fileToLoad the file we're going to encrypt/decrypt
 	 */
 	protected static void loadFileData(String fileToLoad) {
-		if(loadFile(fileToLoad)) {
+		if (loadFile(fileToLoad)) {
 
 			// use try with resources here, which will auto close resources
 			try (Scanner read = new Scanner(file)) {
@@ -43,7 +43,7 @@ public class EncryptDecryptFileUtils {
 					data.append(read.nextLine());
 				}
 
-				if(data.isEmpty()) {
+				if (data.isEmpty()) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File is empty");
 					return;
@@ -92,7 +92,7 @@ public class EncryptDecryptFileUtils {
 			textFieldLoading.setText(fileToLoad);
 		}
 
-		if(new File(fileToLoad).canRead()) {
+		if (new File(fileToLoad).canRead()) {
 			file = new File(fileToLoad);
 			return true;
 		}

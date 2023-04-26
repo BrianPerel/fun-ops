@@ -11,11 +11,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.MessageFormat;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -40,50 +38,36 @@ import javax.swing.text.DocumentFilter;
 public class StartMenu extends KeyAdapter implements ActionListener {
 
 	private static final String ERROR_TITLE = "Error";
-	protected static final String PLAYER = "Player";
-	protected static final String COMPUTER = "Computer";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 	private static final Logger LOG = Logger.getLogger(StartMenu.class.getName());
-	protected static JFrame window;
+	protected static JFrame window = new JFrame("Tic Tac Toe App by: Brian Perel");
 
 	private JButton btnStart;
 	private JFormattedTextField nameOneTextField;
 	private JFormattedTextField nameTwoTextField;
 	private JRadioButton playAgainstComputerRadioButton;
-
-	public static void main(String[] args) {
-		// set the console handler to use the custom formatter
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new Formatter() {
-            @Override
-            public String format(LogRecord logRecord) {
-            	// ANSI color code for white (\u001B[37m)
-                return "\u001B[37m";
-            }
-        });
-        LOG.addHandler(consoleHandler);
-
-		window = new JFrame("Tic Tac Toe App by: Brian Perel");
-		new StartMenu();
-	}
+	private TicTacToe ticTacToeGame;
 
 	/**
 	 * Create the application. Build all components
 	 */
 	public StartMenu() {
+		ticTacToeGame = new TicTacToe();
 		createGui();
+		window.setVisible(true);
 	}
 
 	private void createGui() {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			LOG.info("Starting tic-tac-toe log");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			LOG.severe("Failed to set LookAndFeel\n" + e);
 			e.printStackTrace();
 		}
 
-	    // changes the program's taskbar icon
+		final int MAX_CHARS_LIMIT = 12;
+
+		// changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
 		window.setResizable(false);
@@ -93,7 +77,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
-		JLabel lblPlayer1 = new JLabel("Player 1 (X):");
+		JLabel lblPlayer1 = new JLabel("Player 1 (" + ticTacToeGame.PLAYER_ONE_SHAPE + "):");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer1.setBounds(55, 56, 143, 25);
 		window.getContentPane().add(lblPlayer1);
@@ -104,7 +88,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= 12) {
+				if ((fb.getDocument().getLength() + text.length() - length) <= MAX_CHARS_LIMIT) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -114,7 +98,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(nameOneTextField);
 		nameOneTextField.setColumns(10);
 
-		JLabel lblPlayer2 = new JLabel("Player 2 (O):");
+		JLabel lblPlayer2 = new JLabel("Player 2 (" + ticTacToeGame.PLAYER_TWO_SHAPE + "):");
 		lblPlayer2.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer2.setBounds(52, 114, 143, 25);
 		window.getContentPane().add(lblPlayer2);
@@ -125,7 +109,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= 12) {
+				if ((fb.getDocument().getLength() + text.length() - length) <= MAX_CHARS_LIMIT) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -136,14 +120,14 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(nameTwoTextField);
 
 		btnStart = new JButton("Start");
-		btnStart.setFont(new Font("Lucida Fax", Font.BOLD + Font.ITALIC, 14));
+		btnStart.setFont(new Font("Lucida Fax", (Font.BOLD + Font.ITALIC), 14));
 		btnStart.setBounds(145, 192, 107, 35);
 		window.getContentPane().add(btnStart);
 		btnStart.addActionListener(this);
 		btnStart.addKeyListener(this);
 		btnStart.setBackground(LIGHT_GREEN_COLOR);
 		btnStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		setHoverColor(btnStart);
+		setBtnHoverColor(btnStart);
 
 		playAgainstComputerRadioButton = new JRadioButton("Play against computer");
 		playAgainstComputerRadioButton.setBounds(207, 268, 157, 23);
@@ -153,7 +137,6 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		playAgainstComputerRadioButton.addKeyListener(this);
 		playAgainstComputerRadioButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		window.setVisible(true);
 		window.setLocationRelativeTo(null);
 	}
 
@@ -162,7 +145,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 *
 	 * @param argBtn button on which you want a different color to appear when hovering
 	 */
-	protected static void setHoverColor(JButton argBtn) {
+	protected static void setBtnHoverColor(JButton argBtn) {
 		argBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -178,7 +161,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent ke) {
-		if(ke.getKeyChar() != KeyEvent.VK_TAB) {
+		if (ke.getKeyChar() != KeyEvent.VK_TAB) {
 			eventHandler(ke.getSource(), ke.getKeyChar());
 		}
 	}
@@ -199,7 +182,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		if (keyChar == KeyEvent.VK_ENTER && source.equals(playAgainstComputerRadioButton)) {
 			// play against computer game flow
 			window.dispose();
-			new CvPGameBoard(true, true);
+			new CvPGameBoard(true, true, ticTacToeGame);
 			return; // prevents below code from running
 		}
 
@@ -208,41 +191,53 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 		// if start button is pushed and both name fields aren't empty and both names are
 		// different
-		if (validationRulesCheck(keyChar, source, nameOne, nameTwo)) {
+		if (namesValidationRulesCheck(keyChar, source, nameOne, nameTwo)) {
 			// first letter of name should be capitalized, and the rest of the name should
 			// be in lowercase
-			PvPGameBoard.setPlayerOnesName(nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase());
-			PvPGameBoard.setPlayerTwosName(nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase());
 
-			LOG.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", PvPGameBoard.getPlayerOnesName(), PvPGameBoard.getPlayerTwosName()));
+			String playerOneName = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
+			String playerTwoNameString = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
+
+			ticTacToeGame.setPlayerNames(playerOneName, playerTwoNameString);
+
+			LOG.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", ticTacToeGame.getPlayerOnesName(), ticTacToeGame.getPlayerTwosName()));
 
 			window.dispose();
-			new PvPGameBoard(true, true);
+			new PvPGameBoard(true, true, ticTacToeGame);
 
-		} else {
-			checkInput(nameOne, nameTwo, source);
+		}
+		else {
+			checkNamesInput(nameOne, nameTwo, source);
 		}
 	}
 
-	private boolean validationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
+	private boolean namesValidationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
 		return keyChar == KeyEvent.VK_ENTER && source.equals(btnStart)
 				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo)
-				|| PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
-				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo));
+				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
+				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo));
 	}
 
-	private void checkInput(String nameOne, String nameTwo, Object source) {
+	private void checkNamesInput(String nameOne, String nameTwo, Object source) {
 		// if one or both name textfields are empty
 		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
+			nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 2)
+		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+		    nameTwoTextField.setBorder(nameTwo.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 2)
+		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 		// if entered player 1 or 2's name equals 'PLAYER' or 'COMPUTER'
-		else if (PLAYER.equalsIgnoreCase(nameOne) || COMPUTER.equalsIgnoreCase(nameOne)
-				|| PLAYER.equalsIgnoreCase(nameTwo) || COMPUTER.equalsIgnoreCase(nameTwo)) {
+		else if (ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
+				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo)) {
+			Toolkit.getDefaultToolkit().beep();
+			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(window.getComponent(0),
-					String.format("Please don't use '%s' or '%s' as a name", PLAYER, COMPUTER), ERROR_TITLE,
+					String.format("Please don't use '%s' or '%s' as a name", ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER), ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");
 			nameTwoTextField.setText("");
@@ -251,6 +246,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if first player's name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
+			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");

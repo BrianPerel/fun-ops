@@ -32,7 +32,7 @@ Main-Class: com.encryption.EncryptDecryptGui
 Resource: res/graphics/bg-image-encryption.jpg
 
 # Tic-tac-toe app
-Main-Class: com.tictactoe.StartMenu
+Main-Class: com.tictactoe.TicTacToe
 Resource: res/graphics/bg-image-tac.jpg
 
 # Clock app

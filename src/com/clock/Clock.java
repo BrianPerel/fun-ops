@@ -161,7 +161,7 @@ public class Clock implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		// sets clock alarm time
 		if (ae.getSource().equals(menuOption)) {
-			alarmTime = Optional.ofNullable(JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): "));
+			alarmTime = Optional.ofNullable(JOptionPane.showInputDialog(window, "Alarm time (AM/PM format): ", "Set alarm", JOptionPane.PLAIN_MESSAGE));
 
 			// (?i) makes the replaceAll() check for the text while being case-insensitive
 			// removes optional, [, ] text/symbols
@@ -180,7 +180,8 @@ public class Clock implements ActionListener {
 
 					return;
 				}
-			} else if (!alarmTime.isPresent()) {
+			}
+			else if (!".EMPTY".equals(alarmTimeString)) {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(window, "Please enter time of the appropriate format (x:xx AM or PM)",
 						"Error setting alarm", JOptionPane.INFORMATION_MESSAGE);
@@ -194,14 +195,14 @@ public class Clock implements ActionListener {
 	 * Obtains the current time every second, applies formatting if needed, listens for if user
 	 * enters an alarm time, and repeats these actions every second
 	 *
-	 * @param militaryTimeFormatCheckBox the display military time JCheckBox
+	 * @param argMilitaryTimeFormatCheckBox the display military time JCheckBox
 	 */
-	private void getTime(JCheckBox militaryTimeFormatCheckBox) {
+	private void getTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 
 		String time = "";
 
 		while (true) {
-			time = obtainFormattedTime(militaryTimeFormatCheckBox);
+			time = obtainFormattedTime(argMilitaryTimeFormatCheckBox);
 
 			if (alarmTime.isPresent() && !hasAlarmRung && (time.equalsIgnoreCase(alarmTimeString))) {
 				ringAlarm();
@@ -221,16 +222,16 @@ public class Clock implements ActionListener {
 	 * Formats the clock's current time being displayed to avoid having a zero appear before single digit hour.
 	 * Changes the time to be displayed to 24 hour format (if user selects the option)
 	 *
-	 * @param militaryTimeFormatCheckBox check box to request 24 hour format time
+	 * @param argMilitaryTimeFormatCheckBox check box to request 24 hour format time
 	 * @return the formatted current time
 	 */
-	private String obtainFormattedTime(JCheckBox militaryTimeFormatCheckBox) {
+	private String obtainFormattedTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 		String time = LocalDateTime.now()
-				.format(DateTimeFormatter.ofPattern((militaryTimeFormatCheckBox.isSelected()) ? "HH:mm" : "hh:mm a"));
+				.format(DateTimeFormatter.ofPattern((argMilitaryTimeFormatCheckBox.isSelected()) ? "HH:mm" : "hh:mm a"));
 
 		// current time (not 11 or 12 o'clock) will show up with a 0 in front of the
 		// time by default, this prevents that
-		if (!militaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
+		if (!argMilitaryTimeFormatCheckBox.isSelected() && time.startsWith("0")) {
 			time = time.substring(1); // removes leading zero
 		}
 

@@ -12,23 +12,26 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- * Implementation for tic-tac-toe game board. Initiates the game and has functionality to support player vs computer game mode<br>
+ * Implementation for 3x3 tic-tac-toe game board. Initiates the game and has functionality to support human player vs computer game mode<br>
  *
  * @author Brian Perel
  *
  */
 public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
+	// using a seed value derived from the current date and time, encoded as a byte array using the ASCII character set.
+	// By using the current date and time as the seed, the random number generator is initialized with a value that is likely to be unique to this
+	// instance and time, making it more difficult to predict or reproduce the sequence of random numbers it generates
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(CvPGameBoard.class.getName());
-	private static final String PLAYER_LETTER = PLAYER_ONE_LETTER;
-	private static final String COMPUTER_LETTER = PLAYER_TWO_LETTER;
 
 	private int randomCell;
 	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
 	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
+	private final String PLAYER_SHAPE = ticTacToeGame.PLAYER_ONE_SHAPE;
+	private final String COMPUTER_SHAPE = ticTacToeGame.PLAYER_TWO_SHAPE;
 
 	/**
 	 * Builds the game's GUI board
@@ -38,17 +41,16 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
 	 */
-	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn) {
-		super(argIsStart, argIsPlayerOnesTurn);
-		setPlayerOnesName(StartMenu.PLAYER);
-		setPlayerTwosName(StartMenu.COMPUTER);
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
+		super(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
+		ticTacToeGame.setPlayerNames(ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn);
 
-		lblPlayersTurn.setText(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_LETTER));
+		lblPlayersTurn.setText(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), PLAYER_SHAPE));
 	}
 
-	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere) {
-		this(argIsStart, argIsPlayerOnesTurn);
+	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere, TicTacToe argTicTacToeGame) {
+		this(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
@@ -71,11 +73,11 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (int x = 0; x < gameBoardTiles.length; x++) {
 
-			if ((ae.getSource() == gameBoardTiles[x]) && gameBoardTiles[x].getText().isEmpty()) {
-				super.completePlayersTurn(isCvPGame, gameBoardTiles[x],
+			if ((ae.getSource().equals(gameBoardTiles[x])) && gameBoardTiles[x].getText().isEmpty()) {
+				super.makeMove(isCvPGame, gameBoardTiles[x],
 					(isPlayerOnesTurn) ? LIGHT_RED_COLOR : Color.BLUE,
-					(isPlayerOnesTurn) ? COMPUTER_LETTER : PLAYER_LETTER,
-					(isPlayerOnesTurn) ? getPlayerOnesName() : getPlayerTwosName());
+					(isPlayerOnesTurn) ? COMPUTER_SHAPE : PLAYER_SHAPE,
+					(isPlayerOnesTurn) ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName());
 
 				shouldRun = !isPlayerOnesTurn;
 
@@ -85,7 +87,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 				break;
 			}
 			// if you try to select a tile that is not empty
-			else if (ae.getSource() == gameBoardTiles[x] && !gameBoardTiles[x].getText().isEmpty()) {
+			else if (ae.getSource().equals(gameBoardTiles[x]) && !gameBoardTiles[x].getText().isEmpty()) {
 				invalidMoveSelected = true;
 				LOG.warning("Invalid Move.");
 				Toolkit.getDefaultToolkit().beep();
@@ -120,6 +122,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 * This secondary thread calls doClick on the randomly picked game board tile
 	 */
 	private synchronized void doClickThread() {
+		Thread.currentThread().setName("Computer-AI");
 		makeBestMoveComputer();
 
 		try {
@@ -137,7 +140,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	/**
 	 * Assist AI in choosing the best move to make in it's current turn. This is done by scanning the board to see if other
-	 * player can win in their next move. If so code will block that combo from completing by placing AIs letter their
+	 * player can win in their next move. If so code will block that combo from completing by placing AI's game shape there
 	 */
 	private void makeBestMoveComputer() {
 		for(int x = 0; x < tile.length; x++) {
@@ -145,9 +148,9 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		}
 
 		do {
-			int tmp = canPlayerWinInOneMove(tile);
+			int tmp = canPlayerWinInNextMove(tile);
 
-			if(tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(i -> i == tmp)) {
+			if (tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(i -> i == tmp)) {
 				// loop through int array if tmp variable is in the array (meaning it's a free empty cell tile number, then randomCell gets tmp's value
     			randomCell = tmp;
     			break;
@@ -164,7 +167,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 * @return recommended blocking move for AI to make to prevent player from winning in their next move
 	 * (returns button that hasn't been pressed yet to prevent player's 3 in a row pattern)
 	 */
-	private int canPlayerWinInOneMove(String[] tile) {
+	private int canPlayerWinInNextMove(String[] tile) {
 
 		/*
 		 * Game board's tile/button index numbers
@@ -175,31 +178,31 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		 */
 
 		// if player has pressed buttons 0, 2 and computer hasn't pressed button 1
-		if (tile[0].equals(PLAYER_LETTER) && tile[2].equals(PLAYER_LETTER) && !tile[1].equals(COMPUTER_LETTER)) {
+		if (PLAYER_SHAPE.equals(tile[0]) && PLAYER_SHAPE.equals(tile[2]) && !COMPUTER_SHAPE.equals(tile[1])) {
 			return 1;
 		}
 		// if player has pressed buttons 3, 5 and computer hasn't pressed button 4
-		else if (tile[3].equals(PLAYER_LETTER) && tile[5].equals(PLAYER_LETTER) && !tile[4].equals(COMPUTER_LETTER)) {
+		else if (PLAYER_SHAPE.equals(tile[3]) && PLAYER_SHAPE.equals(tile[5]) && !COMPUTER_SHAPE.equals(tile[4])) {
 			return 6;
 		}
 		// if player has pressed buttons 6, 8 and computer hasn't pressed button 7
-		else if (tile[6].equals(PLAYER_LETTER) && tile[8].equals(PLAYER_LETTER) && !tile[7].equals(COMPUTER_LETTER)) {
+		else if (PLAYER_SHAPE.equals(tile[6]) && PLAYER_SHAPE.equals(tile[8]) && !COMPUTER_SHAPE.equals(tile[7])) {
 			return 7;
 		}
 		// if player has pressed buttons 0, 6 and computer hasn't pressed button 3
-		else if (tile[0].equals(PLAYER_LETTER) && tile[6].equals(PLAYER_LETTER) && !tile[3].equals(COMPUTER_LETTER)) {
+		else if (PLAYER_SHAPE.equals(tile[0]) && PLAYER_SHAPE.equals(tile[6]) && !COMPUTER_SHAPE.equals(tile[3])) {
 			return 3;
 		}
 		// if player has pressed buttons 1, 7 and computer hasn't pressed button 4
 		// or if player has pressed buttons 0, 8 and computer hasn't pressed button 4
-		else if ((tile[1].equals(PLAYER_LETTER) && tile[7].equals(PLAYER_LETTER)) || (tile[0].equals(PLAYER_LETTER)
-				&& tile[8].equals(PLAYER_LETTER)) && !tile[4].equals(COMPUTER_LETTER)) {
+		else if ((PLAYER_SHAPE.equals(tile[1]) && PLAYER_SHAPE.equals(tile[7])) || (PLAYER_SHAPE.equals(tile[0])
+				&& PLAYER_SHAPE.equals(tile[8])) && !COMPUTER_SHAPE.equals(tile[4])) {
 			return 4;
 		}
 		// if player has pressed buttons 2, 8 and computer hasn't pressed button 5
 		// or if player has pressed buttons 2, 8 and computer hasn't pressed button 4
-		else if (tile[2].equals(PLAYER_LETTER) && tile[8].equals(PLAYER_LETTER) && (!tile[5].equals(COMPUTER_LETTER)
-				|| !tile[4].equals(COMPUTER_LETTER))) {
+		else if (PLAYER_SHAPE.equals(tile[2]) && PLAYER_SHAPE.equals(tile[8]) && (!COMPUTER_SHAPE.equals(tile[5])
+				|| !COMPUTER_SHAPE.equals(tile[4]))) {
 			return 5;
 		}
 

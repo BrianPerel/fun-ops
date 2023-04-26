@@ -12,3 +12,7 @@
 *.log
 *.class
 *.zip
+*.txt
+
+!secret.txt
+!hangman.txt

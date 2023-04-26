@@ -2,15 +2,25 @@ package com.encryption;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class performs encryption and decryption process.
+ * Class performs encryption and decryption process. Each character in the original message is replaced by
+ * another character based on a key value. In this case, the key is a randomly generated integer that is
+ * added to the ASCII value of each character in the message to produce the encrypted version of the message.
  * @author Brian Perel
  */
 public class EncryptDecryptOp {
 
+	private final List<Long> keys = new ArrayList<>();
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
+	private SecureRandom random = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
@@ -36,14 +46,18 @@ public class EncryptDecryptOp {
 			StringBuilder maskedData = new StringBuilder(); // create variable that will store a line of random characters
 															// of same length as original sentence in the file
 
+			int keyIndex = 0;
+
 			// loop to traverse data String provided by user, in order to replace every
 			// character with a random integer number added and cast to char type
 			for (char c : data.toString().toCharArray()) {
 			    // my cipher algorithm = obtain letter at current index of data loaded from user file,
 			    // add a value which automatically returns the ASCII value of given character (then adds the value), and cast this int number into a char
+				keys.add(keyIndex, random.nextLong(1, Long.MAX_VALUE));
 
 			    // example: 'a' is replaced with ('a' + 5) then cast a5 (which is type int) into a char which is 'o'
-			    maskedData.append((char) (c + 5));
+			    maskedData.append((char) (c + keys.get(keyIndex)));
+			    keyIndex++;
 			}
 
 			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption
@@ -101,6 +115,7 @@ public class EncryptDecryptOp {
 	private StringBuilder decryptAndFormat() {
 		StringBuilder unmaskedData = new StringBuilder();
 		int wordCount = 0;
+		int keyIndex = 0;
 
 		// loop to traverse encrypted data, fill in a blank StringBuilder variable with
 		// values from data variable
@@ -108,13 +123,16 @@ public class EncryptDecryptOp {
 		for (int index = 0; index < data.length(); index++) {
 			// example: 'o' is replaced with ('o' - 14) then cast 97 (which is type int)
 			// into a char which is 'a'
-			unmaskedData.append((char) (data.charAt(index) - 5));
+			unmaskedData.append((char) (data.charAt(index) - keys.get(keyIndex)));
+			keyIndex++;
 
 			if (Character.isWhitespace((char) (data.charAt(index) - 5)) && (++wordCount % 25 == 0)) {
 				// if the number in wordCount is divisible by 25 (ex. 25, 50, 75, 100, etc.) then add a new line to the file being decrypted
 				unmaskedData.append('\n');
 			}
 		}
+
+		keys.clear();
 
 		return formatData(unmaskedData);
 	}

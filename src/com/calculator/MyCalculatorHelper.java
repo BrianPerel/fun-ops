@@ -29,7 +29,7 @@ public class MyCalculatorHelper {
 	 * this '0' is not included in calculations. Since it's only needed for display purposes.
 	 */
 	public void removeAutoDisplayZero(boolean hasUserEnteredZero) {
-		if (MyCalculatorGui.textFieldUserInput.getText().equals(MyCalculatorGui.CURSOR_RIGHT_POSITION_W_ZERO) && !hasUserEnteredZero) {
+		if (MyCalculatorGui.CURSOR_RIGHT_POSITION_W_ZERO.equals(MyCalculatorGui.textFieldUserInput.getText()) && !hasUserEnteredZero) {
 			MyCalculatorGui.textFieldUserInput.setText(MyCalculatorGui.CURSOR_RIGHT_POSITION);
 		}
 	}
@@ -38,7 +38,7 @@ public class MyCalculatorHelper {
 	 * Prevents user from adding a leading zero to an input number (prevents ex. 04)
 	 */
 	public void removeIllegalZero() {
-		if(MyCalculatorGui.textFieldUserInput.getText().trim().length() > 1 && MyCalculatorGui.textFieldUserInput.getText().trim().charAt(0) == '0') {
+		if (MyCalculatorGui.textFieldUserInput.getText().trim().length() > 1 && MyCalculatorGui.textFieldUserInput.getText().trim().charAt(0) == '0') {
 			MyCalculatorGui.textFieldUserInput.setText(MyCalculatorGui.textFieldUserInput.getText().trim().substring(1));
 		}
 	}
@@ -58,7 +58,7 @@ public class MyCalculatorHelper {
 	public void performEnterOrEquals() {
 		// if textField label is blank, then no action has been done by user.
 		// Hence, in that scenario equal operation isn't performed
-		if (!MyCalculatorGui.textFieldUserInput.getText().equals(MyCalculatorGui.CURSOR_RIGHT_POSITION)) {
+		if (!MyCalculatorGui.CURSOR_RIGHT_POSITION.equals(MyCalculatorGui.textFieldUserInput.getText())) {
 			MyCalculator.setNumber(MyCalculatorGui.textFieldUserInput.getText());
 
 			// perform computation to make and get the value
@@ -77,7 +77,7 @@ public class MyCalculatorHelper {
 
 			resetValues(); // reset all array/memory values
 		}
-		else if (MyCalculatorGui.textFieldUserInput.getText().equals(MyCalculatorGui.CURSOR_RIGHT_POSITION)) {
+		else if (MyCalculatorGui.CURSOR_RIGHT_POSITION.equals(MyCalculatorGui.textFieldUserInput.getText())) {
 			MyCalculatorGui.textFieldUserInput.setText(MyCalculatorGui.CURSOR_RIGHT_POSITION_W_ZERO);
 		}
 	}

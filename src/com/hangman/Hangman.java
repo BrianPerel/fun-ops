@@ -4,8 +4,11 @@ import static java.awt.Color.WHITE;
 import static java.awt.Font.BOLD;
 import static java.awt.Font.PLAIN;
 
+import java.awt.AWTException;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Robot;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -42,7 +45,10 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.text.MaskFormatter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 /**
  * Hangman game app with a 4-letter car brand theme. <br>
@@ -50,10 +56,23 @@ import javax.swing.text.MaskFormatter;
  */
 public class Hangman extends KeyAdapter implements FocusListener {
 
-	private static final Color LIGHT_GREEN_COLOR = new Color(34, 139, 34);
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(Hangman.class.getName());
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
+	// space of the array
+	private static final List<String> HANGMAN_DRAWING = List.of(
+			   					"  ____________",
+			   LINE_SEPARATOR + " |  /      |",
+			   LINE_SEPARATOR + " | /       O",
+			   LINE_SEPARATOR + " |/        | ",
+			   LINE_SEPARATOR + " |        /|\\",
+			   LINE_SEPARATOR + " |       / | \\",
+			   LINE_SEPARATOR + " |         |",
+			   LINE_SEPARATOR + " |        / \\",
+			   LINE_SEPARATOR + " |       /   \\",
+			   LINE_SEPARATOR + " |____________" );
 
 	private JFormattedTextField[] letterTextFields;
 	private JTextArea hangmanTextArea;
@@ -65,6 +84,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private int guessesLeft;
 	private int gameScore;
 	private JFrame window;
+	private Robot robot;
 
 	// store contents of random words in arraylist to give ability to extract txt at
 	// specific line. Using an arraylist because this will allow us to modify our hangman
@@ -87,21 +107,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// custom font for GUI components
 	private Font customFont;
 
-	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
-	// space of the array
-	private static final List<String> HANGMAN_DRAWING = List.of(
-			   "  ____________",
-			   "\n |  /      |",
-			   "\n | /       O",
-			   "\n |/        | ",
-			   "\n |        /|\\",
-			   "\n |       / | \\",
-			   "\n |         |",
-			   "\n |        / \\",
-			   "\n |       /   \\",
-			   "\n |____________" );
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws AWTException {
 		// set the console handler to use the custom formatter
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new Formatter() {
@@ -113,18 +119,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
         });
         LOG.addHandler(consoleHandler);
 
-		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to given custom color
+		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to the given custom color
 		new Hangman();
 	}
 
 	/**
 	 * Creates the application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
+	 * @throws AWTException
 	 */
-	public Hangman() {
+	public Hangman() throws AWTException {
 		createGui();
+		window.setVisible(true);
 	}
 
-	private void createGui() {
+	private void createGui() throws AWTException {
 		window = new JFrame("Hangman App by: Brian Perel");
 		window.setResizable(false);
 		window.setSize(529, 326);
@@ -190,7 +198,18 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		letterTextFields = new JFormattedTextField[4];
 
 		for (int x = 0; x < letterTextFields.length; x++) {
-			letterTextFields[x] = new JFormattedTextField(createFormatter("U"));
+			letterTextFields[x] = new JFormattedTextField();
+			// below code will make the user input that appears in the letter text fields be of size 1 and not numbers
+			((AbstractDocument) letterTextFields[x].getDocument()).setDocumentFilter(new DocumentFilter() {
+				@Override
+				public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+						throws BadLocationException {
+					if ((fb.getDocument().getLength() + text.length() - length) <= 1 && !text.matches("\\d")
+							&& !text.equals(" ") && text.matches("^[a-zA-Z0-9\\s]*$")) {
+						super.replace(fb, offset, length, text, attrs);
+					}
+				}
+			});
 			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
 			window.getContentPane().add(letterTextFields[x]);
 			letterTextFields[x].setSize(17, 20);
@@ -217,15 +236,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		textFieldGameScore.setFocusable(false);
 		textFieldGameScore.setBackground(Color.GRAY);
 
+		JSeparator separator = new JSeparator();
+		window.getContentPane().add(separator, BorderLayout.SOUTH);
+
+		robot = new Robot();
+
 		boolean isloadSuccessful = obtainSecretWords();
 
-		if(isloadSuccessful) {
+		if (isloadSuccessful) {
 			makeSecretWord();
 		}
 	}
 
 	private void makeSecretWord() {
-		if(secretWordList.isEmpty()) {
+		if (secretWordList.isEmpty()) {
 			LOG.severe("Error: File of secret words to load is empty");
 			JOptionPane.showMessageDialog(window, "File of secret words to load is empty", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -235,7 +259,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			// log the hangman word
 			LOG.log(Level.INFO, "The secret word is \"{0}\"", secretWord);
 
-			window.setVisible(true);
 			window.setLocationRelativeTo(null);
 		}
 	}
@@ -248,7 +271,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		File hangmanFile = new File("hangman.txt");
 
 		// ensure that the file is not a directory and that we have at least read access
-		if(hangmanFile.isFile() && hangmanFile.canRead()) {
+		if (hangmanFile.isFile() && hangmanFile.canRead()) {
 
 			try (BufferedReader reader = new BufferedReader(new FileReader("hangman.txt"))) {
 				String line;
@@ -260,7 +283,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 					// to attach a line number to each element
 					String validWord = validateWord(line.trim());
 
-					if(!validWord.isBlank()) {
+					if (!validWord.isBlank()) {
 						secretWordList.add(validWord);
 					}
 				}
@@ -296,36 +319,20 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String validateWord(String word) {
 		// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars return empty string to avoid adding that String
 		// also allow txt file to contain comments by ignoring anything that starts with '#'
-		if(word.startsWith("#") || secretWordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")) {
+		if (word.startsWith("#") || secretWordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")) {
 			return "";
 		}
 
 		// in case player loads a file with words that include lower case letters
 		for(char c : word.toCharArray()) {
 			// if a letter in the word is found to be lower case, make the whole word upper case
-			if(Character.isLowerCase(c)) {
+			if (Character.isLowerCase(c)) {
 				LOG.warning("Word loaded from the file had lowercase letters. Loading in uppercase format");
 				return word.toUpperCase();
 			}
 		}
 
 		return word;
-	}
-
-	/**
-	 * MaskFormatter is used to specify/create/enforce a custom format for a text field's input
-	 * @param argString is the text field's user input area (the box)
-	 * @return the formatted text field
-	 */
-	private MaskFormatter createFormatter(String argString) {
-		try {
-			return new MaskFormatter(argString);
-		} catch (java.text.ParseException exc) {
-			LOG.severe("formatter is bad: " + exc.getMessage());
-			exc.printStackTrace();
-			System.exit(-1);
-			return null;
-		}
 	}
 
 	/**
@@ -349,8 +356,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		textFieldHangmanWord.setText("****");
 
 		for (JFormattedTextField textField : letterTextFields) {
-			// Needed to use setText() twice for each letter to fix extra space being entered after you finish 1 game
-			textField.setText("");
 			textField.setText("");
 		}
 
@@ -364,6 +369,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		// log the hangman word
 		LOG.info(secretWord);
+
 		wrongWordCount = 0;
 	}
 
@@ -375,7 +381,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		int counter = 0;
 
 		do {
-			if(++counter > 1) {
+			if (++counter > 1) {
 				LOG.info("Chosen word was same as previously chosen word. Choosing a different word");
 			}
 
@@ -393,7 +399,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		// iterate through every letter of the secret word, append to maskedWord as needed depending on the conditions that we're met
 		for (char currentChar : secretWord.toCharArray()) {
-		    maskedWord.append(currentChar == argUserGuess || maskingAsterisk.charAt(maskedWord.length()) != '*' ? currentChar : '*');
+		    maskedWord.append(currentChar == argUserGuess || (maskingAsterisk.charAt(maskedWord.length()) != '*') ? currentChar : '*');
 		}
 
 		maskingAsterisk = maskedWord.toString();
@@ -402,35 +408,41 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	@Override
 	public void keyPressed(KeyEvent ke) {
-		final int MAX_GUESSES = 3;
+	    final int LOW_GUESSES_LEFT_THRESHOLD = 4;
 
-		if(Integer.parseInt(textFieldGuessesLeft.getText()) <= MAX_GUESSES) {
-			textFieldGuessesLeft.setBorder(new LineBorder(Color.RED, 2, true));
-		}
+	    if (Integer.parseInt(textFieldGuessesLeft.getText()) == LOW_GUESSES_LEFT_THRESHOLD) {
+	        textFieldGuessesLeft.setBorder(new LineBorder(Color.RED, 2, true));
+	    }
 
-		// accept only letters from user
-		if (KeyEvent.getKeyText(ke.getKeyCode()).matches("[a-zA-Z]")) {
-			analyzeGuess(Character.toUpperCase(ke.getKeyChar()));
+	    // accept only letters from user
+	    if (KeyEvent.getKeyText(ke.getKeyCode()).matches("[a-zA-Z]")) {
+	        char upperCaseChar = Character.toUpperCase(ke.getKeyChar());
+	        analyzeGuess(upperCaseChar);
 
-			// if all letters are found
-			if (letters[0] && letters[1] && letters[2] && letters[3]) {
-				// applies strikethrough text decoration to secret work as it's displayed when user wins
-				textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
+	        // set the text of the JFormattedTextField to the uppercase version of the character
+	        JFormattedTextField textField = (JFormattedTextField) ke.getComponent();
+	        textField.setText(Character.toString(upperCaseChar));
 
-				JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.INFORMATION_MESSAGE);
+	        // if all letters are found
+	        if (letters[0] && letters[1] && letters[2] && letters[3]) {
+	            // applies strikethrough text decoration to secret work as it's displayed when user wins
+	            textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
 
-				// turns off strikethrough when next game begins
-				textFieldHangmanWord.setFont(customFont);
+	            JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.INFORMATION_MESSAGE);
 
-				// stop counting the score at 100
-				if(!"100".equals(textFieldGameScore.getText())) {
-					textFieldGameScore.setText(Integer.toString(++gameScore));
-				}
+	            // turns off strikethrough when next game begins
+	            textFieldHangmanWord.setFont(customFont);
 
-				playAgain();
-			}
-		}
+	            // stop counting the score at 100
+	            if (!"100".equals(textFieldGameScore.getText())) {
+	                textFieldGameScore.setText(Integer.toString(++gameScore));
+	            }
+
+	            playAgain();
+	        }
+	    }
 	}
+
 
 	/**
 	 * Examines the letter the user placed in a text field
@@ -440,19 +452,19 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		// text field 1 chosen + letter entered matches first char of
 		// hangman word + the letter that hasn't been guessed yet
 		for (int i = 0; i <= 3; i++) {
-			if(isGuessCorrect(letterGuess, i)) {
+			if (isCorrectGuess(letterGuess, i)) {
 				return;
 			}
 		}
 
-		if (letterTextFields[0].getText().length() == 1 && (letterGuess != secretWord.charAt(0))
+		if ((letterGuess != secretWord.charAt(0))
 				&& (letterGuess != secretWord.charAt(1)) && (letterGuess != secretWord.charAt(2))) {
 			handleWrongGuess(letterGuess);
 		}
 	}
 
-	private boolean isGuessCorrect(char guess, int x) {
-		if (textFieldHasFocus[x] && (guess == secretWord.charAt(x)) && !letters[x]) {
+	private boolean isCorrectGuess(char guess, int x) {
+		if (textFieldHasFocus[x] && !letters[x] && (guess == secretWord.charAt(x))) {
 			textFieldHangmanWord.setText(maskHangmanWord(guess)); // x000, 0x00, 00x0, or 000x
 
 			letters[x] = true;
@@ -472,11 +484,15 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			if (wrongWordCount == HANGMAN_DRAWING.size()) {
 				JOptionPane.showMessageDialog(window.getComponent(0), "Game over. The secret word is: " + secretWord);
 
-				if(!("0".equals(textFieldGameScore.getText()))) {
+				if (!("0".equals(textFieldGameScore.getText()))) {
 					textFieldGameScore.setText(Integer.toString(--gameScore));
 				}
 
 				playAgain();
+
+				// this code was added to fix a bug where when user lost the game, a new game would start with a letter already appearing in the text field
+				robot.keyPress(KeyEvent.VK_BACK_SPACE); // Simulate a backspace key press
+			    robot.keyRelease(KeyEvent.VK_BACK_SPACE); // Simulate a backspace key release
 			}
 		}
 
@@ -493,7 +509,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		for (int i = 0; i < letterTextFields.length; i++) {
 			if (letterTextFields[i].hasFocus()) {
-				letterTextFields[i].setBorder(BorderFactory.createLineBorder(LIGHT_GREEN_COLOR, 2));
+				letterTextFields[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 				textFieldHasFocus[i] = true;
 				break;
 			}

@@ -93,10 +93,9 @@ public class StopWatch extends JFrame {
 		private int minute;
 		private int second;
 		private int centisecond;
-	    final Color lightGreenColor = new Color(0, 255, 128);
-	    final Color lightRedColor = new Color(255, 98, 98);
-	    final Color lightBlueColor = new Color(146, 205, 255);
-
+	    private final Color lightGreenColor = new Color(0, 255, 128);
+	    private final Color lightRedColor = new Color(255, 98, 98);
+	    private final Color lightBlueColor = new Color(146, 205, 255);
 		private final Timer timer; // watch timer
 
 		/**
@@ -223,7 +222,7 @@ public class StopWatch extends JFrame {
 					second++;
 					centisecond = 0;
 				}
-				if(keyChar == KeyEvent.VK_ENTER) {
+				if (keyChar == KeyEvent.VK_ENTER) {
 					if (BTN_START.equals(source)) {
 						BTN_START.setEnabled(false);
 						BTN_STOP.setEnabled(true);
@@ -242,7 +241,7 @@ public class StopWatch extends JFrame {
 						hour = minute = second = 0;
 						WATCH.setText(START_TIME);
 
-						if(isRedFontEnabled) {
+						if (isRedFontEnabled) {
 							WATCH.setForeground(Color.BLACK);
 						}
 					}
@@ -255,7 +254,7 @@ public class StopWatch extends JFrame {
 			 * Sets the watch's time
 			 */
 			private void setWatchText() {
-				if(WATCH.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
+				if (WATCH.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
 					WATCH.setForeground(Color.RED);
 				}
 

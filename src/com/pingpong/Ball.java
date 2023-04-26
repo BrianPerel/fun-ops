@@ -13,10 +13,10 @@ public class Ball extends Rectangle {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final double INITIAL_BALL_SPEED = 2;
 
 	private double xVelocityOfBall;
 	private double yVelocityOfBall;
-	private static final double INITIAL_BALL_SPEED = 2;
 
 	/**
 	 * Creates the ball

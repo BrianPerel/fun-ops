@@ -26,7 +26,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
 /**
- * Implementation for 3x3 tic-tac-toe game board. Initiates the game. Player 1 will go first.<br>
+ * Implementation for 3x3 tic-tac-toe game board. Initiates the human player vs player game. Player 1 will go first.<br>
  *
  * @author Brian Perel
  *
@@ -38,17 +38,13 @@ public class PvPGameBoard implements ActionListener {
 	private static final Color ULTRA_LIGHT_ORANGE_COLOR = new Color(244, 164, 96);
 	private static final Logger LOG = Logger.getLogger(PvPGameBoard.class.getName());
 	protected static final Color LIGHT_RED_COLOR = new Color(232, 46, 6);
-	protected static final String PLAYER_ONE_LETTER = "X";
-	protected static final String PLAYER_TWO_LETTER = "O";
-	protected static JButton[] gameBoardTiles; // the clickable board buttons
-	protected static boolean isGameOver;
-	private static String playerOnesName;
-	private static String playerTwosName;
 
-	protected String[] tile; // the String version of the clickable board buttons
+	protected JButton[] gameBoardTiles; // the click-able board buttons
+	protected String[] tile; // the String version of the click-able board buttons
 	protected boolean isCvPGame; // determines current game mode, used to prevent bug
 	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
+	protected TicTacToe ticTacToeGame;
 
 	/**
 	 * Builds the game's GUI board
@@ -58,8 +54,10 @@ public class PvPGameBoard implements ActionListener {
 	 * @param argIsPlayerOnesTurn boolean flag for program indicating if it's player one's turn in the
 	 *                  game
 	 */
-	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn) {
+	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
+		ticTacToeGame = argTicTacToeGame;
 		createGui(argIsStart, argIsPlayerOnesTurn);
+		window.setVisible(true);
 	}
 
 	private void createGui(boolean argIsStart, boolean argIsPlayerOnesTurn) {
@@ -70,12 +68,14 @@ public class PvPGameBoard implements ActionListener {
 		    e.printStackTrace();
 		}
 
+		UIManager.put("Button.select", new Color(160, 76, 0));
+
 		// changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
 		initializeGame(argIsStart, argIsPlayerOnesTurn);
 
-		isGameOver = false; // need to set variable to false here to avoid name label not changing bug
+		ticTacToeGame.isGameOver = false; // need to set variable to false here to avoid name label not changing bug
 
 		tile = new String[9];
 		gameBoardTiles = new JButton[9];
@@ -119,7 +119,7 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardTiles[7].setLocation(243, 145);
 		gameBoardTiles[8].setLocation(243, 226);
 
-		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", getPlayerOnesName(), PLAYER_ONE_LETTER));
+		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), ticTacToeGame.PLAYER_ONE_SHAPE));
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		lblPlayersTurn.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		lblPlayersTurn.setOpaque(false);
@@ -149,11 +149,10 @@ public class PvPGameBoard implements ActionListener {
 		window.setSize(399, 358);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.setLocation(StartMenu.window.getX(), StartMenu.window.getY());
-		window.setVisible(true);
 	}
 
-	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere) {
-		this(argIsStart, argIsPlayerOnesTurn);
+	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere, TicTacToe argTicTacToeGame) {
+		this(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
@@ -177,16 +176,15 @@ public class PvPGameBoard implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		// scans through the game board and performs all actions needed to complete a player's turn
 		for (JButton button : gameBoardTiles) {
-			if (ae.getSource() == button && button.getText().isEmpty()) {
-				completePlayersTurn(isCvPGame, button, isPlayerOnesTurn ? LIGHT_RED_COLOR : Color.BLUE,
-					isPlayerOnesTurn ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER,
-					isPlayerOnesTurn ? getPlayerOnesName() : getPlayerTwosName());
+			if (ae.getSource().equals(button) && button.getText().isEmpty()) {
+				makeMove(isCvPGame, button, isPlayerOnesTurn ? LIGHT_RED_COLOR : Color.BLUE,
+					isPlayerOnesTurn ? ticTacToeGame.PLAYER_TWO_SHAPE : ticTacToeGame.PLAYER_ONE_SHAPE,
+					isPlayerOnesTurn ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName());
 
 				isPlayerOnesTurn = !isPlayerOnesTurn;
-
 				break;
 			}
-			else if (ae.getSource() == button && !button.getText().isEmpty()) {
+			else if (ae.getSource().equals(button) && !button.getText().isEmpty()) {
 				LOG.warning("Invalid Move!");
 				Toolkit.getDefaultToolkit().beep();
 			}
@@ -195,9 +193,9 @@ public class PvPGameBoard implements ActionListener {
 
 	/**
 	 * Scans board for any 3 in a row combos made by either a player
-	 * @param playerLetter player's board letter type
+	 * @param argPlayerShape player's board shape
 	 */
-	private void checkForPattern(String playerLetter) {
+	private void checkForPattern(String argPlayerShape) {
 
 		// 3 in a row gameboard cells that trigger game win:
 		// if buttons 3, 4, 5 are triggered - 3 in a row vertically - down the middle column
@@ -207,34 +205,38 @@ public class PvPGameBoard implements ActionListener {
 		// if buttons 2, 5, 8 are triggered - 3 in a row horizontally - across the bottom row
 		// if buttons 0, 4, 8 are triggered - 3 in a row diagonally
 		// if buttons 2, 4, 6 are triggered - 3 in a row diagonally
-		final String[] winPatterns = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
+		final String[] winningPatterns = {"0|1|2", "3|4|5", "6|7|8", "0|3|6", "1|4|7", "2|5|8", "0|4|8", "2|4|6"};
 
-		for (String pair : winPatterns) {
-			checkPair(playerLetter, pair);
+		for (String pair : winningPatterns) {
+			checkForPair(argPlayerShape, pair);
 		}
 	}
 
-	private void checkPair(String playerLetter, String pairArr) {
-	    String[] buttons = pairArr.split("|");
+	private void checkForPair(String argPlayerShape, String argPair) {
+	    String[] buttons = argPair.split("|");
 		int button1 = Integer.parseInt(buttons[0]);
 		int button2 = Integer.parseInt(buttons[2]);
 		int button3 = Integer.parseInt(buttons[4]);
 
 		// if buttons 0, 1, 2 are triggered (pressed) - 3 in a row vertically - down the left side column
-		if (tile[button1].equals(playerLetter) && tile[button2].equals(playerLetter) && tile[button3].equals(playerLetter)) {
+		if (tile[button1].equals(argPlayerShape) && tile[button2].equals(argPlayerShape) && tile[button3].equals(argPlayerShape)) {
+			// if statement was added here to avoid 2 result windows from appearing in the case of the winner winning with 2 patterns in a match
+			if (!ticTacToeGame.isGameOver) {
+				new MatchOver(ticTacToeGame.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName(), ticTacToeGame);
+				logWinner(argPlayerShape);
+			}
+
 			displayWinnersPattern(gameBoardTiles[button1], gameBoardTiles[button2], gameBoardTiles[button3]);
-			new GameWinner(PLAYER_ONE_LETTER.equals(playerLetter) ? getPlayerOnesName() : getPlayerTwosName());
-			logWinner(playerLetter);
 		}
 	}
 
 	/**
 	 * Logs the current game's winner
-	 * @param playerLetter player's letter type - used to get the winner's name
+	 * @param argPlayerShape player's shape - used to get the winner's name
 	 */
-	private void logWinner(String playerLetter) {
-		LOG.log(Level.INFO, "{0} wins!", PLAYER_ONE_LETTER.equals(playerLetter) ? getPlayerOnesName()
-				: getPlayerTwosName());
+	private void logWinner(String argPlayerShape) {
+		LOG.log(Level.INFO, "{0} wins!", ticTacToeGame.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName()
+				: ticTacToeGame.getPlayerTwosName());
 	}
 
 	/**
@@ -245,32 +247,40 @@ public class PvPGameBoard implements ActionListener {
 		/*
 		 * Game board's tile/button index numbers
 		 *
-		 * 0 3 6
-		 * 1 4 7
-		 * 2 5 8
+		 * 0|3|6
+		 * -----
+		 * 1|4|7
+		 * -----
+		 * 2|5|8
+		 *
 		 */
 
 		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
 
-		checkForPattern(PLAYER_ONE_LETTER);
-		checkForPattern(PLAYER_TWO_LETTER);
+		checkForPattern(ticTacToeGame.PLAYER_ONE_SHAPE);
+		checkForPattern(ticTacToeGame.PLAYER_TWO_SHAPE);
 
 		// isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row
 		// from displaying player won and draw at the same time error
-		if(!isGameOver && isBoardFull()) {
-			new GameWinner(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!");
+		if (!ticTacToeGame.isGameOver && isBoardFull()) {
+			// disables all 9 buttons on board after game is over
+			for (JButton button : gameBoardTiles) {
+				button.setEnabled(false);
+			}
+
+			new MatchOver(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!", ticTacToeGame);
 			LOG.info("Game Over! It's a draw!");
 		}
 	}
 
 	/**
-	 * Checks if game board is full, displays game over - tie (draw)
+	 * Checks if game board is full, displays game over - tie (draw).
+	 * Returns false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
 	 */
 	private boolean isBoardFull() {
-		// return false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
 		return Arrays.stream(gameBoardTiles).noneMatch(x -> x.getText().isEmpty());
 	}
 
@@ -280,8 +290,8 @@ public class PvPGameBoard implements ActionListener {
 	 * @param tileTwo   second tile clicked
 	 * @param tileThree third tile clicked
 	 */
-	private static void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
-		isGameOver = true;
+	private void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
+		ticTacToeGame.isGameOver = true;
 
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
 
@@ -325,48 +335,16 @@ public class PvPGameBoard implements ActionListener {
 	 * Performs actions after player's turn
 	 * @param buttonPressed button that was just pressed by player
 	 */
-	protected void completePlayersTurn(boolean isCvPGame, JButton buttonPressed, Color color, String playersLetter, String playersName) {
-		buttonPressed.setForeground(color);
-		buttonPressed.setText(playersLetter);
+	protected void makeMove(boolean isCvPGame, JButton buttonPressed, Color playerPieceColor, String playersShape, String playersName) {
+		buttonPressed.setForeground(playerPieceColor);
+		buttonPressed.setText(playersShape);
 
 		checkForWinner(isCvPGame);
 
-		playersLetter = (playersLetter.equals(PLAYER_ONE_LETTER)) ? PLAYER_TWO_LETTER : PLAYER_ONE_LETTER;
+		playersShape = (ticTacToeGame.PLAYER_ONE_SHAPE.equals(playersShape)) ? ticTacToeGame.PLAYER_TWO_SHAPE : ticTacToeGame.PLAYER_ONE_SHAPE;
 
-		if(!isGameOver) {
-			lblPlayersTurn.setText(String.format("%s's turn (%s):", playersName, playersLetter));
+		if (!ticTacToeGame.isGameOver) {
+			lblPlayersTurn.setText(String.format("%s's turn (%s):", playersName, playersShape));
 		}
-	}
-
-	/**
-	 * Gets player one's name
-	 * @return player one's name
-	 */
-	public static String getPlayerOnesName() {
-		return playerOnesName;
-	}
-
-	/**
-	 * Sets player one's name
-	 * @param argPlayerOnesName
-	 */
-	public static void setPlayerOnesName(String argPlayerOnesName) {
-		PvPGameBoard.playerOnesName = argPlayerOnesName;
-	}
-
-	/**
-	 * Gets player two's name
-	 * @return player two's name
-	 */
-	public static String getPlayerTwosName() {
-		return playerTwosName;
-	}
-
-	/**
-	 * Sets player two's name
-	 * @param argPlayerTwosName
-	 */
-	public static void setPlayerTwosName(String argPlayerTwosName) {
-		PvPGameBoard.playerTwosName = argPlayerTwosName;
 	}
 }

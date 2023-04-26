@@ -23,41 +23,45 @@ import javax.swing.WindowConstants;
  *
  * @author Brian Perel
  */
-public class GameWinner extends KeyAdapter implements ActionListener {
+public class MatchOver extends KeyAdapter implements ActionListener {
 
 	private static final String GAME_OVER_DRAW_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 
-	private final JFrame window;
+	private final JFrame window = new JFrame("Tic Tac Toe");
 	private final JButton btnQuit;
 	private final String gameResult;
 	private final JButton btnPlayAgain;
+	private TicTacToe ticTacToeGame;
 
 	/**
 	 * Builds GUI window to be displayed when a player wins
-	 * @param argGameResult holds the result of the game - winner's name or game over message
+	 * @param argMatchResult holds the result of the game - winner's name or game over message
+	 * @param argTicTacToeGame holds the games properties like player names and shapes
 	 */
-	public GameWinner(String argGameResult) {
+	public MatchOver(String argMatchResult, TicTacToe argTicTacToeGame) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 
-		gameResult = argGameResult;
+		ticTacToeGame = argTicTacToeGame;
 
-		PvPGameBoard.isGameOver = true; // prevents code that switches gameboard name label from running
+		gameResult = argMatchResult;
 
-		// if exit button is clicked, dispose of this frame
-		// and create a new GameBoard frame
-		window = new JFrame("Tic Tac Toe");
+		argTicTacToeGame.isGameOver = true; // prevents code that switches gameboard name label from running
+
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		// changes the program's taskbar icon
+	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/tic-tac-toe.png").getImage());
 
 		// if we close the game's winner window frame then close the other main game frame too
 		window.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent e) {
-				new PvPGameBoard(false, false);
+				new PvPGameBoard(false, false, ticTacToeGame);
 		    }
 		});
 
@@ -67,9 +71,10 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
-		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer), 1 '!' at the end of the string indicates result is from player vs. player
-		JLabel lblGameResult = new JLabel(GAME_OVER_DRAW_MSG.equals(argGameResult)
-				|| argGameResult.equals(GAME_OVER_DRAW_MSG + "!") ? argGameResult : (argGameResult + " wins!"));
+		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer)
+		// 1 '!' at the end of the string indicates result is from player vs. player
+		JLabel lblGameResult = new JLabel(GAME_OVER_DRAW_MSG.equals(argMatchResult)
+				|| (GAME_OVER_DRAW_MSG + "!").equals(argMatchResult) ? argMatchResult : (argMatchResult + " wins!"));
 
 		lblGameResult.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
 		lblGameResult.setHorizontalAlignment(SwingConstants.CENTER);
@@ -86,7 +91,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
 		btnPlayAgain.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		StartMenu.setHoverColor(btnPlayAgain);
+		StartMenu.setBtnHoverColor(btnPlayAgain);
 
 		btnQuit = new JButton("Quit");
 		btnQuit.setFont(customFont);
@@ -96,7 +101,7 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 		btnQuit.addActionListener(this);
 		btnQuit.addKeyListener(this);
 		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		StartMenu.setHoverColor(btnQuit);
+		StartMenu.setBtnHoverColor(btnQuit);
 
 		window.setLocation(PvPGameBoard.window.getX() + PvPGameBoard.window.getWidth(), PvPGameBoard.window.getY());
 		window.setVisible(true);
@@ -104,13 +109,13 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		determineEndGameAction(e.getSource());
+		matchOverOptions(e.getSource());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			determineEndGameAction(e.getSource());
+			matchOverOptions(e.getSource());
 		}
 	}
 
@@ -118,22 +123,33 @@ public class GameWinner extends KeyAdapter implements ActionListener {
 	 * Determines and makes the necessary action associated to the button that was pressed when the game ends (play again or quit)
 	 * @param source the object on which the Event initially occurred
 	 */
-	private void determineEndGameAction(Object source) {
+	private void matchOverOptions(Object source) {
 		window.dispose();
 
 		if (source.equals(btnPlayAgain)) {
-			// launches appropriate game mode when play again btn is pressed
-			if (gameResult.equals(StartMenu.PLAYER) || gameResult.equals(StartMenu.COMPUTER) || gameResult.equals(GAME_OVER_DRAW_MSG + "!")) {
-				new CvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
-			}
-			else {
-				new PvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY());
-			}
+			playAgain();
 		}
-		else if (source.equals(btnQuit) || (StartMenu.PLAYER.equals(gameResult)
-				|| StartMenu.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
-
-			System.exit(0);
+		else {
+			quit(source);
 		}
 	}
+
+	private void playAgain() {
+		// launches appropriate game mode when play again btn is pressed
+		if (ticTacToeGame.PLAYER.equals(gameResult) || ticTacToeGame.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult)) {
+			new CvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY(), ticTacToeGame);
+		}
+		else {
+			new PvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY(), ticTacToeGame);
+		}
+	}
+
+	private void quit(Object source) {
+		if (source.equals(btnQuit) || (ticTacToeGame.PLAYER.equals(gameResult)
+				|| ticTacToeGame.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
+
+			System.exit(0); // perform program termination with a normal exit status
+		}
+	}
+
 }

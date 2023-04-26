@@ -17,10 +17,11 @@
 	<tstamp>
 		<format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US" />
 	</tstamp>
+
 	<echo message="Current date and time: ${TODAY_US}${line.separator}${ant.version}" level="info" />
 
 	<!-- reference id for classpath holding references to all 3rd party jars in project
-	If you add any 3rd party jars to use in your project, be sure to add there file locations here  -->
+	If you add any 3rd party jars to use in your project, be sure to add their file locations here  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
 		<fileset dir="lib">
 			<include name="*.jar" />
@@ -108,14 +109,14 @@
 	</target>
 
 	<!-- zip encryption program -->
-	<target name="zip-encryption-jar w/ resources" description="Create zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
+	<target name="zip-encryption-jar w/ resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
 		<copy todir="${dist.dir}/encryption-tmp">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
+		    <fileset file="secret.txt" />
 		</copy>
 		<copy todir="${dist.dir}/encryption-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
 		</copy>
-		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" />
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption-tmp" update="true" />
 		<delete dir="${dist.dir}/encryption-tmp" />
 	</target>
@@ -170,11 +171,11 @@
 	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
 		<copy todir="${dist.dir}/hangman-tmp">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
+		    <fileset file="secret.txt" />
 		</copy>
 		<copy todir="${dist.dir}/hangman-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
-		<copy file="hangman.txt" todir="${dist.dir}/hangman-tmp" />
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman-tmp" update="true" />
 		<delete dir="${dist.dir}/hangman-tmp" />
 	</target>
@@ -192,10 +193,10 @@
 		</launch4j>
 
 		<move file="hangman.exe" todir="${release.dir}/hangman-tmp" />
-		<copy todir="${release.dir}/hangman-tmp/{res.graphics.dir}">
+		<copy todir="${release.dir}/hangman-tmp/res/graphics">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
 		</copy>
-		<copy todir="${release.dir}/hangman-tmp/{res.graphics.dir}/taskbar_icons">
+		<copy todir="${release.dir}/hangman-tmp/res/graphics/taskbar_icons">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="hangman.png" />
 		</copy>
 		<copy file="hangman.txt" todir="${release.dir}/hangman-tmp" />
@@ -221,10 +222,7 @@
 	<!-- targets for guessing game and advanced guessing game -->
 	<target name="compile-guessing game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
-		<javac includeantruntime="false" srcdir="${src.dir}/com/numbergame" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch;${src.dir}/com/numbergame" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
 			<compilerarg value="-g:lines" />
 		</javac>
 	</target>
@@ -374,7 +372,7 @@
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="com.tictactoe.StartMenu" />
+				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
 			</manifest>
 		</jar>

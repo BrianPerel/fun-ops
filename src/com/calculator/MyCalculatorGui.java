@@ -62,6 +62,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	protected static boolean hasUserEnteredZero;
 
 	private final MyCalculatorHelper helper = new MyCalculatorHelper();
+	private JFrame window = new JFrame("Calculator App by: Brian Perel");
 
 	public static void main(String[] args) {
 		try {
@@ -79,10 +80,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 */
 	public MyCalculatorGui() {
 		createGui();
+		window.setVisible(true);
 	}
 
 	private void createGui() {
-		JFrame window = new JFrame("Calculator App by: Brian Perel");
 		window.getContentPane().setBackground(Color.DARK_GRAY);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(null);
@@ -178,7 +179,6 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		buttons[22].setLocation(189, 304);
 		buttons[23].setLocation(268, 304);
 
-		window.setVisible(true);
 		window.setLocationRelativeTo(null);
 	}
 
@@ -212,7 +212,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
-		if(userInput.trim().length() <= 29) {
+		if (userInput.trim().length() <= 29) {
 			numberActionButtons(ae);
 		}
 
@@ -257,7 +257,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 
 		case "1/x":
-			if(!(userInput.isBlank() || "0".equals(userInput))) {
+			if (!(userInput.isBlank() || "0".equals(userInput))) {
 				final double value = 1 / Double.valueOf(userInput);
 
 				// validate that the current text in textField isn't blank
@@ -335,7 +335,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// x\u00B2 = X^2 symbol
 		case "x\u00B2":
-			if(!(argUserInput.isBlank() || "0".equals(argUserInput))) {
+			if (!(argUserInput.isBlank() || "0".equals(argUserInput))) {
 				final double valueSquared = Math.pow(Double.valueOf(argUserInput), 2);
 
 				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
@@ -355,7 +355,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		// 2\u221Ax = 2 square root x symbol
 		case "2\u221Ax":
-			if(!(argUserInput.isBlank() || "0".equals(argUserInput))) {
+			if (!(argUserInput.isBlank() || "0".equals(argUserInput))) {
 				final double valueSquareRooted = Math.sqrt(Double.valueOf(argUserInput));
 
 				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
@@ -472,18 +472,18 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		final char keyChar = e.getKeyChar();
 
 		// prevent user from attempting to enter a non-numeric value
-		if(!isValidKeyPressed(keyChar)) {
+		if (!isValidKeyPressed(keyChar)) {
 			return;
 		}
 
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
 		// bug fix: prevents user from prepending a zero before a number
-		if("0".equals(textFieldUserInput.getText().trim())) {
+		if ("0".equals(textFieldUserInput.getText().trim())) {
 			textFieldUserInput.setText("");
 		}
 
-		if(textFieldUserInput.getText().trim().length() <= 29) {
+		if (textFieldUserInput.getText().trim().length() <= 29) {
 			switch(keyChar) {
 			case VK_0:
 				textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
@@ -566,7 +566,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				}
 
 				// otherwise remove the last digit of the current string in text field
-				textFieldUserInput.setText(!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION)
+				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(textFieldUserInput.getText())
 						? textFieldUserInput.getText().substring(0, textFieldUserInput.getText().length() - 1)
 						: CURSOR_RIGHT_POSITION_W_ZERO);
 				break;

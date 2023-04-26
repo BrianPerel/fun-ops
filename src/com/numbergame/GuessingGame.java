@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -53,6 +54,7 @@ import com.stopwatch.StopWatch.StopWatchPanel;
 public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	protected static int maxCharsLimit = 2;
+	protected static boolean turnOn = true;
 	protected static final String FAIL_SOUND = "res/audio/fail.wav";
 	protected static final Color LIGHT_GREEN_COLOR = new Color(50, 205, 50);
 	protected static final SecureRandom randomGenerator = new SecureRandom(
@@ -82,6 +84,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	public GuessingGame() {
 		createGui();
+
+		if (turnOn) {  // workaround to avoid GUI launch issue
+			window.setVisible(true); // this needs to stay here, before the setTimeCounterImpl() method call because otherwise
+									 // the counter program GUI appears above this GUI in the computer's taskbar
+		}
+
+		setTimeCounterImpl();
+		textFieldGuessTheNumber.requestFocus();
 	}
 
 	private void createGui() {
@@ -133,7 +143,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblNumberIs.setBounds(302, 80, 102, 37);
 		window.getContentPane().add(lblNumberIs);
 
-		previousRandomNumber = randomNumber = randomGenerator.nextInt(99) + 1;
+		previousRandomNumber = randomNumber = randomGenerator.nextInt(1, 99);
 		textFieldRandomNumber = new JTextField(Integer.toString(randomNumber));
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);
@@ -181,6 +191,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		this.setBtnHoverColor(btnPlayAgain, new Color(201, 180, 0), Color.ORANGE);
 		window.getContentPane().add(btnPlayAgain);
 
+		// prevents the default blue button that appears when a button is selected (before the button is released) from displaying
+		btnGuess.setUI(new BasicButtonUI());
+		btnPlayAgain.setUI(new BasicButtonUI());
+
 		closeTimerCheckBox.setBackground(Color.WHITE);
 		closeTimerCheckBox.setBounds(296, 260, 158, 23);
 		window.getContentPane().add(closeTimerCheckBox);
@@ -190,12 +204,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.setOpaque(false);
 
 		StopWatchPanel.isRedFontEnabled = true;
-
-		setTimeCounterImpl();
-
-		textFieldGuessTheNumber.requestFocus();
-
-		window.setVisible(true);
 	}
 
 	/**
@@ -253,7 +261,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	@Override
 	public void keyPressed(KeyEvent ke) {
 		// guard against tab key press, prevents a game bug where counter was resetting when user would press the tab button
-		if(ke.getKeyChar() != KeyEvent.VK_TAB) {
+		if (ke.getKeyChar() != KeyEvent.VK_TAB) {
 			eventHandler(ke.getSource(), ke.getKeyChar());
 		}
 	}
@@ -272,7 +280,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	private void eventHandler(Object source, char keyChar) {
 
 		// if enter key was accidently pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
-		if(keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain)
+		if (keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain)
 				|| source.equals(closeTimerCheckBox))) {
 			return;
 		}
@@ -295,25 +303,28 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		}
 
 		// if you want to turn off the timer
-		if(keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
+		if (keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
 			StopWatchPanel.BTN_STOP.doClick();
 
 			StopWatchPanel.WATCH.setEnabled(StopWatchPanel.WATCH.isEnabled());
 			closeTimerCheckBox.setSelected(StopWatchPanel.WATCH.isEnabled());
 
-			if(StopWatchPanel.WATCH.isEnabled()) {
+			if (StopWatchPanel.WATCH.isEnabled()) {
 				StopWatchPanel.BTN_START.doClick(); // start the timer from 0
 			}
 		}
 
-		performGuiButtonAction(source, isTimeout);
+		// prevent space key from being used as it was fading out a button and making 2 windows appear
+		if (keyChar != KeyEvent.VK_SPACE) {
+			performGuiButtonAction(source, isTimeout);
+		}
 
 		// reset the timer
 		StopWatchPanel.BTN_RESET.doClick();
 		StopWatchPanel.BTN_START.setEnabled(!closeTimerCheckBox.isSelected());
 		StopWatchPanel.WATCH.setEnabled(!closeTimerCheckBox.isSelected());
 
-		if(closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
+		if (closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
 			timeCounter.setVisible(true);
 
 			// make the second GUI (timer) always appear to the right of the first GUI
@@ -321,7 +332,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		}
 
 		// start the timer from 0
-		if(!closeTimerCheckBox.isSelected()) {
+		if (!closeTimerCheckBox.isSelected()) {
 			StopWatchPanel.BTN_START.doClick();
 		}
 
@@ -346,7 +357,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.BTN_RESET.doClick();
 
 		// if guess btn is pushed and input is numeric data
-		if(source.equals(btnGuess)) {
+		if (source.equals(btnGuess)) {
 			if (textFieldGuessTheNumber.getText().matches("-?\\d+")) {
 				evaluateGuess(isTimeout, 100);
 			}
@@ -368,11 +379,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		playSound("res/audio/chimes.wav");
 		JOptionPane.showMessageDialog(window.getComponent(0), "Game reset");
 		textFieldGuesses.setText("0");
-		randomNumber = randomGenerator.nextInt(99) + 1;
+		randomNumber = randomGenerator.nextInt(1, 99);
 
 		// adds an extra layer of security - prevents random number chosen from being the previous number used
-		if(randomNumber == previousRandomNumber) {
-			randomNumber = randomGenerator.nextInt(99) + 1;
+		if (randomNumber == previousRandomNumber) {
+			randomNumber = randomGenerator.nextInt(1, 99);
 		}
 
 		textFieldRandomNumber.setText(Integer.toString(randomNumber));
@@ -402,9 +413,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					"Please enter a valid number " + ((TOTAL_SUM == 100) ? "(1-99)" : "(100-999)"));
-		} else if (textFieldGuessTheNumberInt + randomNumber == TOTAL_SUM) {
+		}
+		else if (textFieldGuessTheNumberInt + randomNumber == TOTAL_SUM) {
 			gameWonCompleteSession(TOTAL_SUM, isTimeout);
-		} else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
+		}
+		else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 			JOptionPane.showMessageDialog(window.getComponent(0),
@@ -427,11 +440,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN_COLOR, 2));
 		JOptionPane.showMessageDialog(window.getComponent(0),
 				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1000"));
-		randomNumber = randomGenerator.nextInt(99) + 1;
+		randomNumber = randomGenerator.nextInt(1, 99);
 
 		// adds an extra layer of security - prevents random number chosen from being the previous number used
-		if(randomNumber == previousRandomNumber) {
-			randomNumber = randomGenerator.nextInt(99) + 1;
+		if (randomNumber == previousRandomNumber) {
+			randomNumber = randomGenerator.nextInt(1, 99);
 		}
 
 		textFieldRandomNumber.setText(Integer.toString(randomNumber));

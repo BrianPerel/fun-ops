@@ -36,13 +36,13 @@ import javax.swing.WindowConstants;
  */
 public class WiggleMouse {
 
-	private int mouseXCoordinate;
-	private int mouseYCoordinate;
-	private long waitTime = 30L;
-
 	// using DefaultComboBoxModel to prevent problem with WindowBuilder
 	private static final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(
 		new DefaultComboBoxModel<>(new String[] {"1/2 minute", "1 minute", "3 minutes", "5 minutes"}));
+
+	private int mouseXCoordinate;
+	private int mouseYCoordinate;
+	private long waitTime = 30L;
 
 	/**
 	 * Launch the application.
@@ -67,6 +67,8 @@ public class WiggleMouse {
 	    window.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    window.setSize(550, 182);
+
+		UIManager.put("Button.select", new Color(200, 203, 232));
 
 	    // changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/mouse.png").getImage());
@@ -103,14 +105,14 @@ public class WiggleMouse {
 	    btnSetTime.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
 	    btnSetTime.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	    btnSetTime.addActionListener(actionEvent -> {
-	        if (actionEvent.getSource() == btnSetTime) {
+	        if (actionEvent.getSource().equals(btnSetTime)) {
 	            waitTime = updateIdleTime();
 	        }
 	    });
 	    btnSetTime.addKeyListener(new KeyAdapter() {
 	        @Override
 	        public void keyPressed(KeyEvent e) {
-	            if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource() == btnSetTime) {
+	            if (e.getKeyChar() == KeyEvent.VK_ENTER && e.getSource().equals(btnSetTime)) {
 	                waitTime = updateIdleTime();
 	            }
 	        }
