@@ -1,6 +1,7 @@
 package com.calculator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,10 @@ public class MyCalculator {
 		argNumber = argNumber.replace(",", "");
 
 		if (!argNumber.endsWith("%")) {
+			if(argNumber.isEmpty()) {
+				argNumber = "0";
+			}
+
 			stringNumbers.add(argNumber.trim());
 		}
 	}
@@ -49,7 +54,10 @@ public class MyCalculator {
 				return BigDecimal.ZERO;
 			}
 
-			answer = answer.divide(bigDecimalNumbers.get(i));
+			// specifying a rounding mode of ROUND_HALF_UP for the divide() method,
+			// which rounds the result to the nearest neighbor, with ties being rounded up
+			// preventing a ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result
+			answer = answer.divide(bigDecimalNumbers.get(i), RoundingMode.HALF_UP);
 		}
 
 		return answer;

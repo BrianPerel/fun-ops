@@ -64,14 +64,16 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// space of the array
 	private static final List<String> HANGMAN_DRAWING = List.of(
 			   					"  ____________",
-			   LINE_SEPARATOR + " |  /      |",
-			   LINE_SEPARATOR + " | /       O",
-			   LINE_SEPARATOR + " |/        | ",
-			   LINE_SEPARATOR + " |        /|\\",
-			   LINE_SEPARATOR + " |       / | \\",
-			   LINE_SEPARATOR + " |         |",
-			   LINE_SEPARATOR + " |        / \\",
-			   LINE_SEPARATOR + " |       /   \\",
+			   LINE_SEPARATOR + " |  /       |",
+			   LINE_SEPARATOR + " | /        O",
+			   LINE_SEPARATOR + " |/         | ",
+			   LINE_SEPARATOR + " |         /|\\",
+			   LINE_SEPARATOR + " |        / | \\",
+			   // due to the bold font type set for the textarea for where this drawing is
+			   // being referenced, I had to shift the remaining pieces below by an offset of 1
+			   LINE_SEPARATOR + " |           |",
+			   LINE_SEPARATOR + " |          / \\",
+			   LINE_SEPARATOR + " |         /   \\",
 			   LINE_SEPARATOR + " |____________" );
 
 	private JFormattedTextField[] letterTextFields;
@@ -102,7 +104,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	// pointer. letter[0-3]: flags to indicate this particular letter has been discovered by user and
 	// printed
 	private final boolean[] letters = new boolean[4];
-	private final boolean[] textFieldHasFocus = new boolean[4];
+	private final boolean[] textFieldHasFocus = new boolean[letters.length];
 
 	// custom font for GUI components
 	private Font customFont;
@@ -120,7 +122,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
         LOG.addHandler(consoleHandler);
 
 		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to the given custom color
-		new Hangman();
+
+		Hangman hangman = new Hangman();
+		hangman.window.setVisible(true);
 	}
 
 	/**
@@ -129,7 +133,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	public Hangman() throws AWTException {
 		createGui();
-		window.setVisible(true);
+
+		robot = new Robot();
+
+		boolean isloadSuccessful = obtainSecretWords();
+
+		if (isloadSuccessful) {
+			makeSecretWord();
+		}
 	}
 
 	private void createGui() throws AWTException {
@@ -146,8 +157,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		hangmanTextArea = new JTextArea();
 		hangmanTextArea.setBackground(Color.LIGHT_GRAY);
-		hangmanTextArea.setFont(new Font("Tahoma", PLAIN, 18));
-		hangmanTextArea.setBounds(59, 21, 150, 239);
+		hangmanTextArea.setFont(new Font("Tahoma", BOLD, 18));
+		hangmanTextArea.setBounds(59, 21, 158, 239);
 		window.getContentPane().add(hangmanTextArea);
 		hangmanTextArea.setEditable(false);
 		hangmanTextArea.setFocusable(false);
@@ -195,7 +206,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window.getContentPane().add(separatorLine);
 
 		// text fields (holders) for letter guesses
-		letterTextFields = new JFormattedTextField[4];
+		letterTextFields = new JFormattedTextField[letters.length];
 
 		for (int x = 0; x < letterTextFields.length; x++) {
 			letterTextFields[x] = new JFormattedTextField();
@@ -238,20 +249,12 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		JSeparator separator = new JSeparator();
 		window.getContentPane().add(separator, BorderLayout.SOUTH);
-
-		robot = new Robot();
-
-		boolean isloadSuccessful = obtainSecretWords();
-
-		if (isloadSuccessful) {
-			makeSecretWord();
-		}
 	}
 
 	private void makeSecretWord() {
 		if (secretWordList.isEmpty()) {
 			LOG.severe("Error: File of secret words to load is empty");
-			JOptionPane.showMessageDialog(window, "File of secret words to load is empty", "Error", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(window, "File of secret words to load is empty", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
 			secretWord = getSecretWord();
@@ -293,18 +296,18 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				return true;
 
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(window, "File of hangman words not found", "Error", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(window, "File of hangman words not found", "Error", JOptionPane.ERROR_MESSAGE);
 				LOG.severe("Error: File not found" + e);
 				e.printStackTrace();
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(window, "Error reading file", "Error", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(window, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
 		        LOG.severe("Error reading file" + e1);
 				e1.printStackTrace();
 			}
 
 		}
 
-		JOptionPane.showMessageDialog(window, "Error reading file", "Error", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(window, "File not found or error reading file", "Error", JOptionPane.ERROR_MESSAGE);
         LOG.severe("Error reading file");
 
 		return false;
@@ -428,7 +431,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	            // applies strikethrough text decoration to secret work as it's displayed when user wins
 	            textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
 
-	            JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.INFORMATION_MESSAGE);
+	            JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.PLAIN_MESSAGE);
 
 	            // turns off strikethrough when next game begins
 	            textFieldHangmanWord.setFont(customFont);
@@ -452,7 +455,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		// text field 1 chosen + letter entered matches first char of
 		// hangman word + the letter that hasn't been guessed yet
 		for (int i = 0; i <= 3; i++) {
-			if (isCorrectGuess(letterGuess, i)) {
+			if (isGuessCorrect(letterGuess, i)) {
 				return;
 			}
 		}
@@ -463,7 +466,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 	}
 
-	private boolean isCorrectGuess(char guess, int x) {
+	private boolean isGuessCorrect(char guess, int x) {
 		if (textFieldHasFocus[x] && !letters[x] && (guess == secretWord.charAt(x))) {
 			textFieldHangmanWord.setText(maskHangmanWord(guess)); // x000, 0x00, 00x0, or 000x
 

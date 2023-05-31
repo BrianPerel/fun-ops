@@ -60,6 +60,7 @@ public class WiggleMouse {
 	 */
 	public WiggleMouse() throws InterruptedException, AWTException  {
 		createGui();
+	    moveMouse(new Robot());
 	}
 
 	private void createGui() throws InterruptedException, AWTException {
@@ -133,11 +134,10 @@ public class WiggleMouse {
 	    gbc.gridwidth = 1;
 	    panel.add(btnSetTime, gbc);
 
-	    window.setVisible(true);
 	    window.setLocationRelativeTo(null);
+	    window.setVisible(true);
 	    btnSetTime.doClick();
 	    window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
-	    moveMouse(new Robot());
 	}
 
 	/**
@@ -159,21 +159,29 @@ public class WiggleMouse {
 	 * @throws AWTException
 	 */
 	private void moveMouse(Robot robot) throws InterruptedException {
-		while (true) {
-			// get current mouse pointer coordinates and set them. This needs to be done
-			// twice in loop so that if user moves the mouse, the pointer doesn't jump back to the original point
-			setMouseLocation();
-			TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
-			setMouseLocation();
+	    while (true) {
+	    	setMouseLocation();
+		    int previousX = mouseXCoordinate;
+		    int previousY = mouseYCoordinate;
 
-			// move the mouse to specified (x, y) coordinates with a shift value -- creates the Wiggle Mouse action
-			for(int x = 0; x < 2; x++) {
-				robot.mouseMove(mouseXCoordinate, (x == 0) ? mouseYCoordinate++ : mouseYCoordinate--);
-				TimeUnit.MILLISECONDS.sleep(50L);
-			}
+	        TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
+	        setMouseLocation();
 
-			robot.mouseMove(mouseXCoordinate, mouseYCoordinate);
-		}
+	        // Check if the mouse coordinates have changed
+	        if (mouseXCoordinate != previousX || mouseYCoordinate != previousY) {
+	            // User is moving the mouse, execute 'continue'
+	            continue;
+	        }
+
+	        // Move the mouse to specified (x, y) coordinates with a shift value -- creates the wiggle mouse action
+	        for (int x = 0; x < 2; x++) {
+                int shiftAmount = (x == 0) ? 1 : -1;
+	            robot.mouseMove(mouseXCoordinate, mouseYCoordinate + shiftAmount);
+	            TimeUnit.MILLISECONDS.sleep(50L);
+	        }
+
+	        robot.mouseMove(mouseXCoordinate, mouseYCoordinate);
+	    }
 	}
 
 	/**

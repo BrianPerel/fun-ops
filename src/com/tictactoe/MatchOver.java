@@ -3,11 +3,13 @@ package com.tictactoe;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,8 +29,8 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 
 	private static final String GAME_OVER_DRAW_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
-
-	private final JFrame window = new JFrame("Tic Tac Toe");
+	protected static final JFrame window = new JFrame("Tic Tac Toe");
+	
 	private final JButton btnQuit;
 	private final String gameResult;
 	private final JButton btnPlayAgain;
@@ -102,6 +104,20 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		btnQuit.addKeyListener(this);
 		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		StartMenu.setBtnHoverColor(btnQuit);
+
+		// if we minimize the game's winner window frame then minimize the other main game frame too
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowIconified(WindowEvent e) {
+				PvPGameBoard.window.setExtendedState(Frame.ICONIFIED);
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				PvPGameBoard.window.setExtendedState(Frame.NORMAL);
+				window.setLocation(PvPGameBoard.window.getX() + PvPGameBoard.window.getWidth(), PvPGameBoard.window.getY());
+			}
+		});
 
 		window.setLocation(PvPGameBoard.window.getX() + PvPGameBoard.window.getWidth(), PvPGameBoard.window.getY());
 		window.setVisible(true);

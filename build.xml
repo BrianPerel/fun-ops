@@ -35,27 +35,24 @@
 	</target>
 
 	<!-- target to create all project executables -->
-	<target name="create ALL project executables" description="creates all project executables" depends="jar-calculator, jar-encryption program,
-			jar-clock, jar-guessing game, jar-hangman, jar-pong, jar-stopwatch, jar-tic tac toe, jar-wiggle mouse">
+	<target name="create-ALL-project-executables" description="creates all project executables" depends="jar-calculator, jar-encryption-program,
+			jar-clock, jar-number_game, jar-hangman, jar-pong, jar-stopwatch, jar-tic-tac-toe, jar-wiggle-mouse">
 
-		<antcall target="create calculator.exe" />
-		<antcall target="create stopwatch.exe" />
-		<antcall target="create and zip encryption.exe" />
-		<antcall target="create and zip clock.exe" />
-		<antcall target="create and zip number_game.exe" />
-		<antcall target="create and zip hangman.exe" />
-		<antcall target="create and zip pong.exe" />
+		<antcall target="create-calculator.exe" />
+		<antcall target="create-stopwatch.exe" />
+		<antcall target="create-and-zip-encryption.exe" />
+		<antcall target="create-and-zip-clock.exe" />
+		<antcall target="create-and-zip-number_game.exe" />
+		<antcall target="create-and-zip-hangman.exe" />
+		<antcall target="create-and-zip-pong.exe" />
 		<antcall target="create and zip tic-tac-toe.exe" />
-		<antcall target="create and zip wigglemouse.exe" />
+		<antcall target="create-and-zip-wigglemouse.exe" />
 	</target>
 
 	<!-- targets for calculator -->
 	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<!-- this will make the compiler add the source code line numbers during the compiling process -->
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="creates associated .jar file for the specified application">
@@ -72,7 +69,7 @@
 	</target>
 
 	<!-- create calculator.exe target -->
-	<target name="create calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator">
+	<target name="create-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator">
 		<launch4j>
 			<config headerType="gui" outfile="calculator.exe" dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico">
 				<jre minVersion="${min.jre.version}">
@@ -89,12 +86,10 @@
 	<!-- targets for encryption program -->
 	<target name="compile-encryption program" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
-	<target name="jar-encryption program" depends="compile-encryption program" description="creates associated .jar file">
+	<target name="jar-encryption-program" depends="compile-encryption program" description="creates associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -104,15 +99,15 @@
 		</jar>
 	</target>
 
-	<target name="run-encryption program" depends="jar-encryption program" description="run the program">
+	<target name="run-encryption-program" depends="jar-encryption-program" description="run the program">
 		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip encryption program -->
-	<target name="zip-encryption-jar w/ resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption program">
+	<target name="zip-encryption-jar-w/resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption-program">
 		<copy todir="${dist.dir}/encryption-tmp">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
-		    <fileset file="secret.txt" />
+			<fileset file="secret.txt" />
 		</copy>
 		<copy todir="${dist.dir}/encryption-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
@@ -122,7 +117,7 @@
 	</target>
 
 	<!-- create and zip encryption.exe target -->
-	<target name="create and zip encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption program">
+	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption-program">
 		<launch4j>
 			<config headerType="gui" outfile="encryption.exe" dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico">
 				<jre minVersion="${min.jre.version}">
@@ -148,9 +143,7 @@
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="creates associated .jar file">
@@ -168,10 +161,10 @@
 	</target>
 
 	<!-- zip-hangman-jar w/ resources target -->
-	<target name="zip-hangman-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
+	<target name="zip-hangman-jar-w/resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
 		<copy todir="${dist.dir}/hangman-tmp">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
-		    <fileset file="secret.txt" />
+			<fileset file="secret.txt" />
 		</copy>
 		<copy todir="${dist.dir}/hangman-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
@@ -181,7 +174,7 @@
 	</target>
 
 	<!-- create and zip hangman.exe target -->
-	<target name="create and zip hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman">
+	<target name="create-and-zip-hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman">
 		<launch4j>
 			<config headerType="gui" outfile="hangman.exe" dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico">
 				<jre minVersion="${min.jre.version}">
@@ -205,7 +198,7 @@
 	</target>
 
 	<!-- create stopwatch.exe target -->
-	<target name="create stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch">
+	<target name="create-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch">
 		<launch4j>
 			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
 				<jre minVersion="${min.jre.version}">
@@ -220,14 +213,12 @@
 	</target>
 
 	<!-- targets for guessing game and advanced guessing game -->
-	<target name="compile-guessing game" description="compile program">
+	<target name="compile-number_game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch;${src.dir}/com/numbergame" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch;${src.dir}/com/numbergame" destdir="${classes.dir}" debug="true" classpath="${build.classpath}" compiler="modern" />
 	</target>
 
-	<target name="jar-guessing game" depends="compile-guessing game" description="creates associated .jar file">
+	<target name="jar-number_game" depends="compile-number_game" description="creates associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -241,11 +232,11 @@
 		</jar>
 	</target>
 
-	<target name="run-guessing game" depends="jar-guessing game" description="run the program">
+	<target name="run-number_game" depends="jar-number_game" description="run the program">
 		<java jar="${jar.dir}/guessingGame-${version.num}.jar" fork="true" />
 	</target>
 
-	<target name="jar-adv-guessing game" depends="compile-guessing game" description="creates associated .jar file">
+	<target name="jar-adv-number_game" depends="compile-number_game" description="creates associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -259,16 +250,14 @@
 		</jar>
 	</target>
 
-	<target name="run-adv-guessing game" depends="jar-adv-guessing game" description="run the program">
+	<target name="run-adv-number_game" depends="jar-adv-number_game" description="run the program">
 		<java jar="${jar.dir}/adv-guessingGame-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- targets for ping pong game -->
 	<target name="compile-pong" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-pong" depends="compile-pong" description="creates associated .jar file">
@@ -286,7 +275,7 @@
 	</target>
 
 	<!-- zip guessing game -->
-	<target name="zip-guessing-game-jar w/ resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-guessing game">
+	<target name="zip-guessing-game-jar-w/resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame-tmp" />
 		<copy todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg" />
@@ -299,7 +288,7 @@
 	</target>
 
 	<!-- create and zip number game.exe target -->
-	<target name="create and zip number_game.exe" description="creates .exe file for number game" depends="jar-guessing game, jar-adv-guessing game">
+	<target name="create-and-zip-number_game.exe" description="creates .exe file for number game" depends="jar-number_game, jar-adv-number_game">
 		<launch4j>
 			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
 				<jre minVersion="${min.jre.version}">
@@ -343,9 +332,7 @@
 	<!-- targets for stopwatch -->
 	<target name="compile-stopwatch" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="creates associated .jar file">
@@ -362,14 +349,12 @@
 	</target>
 
 	<!-- targets for tic tac toe -->
-	<target name="compile-tic tac toe" description="compile program">
+	<target name="compile-tic-tac-toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
-	<target name="jar-tic tac toe" depends="compile-tic tac toe" description="creates associated .jar file">
+	<target name="jar-tic-tac-toe" depends="compile-tic-tac-toe" description="creates associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -379,12 +364,12 @@
 		</jar>
 	</target>
 
-	<target name="run-tic tac toe" depends="jar-tic tac toe" description="run the program">
+	<target name="run-tic tac toe" depends="jar-tic-tac-toe" description="run the program">
 		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip tic tac toe program -->
-	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic tac toe">
+	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic-tac-toe">
 		<copy todir="${dist.dir}/ticTacToe-tmp">
 			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
 		</copy>
@@ -396,7 +381,7 @@
 	</target>
 
 	<!-- create tic-tac-toe.exe target -->
-	<target name="create and zip tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic tac toe">
+	<target name="create and zip tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe">
 		<launch4j>
 			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico">
 				<jre minVersion="${min.jre.version}">
@@ -419,14 +404,12 @@
 	</target>
 
 	<!-- targets for wiggle mouse -->
-	<target name="compile-wiggle mouse" description="compile program">
+	<target name="compile-wiggle-mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
-	<target name="jar-wiggle mouse" depends="compile-wiggle mouse" description="creates associated .jar file">
+	<target name="jar-wiggle-mouse" depends="compile-wiggle-mouse" description="creates associated .jar file">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
 			<manifest>
@@ -436,12 +419,12 @@
 		</jar>
 	</target>
 
-	<target name="run-wiggle mouse" depends="jar-wiggle mouse" description="run the program">
+	<target name="run-wiggle-mouse" depends="jar-wiggle-mouse" description="run the program">
 		<java jar="${jar.dir}/wigglemouse-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip wigglemouse program -->
-	<target name="zip-wigglemouse-jar w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle mouse">
+	<target name="zip-wigglemouse-jar-w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle-mouse">
 		<copy todir="${dist.dir}/wigglemouse-tmp">
 			<fileset dir="${jar.dir}" includes="wigglemouse-${version.num}.jar" />
 		</copy>
@@ -453,7 +436,7 @@
 	</target>
 
 	<!-- create wiggle mouse.exe target -->
-	<target name="create and zip wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle mouse">
+	<target name="create-and-zip-wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle-mouse">
 		<launch4j>
 			<config headerType="gui" outfile="wigglemouse.exe" dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico">
 				<jre minVersion="${min.jre.version}">
@@ -476,7 +459,7 @@
 	</target>
 
 	<!-- create and zip clock.exe target -->
-	<target name="create and zip clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock">
+	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock">
 		<launch4j>
 			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico">
 				<jre minVersion="${min.jre.version}">
@@ -505,7 +488,7 @@
 	</target>
 
 	<!-- create and zip pong.exe target -->
-	<target name="create and zip pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong">
+	<target name="create-and-zip-pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong">
 		<launch4j>
 			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico">
 				<jre minVersion="${min.jre.version}">
@@ -530,9 +513,7 @@
 	<!-- targets for clock -->
 	<target name="compile-clock" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" classpath="${build.classpath}" compiler="modern">
-			<compilerarg value="-g:lines" />
-		</javac>
+		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-clock" depends="compile-clock" description="creates associated .jar file">
@@ -553,13 +534,13 @@
 	</target>
 
 	<!-- javadoc target -->
-	<target name="create javadoc for all programs" description="generate Javadoc for applications">
+	<target name="create-project-javadoc" description="generate Javadoc for all applications">
 		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" classpath="${build.classpath}" docencoding="UTF-8" author="true" version="true" windowtitle="My API Page" />
 	</target>
 
 	<!-- unjar target -->
-	<target name="unjar all jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption program,
-		jar-hangman, jar-guessing game, jar-tic tac toe, jar-wiggle mouse">
+	<target name="unjar-all-jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption-program,
+		jar-hangman, jar-number_game, jar-tic-tac-toe, jar-wiggle-mouse">
 
 		<unjar dest="${unjar.dir}">
 			<fileset dir="${jar.dir}" includes="*.jar" />

@@ -162,7 +162,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit && text.matches("\\d+") || text.isEmpty()) {
+				if ((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit && text.matches("^(?!0)\\d*$") || text.isEmpty()) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -209,19 +209,19 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Sets the colors for when hovering over a button
 	 *
 	 * @param argBtn the button on which to apply the hover effect
-	 * @param btnHoverColor the color for when hovering
-	 * @param btnNoHoverColor the color for when not hovering
+	 * @param argBtnHoverColor the color for when hovering
+	 * @param argBtnNoHoverColor the color for when not hovering
 	 */
-	private void setBtnHoverColor(JButton argBtn, Color btnHoverColor, Color btnNoHoverColor) {
+	private void setBtnHoverColor(JButton argBtn, Color argBtnHoverColor, Color argBtnNoHoverColor) {
 		argBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				argBtn.setBackground(btnHoverColor);
+				argBtn.setBackground(argBtnHoverColor);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				argBtn.setBackground(btnNoHoverColor);
+				argBtn.setBackground(argBtnNoHoverColor);
 			}
 		});
 	}
@@ -231,11 +231,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	protected void setTimeCounterImpl() {
 		timeCounter = new StopWatch(300, 110); // launch the stop watch
+
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		timeCounter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
 
-		// if we minimize the game's winner window frame then minimize the other main game frame too
+		// if we minimize the main window frame then minimize the counter window frame too
 		window.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowIconified(WindowEvent e) {
@@ -245,6 +246,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		    @Override
 		    public void windowDeiconified(WindowEvent e) {
 		    	timeCounter.setExtendedState(Frame.NORMAL);
+		    	timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
+				textFieldGuessTheNumber.requestFocus();
 		    }
 		});
 
@@ -327,7 +330,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			timeCounter.setVisible(true);
 
 			// make the second GUI (timer) always appear to the right of the first GUI
-			timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
+			timeCounter.setExtendedState(Frame.NORMAL);
+	    	timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
+			textFieldGuessTheNumber.requestFocus();
 		}
 
 		// start the timer from 0

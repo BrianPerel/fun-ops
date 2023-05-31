@@ -1,7 +1,9 @@
 package com.encryption;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,6 +96,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 		data = new StringBuilder();
 
+		// create an array of 4 buttons for the GUI
 		JButton[] buttons = new JButton[4];
 
 		btnLoadFile = buttons[0] = new JButton("Load file");
@@ -192,8 +196,21 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	 * JFileChooser file browse menu for GUI
 	 */
 	private void fileBrowse() {
-		JFileChooser fileChooser = new JFileChooser();
-		// browse menu's default look in location is set to the user's home (C:\Users\example)
+		// Create a fileChooser object while setting a custom icon for the file chooser GUI
+	    JFileChooser fileChooser = new JFileChooser() {
+
+	    	@Serial
+	    	private static final long serialVersionUID = -523045838013256864L;
+
+			@Override
+	        protected JDialog createDialog(Component parent) throws HeadlessException {
+	            JDialog dialog = super.createDialog(parent);
+	            dialog.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage());
+	            return dialog;
+	        }
+	    };
+
+	    // browse menu's default look in location is set to the user's home (C:\Users\example)
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         fileChooser.setDialogTitle("Browse for file to encrypt");
         fileChooser.setFileFilter(new FileNameExtensionFilter("Text", "txt"));

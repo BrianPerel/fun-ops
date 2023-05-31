@@ -53,6 +53,7 @@ public class Clock implements ActionListener {
 	private String alarmTimeString;
 	private boolean hasAlarmRung;
 	private JCheckBoxMenuItem menuOption;
+	private JCheckBox militaryTimeCheckBox;
 	private Optional<String> alarmTime = Optional.ofNullable(null);
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
@@ -72,6 +73,7 @@ public class Clock implements ActionListener {
 	 */
 	public Clock() {
 		createGui();
+		getTime(militaryTimeCheckBox);
 	}
 
 	private void createGui() {
@@ -141,7 +143,7 @@ public class Clock implements ActionListener {
 		lblClockTime.setBounds(32, 23, 365, 123);
 		window.getContentPane().add(lblClockTime);
 
-		JCheckBox militaryTimeCheckBox = new JCheckBox("24 hour clock");
+		militaryTimeCheckBox = new JCheckBox("24 hour clock");
 		militaryTimeCheckBox.setBounds(310, 172, 97, 25);
 		militaryTimeCheckBox.setBackground(BLACK);
 		militaryTimeCheckBox.setForeground(WHITE);
@@ -153,8 +155,6 @@ public class Clock implements ActionListener {
 		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		window.setVisible(true);
-
-		getTime(militaryTimeCheckBox);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class Clock implements ActionListener {
 			}
 			else if (!".EMPTY".equals(alarmTimeString)) {
 				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(window, "Please enter time of the appropriate format (x:xx AM or PM)",
+				JOptionPane.showMessageDialog(window, "Please enter time of the appropriate format (X:XX AM or PM)",
 						"Error setting alarm", JOptionPane.INFORMATION_MESSAGE);
 			}
 
@@ -199,12 +199,12 @@ public class Clock implements ActionListener {
 	 */
 	private void getTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 
-		String time = "";
-
 		while (true) {
-			time = obtainFormattedTime(argMilitaryTimeFormatCheckBox);
+			createFormattedTime(argMilitaryTimeFormatCheckBox);
 
-			if (alarmTime.isPresent() && !hasAlarmRung && (time.equalsIgnoreCase(alarmTimeString))) {
+			String currentUnformattedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")).substring(1);
+
+			if (alarmTime.isPresent() && !hasAlarmRung && currentUnformattedTime.equalsIgnoreCase(alarmTimeString)) {
 				ringAlarm();
 			}
 
@@ -225,7 +225,7 @@ public class Clock implements ActionListener {
 	 * @param argMilitaryTimeFormatCheckBox check box to request 24 hour format time
 	 * @return the formatted current time
 	 */
-	private String obtainFormattedTime(JCheckBox argMilitaryTimeFormatCheckBox) {
+	private void createFormattedTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 		String time = LocalDateTime.now()
 				.format(DateTimeFormatter.ofPattern((argMilitaryTimeFormatCheckBox.isSelected()) ? "HH:mm" : "hh:mm a"));
 
@@ -236,7 +236,6 @@ public class Clock implements ActionListener {
 		}
 
 		lblClockTime.setText(time);
-		return time;
 	}
 
 	/**

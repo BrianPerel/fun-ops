@@ -195,10 +195,10 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			// first letter of name should be capitalized, and the rest of the name should
 			// be in lowercase
 
-			String playerOneName = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
-			String playerTwoNameString = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
+			String capitalizedNameOne = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
+			String capitalizedNameTwo = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
 
-			ticTacToeGame.setPlayerNames(playerOneName, playerTwoNameString);
+			ticTacToeGame.setPlayerNames(capitalizedNameOne, capitalizedNameTwo);
 
 			LOG.info(MessageFormat.format("Player 1: {0}, Player 2: {1}", ticTacToeGame.getPlayerOnesName(), ticTacToeGame.getPlayerTwosName()));
 
@@ -222,9 +222,9 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if one or both name textfields are empty
 		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 2)
+			nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
 		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
-		    nameTwoTextField.setBorder(nameTwo.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 2)
+		    nameTwoTextField.setBorder(nameTwo.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
 		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
 
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
@@ -234,8 +234,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		else if (ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
 				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo)) {
 			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					String.format("Please don't use '%s' or '%s' as a name", ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER), ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
@@ -246,8 +246,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		// if first player's name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
 			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 			nameOneTextField.setText("");

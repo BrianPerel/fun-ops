@@ -57,7 +57,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	protected static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
 	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
 	protected static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
-	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked
+	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked or pressed
 	protected static JFormattedTextField textFieldUserInput;
 	protected static boolean hasUserEnteredZero;
 
@@ -72,7 +72,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
-		new MyCalculatorGui();
+		MyCalculatorGui calculator = new MyCalculatorGui();
+		calculator.window.setVisible(true);
 	}
 
 	/**
@@ -80,7 +81,6 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 */
 	public MyCalculatorGui() {
 		createGui();
-		window.setVisible(true);
 	}
 
 	private void createGui() {
@@ -321,8 +321,9 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		switch(ae.getActionCommand()) {
 		// backspace symbol
 		case "\u232B":
-			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-			if (argUserInput.length() == 1) {
+			// if you backspace with only 1 digit in the input box, instead of displaying blank we will display '0'
+			// or if you backspace with a negative single digit number (ex. -1) to make just '-' we want to prevent this and instead display '0'
+			if (argUserInput.trim().length() == 1 || (argUserInput.trim().startsWith("-") && argUserInput.trim().length() == 2)) {
 				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 				break;
 			}
@@ -560,7 +561,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 			case VK_BACK_SPACE:
 				// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-				if (textFieldUserInput.getText().length() == 1) {
+				// or if you backspace with a negative single digit number (ex. -1) to make just '-' we want to prevent this and instead display '0'
+				if (textFieldUserInput.getText().trim().length() == 1 || (textFieldUserInput.getText().trim().startsWith("-") && textFieldUserInput.getText().trim().length() == 2)) {
 					textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 					break;
 				}
@@ -574,7 +576,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			case VK_PERIOD:
 				// adds a decimal point
 				if (!textFieldUserInput.getText().contains(".")) {
-					textFieldUserInput.setText(textFieldUserInput.getText() + ".");
+					textFieldUserInput.setText(textFieldUserInput.getText()
+						+ ((!textFieldUserInput.getText().trim().isEmpty()) ? "." : "0."));
 				}
 				break;
 

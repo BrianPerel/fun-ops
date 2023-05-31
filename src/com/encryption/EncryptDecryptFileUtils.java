@@ -87,7 +87,7 @@ public class EncryptDecryptFileUtils {
 	private static boolean loadFile(String fileToLoad) {
 
 		// append .txt to the filename entered if entered without .txt extension
-		if (!fileToLoad.endsWith(".txt")) {
+		if (!(fileToLoad.endsWith(".txt") || fileToLoad.endsWith(".TXT"))) {
 			fileToLoad += ".txt";
 			textFieldLoading.setText(fileToLoad);
 		}
@@ -97,8 +97,9 @@ public class EncryptDecryptFileUtils {
 			return true;
 		}
 		else {
-			 JOptionPane.showMessageDialog(null, "File is not accessible", "Error", JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "File couldn't be found or is not accessible", "Error", JOptionPane.ERROR_MESSAGE);
 			 Toolkit.getDefaultToolkit().beep();
+			 textFieldLoading.selectAll();
 		}
 
 		return false;

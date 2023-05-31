@@ -4,11 +4,14 @@ import static java.awt.Color.GREEN;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +81,7 @@ public class PvPGameBoard implements ActionListener {
 		ticTacToeGame.isGameOver = false; // need to set variable to false here to avoid name label not changing bug
 
 		tile = new String[9];
-		gameBoardTiles = new JButton[9];
+		gameBoardTiles = new JButton[tile.length];
 		JSeparator[] gameBoardSeparators = new JSeparator[4]; // game board divider lines (separators)
 
 		// assigning a background image to the app
@@ -144,6 +147,20 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardSeparators[1].setLocation(63, 220);
 		gameBoardSeparators[2].setLocation(148, 64);
 		gameBoardSeparators[3].setLocation(237, 64);
+
+		// if we minimize the game's winner window frame then minimize the other main game frame too
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowIconified(WindowEvent e) {
+				MatchOver.window.setExtendedState(Frame.ICONIFIED);
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				MatchOver.window.setExtendedState(Frame.NORMAL);
+				MatchOver.window.setLocation(window.getX() + window.getWidth(), window.getY());
+			}
+		});
 
 		window.setResizable(false);
 		window.setSize(399, 358);
