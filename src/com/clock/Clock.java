@@ -133,13 +133,14 @@ public class Clock implements ActionListener {
 
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf")).deriveFont(Font.BOLD, 110);
+			lblClockTime.setForeground(Color.GREEN);
 		} catch (FontFormatException | IOException e) {
-			font = custFont;
+			lblClockTime.setForeground(Color.BLACK);
+			font = new Font("Bookman Old Style", Font.PLAIN, 70);
 			e.printStackTrace();
 		}
 
 		lblClockTime.setFont(font);
-		lblClockTime.setForeground(Color.GREEN);
 		lblClockTime.setBounds(32, 23, 365, 123);
 		window.getContentPane().add(lblClockTime);
 
@@ -165,7 +166,7 @@ public class Clock implements ActionListener {
 
 			// (?i) makes the replaceAll() check for the text while being case-insensitive
 			// removes optional, [, ] text/symbols
-			alarmTimeString = alarmTime.toString().replaceAll("(?i)optional", "").replace("[", "").replace("]", "").trim().toUpperCase();
+			alarmTimeString = alarmTime.toString().replaceAll("(?i)optional|\\[|\\]", "").trim().toUpperCase();
 
 			if (alarmTime.isPresent() && !alarmTimeString.isBlank()
 					&& (alarmTimeString.length() == 7 || alarmTimeString.length() == 8)) {
@@ -204,6 +205,7 @@ public class Clock implements ActionListener {
 
 			String currentUnformattedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")).substring(1);
 
+			// since the alarm time set should only be in am/pm time value, compare time using unformatted (am/pm) only time
 			if (alarmTime.isPresent() && !hasAlarmRung && currentUnformattedTime.equalsIgnoreCase(alarmTimeString)) {
 				ringAlarm();
 			}

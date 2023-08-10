@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE xml>
-<project name="fun-ops" default="clean" basedir=".">
+<project name="fun-ops" default="create-ALL-project-executables" basedir=".">
 
 	<description>
 		Custom Ant Build Script for all fun-ops apps. Includes compile, jar,
@@ -13,20 +13,64 @@
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
 
+	<!-- macrodef for creating a wrapped jar executable file-->
+	<macrodef name="launch4j-create-exe-task" description="creates an exe file from the provided content">
+		<attribute name="outfile" />
+		<attribute name="jarPath" />
+		<attribute name="icon" />
+
+		<sequential>
+			<launch4j>
+				<config headerType="gui" outfile="@{outfile}" dontWrapJar="false" jarPath="@{jarPath}" icon="@{icon}">
+					<jre minVersion="${min.jre.version}">
+						<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+						<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+					</jre>
+					<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
+				</config>
+			</launch4j>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="move-zip-delete-task" description="task to perform move, zip, and delete operations on a provided app and it's resources">
+		<attribute name="app-name" />
+
+		<sequential>
+			<move file="@{app-name}.exe" todir="${release.dir}/@{app-name}-tmp" />
+			<zip destfile="${release.dir}/@{app-name}.zip" basedir="${release.dir}/@{app-name}-tmp" update="true" />
+			<delete dir="${release.dir}/@{app-name}-tmp" />
+		</sequential>
+	</macrodef>
+
 	<!-- dump some basic environment-related info -->
 	<tstamp>
 		<format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US" />
 	</tstamp>
 
-	<echo message="Current date and time: ${TODAY_US}${line.separator}${ant.version}" level="info" />
+	<echo message="Current date and time: ${TODAY_US}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
 
-	<!-- reference id for classpath holding references to all 3rd party jars in project
-	If you add any 3rd party jars to use in your project, be sure to add their file locations here  -->
+	<!-- path reference id for classpath holding references to all 3rd party jars in project
+	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
 		<fileset dir="lib">
 			<include name="*.jar" />
 		</fileset>
 	</path>
+
+	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
+		<available file="${user.home}/Documents/keys/signjar-key.properties" property="signjar.key.properties.found" />
+	</target>
+
+	<target name="load-signjar-properties-fail" unless="signjar.key.properties.found">
+		<echo message="Could not load signjar-key.properties, skipping the sign jar process" />
+	</target>
+
+	<target name="sign-jar" depends="load-signjar-properties, load-signjar-properties-fail" if="signjar.key.properties.found" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
+		<property file="${user.home}/Documents/keys/signjar-key.properties" />
+		<echo message="signjar-key.properties file has been loaded" />
+		<signjar jar="${jarPath}" keystore="${keystore}" storepass="${keystore.password}" alias="${key.alias}" keypass="${key.password}" />
+		<echo message="provided jar file '${jarPath}' has been signed" />
+	</target>
 
 	<!-- clean -->
 	<target name="clean" description="cleans all build generated folders">
@@ -35,17 +79,17 @@
 	</target>
 
 	<!-- target to create all project executables -->
-	<target name="create-ALL-project-executables" description="creates all project executables" depends="jar-calculator, jar-encryption-program,
+	<target name="create-ALL-project-executables" description="creates all project executables" depends="clean, jar-calculator, jar-encryption,
 			jar-clock, jar-number_game, jar-hangman, jar-pong, jar-stopwatch, jar-tic-tac-toe, jar-wiggle-mouse">
 
-		<antcall target="create-calculator.exe" />
-		<antcall target="create-stopwatch.exe" />
+		<antcall target="create-and-zip-calculator.exe" />
+		<antcall target="create-and-zip-stopwatch.exe" />
 		<antcall target="create-and-zip-encryption.exe" />
 		<antcall target="create-and-zip-clock.exe" />
 		<antcall target="create-and-zip-number_game.exe" />
 		<antcall target="create-and-zip-hangman.exe" />
 		<antcall target="create-and-zip-pong.exe" />
-		<antcall target="create and zip tic-tac-toe.exe" />
+		<antcall target="create-and-zip-tic-tac-toe.exe" />
 		<antcall target="create-and-zip-wigglemouse.exe" />
 	</target>
 
@@ -56,12 +100,19 @@
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="creates associated .jar file for the specified application">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/calculator-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/calculator-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/calculator/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/calculator-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-calculator" depends="jar-calculator" description="run the program">
@@ -69,75 +120,57 @@
 	</target>
 
 	<!-- create calculator.exe target -->
-	<target name="create-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator">
-		<launch4j>
-			<config headerType="gui" outfile="calculator.exe" dontWrapJar="false" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="calculator.exe" todir="${release.dir}" />
+	<target name="create-and-zip-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator">
+		<launch4j-create-exe-task outfile="calculator.exe" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico" />
+		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="calculator" />
 	</target>
 
 	<!-- targets for encryption program -->
-	<target name="compile-encryption program" description="compile program">
+	<target name="compile-encryption-program" description="compile program">
 		<mkdir dir="${classes.dir}" />
 		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
 	</target>
 
-	<target name="jar-encryption-program" depends="compile-encryption program" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar" basedir="${classes.dir}">
+	<target name="jar-encryption" depends="compile-encryption-program" description="creates associated .jar file">
+		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/encryption/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/encryptDecrypt-${version.num}.jar" />
+		</antcall>
 	</target>
 
-	<target name="run-encryption-program" depends="jar-encryption-program" description="run the program">
+	<target name="run-encryption-program" depends="jar-encryption" description="run the program">
 		<java jar="${jar.dir}/encryptDecrypt-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip encryption program -->
-	<target name="zip-encryption-jar-w/resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption-program">
-		<copy todir="${dist.dir}/encryption-tmp">
+	<target name="zip-encryption-jar-with-resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption">
+		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="true">
 			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
-			<fileset file="secret.txt" />
 		</copy>
-		<copy todir="${dist.dir}/encryption-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
-		</copy>
+		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption-tmp" update="true" />
 		<delete dir="${dist.dir}/encryption-tmp" />
 	</target>
 
 	<!-- create and zip encryption.exe target -->
-	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption-program">
-		<launch4j>
-			<config headerType="gui" outfile="encryption.exe" dontWrapJar="false" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="encryption.exe" todir="${release.dir}/encryption-tmp" />
-		<copy todir="${release.dir}/encryption-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-encryption.jpg" />
-		</copy>
-		<copy todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="encryption.png" />
-		</copy>
-		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" />
-		<zip destfile="${release.dir}/encryption.zip" basedir="${release.dir}/encryption-tmp" update="true" />
-		<delete dir="${release.dir}/encryption-tmp" />
+	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption">
+		<launch4j-create-exe-task outfile="encryption.exe" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico" />
+		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="encryption" />
 	</target>
 
 	<!-- targets for hangman -->
@@ -147,80 +180,67 @@
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/hangman-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/hangman-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/hangman/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/hangman-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-hangman" depends="jar-hangman" description="run the program">
 		<java jar="${jar.dir}/hangman-${version.num}.jar" fork="true" />
 	</target>
 
-	<!-- zip-hangman-jar w/ resources target -->
-	<target name="zip-hangman-jar-w/resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
-		<copy todir="${dist.dir}/hangman-tmp">
+	<!-- zip-hangman-jar with resources target -->
+	<target name="zip-hangman-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
+		<copy file="hangman_words.txt" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="true">
 			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
-			<fileset file="secret.txt" />
 		</copy>
-		<copy todir="${dist.dir}/hangman-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
-		</copy>
+		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman-tmp" update="true" />
 		<delete dir="${dist.dir}/hangman-tmp" />
 	</target>
 
 	<!-- create and zip hangman.exe target -->
 	<target name="create-and-zip-hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman">
-		<launch4j>
-			<config headerType="gui" outfile="hangman.exe" dontWrapJar="false" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="hangman.exe" todir="${release.dir}/hangman-tmp" />
-		<copy todir="${release.dir}/hangman-tmp/res/graphics">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-hangman.jpg" />
-		</copy>
-		<copy todir="${release.dir}/hangman-tmp/res/graphics/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="hangman.png" />
-		</copy>
-		<copy file="hangman.txt" todir="${release.dir}/hangman-tmp" />
-		<zip destfile="${release.dir}/hangman.zip" basedir="${release.dir}/hangman-tmp" update="true" />
-		<delete dir="${release.dir}/hangman-tmp" />
+		<launch4j-create-exe-task outfile="hangman.exe" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico" />
+		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman-tmp/res/graphics" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="true" />
+		<copy file="hangman_words.txt" todir="${release.dir}/hangman-tmp" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="hangman" />
 	</target>
 
 	<!-- create stopwatch.exe target -->
-	<target name="create-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch">
-		<launch4j>
-			<config headerType="gui" outfile="stopwatch.exe" dontWrapJar="false" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="stopwatch.exe" todir="${release.dir}" />
+	<target name="create-and-zip-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch">
+		<launch4j-create-exe-task outfile="stopwatch.exe" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico" />
+		<copy file="${res.graphics.dir}/taskbar_icons/stopwatch.png" todir="${release.dir}/stopwatch-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="stopwatch" />
 	</target>
 
 	<!-- targets for guessing game and advanced guessing game -->
 	<target name="compile-number_game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch;${src.dir}/com/numbergame" destdir="${classes.dir}" debug="true" classpath="${build.classpath}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch; ${src.dir}/com/numbergame" destdir="${classes.dir}" debug="true" classpath="${build.classpath}" compiler="modern" />
 	</target>
 
 	<target name="jar-number_game" depends="compile-number_game" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/numbergame/*.class" />
+				<include name="com/stopwatch/*.class" />
+				<exclude name="com/numbergame/Advanced*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.GuessingGame" />
 				<attribute name="Resource1" value="${res.audio.dir}/chimes.wav" />
@@ -230,6 +250,10 @@
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/guessingGame-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-number_game" depends="jar-number_game" description="run the program">
@@ -237,8 +261,12 @@
 	</target>
 
 	<target name="jar-adv-number_game" depends="compile-number_game" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/numbergame/*.class" />
+				<include name="com/stopwatch/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.AdvancedGuessingGame" />
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
@@ -248,6 +276,10 @@
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/adv-guessingGame-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-adv-number_game" depends="jar-adv-number_game" description="run the program">
@@ -261,13 +293,20 @@
 	</target>
 
 	<target name="jar-pong" depends="compile-pong" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/pong-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/pong-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/pingpong/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/restart-sign.png" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/pong-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-pong" depends="jar-pong" description="run the program">
@@ -275,58 +314,36 @@
 	</target>
 
 	<!-- zip guessing game -->
-	<target name="zip-guessing-game-jar-w/resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
-		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame-tmp" />
+	<target name="zip-guessing-game-jar-with-resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
+		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame-tmp" overwrite="true" verbose="true" />
 		<copy todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-guess.jpg" />
+			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
-		<copy todir="${dist.dir}/guessingGame-tmp/${res.audio.dir}">
+		<copy todir="${dist.dir}/guessingGame-tmp/${res.audio.dir}" overwrite="true" verbose="true">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
+		<copy file="${res.graphics.dir}/taskbar_icons/guessing-game.png" todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame-tmp" update="true" />
 		<delete dir="${dist.dir}/guessingGame-tmp" />
 	</target>
 
-	<!-- create and zip number game.exe target -->
+	<!-- create and zip number_game.exe target -->
 	<target name="create-and-zip-number_game.exe" description="creates .exe file for number game" depends="jar-number_game, jar-adv-number_game">
-		<launch4j>
-			<config headerType="gui" outfile="number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
+		<launch4j-create-exe-task outfile="number_game.exe" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
+		<launch4j-create-exe-task outfile="adv_number_game.exe" jarPath="${jar.dir}/adv-guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
 
-		<launch4j>
-			<config headerType="gui" outfile="adv_number_game.exe" dontWrapJar="false" jarPath="${jar.dir}/adv-guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move todir="${release.dir}/number_game-tmp">
-			<filelist dir=".">
-				<file name="number_game.exe" />
-				<file name="adv_number_game.exe" />
-			</filelist>
-		</move>
-		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}">
+		<move file="adv_number_game.exe" todir="${release.dir}/number_game-tmp" />
+		<!-- because I'm packaging 2 executables into 1 folder I need this additional move statement -->
+		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}" overwrite="true" verbose="true">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
-		<copy todir="${release.dir}/number_game-tmp/${res.audio.dir}">
-			<fileset dir="${res.audio.dir}" includes="*" />
+		<copy todir="${release.dir}/number_game-tmp/${res.audio.dir}" overwrite="true" verbose="true">
+			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
-		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png" />
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="stopwatch.png" />
+		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true">
+			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png, stopwatch.png" />
 		</copy>
-		<zip destfile="${release.dir}/number_game.zip" basedir="${release.dir}/number_game-tmp" update="true" />
-		<delete dir="${release.dir}/number_game-tmp" />
+		<move-zip-delete-task app-name="number_game" />
 	</target>
 
 	<!-- targets for stopwatch -->
@@ -336,12 +353,19 @@
 	</target>
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/stopwatch-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/stopwatch-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/stopwatch/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/stopwatch-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-stopwatch" depends="jar-stopwatch" description="run the program">
@@ -355,52 +379,41 @@
 	</target>
 
 	<target name="jar-tic-tac-toe" depends="compile-tic-tac-toe" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/tic_tac_toe-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/tic-tac-toe-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/tictactoe/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/tic-tac-toe-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-tic tac toe" depends="jar-tic-tac-toe" description="run the program">
-		<java jar="${jar.dir}/tic_tac_toe-${version.num}.jar" fork="true" />
+		<java jar="${jar.dir}/tic-tac-toe-${version.num}.jar" fork="true" />
 	</target>
 
 	<!-- zip tic tac toe program -->
-	<target name="zip-tic_tac_toe-jar w/ resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic-tac-toe">
-		<copy todir="${dist.dir}/ticTacToe-tmp">
-			<fileset dir="${jar.dir}" includes="tic_tac_toe-${version.num}.jar" />
-		</copy>
-		<copy todir="${dist.dir}/ticTacToe-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
-		</copy>
-		<zip destfile="${dist.dir}/ticTacToe.zip" basedir="${dist.dir}/ticTacToe-tmp" update="true" />
-		<delete dir="${dist.dir}/ticTacToe-tmp" />
+	<target name="zip-tic-tac-toe-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic-tac-toe">
+		<copy file="${jar.dir}/tic-tac-toe-${version.num}.jar" todir="${dist.dir}/tic-tac-toe-tmp" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<zip destfile="${dist.dir}/tic-tac-toe.zip" basedir="${dist.dir}/tic-tac-toe-tmp" update="true" />
+		<delete dir="${dist.dir}/tic-tac-toe-tmp" />
 	</target>
 
 	<!-- create tic-tac-toe.exe target -->
-	<target name="create and zip tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe">
-		<launch4j>
-			<config headerType="gui" outfile="tic-tac-toe.exe" dontWrapJar="false" jarPath="${jar.dir}/tic_tac_toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="tic-tac-toe.exe" todir="${release.dir}/tic_tac_toe-tmp" />
-		<copy todir="${release.dir}/tic_tac_toe-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-tac.jpg" />
-		</copy>
-		<copy todir="${release.dir}/tic_tac_toe-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="tic-tac-toe.png" />
-		</copy>
-		<zip destfile="${release.dir}/tic_tac_toe.zip" basedir="${release.dir}/tic_tac_toe-tmp" update="true" />
-		<delete dir="${release.dir}/tic_tac_toe-tmp" />
+	<target name="create-and-zip-tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe">
+		<launch4j-create-exe-task outfile="tic-tac-toe.exe" jarPath="${jar.dir}/tic-tac-toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico" />
+		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="tic-tac-toe" />
 	</target>
 
 	<!-- targets for wiggle mouse -->
@@ -410,13 +423,20 @@
 	</target>
 
 	<target name="jar-wiggle-mouse" depends="compile-wiggle-mouse" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/wigglemouse/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
 				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake.jpg" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/wigglemouse-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-wiggle-mouse" depends="jar-wiggle-mouse" description="run the program">
@@ -424,90 +444,41 @@
 	</target>
 
 	<!-- zip wigglemouse program -->
-	<target name="zip-wigglemouse-jar-w/ resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle-mouse">
-		<copy todir="${dist.dir}/wigglemouse-tmp">
-			<fileset dir="${jar.dir}" includes="wigglemouse-${version.num}.jar" />
-		</copy>
-		<copy todir="${dist.dir}/wigglemouse-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="image-mouse-shake.jpg" />
-		</copy>
+	<target name="zip-wigglemouse-jar-with-resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle-mouse">
+		<copy file="${jar.dir}/wigglemouse-${version.num}.jar" todir="${dist.dir}/wigglemouse-tmp" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${dist.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse-tmp" update="true" />
 		<delete dir="${dist.dir}/wigglemouse-tmp" />
 	</target>
 
 	<!-- create wiggle mouse.exe target -->
 	<target name="create-and-zip-wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle-mouse">
-		<launch4j>
-			<config headerType="gui" outfile="wigglemouse.exe" dontWrapJar="false" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="wigglemouse.exe" todir="${release.dir}/wigglemouse-tmp" />
-		<copy todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="image-mouse-shake.jpg" />
-		</copy>
-		<copy todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="mouse.png" />
-		</copy>
-		<zip destfile="${release.dir}/wigglemouse.zip" basedir="${release.dir}/wigglemouse-tmp" update="true" />
-		<delete dir="${release.dir}/wigglemouse-tmp" />
+		<launch4j-create-exe-task outfile="wigglemouse.exe" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico" />
+		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/mouse.png" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="wigglemouse" />
 	</target>
 
 	<!-- create and zip clock.exe target -->
 	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock">
-		<launch4j>
-			<config headerType="gui" outfile="clock.exe" dontWrapJar="false" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="clock.exe" todir="${release.dir}/clock-tmp" />
-		<copy todir="${release.dir}/clock-tmp/res">
+		<launch4j-create-exe-task outfile="clock.exe" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico" />
+		<copy todir="${release.dir}/clock-tmp/res" overwrite="true" verbose="true">
 			<fileset dir="res" includes="fonts/" />
 		</copy>
-		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}">
+		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}" overwrite="true" verbose="true">
 			<fileset dir="${res.graphics.dir}" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
 		</copy>
-		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="clock.png" />
-		</copy>
-		<copy todir="${release.dir}/clock-tmp/${res.audio.dir}">
-			<fileset dir="${res.audio.dir}" includes="clock-alarm.wav" />
-		</copy>
-		<zip destfile="${release.dir}/clock.zip" basedir="${release.dir}/clock-tmp" update="true" />
-		<delete dir="${release.dir}/clock-tmp" />
+		<copy file="${res.graphics.dir}/taskbar_icons/clock.png" todir="${release.dir}/clock-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<copy file="${res.audio.dir}/clock-alarm.wav" todir="${release.dir}/clock-tmp/${res.audio.dir}" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="clock" />
 	</target>
 
 	<!-- create and zip pong.exe target -->
 	<target name="create-and-zip-pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong">
-		<launch4j>
-			<config headerType="gui" outfile="pong.exe" dontWrapJar="false" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico">
-				<jre minVersion="${min.jre.version}">
-					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
-					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
-				</jre>
-				<messages startupErr="Startup Error" bundledJreErr="Bundled JRE Error" jreVersionErr="JRE Version Error" launcherErr="Launcher Error" />
-			</config>
-		</launch4j>
-
-		<move file="pong.exe" todir="${release.dir}/pong-tmp" />
-		<copy todir="${release.dir}/pong-tmp/${res.graphics.dir}">
-			<fileset dir="${res.graphics.dir}" includes="restart-sign.png" />
-		</copy>
-		<copy todir="${release.dir}/pong-tmp/${res.graphics.dir}/taskbar_icons">
-			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="pingpong.png" />
-		</copy>
-		<zip destfile="${release.dir}/pong.zip" basedir="${release.dir}/pong-tmp" update="true" />
-		<delete dir="${release.dir}/pong-tmp" />
+		<launch4j-create-exe-task outfile="pong.exe" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico" />
+		<copy file="${res.graphics.dir}/restart-sign.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/pingpong.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<move-zip-delete-task app-name="pong" />
 	</target>
 
 	<!-- targets for clock -->
@@ -517,8 +488,11 @@
 	</target>
 
 	<target name="jar-clock" depends="compile-clock" description="creates associated .jar file">
-		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/clock-${version.num}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/clock-${version.num}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/clock/*.class" />
+			</fileset>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
 				<attribute name="Resource1" value="res/fonts/clock-font.tff" />
@@ -527,6 +501,10 @@
 				<attribute name="Resource4" value="${res.graphics.dir}/night-sky-stars-animation.gif" />
 			</manifest>
 		</jar>
+
+		<antcall target="sign-jar">
+			<param name="jarPath" value="${jar.dir}/clock-${version.num}.jar" />
+		</antcall>
 	</target>
 
 	<target name="run-clock" depends="jar-clock" description="run the program">
@@ -539,8 +517,9 @@
 	</target>
 
 	<!-- unjar target -->
-	<target name="unjar-all-jars" description="unjar all existing program jars" depends="jar-calculator, jar-encryption-program,
-		jar-hangman, jar-number_game, jar-tic-tac-toe, jar-wiggle-mouse">
+	<target name="unjar-all-jars" description="unjar all existing program jars" depends="clean, jar-calculator,
+		jar-clock, jar-encryption, jar-hangman, jar-number_game, jar-adv-number_game, jar-pong, jar-stopwatch,
+		jar-tic-tac-toe, jar-wiggle-mouse">
 
 		<unjar dest="${unjar.dir}">
 			<fileset dir="${jar.dir}" includes="*.jar" />

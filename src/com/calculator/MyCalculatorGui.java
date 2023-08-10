@@ -56,7 +56,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	protected static final String CURSOR_RIGHT_POSITION = String.format("%31s", "");
 	protected static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
 	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
-	protected static final DecimalFormat df = new DecimalFormat("#0"); // for whole number rounding
+	protected static DecimalFormat df = new DecimalFormat("#,###.###"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked or pressed
 	protected static JFormattedTextField textFieldUserInput;
 	protected static boolean hasUserEnteredZero;
@@ -125,7 +125,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		buttons[21] = new JButton("+/-");
 		buttons[22] = new JButton(".");
 		buttons[23] = new JButton("=");
-//		buttons[24] = new JButton(); // fixes an issue caused when removing frame.getContentPane().setLayout(null)
+		// buttons[24] = new JButton(); // fixes an issue caused when removing frame.getContentPane().setLayout(null)
 
 		for (JButton button : buttons) {
 			button.setFont(new Font("Bookman Old Style", Font.BOLD + Font.ITALIC, 13));
@@ -208,12 +208,16 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		final String userInput = textFieldUserInput.getText();
+		final String userInput = textFieldUserInput.getText().replace(",", "");
 
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
-		if (userInput.trim().length() <= 29) {
-			numberActionButtons(ae);
+		if (userInput.trim().length() <= 29 && !userInput.contains("%")) {
+			String numberClicked = numberActionButtons(ae);
+
+			if(!numberClicked.isEmpty()) {
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat(numberClicked))));
+			}
 		}
 
 		operatorActionButtons(ae);
@@ -229,7 +233,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case ".":
 			if (!userInput.contains(".")) {
-				textFieldUserInput.setText(userInput.concat("."));
+				textFieldUserInput.setText(df.format(Double.valueOf(userInput)).concat("."));
 			}
 			break;
 
@@ -237,8 +241,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			if (!CURSOR_RIGHT_POSITION.equals(userInput)) {
 				// save num in calc's memory then display the % sign on calc display to avoid exception
 				MyCalculator.setNumber(String.valueOf(helper.calculatePercentage(Double.parseDouble(userInput))));
-				textFieldUserInput.setText(userInput.concat("%"));
-
+				textFieldUserInput.setText(df.format(Double.valueOf(userInput)).concat("%"));
 				break;
 			}
 
@@ -251,8 +254,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				// prepended) else if number is negative, number becomes positive (minus is
 				// removed)
 				textFieldUserInput.setText(userInput.trim().startsWith("-")
-						? CURSOR_RIGHT_POSITION.concat(userInput.replace("-", ""))
-						: CURSOR_RIGHT_POSITION.concat("-".concat(userInput.trim())));
+						? CURSOR_RIGHT_POSITION.concat(df.format(Double.valueOf(userInput.replace("-", ""))))
+						: CURSOR_RIGHT_POSITION.concat(df.format(Double.valueOf("-".concat(userInput.trim())))));
 			}
 			break;
 
@@ -281,7 +284,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 		} // end switch
 
-		symbolActionButtons(ae, userInput);
+		symbolActionButtons(ae, userInput.replace(",", ""));
 	}
 
 	private void operatorActionButtons(ActionEvent ae) {
@@ -291,7 +294,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				operatorFlags[1] = true;
 				break;
 
-			// division symbol
+			// division symbol '÷'
 			case "\u00F7":
 				helper.setNumberText();
 				operatorFlags[0] = true;
@@ -330,7 +333,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 			// otherwise remove the last digit of the current string in text field
 			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
-					? argUserInput.substring(0, argUserInput.length() - 1)
+					? df.format(Double.valueOf(argUserInput.substring(0, argUserInput.length() - 1)))
 					: CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
@@ -379,65 +382,26 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private void numberActionButtons(ActionEvent ae) {
+	private String numberActionButtons(ActionEvent ae) {
+		return switch(ae.getActionCommand()) {
+			case "0" -> {
+		        if (!CURSOR_RIGHT_POSITION_W_ZERO.equals(textFieldUserInput.getText())) {
+		            hasUserEnteredZero = true;
+		        }
+		        yield "0";
+		    }
 
-		switch(ae.getActionCommand()) {
-		case "0":
-			// if 0 button is clicked and the main number entry textField box doesn't have the auto display 0
-			if (!textFieldUserInput.getText().equals(CURSOR_RIGHT_POSITION_W_ZERO)) {
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
-				hasUserEnteredZero = true;
-			}
-			break;
-
-		case "1":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("1"));
-			helper.removeIllegalZero();
-			break;
-
-		case "2":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("2"));
-			helper.removeIllegalZero();
-			break;
-
-		case "3":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("3"));
-			helper.removeIllegalZero();
-			break;
-
-		case "4":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("4"));
-			helper.removeIllegalZero();
-			break;
-
-		case "5":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("5"));
-			helper.removeIllegalZero();
-			break;
-
-		case "6":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("6"));
-			helper.removeIllegalZero();
-			break;
-
-		case "7":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("7"));
-			helper.removeIllegalZero();
-			break;
-
-		case "8":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("8"));
-			helper.removeIllegalZero();
-			break;
-
-		case "9":
-			textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
-			helper.removeIllegalZero();
-			break;
-
-		default:
-			break;
-		}
+			case "1" -> "1";
+			case "2" -> "2";
+			case "3" -> "3";
+			case "4" -> "4";
+			case "5" -> "5";
+			case "6" -> "6";
+			case "7" -> "7";
+			case "8" -> "8";
+			case "9" -> "9";
+			default -> "";
+		};
 	}
 
 	/**
@@ -479,111 +443,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
-		// bug fix: prevents user from prepending a zero before a number
-		if ("0".equals(textFieldUserInput.getText().trim())) {
-			textFieldUserInput.setText("");
-		}
+		// actions for numbers 0-9 buttons. No need for default case since all buttons are utilized as a case
+		numberKeyButtons(keyChar);
 
-		if (textFieldUserInput.getText().trim().length() <= 29) {
-			switch(keyChar) {
-			case VK_0:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("0"));
-				hasUserEnteredZero = true;
-				break;
-
-			case VK_1:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("1"));
-				break;
-
-			case VK_2:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("2"));
-				break;
-
-			case VK_3:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("3"));
-				break;
-
-			case VK_4:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("4"));
-				break;
-
-			case VK_5:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("5"));
-				break;
-
-			case VK_6:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("6"));
-				break;
-
-			case VK_7:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("7"));
-				break;
-
-			case VK_8:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("8"));
-				break;
-
-			case VK_9:
-				textFieldUserInput.setText(textFieldUserInput.getText().concat("9"));
-				break;
-
-			default:
-				break;
-			}
-		}
-
-		// actions for numbers 0-9 buttons. No need for default case since all buttons
-		// are utilized as a case
-		switch (keyChar) {
-			// actions for symbol buttons
-
-			case VK_SLASH: // VK_SLASH indicates '/' or division
-				helper.setNumberText();
-				operatorFlags[0] = true;
-				break;
-
-			// KeyEvent.VK_PLUS DOESN'T WORK - it was left for reference to see what it
-			// would look like in
-			// KeyEvent code
-			case VK_PLUS:
-				helper.setNumberText();
-				operatorFlags[3] = true;
-				break;
-
-			case VK_MINUS:
-				helper.setNumberText();
-				operatorFlags[2] = true;
-				break;
-
-			case VK_ENTER, VK_EQUALS:
-				helper.performEnterOrEquals();
-				break; // break statement for case enter key button
-
-			case VK_BACK_SPACE:
-				// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
-				// or if you backspace with a negative single digit number (ex. -1) to make just '-' we want to prevent this and instead display '0'
-				if (textFieldUserInput.getText().trim().length() == 1 || (textFieldUserInput.getText().trim().startsWith("-") && textFieldUserInput.getText().trim().length() == 2)) {
-					textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-					break;
-				}
-
-				// otherwise remove the last digit of the current string in text field
-				textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(textFieldUserInput.getText())
-						? textFieldUserInput.getText().substring(0, textFieldUserInput.getText().length() - 1)
-						: CURSOR_RIGHT_POSITION_W_ZERO);
-				break;
-
-			case VK_PERIOD:
-				// adds a decimal point
-				if (!textFieldUserInput.getText().contains(".")) {
-					textFieldUserInput.setText(textFieldUserInput.getText()
-						+ ((!textFieldUserInput.getText().trim().isEmpty()) ? "." : "0."));
-				}
-				break;
-
-			default:
-				break;
-		}
+		operatorKeyButtons(keyChar);
 
 		// use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY, KeyEvent.VK_ADD, and KeyEvent.C don't work.
 
@@ -595,6 +458,120 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		if (keyChar == '*' || keyChar == '+') {
 			helper.setNumberText();
 			operatorFlags[(keyChar == '*') ? 1 : 3] = true;
+		}
+	}
+
+	private void operatorKeyButtons(char keyChar) {
+
+		switch (keyChar) {
+		// actions for symbol buttons
+
+		case VK_SLASH: // VK_SLASH indicates '/' or division
+			helper.setNumberText();
+			operatorFlags[0] = true;
+			break;
+
+		// KeyEvent.VK_PLUS DOESN'T WORK - it was left for reference to see what it
+		// would look like in
+		// KeyEvent code
+		case VK_PLUS:
+			helper.setNumberText();
+			operatorFlags[3] = true;
+			break;
+
+		case VK_MINUS:
+			helper.setNumberText();
+			operatorFlags[2] = true;
+			break;
+
+		case VK_ENTER, VK_EQUALS:
+			helper.performEnterOrEquals();
+			break; // break statement for case enter key button
+
+		case VK_BACK_SPACE:
+			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
+			// or if you backspace with a negative single digit number (ex. -1) to make just '-' we want to prevent this and instead display '0'
+			if (textFieldUserInput.getText().trim().length() == 1 || (textFieldUserInput.getText().trim().startsWith("-") && textFieldUserInput.getText().trim().length() == 2)) {
+				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
+				break;
+			}
+
+			if(textFieldUserInput.getText().isBlank()) {
+				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
+				break;
+			}
+
+			// otherwise remove the last digit of the current string in text field
+			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(textFieldUserInput.getText())
+					? df.format(Double.valueOf(textFieldUserInput.getText().substring(0, textFieldUserInput.getText().length() - 1).replace(",", "")))
+					: CURSOR_RIGHT_POSITION_W_ZERO);
+			break;
+
+		case VK_PERIOD:
+			// adds a decimal point
+			if (!textFieldUserInput.getText().contains(".")) {
+				textFieldUserInput.setText(textFieldUserInput.getText()
+					+ ((!textFieldUserInput.getText().trim().isEmpty()) ? "." : "0."));
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void numberKeyButtons(char keyChar) {
+		// bug fix: prevents user from prepending a zero before a number
+		if ("0".equals(textFieldUserInput.getText().trim())) {
+			textFieldUserInput.setText("");
+		}
+
+		if (textFieldUserInput.getText().trim().length() <= 29) {
+			switch(keyChar) {
+			case VK_0:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("0"))));
+				hasUserEnteredZero = true;
+				break;
+
+			case VK_1:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("1"))));
+				break;
+
+			case VK_2:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("2"))));
+				break;
+
+			case VK_3:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("3"))));
+				break;
+
+			case VK_4:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("4"))));
+				break;
+
+			case VK_5:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("5"))));
+				break;
+
+			case VK_6:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("6"))));
+				break;
+
+			case VK_7:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("7"))));
+				break;
+
+			case VK_8:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("8"))));
+				break;
+
+			case VK_9:
+				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("9"))));
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 }

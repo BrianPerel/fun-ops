@@ -288,6 +288,17 @@ public class PvPGameBoard implements ActionListener {
 				button.setEnabled(false);
 			}
 
+			// this will prevent game board tiles from changing color when a game is won
+			for (int i = 0; i < gameBoardTiles.length; i++) {
+				final int x = i;
+				gameBoardTiles[i].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent evt) {
+						gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
+					}
+				});
+			}
+
 			new MatchOver(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!", ticTacToeGame);
 			LOG.info("Game Over! It's a draw!");
 		}

@@ -15,7 +15,7 @@ public class MyCalculator {
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to BigDecimal
 	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point values
-	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted	private static final DecimalFormat df = new DecimalFormat("#0.00"); // for 2 precision point rounding
+	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted	private static final DecimalFormat df = new DecimalFormat("#,###.##"); // for 2 decimal places precision rounding with commas
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 	private static BigDecimal answer;
 

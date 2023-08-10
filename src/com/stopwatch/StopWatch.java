@@ -63,10 +63,10 @@ public class StopWatch extends JFrame {
 		setContentPane(new StopWatchPanel());
 		setSize(x, y);
 		setVisible(true);
-		setLocation(390, 345); // position the GUI on the screen at custom location (x, y)
+	    setLocationRelativeTo(null);
 
 		// set minimum GUI size
-	    setMinimumSize(new Dimension(x, y));
+	    setMinimumSize(new Dimension(getWidth(), getHeight()));
 
 	    // changes the program's taskbar icon
 	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/stopwatch.png").getImage());

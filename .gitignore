@@ -13,6 +13,7 @@
 *.class
 *.zip
 *.txt
+*.jks
 
 !secret.txt
-!hangman.txt
+!hangman_words.txt

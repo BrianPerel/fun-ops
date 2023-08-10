@@ -2,6 +2,8 @@ package com.pingpong;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
@@ -42,9 +44,11 @@ public class PingPongGui extends JFrame {
 	}
 
 	private void createGui() {
+		this.setLayout(new FlowLayout());
+
 		this.add(new GameBoard());
 
-	    // changes the program's taskbar icon
+		// changes the program's taskbar icon
 	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/pingpong.png").getImage());
 
 		JMenuBar menuBar = new JMenuBar();
@@ -83,13 +87,11 @@ public class PingPongGui extends JFrame {
 			}
 		});
 
-		setResizable(false);
 		setBackground(DARK_GREEN);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		pack();
-		setVisible(true);
+		setSize(1200, 700);
+		setMinimumSize(new Dimension(getWidth(), getHeight()));
 		setLocationRelativeTo(null);
+		setVisible(true);
 	}
-
-
 }

@@ -14,6 +14,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable, Serializable {
@@ -167,6 +168,30 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 
 			createPongBall();
 		}
+
+		// player scores should not exceed 10000 as if it does then displaying of the scores will cause offset in GUI layout
+		if(gameScore.getPlayerOneScore() >= 10000 || gameScore.getPlayerTwoScore() >= 10000) {
+			gameOver();
+		}
+	}
+
+	private void gameOver() {
+		String message;
+
+		if(gameScore.getPlayerOneScore() > gameScore.getPlayerTwoScore()) {
+			message = "Player 1 wins!";
+		}
+		else if(gameScore.getPlayerTwoScore() > gameScore.getPlayerOneScore()) {
+			message = "Player 2 wins!";
+		}
+		else {
+			message = "It's a draw!";
+		}
+
+		JOptionPane.showMessageDialog(this, message, "Game Over",
+				JOptionPane.INFORMATION_MESSAGE);
+
+		System.exit(0);
 	}
 
 	private void edgeChecker(Paddle paddleNumber) {

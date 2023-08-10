@@ -150,7 +150,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		do {
 			int tmp = canPlayerWinInNextMove(tile);
 
-			if (tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(i -> i == tmp)) {
+			if (tmp != -99 && Arrays.stream(freeEmptyTiles).anyMatch(tileNumber -> tileNumber == tmp)) {
 				// loop through int array if tmp variable is in the array (meaning it's a free empty cell tile number, then randomCell gets tmp's value
     			randomCell = tmp;
     			break;

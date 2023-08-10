@@ -87,7 +87,7 @@ public class EncryptDecryptFileUtils {
 	private static boolean loadFile(String fileToLoad) {
 
 		// append .txt to the filename entered if entered without .txt extension
-		if (!(fileToLoad.endsWith(".txt") || fileToLoad.endsWith(".TXT"))) {
+		if (!(fileToLoad.toLowerCase().endsWith(".txt"))) {
 			fileToLoad += ".txt";
 			textFieldLoading.setText(fileToLoad);
 		}

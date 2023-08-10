@@ -8,7 +8,6 @@
 	<artifactId>src</artifactId> <!-- Project source folder name -->
 	<version>1.0-SNAPSHOT</version> <!-- Snapshot version ID -->
 
-	<name>My Project</name>
 	<description>A maven script for my fun-ops project</description>
 
 	<properties>

@@ -229,30 +229,28 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
+
+			return;
 		}
+
+		Toolkit.getDefaultToolkit().beep();
+		nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+		nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+		nameOneTextField.setText("");
+		nameTwoTextField.setText("");
+		nameOneTextField.requestFocus();
+
 		// if entered player 1 or 2's name equals 'PLAYER' or 'COMPUTER'
-		else if (ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
+		if (ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
 				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo)) {
-			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					String.format("Please don't use '%s' or '%s' as a name", ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER), ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
-			nameOneTextField.setText("");
-			nameTwoTextField.setText("");
-			nameOneTextField.requestFocus();
 		}
 		// if first player's name field equals the second one
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
-			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-			nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
-			nameOneTextField.setText("");
-			nameTwoTextField.setText("");
-			nameOneTextField.requestFocus();
 		}
 	}
 }

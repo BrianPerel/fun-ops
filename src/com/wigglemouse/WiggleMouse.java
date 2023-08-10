@@ -63,7 +63,7 @@ public class WiggleMouse {
 	    moveMouse(new Robot());
 	}
 
-	private void createGui() throws InterruptedException, AWTException {
+	private void createGui() {
 	    JFrame window = new JFrame("Wiggle mouse by B. Perel");
 	    window.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -165,7 +165,7 @@ public class WiggleMouse {
 		    int previousY = mouseYCoordinate;
 
 	        TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
-	        setMouseLocation();
+	        setMouseLocation(); // set the mouse coordinates again to see if the mouse was moved during the waiting period
 
 	        // Check if the mouse coordinates have changed
 	        if (mouseXCoordinate != previousX || mouseYCoordinate != previousY) {

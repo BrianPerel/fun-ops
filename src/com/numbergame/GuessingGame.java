@@ -48,6 +48,8 @@ import com.stopwatch.StopWatch.StopWatchPanel;
  * points. Score is kept for every session. The game also features a timer that
  * is enabled by default, but can be disabled by checking a box. <br>
  *
+ * NOTE: this program uses the stopwatch app
+ *
  * @author Brian Perel
  *
  */
@@ -251,6 +253,19 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		    }
 		});
 
+		// if we minimize the time counter frame then minimize the main window frame too
+		timeCounter.addWindowListener(new WindowAdapter() {
+			@Override
+		    public void windowIconified(WindowEvent e) {
+				window.setExtendedState(Frame.ICONIFIED);
+		    }
+
+		    @Override
+		    public void windowDeiconified(WindowEvent e) {
+		    	window.setExtendedState(Frame.NORMAL);
+		    }
+		});
+
 		// hide the stop watch buttons, as we won't be using them here
 		StopWatchPanel.BTN_START.setVisible(false);
 		StopWatchPanel.BTN_STOP.setVisible(false);
@@ -304,35 +319,21 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			}
 		}
 
-		// if you want to turn off the timer
-		if (keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
-			StopWatchPanel.BTN_STOP.doClick();
-
-			StopWatchPanel.WATCH.setEnabled(StopWatchPanel.WATCH.isEnabled());
-			closeTimerCheckBox.setSelected(StopWatchPanel.WATCH.isEnabled());
-
-			if (StopWatchPanel.WATCH.isEnabled()) {
-				StopWatchPanel.BTN_START.doClick(); // start the timer from 0
-			}
-		}
+		turnOffTimer(source, keyChar);
 
 		// prevent space key from being used as it was fading out a button and making 2 windows appear
 		if (keyChar != KeyEvent.VK_SPACE) {
 			performGuiButtonAction(source, isTimeout);
 		}
 
-		// reset the timer
-		StopWatchPanel.BTN_RESET.doClick();
-		StopWatchPanel.BTN_START.setEnabled(!closeTimerCheckBox.isSelected());
-		StopWatchPanel.WATCH.setEnabled(!closeTimerCheckBox.isSelected());
+		resetTimer();
 
+		// only execute this code if the timer GUI is minimized as if it's in an extended state (value of 1) then there's no need to bring it up again
 		if (closeTimerCheckBox.isSelected() || !closeTimerCheckBox.isSelected()) {
 			timeCounter.setVisible(true);
 
 			// make the second GUI (timer) always appear to the right of the first GUI
 			timeCounter.setExtendedState(Frame.NORMAL);
-	    	timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
-			textFieldGuessTheNumber.requestFocus();
 		}
 
 		// start the timer from 0
@@ -348,6 +349,28 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// fixes problem when after counter is disabled the focus is still on the counter
 		window.toFront();
+	}
+
+	private void turnOffTimer(Object source, char keyChar) {
+		// if you want to turn off the timer
+		if (keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
+			StopWatchPanel.BTN_STOP.doClick();
+
+			StopWatchPanel.WATCH.setEnabled(StopWatchPanel.WATCH.isEnabled());
+			closeTimerCheckBox.setSelected(StopWatchPanel.WATCH.isEnabled());
+
+			if (StopWatchPanel.WATCH.isEnabled()) {
+				StopWatchPanel.BTN_START.doClick(); // start the timer from 0
+			}
+		}
+	}
+
+	private void resetTimer() {
+	    StopWatchPanel.BTN_RESET.doClick();
+	    StopWatchPanel.BTN_START.setEnabled(!closeTimerCheckBox.isSelected());
+	    StopWatchPanel.WATCH.setEnabled(!closeTimerCheckBox.isSelected());
+
+	    timeCounter.setLocation(window.getX() + window.getWidth(), window.getY());
 	}
 
 	/**
@@ -437,6 +460,14 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(gameScore));
 		textFieldGuesses.setText(Integer.toString(++totalGuessesMade));
+
+		// player's score should not exceed 100000 as if it does then displaying of score will cause offset in GUI layout
+		if(gameScore >= 100000 || totalGuessesMade >= 100000) {
+			JOptionPane.showMessageDialog(window, "You win the game!", "Game Over",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			System.exit(0);
+		}
 	}
 
 	private void gameWonCompleteSession(final int MAX_LIMIT, boolean isTimeout) {
