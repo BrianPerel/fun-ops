@@ -58,16 +58,16 @@
 	</path>
 
 	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
-		<available file="${user.home}/Documents/keys/signjar-key.properties" property="signjar.key.properties.found" />
+		<available file="${user.home}\Documents\keys\signjar-key.properties" property="signjar.key.properties.found" />
 	</target>
 
-	<target name="load-signjar-properties-fail" unless="signjar.key.properties.found">
+	<target name="load-signjar-properties-fail" unless="${signjar.key.properties.found}">
 		<echo message="Could not load signjar-key.properties, skipping the sign jar process" />
 	</target>
 
-	<target name="sign-jar" depends="load-signjar-properties, load-signjar-properties-fail" if="signjar.key.properties.found" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
-		<property file="${user.home}/Documents/keys/signjar-key.properties" />
-		<echo message="signjar-key.properties file has been loaded" />
+	<target name="sign-jar" depends="load-signjar-properties, load-signjar-properties-fail" if="${signjar.key.properties.found}" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
+		<property name="signjar.properties.file" value="${user.home}\Documents\keys\signjar-key.properties" file="${user.home}\Documents\keys\signjar-key.properties" />
+		<echo message="${signjar.properties.file} file has been loaded" />
 		<signjar jar="${jarPath}" keystore="${keystore}" storepass="${keystore.password}" alias="${key.alias}" keypass="${key.password}" />
 		<echo message="provided jar file '${jarPath}' has been signed" />
 	</target>
@@ -107,6 +107,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -141,6 +142,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -188,6 +190,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -248,6 +251,7 @@
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -274,6 +278,7 @@
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -301,6 +306,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/restart-sign.png" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -360,6 +366,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -387,6 +394,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -431,6 +439,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
 				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake.jpg" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
@@ -499,6 +508,7 @@
 				<attribute name="Resource2" value="${res.audio.dir}/clock-alarm.wav" />
 				<attribute name="Resource3" value="${res.graphics.dir}/alarm-clock-sign.png" />
 				<attribute name="Resource4" value="${res.graphics.dir}/night-sky-stars-animation.gif" />
+				<attribute name="Release-Date" value="${TODAY_US}" />
 			</manifest>
 		</jar>
 
