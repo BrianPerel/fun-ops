@@ -428,7 +428,7 @@
 		<copy file="${jar.dir}/tic-tac-toe-${version.num}.jar" todir="${dist.dir}/tic-tac-toe-tmp" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
-		<zip destfile="${dist.dir}/tic-tac-toe.zip" basedir="${dist.dir}/tic-tac-toe-tmp" update="true" />
+		<zip destfile="${dist.dir}/tic_tac_toe.zip" basedir="${dist.dir}/tic-tac-toe-tmp" update="true" />
 		<delete dir="${dist.dir}/tic-tac-toe-tmp" />
 	</target>
 
