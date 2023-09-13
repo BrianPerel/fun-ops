@@ -2,7 +2,7 @@
 
 ## Project Description
 
-A collection of all sorts of different cross platform Java programs I am making that I find interesting. Project start date: Dec 11, 2020
+* A collection of all sorts of different cross-platform Java programs I am making that I find interesting. Project start date: Dec 11, 2020
 
 ## Other Notes
 
@@ -10,15 +10,17 @@ A collection of all sorts of different cross platform Java programs I am making 
 for the projects through ANT. In that case, make sure to download
 (https://sourceforge.net/projects/launch4j/files/launch4j) and paste a copy of the Launch4j folder into the root of the IDE workspace
 
+* Optionally, if you want the apps to be digitally signed during the jar process, make sure to create a signjar-key.properties file and place it under the directory Documents\keys\signjar-key.properties. The signjar-key.properties file must have the following properties defined with values: keystore, keystore.password, key.alias, kay.password
+
 * List of apps in project: Calculator, Data encryption-decryption, Stop watch, Guessing number game, Hangman, Tic tac toe, Wiggle Mouse, Clock, Ping Pong
 
 ## Author
 
-- Owner: Brian Perel
+* Owner: Brian Perel
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+* Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## Sample Screenshots
 

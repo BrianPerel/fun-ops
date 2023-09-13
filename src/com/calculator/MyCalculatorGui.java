@@ -29,7 +29,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -56,7 +55,6 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 	protected static final String CURSOR_RIGHT_POSITION = String.format("%31s", "");
 	protected static final String CURSOR_RIGHT_POSITION_W_ZERO = CURSOR_RIGHT_POSITION + "0";
 	private static final Color SUPER_LIGHT_GRAY = new Color(225, 225, 225);
-	protected static DecimalFormat df = new DecimalFormat("#,###.###"); // for whole number rounding
 	protected static boolean[] operatorFlags = new boolean[4]; // array to hold flags to be raised if a calculator operator is clicked or pressed
 	protected static JFormattedTextField textFieldUserInput;
 	protected static boolean hasUserEnteredZero;
@@ -216,7 +214,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			String numberClicked = numberActionButtons(ae);
 
 			if(!numberClicked.isEmpty()) {
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat(numberClicked))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat(numberClicked))));
 			}
 		}
 
@@ -233,15 +231,15 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 		case ".":
 			if (!userInput.contains(".")) {
-				textFieldUserInput.setText(df.format(Double.valueOf(userInput)).concat("."));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(userInput)).concat("."));
 			}
 			break;
 
 		case "%":
 			if (!CURSOR_RIGHT_POSITION.equals(userInput)) {
-				// save num in calc's memory then display the % sign on calc display to avoid exception
+				// save num in calculator's memory then display the % sign on calc display to avoid exception
 				MyCalculator.setNumber(String.valueOf(helper.calculatePercentage(Double.parseDouble(userInput))));
-				textFieldUserInput.setText(df.format(Double.valueOf(userInput)).concat("%"));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(userInput)).concat("%"));
 				break;
 			}
 
@@ -254,8 +252,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				// prepended) else if number is negative, number becomes positive (minus is
 				// removed)
 				textFieldUserInput.setText(userInput.trim().startsWith("-")
-						? CURSOR_RIGHT_POSITION.concat(df.format(Double.valueOf(userInput.replace("-", ""))))
-						: CURSOR_RIGHT_POSITION.concat(df.format(Double.valueOf("-".concat(userInput.trim())))));
+						? CURSOR_RIGHT_POSITION.concat(MyCalculator.df.format(Double.valueOf(userInput.replace("-", ""))))
+						: CURSOR_RIGHT_POSITION.concat(MyCalculator.df.format(Double.valueOf("-".concat(userInput.trim())))));
 			}
 			break;
 
@@ -271,7 +269,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
 				if ((value * 10) % 10 == 0) { // if value calculated is whole number
-					textFieldUserInput.setText(df.format(value)); // removes zero's after decimal point
+					textFieldUserInput.setText(MyCalculator.df.format(value)); // removes zero's after decimal point
 				}
 
 				break;
@@ -333,7 +331,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 			// otherwise remove the last digit of the current string in text field
 			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(argUserInput)
-					? df.format(Double.valueOf(argUserInput.substring(0, argUserInput.length() - 1)))
+					? MyCalculator.df.format(Double.valueOf(argUserInput.substring(0, argUserInput.length() - 1)))
 					: CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
@@ -348,7 +346,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
 				if ((valueSquared * 10) % 10 == 0) { // if value calculated is whole number
-					textFieldUserInput.setText(df.format(valueSquared)); // removes zero's after decimal point
+					textFieldUserInput.setText(MyCalculator.df.format(valueSquared)); // removes zero's after decimal point
 				}
 
 				break;
@@ -368,7 +366,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 				// if value is whole then don't display 0's after decimal; ex. instead of 25.00 display 25
 				if ((valueSquareRooted * 10) % 10 == 0) { // if value calculated is whole number
-					textFieldUserInput.setText(df.format(valueSquareRooted)); // removes zero's after decimal point
+					textFieldUserInput.setText(MyCalculator.df.format(valueSquareRooted)); // removes zero's after decimal point
 				}
 
 				break;
@@ -503,7 +501,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 
 			// otherwise remove the last digit of the current string in text field
 			textFieldUserInput.setText(!CURSOR_RIGHT_POSITION.equals(textFieldUserInput.getText())
-					? df.format(Double.valueOf(textFieldUserInput.getText().substring(0, textFieldUserInput.getText().length() - 1).replace(",", "")))
+					? MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().substring(0, textFieldUserInput.getText().length() - 1).replace(",", "")))
 					: CURSOR_RIGHT_POSITION_W_ZERO);
 			break;
 
@@ -529,44 +527,44 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		if (textFieldUserInput.getText().trim().length() <= 29) {
 			switch(keyChar) {
 			case VK_0:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("0"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("0"))));
 				hasUserEnteredZero = true;
 				break;
 
 			case VK_1:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("1"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("1"))));
 				break;
 
 			case VK_2:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("2"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("2"))));
 				break;
 
 			case VK_3:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("3"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("3"))));
 				break;
 
 			case VK_4:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("4"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("4"))));
 				break;
 
 			case VK_5:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("5"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("5"))));
 				break;
 
 			case VK_6:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("6"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("6"))));
 				break;
 
 			case VK_7:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("7"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("7"))));
 				break;
 
 			case VK_8:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("8"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("8"))));
 				break;
 
 			case VK_9:
-				textFieldUserInput.setText(df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("9"))));
+				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat("9"))));
 				break;
 
 			default:

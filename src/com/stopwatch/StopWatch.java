@@ -47,7 +47,7 @@ public class StopWatch extends JFrame {
 			e.printStackTrace();
 		}
 
-		new StopWatch(300, 150); // 300 x 150 = default requested window measurements (width x height)
+		new StopWatch(400, 200); // 300 x 150 = default requested window measurements (width x height)
 	}
 
 	/**
@@ -93,9 +93,6 @@ public class StopWatch extends JFrame {
 		private int minute;
 		private int second;
 		private int centisecond;
-	    private final Color lightGreenColor = new Color(0, 255, 128);
-	    private final Color lightRedColor = new Color(255, 98, 98);
-	    private final Color lightBlueColor = new Color(146, 205, 255);
 		private final Timer timer; // watch timer
 
 		/**
@@ -103,15 +100,11 @@ public class StopWatch extends JFrame {
 		 */
 		public StopWatchPanel() {
 		    setLayout(new BorderLayout());
-		    JPanel watchPanel = new JPanel();
-		    WATCH.setFont(new Font("Helvetica", Font.PLAIN, 36));
-		    watchPanel.add(WATCH);
-		    final Color lightGrayColor = new Color(225, 225, 225);
-		    watchPanel.setBackground(lightGrayColor);
-		    add(watchPanel, BorderLayout.NORTH);
 
-		    JPanel buttonPanel = new JPanel(new GridBagLayout());
-		    buttonPanel.setBackground(lightGrayColor);
+		    Color lightGreenColor = new Color(0, 255, 128);
+		    Color lightRedColor = new Color(255, 98, 98);
+		    Color lightBlueColor = new Color(146, 205, 255);
+
 		    BTN_START.setBackground(lightGreenColor);
 		    setHoverColor(BTN_START, lightGreenColor, new Color(0, 168, 49));
 		    BTN_STOP.setBackground(lightRedColor);
@@ -119,24 +112,35 @@ public class StopWatch extends JFrame {
 		    BTN_RESET.setBackground(lightBlueColor);
 		    setHoverColor(BTN_RESET, lightBlueColor, new Color(60, 125, 171));
 
-		    GridBagConstraints gbc = new GridBagConstraints();
-		    gbc.insets = new Insets(10, 10, 10, 10);
-		    gbc.anchor = GridBagConstraints.CENTER;
-		    gbc.fill = GridBagConstraints.HORIZONTAL;
+		    JPanel buttonPanel = new JPanel(new GridBagLayout());
+		    add(buttonPanel);
 
-		    gbc.weightx = 1;
-		    gbc.weighty = 1;
-		    buttonPanel.add(BTN_START, gbc);
+		    WATCH.setFont(new Font("Helvetica", Font.PLAIN, 36));
+		    final Color lightGrayColor = new Color(225, 225, 225);
+
+		    GridBagConstraints gbc = new GridBagConstraints();
+		    gbc.insets = new Insets(10, 0, 10, 0);
 
 		    gbc.gridx = 1;
 		    gbc.gridy = 0;
+		    buttonPanel.add(WATCH, gbc);
+
+		    gbc.gridx = 0;
+		    gbc.gridy = 1;
+		    BTN_START.setPreferredSize(new Dimension(90, 30));
+		    buttonPanel.add(BTN_START, gbc);
+
+		    gbc.gridx = 1;
+		    gbc.gridy = 1;
+		    BTN_STOP.setPreferredSize(new Dimension(90, 30));
 		    buttonPanel.add(BTN_STOP, gbc);
 
 		    gbc.gridx = 2;
-		    gbc.gridy = 0;
+		    gbc.gridy = 1;
+		    BTN_RESET.setPreferredSize(new Dimension(90, 30));
 		    buttonPanel.add(BTN_RESET, gbc);
 
-		    add(buttonPanel, BorderLayout.CENTER);
+		    buttonPanel.setBackground(lightGrayColor);
 
 		    ButtonListener buttonListener = new ButtonListener();
 		    timer = new Timer(0, buttonListener);
@@ -254,7 +258,7 @@ public class StopWatch extends JFrame {
 			 * Sets the watch's time
 			 */
 			private void setWatchText() {
-				if (WATCH.getText().compareTo("00:00:10") >= 0 && isRedFontEnabled) {
+				if (isRedFontEnabled && WATCH.getText().compareTo("00:00:10") >= 0) {
 					WATCH.setForeground(Color.RED);
 				}
 

@@ -17,6 +17,7 @@ public class Ball extends Rectangle {
 
 	private double xVelocityOfBall;
 	private double yVelocityOfBall;
+	private final Color ballColor;
 
 	/**
 	 * Creates the ball
@@ -24,11 +25,13 @@ public class Ball extends Rectangle {
 	 * @param y the y-coordinate of the ball
 	 * @param width the width of the ball
 	 * @param height the height of the ball
+	 * @param argColor the color of the ball
 	 */
-	public Ball(int x, int y, int width, int height) {
+	public Ball(int x, int y, int width, int height, Color argColor) {
 		super(x, y, width, height);
 		SecureRandom random = new SecureRandom(LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 		int randomXDirection = random.nextInt(2);
+		ballColor = argColor;
 
 		if (randomXDirection == 0) {
 			randomXDirection--;
@@ -100,7 +103,7 @@ public class Ball extends Rectangle {
 	 * @param g Graphics
 	 */
 	public void draw(Graphics g) {
-		g.setColor(Color.WHITE);
+		g.setColor(ballColor);
 		g.fillOval(x, y, width, height);
 	}
 

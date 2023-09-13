@@ -48,7 +48,7 @@ import com.stopwatch.StopWatch.StopWatchPanel;
  * points. Score is kept for every session. The game also features a timer that
  * is enabled by default, but can be disabled by checking a box. <br>
  *
- * NOTE: this program uses the stopwatch app
+ * NOTE: this program uses the fun-ops stopwatch app
  *
  * @author Brian Perel
  *
@@ -159,7 +159,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
-		// Use document filter to limit user entry box component input size
+		// Use document filter to limit user entry box component input size. Using a custom DocumentFilter to filter all invalid data input
 		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
@@ -296,7 +296,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	private void eventHandler(Object source, char keyChar) {
 
-		// if enter key was accidently pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
+		// if enter key was accidentally pressed and source doesn't match any of the existing buttons in the GUI frame then exit method
 		if (keyChar == KeyEvent.VK_ENTER && !(source.equals(btnGuess) || source.equals(btnPlayAgain)
 				|| source.equals(closeTimerCheckBox))) {
 			return;
@@ -377,7 +377,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Performs associated action of the GUI button that is clicked
 	 *
 	 * @param source the action event triggered
-	 * @param isTimeout boolean keeping track of whether or not timer has hit 10
+	 * @param isTimeout boolean keeping track of whether the timer has hit 10
 	 *                    seconds
 	 */
 	protected void performGuiButtonAction(Object source, boolean isTimeout) {
@@ -461,9 +461,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldScore.setText(Integer.toString(gameScore));
 		textFieldGuesses.setText(Integer.toString(++totalGuessesMade));
 
-		// player's score should not exceed 100000 as if it does then displaying of score will cause offset in GUI layout
+		// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout
 		if(gameScore >= 100000 || totalGuessesMade >= 100000) {
-			JOptionPane.showMessageDialog(window, "You win the game!", "Game Over",
+			JOptionPane.showMessageDialog(window, "You beat the game! You won 100,000 times", "Game Completed",
 					JOptionPane.INFORMATION_MESSAGE);
 
 			System.exit(0);

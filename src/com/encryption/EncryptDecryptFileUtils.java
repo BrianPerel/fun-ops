@@ -5,7 +5,7 @@ import static com.encryption.EncryptDecryptGui.ERROR;
 import static com.encryption.EncryptDecryptGui.data;
 import static com.encryption.EncryptDecryptGui.dataSet;
 import static com.encryption.EncryptDecryptGui.isFileLoaded;
-import static com.encryption.EncryptDecryptGui.textFieldLoading;
+import static com.encryption.EncryptDecryptGui.textFieldEnterFileName;
 import static com.encryption.EncryptDecryptGui.window;
 
 import java.awt.Color;
@@ -50,8 +50,8 @@ public class EncryptDecryptFileUtils {
 				}
 
 				JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
-				textFieldLoading.setEditable(false);
-				textFieldLoading.setBackground(Color.LIGHT_GRAY);
+				textFieldEnterFileName.setEditable(false);
+				textFieldEnterFileName.setBackground(Color.LIGHT_GRAY);
 				setFileName(file.toString());
 				dataSet = new EncryptDecryptOp(EncryptDecryptGui.data);
 				isFileLoaded = true;
@@ -69,9 +69,9 @@ public class EncryptDecryptFileUtils {
 			} catch (FileNotFoundException e) {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(EncryptDecryptGui.window.getComponent(0), "File not found", ERROR, JOptionPane.INFORMATION_MESSAGE);
-				textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
-				textFieldLoading.setForeground(Color.GRAY);
-				textFieldLoading.setCaretPosition(0);
+				textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+				textFieldEnterFileName.setForeground(Color.GRAY);
+				textFieldEnterFileName.setCaretPosition(0);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -89,7 +89,7 @@ public class EncryptDecryptFileUtils {
 		// append .txt to the filename entered if entered without .txt extension
 		if (!(fileToLoad.toLowerCase().endsWith(".txt"))) {
 			fileToLoad += ".txt";
-			textFieldLoading.setText(fileToLoad);
+			textFieldEnterFileName.setText(fileToLoad);
 		}
 
 		if (new File(fileToLoad).canRead()) {
@@ -99,7 +99,7 @@ public class EncryptDecryptFileUtils {
 		else {
 			 JOptionPane.showMessageDialog(null, "File couldn't be found or is not accessible", "Error", JOptionPane.ERROR_MESSAGE);
 			 Toolkit.getDefaultToolkit().beep();
-			 textFieldLoading.selectAll();
+			 textFieldEnterFileName.selectAll();
 		}
 
 		return false;

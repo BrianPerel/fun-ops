@@ -25,25 +25,25 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	private static final SecureRandom randomGenerator = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(CvPGameBoard.class.getName());
+	private static final String PLAYER_SHAPE = TicTacToe.PLAYER_ONE_SHAPE;
+	private static final String COMPUTER_SHAPE = TicTacToe.PLAYER_TWO_SHAPE;
 
 	private int randomCell;
 	private int[] freeEmptyTiles; // array of empty tiles to indicate to AI what buttons are available to click
 	private boolean invalidMoveSelected; // enforces the computer to not click if user clicked on an invalid tile
 	private boolean shouldRun; // enforces the computer to only do 1 click inside the new thread
-	private final String PLAYER_SHAPE = ticTacToeGame.PLAYER_ONE_SHAPE;
-	private final String COMPUTER_SHAPE = ticTacToeGame.PLAYER_TWO_SHAPE;
 
 	/**
 	 * Builds the game's GUI board
 	 *
-	 * @param argIsStart         boolean flag indicating whether or not the game has just
+	 * @param argIsStart         boolean flag indicating whether the game has just
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
 	 */
 	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
 		super(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
-		ticTacToeGame.setPlayerNames(ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER);
+		ticTacToeGame.setPlayerNames(TicTacToe.PLAYER, TicTacToe.COMPUTER);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn);
 
 		lblPlayersTurn.setText(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), PLAYER_SHAPE));
@@ -109,7 +109,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			 * doClick method's timeout gets checked inside the event thread, so it won't get released
 			 * until the parent calling method (actionPerformed) exits (and so the event thread can continue its event processing)
 			 *
-			 * relates to: https://stackoverflow.com/questions/9866456/doclick-not-releasing-keys-until-loop-ends
+			 * relates to: <a href="https://stackoverflow.com/questions/9866456/doclick-not-releasing-keys-until-loop-ends">Stack overflow post</a>
 			 */
 			new Thread(this::doClickThread).start();
 		}

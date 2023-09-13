@@ -52,6 +52,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * Create the application. Build all components
 	 */
 	public StartMenu() {
+		TicTacToe.customizeLogger(LOG);
 		ticTacToeGame = new TicTacToe();
 		createGui();
 		window.setVisible(true);
@@ -77,13 +78,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
 
-		JLabel lblPlayer1 = new JLabel("Player 1 (" + ticTacToeGame.PLAYER_ONE_SHAPE + "):");
+		JLabel lblPlayer1 = new JLabel("Player 1 (" + TicTacToe.PLAYER_ONE_SHAPE + "):");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer1.setBounds(55, 56, 143, 25);
 		window.getContentPane().add(lblPlayer1);
 
 		nameOneTextField = new JFormattedTextField();
-		// Use document filter to limit player 1's name to size of 12
+		// Use document filter to limit player 1's name to size of 12. Using a custom DocumentFilter to filter all invalid data input
 		((AbstractDocument) nameOneTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
@@ -98,13 +99,13 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(nameOneTextField);
 		nameOneTextField.setColumns(10);
 
-		JLabel lblPlayer2 = new JLabel("Player 2 (" + ticTacToeGame.PLAYER_TWO_SHAPE + "):");
+		JLabel lblPlayer2 = new JLabel("Player 2 (" + TicTacToe.PLAYER_TWO_SHAPE + "):");
 		lblPlayer2.setFont(new Font("MV Boli", Font.PLAIN, 20));
 		lblPlayer2.setBounds(52, 114, 143, 25);
 		window.getContentPane().add(lblPlayer2);
 
 		nameTwoTextField = new JFormattedTextField();
-		// Use document filter to limit player 1's name to size of 12
+		// Use document filter to limit player 1's name to size of 12. Using a custom DocumentFilter to filter all invalid data input
 		((AbstractDocument) nameTwoTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
@@ -214,8 +215,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private boolean namesValidationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
 		return keyChar == KeyEvent.VK_ENTER && source.equals(btnStart)
 				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo)
-				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
-				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo));
+				|| TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
+				|| TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo));
 	}
 
 	private void checkNamesInput(String nameOne, String nameTwo, Object source) {
@@ -241,10 +242,10 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		nameOneTextField.requestFocus();
 
 		// if entered player 1 or 2's name equals 'PLAYER' or 'COMPUTER'
-		if (ticTacToeGame.PLAYER.equalsIgnoreCase(nameOne) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameOne)
-				|| ticTacToeGame.PLAYER.equalsIgnoreCase(nameTwo) || ticTacToeGame.COMPUTER.equalsIgnoreCase(nameTwo)) {
+		if (TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
+				|| TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo)) {
 			JOptionPane.showMessageDialog(window.getComponent(0),
-					String.format("Please don't use '%s' or '%s' as a name", ticTacToeGame.PLAYER, ticTacToeGame.COMPUTER), ERROR_TITLE,
+					String.format("Please don't use '%s' or '%s' as a name", TicTacToe.PLAYER, TicTacToe.COMPUTER), ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 		// if first player's name field equals the second one

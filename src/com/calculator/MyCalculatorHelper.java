@@ -68,7 +68,7 @@ public class MyCalculatorHelper {
 			// display 25
 			final double v = Double.parseDouble(value.replace(",", ""));
 			if ((v * 10) % 10 == 0) { // if value calculated is whole number
-				value = MyCalculatorGui.df.format(v); // removes zero's after decimal point
+				value = MyCalculator.df.format(v); // removes zero's after decimal point
 			}
 
 			// check for division by zero. Avoids exception being flagged

@@ -60,6 +60,11 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(Hangman.class.getName());
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	// store contents of random words in arraylist to give ability to extract txt at
+	// specific line. Using an arraylist because this will allow us to modify our hangman
+	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
+	// requiring us to change array size if we modify the txt file
+	private static final List<String> secretWordList = new ArrayList<>();
 	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
 	// space of the array
 	private static final List<String> HANGMAN_DRAWING = List.of(
@@ -70,7 +75,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			   LINE_SEPARATOR + " |         /|\\",
 			   LINE_SEPARATOR + " |        / | \\",
 			   // due to the bold font type set for the textarea for where this drawing is
-			   // being referenced, I had to shift the remaining pieces below by an offset of 1
+			   // being referenced, I had to shift the remaining pieces below by an offset of 1 space to the right
 			   LINE_SEPARATOR + " |           |",
 			   LINE_SEPARATOR + " |          / \\",
 			   LINE_SEPARATOR + " |         /   \\",
@@ -88,12 +93,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private JFrame window;
 	private Robot robot;
 
-	// store contents of random words in arraylist to give ability to extract txt at
-	// specific line. Using an arraylist because this will allow us to modify our hangman
-	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
-	// requiring us to change array size if we modify the txt file
-	private final List<String> secretWordList = new ArrayList<>();
-
 	// counter that tells which part of the hangman part to display in the game from the hangman drawing
 	private int wrongWordCount;
 
@@ -110,17 +109,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private Font customFont;
 
 	public static void main(String[] args) throws AWTException {
-		// set the console handler to use the custom formatter
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new Formatter() {
-            @Override
-            public String format(LogRecord logRecord) {
-            	// ANSI color code for white - \u001B[37m
-                return "\u001B[37m";
-            }
-        });
-        LOG.addHandler(consoleHandler);
-
 		UIManager.put("ToolTip.background", Color.ORANGE); // sets the tooltip's background color to the given custom color
 
 		Hangman hangman = new Hangman();
@@ -135,6 +123,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 * @throws AWTException
 	 */
 	public Hangman() throws AWTException {
+		customizeLogger();
+
 		robot = new Robot();
 
 		boolean isloadSuccessful = obtainSecretWords();
@@ -212,18 +202,18 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 		for (int x = 0; x < letterTextFields.length; x++) {
 			letterTextFields[x] = new JFormattedTextField();
-			// below code will make the user input that appears in the letter text fields be of size 1 and not numbers
+			// below code will make the user input that appears in the letter text fields be of size 1 and not numbers. Using a custom DocumentFilter to filter all invalid data input
 			((AbstractDocument) letterTextFields[x].getDocument()).setDocumentFilter(new DocumentFilter() {
 				@Override
 				public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 						throws BadLocationException {
-					if ((fb.getDocument().getLength() + text.length() - length) <= 1 && !text.matches("\\d")
-							&& !" ".equals(text) && text.matches("^[a-zA-Z0-9\\s]*$")) {
+					if ((fb.getDocument().getLength() + text.length() - length) <= 1
+							&& !" ".equals(text) && text.matches("^[a-zA-Z\\s]*$")) {
 						super.replace(fb, offset, length, text, attrs);
 					}
 				}
 			});
-			letterTextFields[x].setFont(new Font("Papyrus", Font.ITALIC, 11));
+			letterTextFields[x].setFont(new Font("Papyrus", Font.BOLD + Font.ITALIC, 12));
 			window.getContentPane().add(letterTextFields[x]);
 			letterTextFields[x].setSize(17, 20);
 			letterTextFields[x].addKeyListener(this);
@@ -254,6 +244,48 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Customizes the used logger by adding a custom color and having the output display thread name and line numbers
+	 */
+	private void customizeLogger() {
+		// set the console handler to use the custom formatter
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new Formatter() {
+        	@Override
+        	 public String format(LogRecord logRecord) {
+                 String threadName = "Thread: [" + Thread.currentThread().getName() + "], ";
+ 				 // ANSI color code for white (\u001B[37m)
+                 return "\u001B[37m" + threadName + getLineNumber(logRecord);
+             }
+        });
+        LOG.addHandler(consoleHandler);
+	}
+
+	/**
+	 * Adds a custom logging component to output the line numbers of log statements
+	 *
+	 * @param logRecord object holding metadata about the logging event
+	 * @return the line number where log statement is declared
+	 */
+	private static String getLineNumber(LogRecord logRecord) {
+		try {
+			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+
+			for (StackTraceElement element : stackTrace) {
+				if (element.getClassName().equals(logRecord.getSourceClassName())
+						&& element.getMethodName().equals(logRecord.getSourceMethodName())) {
+
+					return "Line: [" + element.getLineNumber() + "] - ";
+				}
+			}
+		}
+		catch (Exception e) {
+			LOG.severe("An exception occurred while getting the line number: " + e.getMessage());
+		}
+
+		return "Line: [Line unknown] - ";
+	}
+
 	private void makeSecretWord() {
 		if (secretWordList.isEmpty()) {
 			LOG.severe("Error: File of secret hangman words to load is empty");
@@ -277,7 +309,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		// ensure that the file is not a directory and that we have at least read access
 		if (hangmanFile.isFile() && hangmanFile.canRead()) {
 
-			try (BufferedReader reader = new BufferedReader(new FileReader("hangman_words.txt"))) {
+			try (BufferedReader reader = new BufferedReader(new FileReader(hangmanFile))) {
 				String line;
 
 				// read file of random hangman words
@@ -297,18 +329,18 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				return true;
 
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(window, "File of hangman words not found", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(window, "File of hangman words '" + hangmanFile + "' not found", "Error", JOptionPane.ERROR_MESSAGE);
 				LOG.severe("Error: File not found" + e);
 				e.printStackTrace();
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(window, "Error reading hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(window, "Error reading '" + hangmanFile + "' hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
 		        LOG.severe("Error reading file" + e1);
 				e1.printStackTrace();
 			}
 
 		}
 
-		JOptionPane.showMessageDialog(window, "File not found or error reading hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(window, "File '" + hangmanFile + "' not found or error reading hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
         LOG.severe("Error reading hangman words file");
 
 		return false;
@@ -323,7 +355,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String validateWord(String word) {
 		// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars return empty string to avoid adding that String
 		// also allow txt file to contain comments by ignoring anything that starts with '#'
-		if (word.startsWith("#") || secretWordList.contains(word.toUpperCase()) || word.length() != 4 || !word.matches("[a-zA-Z]+")) {
+		if (word.startsWith("#") || !word.matches("[a-zA-Z]+") || secretWordList.contains(word.toUpperCase()) || word.length() != 4) {
 			return "";
 		}
 
@@ -450,7 +482,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	        // if all letters are found
 	        if (letters[0] && letters[1] && letters[2] && letters[3]) {
-	            // applies strikethrough text decoration to secret work as it's displayed when user wins
+	            // applies strikethrough text decoration to secret word as it's displayed when user wins
 	            textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
 
 	            JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.PLAIN_MESSAGE);
@@ -463,7 +495,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	                textFieldGameScore.setText(Integer.toString(++gameScore));
 	            }
 
-	            // player's score should not exceed 999 as if it does then displaying of score will cause offset in GUI layout
+	            // player's score should not exceed 999, if it does then displaying of score will cause offset in GUI layout
 	    		if(gameScore >= 999) {
 	    			JOptionPane.showMessageDialog(window, "You win the game!", "Game Over",
 	    					JOptionPane.INFORMATION_MESSAGE);

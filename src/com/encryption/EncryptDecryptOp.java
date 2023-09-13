@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 /**
  * Class performs encryption and decryption process. Each character in the original message is replaced by
  * another character based on a key value. In this case, the key is a randomly generated integer that is
@@ -16,11 +18,12 @@ import java.util.List;
  */
 public class EncryptDecryptOp {
 
-	private final List<Long> keys = new ArrayList<>();
+	private static final SecureRandom random = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
+
+	private final List<Long> keys = new ArrayList<>(); // keys are randomly picked values that will be used in encryption process
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
-	private SecureRandom random = new SecureRandom(
-			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	/**
 	 * Constructor sets data being passed in and assumes encryption process has not occurred
@@ -47,15 +50,22 @@ public class EncryptDecryptOp {
 															// of same length as original sentence in the file
 
 			int keyIndex = 0;
+			long tmpKey = random.nextLong(1, Long.MAX_VALUE);
 
 			// loop to traverse data String provided by user, in order to replace every
 			// character with a random integer number added and cast to char type
 			for (char c : data.toString().toCharArray()) {
 			    // my cipher algorithm = obtain letter at current index of data loaded from user file,
 			    // add a value which automatically returns the ASCII value of given character (then adds the value), and cast this int number into a char
-				keys.add(keyIndex, random.nextLong(1, Long.MAX_VALUE));
 
-			    // example: 'a' is replaced with ('a' + 5) then cast a5 (which is type int) into a char which is 'o'
+				while(keys.contains(tmpKey)) {
+					// for each index of keys list in loop, pick a random number between the specified range to later add to char in encryption process
+					tmpKey = random.nextLong(1, Long.MAX_VALUE);
+				}
+
+				keys.add(keyIndex, tmpKey);
+
+				// example: 'a' is replaced with ('a' + 5) then cast a5 (which is type int) into a char which is 'o'
 			    maskedData.append((char) (c + keys.get(keyIndex)));
 			    keyIndex++;
 			}
@@ -69,6 +79,12 @@ public class EncryptDecryptOp {
 			}
 
 			EncryptDecryptFileUtils.openFile();
+
+			// the icon is already set to this path in the creation of the GUI, in the case that it's already been set skip the below setting of the icon step
+			if (!EncryptDecryptGui.window.getIconImages().contains(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage())) {
+				// change the taskbar icon when message(s) have been encrypted
+				EncryptDecryptGui.window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage());
+			}
 
 			isEncrypted = true;
 			return isEncrypted;
@@ -100,6 +116,9 @@ public class EncryptDecryptOp {
 			}
 
 			EncryptDecryptFileUtils.openFile();
+
+			// change the taskbar icon when message(s) have been decrypted
+		    EncryptDecryptGui.window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption-unlocked.png").getImage());
 
 			isEncrypted = false;
 			return !isEncrypted;

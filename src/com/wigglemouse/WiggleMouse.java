@@ -141,7 +141,7 @@ public class WiggleMouse {
 	}
 
 	/**
-	 * Updates the time to wait before wiggling the mouse
+	 * Updates the time to wait in minutes before wiggling the mouse
 	 */
 	private long updateIdleTime() {
 		return switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
@@ -167,9 +167,9 @@ public class WiggleMouse {
 	        TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
 	        setMouseLocation(); // set the mouse coordinates again to see if the mouse was moved during the waiting period
 
-	        // Check if the mouse coordinates have changed
+	        // check if the mouse coordinates have changed
 	        if (mouseXCoordinate != previousX || mouseYCoordinate != previousY) {
-	            // User is moving the mouse, execute 'continue'
+	            // if user is moving the mouse, execute continue
 	            continue;
 	        }
 

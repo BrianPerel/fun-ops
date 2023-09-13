@@ -73,6 +73,8 @@ public class Clock implements ActionListener {
 	 */
 	public Clock() {
 		createGui();
+		window.setVisible(true);
+
 		getTime(militaryTimeCheckBox);
 	}
 
@@ -144,7 +146,7 @@ public class Clock implements ActionListener {
 		lblClockTime.setBounds(32, 23, 365, 123);
 		window.getContentPane().add(lblClockTime);
 
-		militaryTimeCheckBox = new JCheckBox("24 hour clock");
+		militaryTimeCheckBox = new JCheckBox("24-hour clock");
 		militaryTimeCheckBox.setBounds(310, 172, 97, 25);
 		militaryTimeCheckBox.setBackground(BLACK);
 		militaryTimeCheckBox.setForeground(WHITE);
@@ -154,8 +156,6 @@ public class Clock implements ActionListener {
 		militaryTimeCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
 		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		window.setVisible(true);
 	}
 
 	@Override
@@ -199,7 +199,6 @@ public class Clock implements ActionListener {
 	 * @param argMilitaryTimeFormatCheckBox the display military time JCheckBox
 	 */
 	private void getTime(JCheckBox argMilitaryTimeFormatCheckBox) {
-
 		while (true) {
 			createFormattedTime(argMilitaryTimeFormatCheckBox);
 
@@ -222,10 +221,9 @@ public class Clock implements ActionListener {
 
 	/**
 	 * Formats the clock's current time being displayed to avoid having a zero appear before single digit hour.
-	 * Changes the time to be displayed to 24 hour format (if user selects the option)
+	 * Changes the time to be displayed to 24-hour format (if user selects the option)
 	 *
-	 * @param argMilitaryTimeFormatCheckBox check box to request 24 hour format time
-	 * @return the formatted current time
+	 * @param argMilitaryTimeFormatCheckBox check box to request 24-hour format time
 	 */
 	private void createFormattedTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 		String time = LocalDateTime.now()
@@ -249,6 +247,7 @@ public class Clock implements ActionListener {
 			clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
 			menuOption.setSelected(false); // removes check mark from the app menu option
 			clip.start();
+			// sound the alarm for a 3-second duration
 			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {

@@ -4,7 +4,8 @@
 
 	<description>
 		Custom Ant Build Script for all fun-ops apps. Includes compile, jar,
-		run, create exe, javadoc, unjar tasks for build generation for all apps
+		run, create exe, javadoc, unjar tasks for build generation for all apps.
+		Prerequisite for running the create exe targets is that you must have the Launch4j folder in the project space.
 	</description>
 
 	<property file="build.properties" />
@@ -44,10 +45,11 @@
 
 	<!-- dump some basic environment-related info -->
 	<tstamp>
-		<format property="TODAY_US" pattern="MM/dd/yyyy hh:mm a" locale="en, US" />
+		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy" locale="en, US" />
+		<format property="TODAY_US_TIME" pattern="hh:mm a" locale="en, US" />
 	</tstamp>
 
-	<echo message="Current date and time: ${TODAY_US}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
+	<echo message="Current date and time: ${TODAY_US_DATE}, ${TODAY_US_TIME}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
 
 	<!-- path reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
@@ -59,13 +61,19 @@
 
 	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
 		<available file="${user.home}\Documents\keys\signjar-key.properties" property="signjar.key.properties.found" />
+
+		<!-- Below code for setting of the property is a defect fix where previously if the properties file
+		wasn't found the property boolean value would be null for ${signjar.key.properties.found}.
+		But we want it to display false if the file wasn't found -->
+		<property name="signjar.key.properties.found" value="false" />
+		<echo message="signjar properties file found? ${signjar.key.properties.found}" />
 	</target>
 
-	<target name="load-signjar-properties-fail" unless="${signjar.key.properties.found}">
+	<target name="are-signjar-properties-missing" unless="${signjar.key.properties.found}">
 		<echo message="Could not load signjar-key.properties, skipping the sign jar process" />
 	</target>
 
-	<target name="sign-jar" depends="load-signjar-properties, load-signjar-properties-fail" if="${signjar.key.properties.found}" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
+	<target name="sign-jar-if-properties-exist" depends="load-signjar-properties, are-signjar-properties-missing" if="${signjar.key.properties.found}" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
 		<property name="signjar.properties.file" value="${user.home}\Documents\keys\signjar-key.properties" file="${user.home}\Documents\keys\signjar-key.properties" />
 		<echo message="${signjar.properties.file} file has been loaded" />
 		<signjar jar="${jarPath}" keystore="${keystore}" storepass="${keystore.password}" alias="${key.alias}" keypass="${key.password}" />
@@ -107,11 +115,12 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/calculator-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -142,11 +151,12 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/encryptDecrypt-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -157,11 +167,11 @@
 
 	<!-- zip encryption program -->
 	<target name="zip-encryption-jar-with-resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption">
-		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="true">
-			<fileset dir="${jar.dir}" includes="encryptDecrypt-${version.num}.jar" />
-		</copy>
+		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="true" />
+		<copy file="${jar.dir}/encryptDecrypt-${version.num}.jar" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption-tmp" update="true" />
 		<delete dir="${dist.dir}/encryption-tmp" />
 	</target>
@@ -171,6 +181,7 @@
 		<launch4j-create-exe-task outfile="encryption.exe" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico" />
 		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" overwrite="true" verbose="true" />
 		<move-zip-delete-task app-name="encryption" />
 	</target>
@@ -190,11 +201,12 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/hangman-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -205,9 +217,8 @@
 
 	<!-- zip-hangman-jar with resources target -->
 	<target name="zip-hangman-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
-		<copy file="hangman_words.txt" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="true">
-			<fileset dir="${jar.dir}" includes="hangman-${version.num}.jar" />
-		</copy>
+		<copy file="hangman_words.txt" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="true" />
+		<copy file="${jar.dir}/hangman-${version.num}.jar" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}" overwrite="true" verbose="true" />
 		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="true" />
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman-tmp" update="true" />
@@ -251,11 +262,12 @@
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/guessingGame-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -278,11 +290,12 @@
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/adv-guessingGame-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -306,11 +319,12 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/restart-sign.png" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/pong-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -366,11 +380,12 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/stopwatch-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -394,11 +409,12 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/tic-tac-toe-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -439,11 +455,12 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
 				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake.jpg" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/wigglemouse-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -471,9 +488,7 @@
 	<!-- create and zip clock.exe target -->
 	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock">
 		<launch4j-create-exe-task outfile="clock.exe" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico" />
-		<copy todir="${release.dir}/clock-tmp/res" overwrite="true" verbose="true">
-			<fileset dir="res" includes="fonts/" />
-		</copy>
+		<copy file="res/fonts/clock-font.ttf" todir="${release.dir}/clock-tmp/res/fonts" overwrite="true" verbose="true" />
 		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}" overwrite="true" verbose="true">
 			<fileset dir="${res.graphics.dir}" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
 		</copy>
@@ -508,11 +523,12 @@
 				<attribute name="Resource2" value="${res.audio.dir}/clock-alarm.wav" />
 				<attribute name="Resource3" value="${res.graphics.dir}/alarm-clock-sign.png" />
 				<attribute name="Resource4" value="${res.graphics.dir}/night-sky-stars-animation.gif" />
-				<attribute name="Release-Date" value="${TODAY_US}" />
+				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
+				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
-		<antcall target="sign-jar">
+		<antcall target="sign-jar-if-properties-exist">
 			<param name="jarPath" value="${jar.dir}/clock-${version.num}.jar" />
 		</antcall>
 	</target>
@@ -526,13 +542,18 @@
 		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" classpath="${build.classpath}" docencoding="UTF-8" author="true" version="true" windowtitle="My API Page" />
 	</target>
 
-	<!-- unjar target -->
+	<!-- unjar (extract jar files) target -->
 	<target name="unjar-all-jars" description="unjar all existing program jars" depends="clean, jar-calculator,
-		jar-clock, jar-encryption, jar-hangman, jar-number_game, jar-adv-number_game, jar-pong, jar-stopwatch,
-		jar-tic-tac-toe, jar-wiggle-mouse">
+	    jar-clock, jar-encryption, jar-hangman, jar-number_game, jar-adv-number_game, jar-pong, jar-stopwatch,
+	    jar-tic-tac-toe, jar-wiggle-mouse">
 
 		<unjar dest="${unjar.dir}">
 			<fileset dir="${jar.dir}" includes="*.jar" />
 		</unjar>
+
+		<copy todir="${unjar.dir}/META-INF" overwrite="true" verbose="true">
+			<fileset dir="META-INF" />
+		</copy>
 	</target>
+
 </project>

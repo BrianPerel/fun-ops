@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
@@ -13,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -46,6 +53,20 @@ public class PingPongGui extends JFrame {
 	private void createGui() {
 		this.setLayout(new FlowLayout());
 
+		// Set translucent background
+		setContentPane(new JPanel() {
+			@Serial
+			private static final long serialVersionUID = -1599948337626679218L;
+
+			@Override
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+		        Graphics2D g2d = (Graphics2D) g;
+		        g2d.setPaint(new GradientPaint(0, 0, new Color(0, 0, 0, 200), 0, getHeight(), new Color(0, 0, 0, 100)));
+		        g2d.fillRect(0, 0, getWidth(), getHeight());
+		    }
+		});
+
 		this.add(new GameBoard());
 
 		// changes the program's taskbar icon
@@ -74,8 +95,8 @@ public class PingPongGui extends JFrame {
 		JMenuItem menuOption = new JMenuItem("Restart Game");
 		menuOption.setIcon(new ImageIcon("res/graphics/restart-sign.png"));
 		menuOption.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
+		menuOption.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_R, InputEvent.ALT_DOWN_MASK));
 
 		menu.add(menuOption);
 		menuBar.add(menu);

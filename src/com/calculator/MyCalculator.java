@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Performs all calculator operations. <br>
@@ -15,7 +16,7 @@ public class MyCalculator {
 	// values are stored as string values at start to input into textField
 	// component, then for computation we cast values entered to BigDecimal
 	protected static List<String> stringNumbers = new ArrayList<>(); // hold values input into calculator, max width should be 10 point values
-	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted	private static final DecimalFormat df = new DecimalFormat("#,###.##"); // for 2 decimal places precision rounding with commas
+	protected static List<BigDecimal> bigDecimalNumbers = new ArrayList<>(); // container for when values are converted	protected static final DecimalFormat df = new DecimalFormat("#,###.##"); // for 2 decimal places precision rounding with commas
 	protected static boolean divideByZeroflag; // if user divides by 0, raise flag
 	private static BigDecimal answer;
 
@@ -80,7 +81,7 @@ public class MyCalculator {
 			// since we're multiplying we don't want to multiply any random 0's because we'll
 			// be getting 0
 			// second and third part of statement are to allow you to do 0 * x or x * 0
-			if (bigDecimalNumbers.get(i) != BigDecimal.ZERO || bigDecimalNumbers.get(0) == BigDecimal.ZERO || bigDecimalNumbers.get(1) == BigDecimal.ZERO) {
+			if (!Objects.equals(bigDecimalNumbers.get(i), BigDecimal.ZERO) || Objects.equals(bigDecimalNumbers.get(0), BigDecimal.ZERO) || Objects.equals(bigDecimalNumbers.get(1), BigDecimal.ZERO)) {
 				answer = answer.multiply(bigDecimalNumbers.get(i));
 			}
 		}

@@ -30,7 +30,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	private static final String GAME_OVER_DRAW_MSG = "Game Over! It's a draw!";
 	private static final Color LIGHT_GREEN_COLOR = new Color(144, 238, 144);
 	protected static final JFrame window = new JFrame("Tic Tac Toe");
-	
+
 	private final JButton btnQuit;
 	private final String gameResult;
 	private final JButton btnPlayAgain;
@@ -152,7 +152,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 
 	private void playAgain() {
 		// launches appropriate game mode when play again btn is pressed
-		if (ticTacToeGame.PLAYER.equals(gameResult) || ticTacToeGame.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult)) {
+		if (TicTacToe.PLAYER.equals(gameResult) || TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult)) {
 			new CvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY(), ticTacToeGame);
 		}
 		else {
@@ -161,8 +161,8 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	}
 
 	private void quit(Object source) {
-		if (source.equals(btnQuit) || (ticTacToeGame.PLAYER.equals(gameResult)
-				|| ticTacToeGame.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
+		if (source.equals(btnQuit) || (TicTacToe.PLAYER.equals(gameResult)
+				|| TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
 
 			System.exit(0); // perform program termination with a normal exit status
 		}

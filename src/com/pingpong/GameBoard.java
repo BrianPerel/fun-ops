@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
@@ -24,9 +26,14 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 
 	private static final int GAME_WIDTH = 1000, GAME_HEIGHT = 556, BALL_DIAMETER = 20;
 	private static final int PADDLE_WIDTH = 25, PADDLE_HEIGHT = 100;
+    private static final List<Color> ballColors =
+    		List.copyOf(Set.of(Color.CYAN, Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE, Color.RED));
+    private static final SecureRandom randomGenerator = new SecureRandom(
+			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 
 	private Paddle paddleOne, paddleTwo;
 	private Ball pongBall;
+	private Color color;
 	private final Score gameScore;
 
 	/**
@@ -60,9 +67,19 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	 * Creates the pong ball
 	 */
 	private void createPongBall() {
+		// if game just started, the pong ball will be white
+		if(gameScore.getPlayerOneScore() == 0 && gameScore.getPlayerTwoScore() == 0) {
+			color = Color.WHITE;
+		}
+		// if score of either player hits a multiple of 5 then make special color
+		else if((gameScore.getPlayerOneScore() != 0 && gameScore.getPlayerTwoScore() != 0) &&
+				(gameScore.getPlayerOneScore() % 5 == 0 || gameScore.getPlayerTwoScore() % 5 == 0)) {
+			color = ballColors.get(randomGenerator.nextInt(ballColors.size()));
+		}
+
 		pongBall = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), new SecureRandom(
 				LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII)).nextInt(GAME_HEIGHT - BALL_DIAMETER),
-				BALL_DIAMETER, BALL_DIAMETER);
+				BALL_DIAMETER, BALL_DIAMETER, color);
 	}
 
 	/**

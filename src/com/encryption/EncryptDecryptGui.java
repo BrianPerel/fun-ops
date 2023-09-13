@@ -48,7 +48,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 	protected static JFrame window;
-	protected static JTextField textFieldLoading;
+	protected static JTextField textFieldEnterFileName;
 	protected static final String ERROR = "Error";
 	private static final Color LIGHT_BLUE_COLOR = new Color(135, 206, 250); // regular color of GUI buttons
 	private static final Color DARK_LIGHT_BLUE_COLOR = new Color(102, 178, 255); // color of GUI buttons when hovering
@@ -71,7 +71,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
-		textFieldLoading = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
+		textFieldEnterFileName = new JTextField(DEFAULT_FILENAME_ENTRY_TEXT);
 		window = new JFrame("File Cipher App by: Brian Perel");
 		new EncryptDecryptGui();
 	}
@@ -101,25 +101,27 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 		btnLoadFile = buttons[0] = new JButton("Load file");
 
-		textFieldLoading.setBounds(148, 44, 112, 26);
-		textFieldLoading.setForeground(Color.GRAY);
-		window.getContentPane().add(textFieldLoading);
-		textFieldLoading.setColumns(10);
-		textFieldLoading.setToolTipText("Enter file name to load");
+		textFieldEnterFileName.setBounds(148, 44, 112, 26);
+		textFieldEnterFileName.setForeground(Color.GRAY);
+		window.getContentPane().add(textFieldEnterFileName);
+		textFieldEnterFileName.setColumns(10);
+		textFieldEnterFileName.setToolTipText("Enter file name to load");
 		allowFileDragNDrop();
-		textFieldLoading.addKeyListener(new KeyAdapter() {
+		textFieldEnterFileName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldLoading.getText())) {
-					textFieldLoading.setForeground(Color.BLACK);
-					textFieldLoading.setText("");
+				if (DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
+					textFieldEnterFileName.setForeground(Color.BLACK);
+					textFieldEnterFileName.setText("");
 				}
 
-				if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldLoading.getText().length() <= 1)
+				if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldEnterFileName.getText().length() <= 1)
+						|| ((ke.isShiftDown() || ke.isControlDown() || ke.isAltDown() || ke.getKeyChar() == KeyEvent.VK_ENTER) && textFieldEnterFileName.getText().isEmpty())
 						|| (ke.isControlDown() && ke.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
-					textFieldLoading.setText(DEFAULT_FILENAME_ENTRY_TEXT);
-					textFieldLoading.setForeground(Color.GRAY);
-					textFieldLoading.setCaretPosition(0);
+
+					textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+					textFieldEnterFileName.setForeground(Color.GRAY);
+					textFieldEnterFileName.setCaretPosition(0);
 				}
 			}
 		});
@@ -157,16 +159,15 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Allows the user to drag and drop a file onto the text field to load
+	 * Allows the user to drag and drop a file onto the text field to load the file. This method handles drag and drop events
 	 */
 	private void allowFileDragNDrop() {
 
-		textFieldLoading.setDropTarget(new DropTarget() {
+		textFieldEnterFileName.setDropTarget(new DropTarget() {
 
 			@Serial
 			private static final long serialVersionUID = 7192052102451674891L;
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public synchronized void drop(DropTargetDropEvent evt) {
 				try {
@@ -174,12 +175,21 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 					String fileName = "";
 
-					if (evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor) instanceof List) {
-						fileName = ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)).get(0).getName();
-					}
+					// 2nd part of this conditional if statement is an example of pattern Matching for instanceof operator: doing instanceof + cast in 1 step instead of 2.
+					// As we do an instanceof test, we cast that file to the required type and assign it to a variable
+					if (evt.getTransferable().isDataFlavorSupported(DataFlavor.javaFileListFlavor) &&
+							((List<?>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)).get(0) instanceof File file) {
+			            fileName = file.getName();
+			        }
 
+					// checks that provided file is not a folder/ and is a file
 					if (new File(fileName).isFile()) {
-						textFieldLoading.setText(fileName);
+						textFieldEnterFileName.setForeground(Color.BLACK);
+						textFieldEnterFileName.setText(fileName);
+
+						// bug fix: when dropping a file name into the load text field, requestFocus does nothing when
+						// called from current thread. Therefore calling it from a new thread
+						new Thread(() -> textFieldEnterFileName.requestFocus()).start();
 					}
 					else {
 						JOptionPane.showMessageDialog(window.getComponent(0), "Can't load folders, only files",
@@ -217,17 +227,23 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
         // creates the JFileChooser browse menu window that pops up when browse is hit
 		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-			textFieldLoading.setForeground(Color.BLACK);
-			textFieldLoading.setText(fileChooser.getSelectedFile().getName());
+			textFieldEnterFileName.setForeground(Color.BLACK);
+			textFieldEnterFileName.setText(fileChooser.getSelectedFile().getName());
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
-		String fileToLoad = textFieldLoading.getText().trim();
+		String fileToLoad = textFieldEnterFileName.getText().trim();
 
 		if (source.equals(btnLoadFile)) {
+			if(fileToLoad.isEmpty() && !isFileLoaded) {
+				textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+				textFieldEnterFileName.setForeground(Color.GRAY);
+				textFieldEnterFileName.setCaretPosition(0);
+			}
+
 			// if filename isn't empty or file hasn't yet been loaded
 			if (!(fileToLoad.isEmpty() || isFileLoaded || fileToLoad.contains(DEFAULT_FILENAME_ENTRY_TEXT))) {
 				EncryptDecryptFileUtils.loadFileData(fileToLoad);

@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -52,12 +53,17 @@ public class PvPGameBoard implements ActionListener {
 	/**
 	 * Builds the game's GUI board
 	 *
-	 * @param argIsStart         boolean flag indicating whether or not the game has just
+	 * @param argIsStart         boolean flag indicating whether the game has just
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag for program indicating if it's player one's turn in the
 	 *                  game
 	 */
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
+		if(LOG.getHandlers().length == 0 ||
+		        !LOG.getHandlers()[0].getFormatter().format(new LogRecord(Level.ALL, "")).contains("Thread")) {
+			TicTacToe.customizeLogger(LOG);
+		}
+
 		ticTacToeGame = argTicTacToeGame;
 		createGui(argIsStart, argIsPlayerOnesTurn);
 		window.setVisible(true);
@@ -122,7 +128,7 @@ public class PvPGameBoard implements ActionListener {
 		gameBoardTiles[7].setLocation(243, 145);
 		gameBoardTiles[8].setLocation(243, 226);
 
-		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), ticTacToeGame.PLAYER_ONE_SHAPE));
+		lblPlayersTurn = new JLabel(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), TicTacToe.PLAYER_ONE_SHAPE));
 		lblPlayersTurn.setBounds(63, 15, 260, 38);
 		lblPlayersTurn.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		lblPlayersTurn.setOpaque(false);
@@ -178,7 +184,7 @@ public class PvPGameBoard implements ActionListener {
 	 * Setups the current game: makes decision on whose turn it is and assigns
 	 * player entered names. Enforces player1 to always start first: Sets p1 and p2's turns for first round
 	 *
-	 * @param argIsStart         boolean flag indicating whether or not the game has just
+	 * @param argIsStart         boolean flag indicating whether the game has just
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
@@ -195,7 +201,7 @@ public class PvPGameBoard implements ActionListener {
 		for (JButton button : gameBoardTiles) {
 			if (ae.getSource().equals(button) && button.getText().isEmpty()) {
 				makeMove(isCvPGame, button, isPlayerOnesTurn ? LIGHT_RED_COLOR : Color.BLUE,
-					isPlayerOnesTurn ? ticTacToeGame.PLAYER_TWO_SHAPE : ticTacToeGame.PLAYER_ONE_SHAPE,
+					isPlayerOnesTurn ? TicTacToe.PLAYER_TWO_SHAPE : TicTacToe.PLAYER_ONE_SHAPE,
 					isPlayerOnesTurn ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName());
 
 				isPlayerOnesTurn = !isPlayerOnesTurn;
@@ -239,7 +245,7 @@ public class PvPGameBoard implements ActionListener {
 		if (tile[button1].equals(argPlayerShape) && tile[button2].equals(argPlayerShape) && tile[button3].equals(argPlayerShape)) {
 			// if statement was added here to avoid 2 result windows from appearing in the case of the winner winning with 2 patterns in a match
 			if (!ticTacToeGame.isGameOver) {
-				new MatchOver(ticTacToeGame.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName(), ticTacToeGame);
+				new MatchOver(TicTacToe.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName() : ticTacToeGame.getPlayerTwosName(), ticTacToeGame);
 				logWinner(argPlayerShape);
 			}
 
@@ -252,7 +258,7 @@ public class PvPGameBoard implements ActionListener {
 	 * @param argPlayerShape player's shape - used to get the winner's name
 	 */
 	private void logWinner(String argPlayerShape) {
-		LOG.log(Level.INFO, "{0} wins!", ticTacToeGame.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName()
+		LOG.log(Level.INFO, "{0} wins!", TicTacToe.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName()
 				: ticTacToeGame.getPlayerTwosName());
 	}
 
@@ -276,8 +282,8 @@ public class PvPGameBoard implements ActionListener {
 			tile[x] = gameBoardTiles[x].getText();
 		}
 
-		checkForPattern(ticTacToeGame.PLAYER_ONE_SHAPE);
-		checkForPattern(ticTacToeGame.PLAYER_TWO_SHAPE);
+		checkForPattern(TicTacToe.PLAYER_ONE_SHAPE);
+		checkForPattern(TicTacToe.PLAYER_TWO_SHAPE);
 
 		// isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row
@@ -369,7 +375,7 @@ public class PvPGameBoard implements ActionListener {
 
 		checkForWinner(isCvPGame);
 
-		playersShape = (ticTacToeGame.PLAYER_ONE_SHAPE.equals(playersShape)) ? ticTacToeGame.PLAYER_TWO_SHAPE : ticTacToeGame.PLAYER_ONE_SHAPE;
+		playersShape = (TicTacToe.PLAYER_ONE_SHAPE.equals(playersShape)) ? TicTacToe.PLAYER_TWO_SHAPE : TicTacToe.PLAYER_ONE_SHAPE;
 
 		if (!ticTacToeGame.isGameOver) {
 			lblPlayersTurn.setText(String.format("%s's turn (%s):", playersName, playersShape));
