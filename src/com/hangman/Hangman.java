@@ -522,8 +522,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			}
 		}
 
-		if ((letterGuess != secretWord.charAt(0))
-				|| (letterGuess != secretWord.charAt(1)) || (letterGuess != secretWord.charAt(2))) {
+		if (!secretWord.contains(String.valueOf(letterGuess))) {
 			handleWrongGuess(letterGuess);
 		}
 	}

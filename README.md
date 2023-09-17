@@ -2,7 +2,9 @@
 
 ## Project Description
 
-* A collection of all sorts of different cross-platform Java programs I am making that I find interesting. Project start date: Dec 11, 2020
+* A collection of all sorts of different cross-platform Java programs I am making that I find interesting
+
+* Project start date: Dec 11, 2020
 
 ## Other Notes
 
@@ -13,6 +15,8 @@ for the projects through ANT. In that case, make sure to download
 * Optionally, if you want the apps to be digitally signed during the jar process, make sure to create a signjar-key.properties file and place it under the directory Documents\keys\signjar-key.properties. The signjar-key.properties file must have the following properties defined with values: keystore, keystore.password, key.alias, kay.password
 
 * List of apps in project: Calculator, Data encryption-decryption, Stop watch, Guessing number game, Hangman, Tic tac toe, Wiggle Mouse, Clock, Ping Pong
+
+* To run/do development on these apps you would need to have JDK 17 installed
 
 ## Author
 

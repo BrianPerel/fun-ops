@@ -164,7 +164,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if ((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit && text.matches("^(?!0)\\d*$") || text.isEmpty()) {
+				if (((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit) && text.matches("^[0-9]\\d*$") || text.isEmpty()) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -381,8 +381,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 *                    seconds
 	 */
 	protected void performGuiButtonAction(Object source, boolean isTimeout) {
-		StopWatchPanel.BTN_RESET.doClick();
-
 		// if guess btn is pushed and input is numeric data
 		if (source.equals(btnGuess)) {
 			if (textFieldGuessTheNumber.getText().matches("-?\\d+")) {

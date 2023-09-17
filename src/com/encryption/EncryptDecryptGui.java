@@ -1,9 +1,11 @@
 package com.encryption;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.HeadlessException;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -37,7 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Encryption-decryption application. The idea is that the user can load a file,
  * encrypt it's contents, and hold an encrypted file. Then at any point can open
- * this modified file and decrypt it.
+ * this modified file and decrypt it. Currently only supporting text files.
  *
  * The science of encrypting and decrypting information is called cryptography.
  * Unencrypted data is also known as plaintext, and encrypted data is called ciphertext
@@ -105,8 +107,8 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldEnterFileName.setForeground(Color.GRAY);
 		window.getContentPane().add(textFieldEnterFileName);
 		textFieldEnterFileName.setColumns(10);
-		textFieldEnterFileName.setToolTipText("Enter file name to load");
 		allowFileDragNDrop();
+		textFieldEnterFileName.setToolTipText("Enter file name to load");
 		textFieldEnterFileName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
@@ -115,13 +117,30 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 					textFieldEnterFileName.setText("");
 				}
 
-				if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && textFieldEnterFileName.getText().length() <= 1)
-						|| ((ke.isShiftDown() || ke.isControlDown() || ke.isAltDown() || ke.getKeyChar() == KeyEvent.VK_ENTER) && textFieldEnterFileName.getText().isEmpty())
-						|| (ke.isControlDown() && ke.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+				if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && (ke.isControlDown() || textFieldEnterFileName.getText().length() <= 1))
+						|| ((ke.getKeyCode() == KeyEvent.VK_LEFT || ke.getKeyCode() == KeyEvent.VK_UP || ke.getKeyCode() == KeyEvent.VK_DOWN || ke.getKeyCode() == KeyEvent.VK_RIGHT || ke.isShiftDown()
+						|| ke.isControlDown() || ke.isAltDown() || ke.getKeyChar() == KeyEvent.VK_ENTER) && textFieldEnterFileName.getText().isEmpty())) {
 
 					textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
 					textFieldEnterFileName.setForeground(Color.GRAY);
 					textFieldEnterFileName.setCaretPosition(0);
+				}
+
+				// if shift key is pressed simultaneously with a keyboard letter
+				if(ke.isShiftDown() && Character.isLetter(ke.getKeyChar())) {
+					textFieldEnterFileName.setForeground(Color.BLACK);
+					textFieldEnterFileName.setText("");
+				}
+
+				// bug fix
+				if(ke.getKeyCode() == KeyEvent.VK_RIGHT && DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
+					try {
+						Robot robot = new Robot();
+						robot.keyPress(KeyEvent.VK_BACK_SPACE);
+					}
+					catch (AWTException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
