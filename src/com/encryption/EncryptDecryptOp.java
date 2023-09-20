@@ -20,8 +20,8 @@ public class EncryptDecryptOp {
 
 	private static final SecureRandom random = new SecureRandom(
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
+	private static final List<Long> keys = new ArrayList<>(); // keys are randomly picked values that will be used in encryption process
 
-	private final List<Long> keys = new ArrayList<>(); // keys are randomly picked values that will be used in encryption process
 	private StringBuilder data; // field to hold data from file provided by user
 	private boolean isEncrypted; // flag to tell if encryption has already occurred or not
 

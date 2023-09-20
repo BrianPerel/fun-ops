@@ -13,8 +13,8 @@ public class Score implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -5644331063151255153L;
 
-	private int playerOneScore = 0;
-	private int playerTwoScore = 0;
+	private int playerOneScore;
+	private int playerTwoScore;
 
 	/**
 	 * Draws the white middle dividing game line and the lines around the game board, draws the score labels for player1 and player2, sets font
