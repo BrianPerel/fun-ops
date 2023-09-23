@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.event.CaretEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -109,41 +110,18 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldEnterFileName.setColumns(10);
 		allowFileDragNDrop();
 		textFieldEnterFileName.setToolTipText("Enter file name to load");
-		textFieldEnterFileName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent ke) {
-				if (DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
-					textFieldEnterFileName.setForeground(Color.BLACK);
-					textFieldEnterFileName.setText("");
-				}
+		textFieldEnterFileName.addKeyListener(this);
+		textFieldEnterFileName.addCaretListener((CaretEvent e) -> {
+			// add a CaretListener to track caret (mouse pointer) position changes
+			// if the caret position is not 0 (at the beginning of the text field) and default text is still there then set it to the beginning
 
-				if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && (ke.isControlDown() || textFieldEnterFileName.getText().length() <= 1))
-						|| ((ke.getKeyCode() == KeyEvent.VK_LEFT || ke.getKeyCode() == KeyEvent.VK_UP || ke.getKeyCode() == KeyEvent.VK_DOWN || ke.getKeyCode() == KeyEvent.VK_RIGHT || ke.isShiftDown()
-						|| ke.isControlDown() || ke.isAltDown() || ke.getKeyChar() == KeyEvent.VK_ENTER) && textFieldEnterFileName.getText().isEmpty())) {
+            int caretPosition = e.getDot();
 
-					textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
-					textFieldEnterFileName.setForeground(Color.GRAY);
-					textFieldEnterFileName.setCaretPosition(0);
-				}
-
-				// if shift key is pressed simultaneously with a keyboard letter
-				if(ke.isShiftDown() && Character.isLetter(ke.getKeyChar())) {
-					textFieldEnterFileName.setForeground(Color.BLACK);
-					textFieldEnterFileName.setText("");
-				}
-
-				// bug fix
-				if(ke.getKeyCode() == KeyEvent.VK_RIGHT && DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
-					try {
-						Robot robot = new Robot();
-						robot.keyPress(KeyEvent.VK_BACK_SPACE);
-					}
-					catch (AWTException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+    		if(DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText()) && (caretPosition != 0
+    				|| (textFieldEnterFileName.getSelectionStart() != textFieldEnterFileName.getSelectionEnd()))) {
+    			textFieldEnterFileName.setCaretPosition(0);
+    		}
+        });
 
 		btnBrowse = buttons[1] = new JButton("Browse");
 		btnEncrypt = buttons[2] = new JButton("Encrypt");
@@ -293,6 +271,39 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		}
 		else {
 			checkOtherMenuActions(source, fileToLoad);
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent ke) {
+		if (DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
+			textFieldEnterFileName.setForeground(Color.BLACK);
+			textFieldEnterFileName.setText("");
+		}
+
+		if ((ke.getKeyChar() == KeyEvent.VK_BACK_SPACE && (ke.isControlDown() || textFieldEnterFileName.getText().length() <= 1))
+				|| ((ke.getKeyCode() == KeyEvent.VK_LEFT || ke.getKeyCode() == KeyEvent.VK_UP || ke.getKeyCode() == KeyEvent.VK_DOWN || ke.getKeyCode() == KeyEvent.VK_RIGHT || ke.isShiftDown()
+				|| ke.isControlDown() || ke.isAltDown() || ke.getKeyChar() == KeyEvent.VK_ENTER) && textFieldEnterFileName.getText().isEmpty())) {
+
+			textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+			textFieldEnterFileName.setForeground(Color.GRAY);
+			textFieldEnterFileName.setCaretPosition(0);
+		}
+
+		// if shift key is pressed simultaneously with a keyboard letter
+		if(ke.isShiftDown() && Character.isLetter(ke.getKeyChar())) {
+			textFieldEnterFileName.setForeground(Color.BLACK);
+			textFieldEnterFileName.setText("");
+		}
+
+		// bug fix
+		if(ke.getKeyCode() == KeyEvent.VK_RIGHT && DEFAULT_FILENAME_ENTRY_TEXT.equals(textFieldEnterFileName.getText())) {
+			try {
+				new Robot().keyPress(KeyEvent.VK_BACK_SPACE);
+			}
+			catch (AWTException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -75,7 +75,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	protected JButton btnPlayAgain;
 	protected JButton btnGuess;
 	private StopWatch timeCounter;
-	private int previousRandomNumber = 0;
+	private int previousRandomNumber;
+	private int previousGuess;
 
 	public static void main(String[] args) {
 		new GuessingGame();
@@ -164,7 +165,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
 					throws BadLocationException {
-				if (((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit) && text.matches("^[0-9]\\d*$") || text.isEmpty()) {
+				if (((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit) && text.matches("^[0-9]+$") || text.isEmpty()) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -445,12 +446,21 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-			JOptionPane.showMessageDialog(window.getComponent(0),
+
+			if(previousGuess == textFieldGuessTheNumberInt) {
+				JOptionPane.showMessageDialog(window.getComponent(0),
+					"Same incorrect guess as previous guess, try again");
+			}
+			else {
+				JOptionPane.showMessageDialog(window.getComponent(0),
 					"Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1000"));
+			}
 
 			if (gameScore != 0) {
 				gameScore -= 10;
 			}
+
+			previousGuess = textFieldGuessTheNumberInt;
 		}
 
 		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
