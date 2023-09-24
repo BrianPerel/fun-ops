@@ -161,15 +161,20 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		// Use document filter to limit user entry box component input size. Using a custom DocumentFilter to filter all invalid data input
+		// ensure that the first digit entered is between 1 and 9, and subsequent digits can be in the range 0-9
 		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new DocumentFilter() {
-			@Override
-			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-					throws BadLocationException {
-				if (((fb.getDocument().getLength() + text.length() - length) <= maxCharsLimit) && text.matches("^[0-9]+$") || text.isEmpty()) {
-					super.replace(fb, offset, length, text, attrs);
-				}
-			}
+		    @Override
+		    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+		            throws BadLocationException {
+		        String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+		        String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+
+		        if (((newText.length() <= maxCharsLimit) && newText.matches("^[1-9][0-9]*$")) || text.isEmpty()) {
+		            super.replace(fb, offset, length, text, attrs);
+		        }
+		    }
 		});
+
 		window.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
@@ -193,7 +198,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		this.setBtnHoverColor(btnPlayAgain, new Color(201, 180, 0), Color.ORANGE);
 		window.getContentPane().add(btnPlayAgain);
 
-		// prevents the default blue button that appears when a button is selected (before the button is released) from displaying
+		// prevents the default blue button that appears when a button is clicked (before the button is released) from displaying
 		btnGuess.setUI(new BasicButtonUI());
 		btnPlayAgain.setUI(new BasicButtonUI());
 

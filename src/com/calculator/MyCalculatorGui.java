@@ -386,6 +386,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		        if (!CURSOR_RIGHT_POSITION_W_ZERO.equals(textFieldUserInput.getText())) {
 		            hasUserEnteredZero = true;
 		        }
+
 		        yield "0";
 		    }
 
@@ -452,8 +453,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 			helper.resetValues();
 		}
-
-		if (keyChar == '*' || keyChar == '+') {
+		else if (keyChar == '*' || keyChar == '+') {
 			helper.setNumberText();
 			operatorFlags[(keyChar == '*') ? 1 : 3] = true;
 		}
