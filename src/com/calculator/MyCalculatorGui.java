@@ -489,12 +489,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		case VK_BACK_SPACE:
 			// if you backspace with only 1 digit in the input box, instead of displaying blank display '0'
 			// or if you backspace with a negative single digit number (ex. -1) to make just '-' we want to prevent this and instead display '0'
-			if (textFieldUserInput.getText().trim().length() == 1 || (textFieldUserInput.getText().trim().startsWith("-") && textFieldUserInput.getText().trim().length() == 2)) {
-				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
-				break;
-			}
-
-			if(textFieldUserInput.getText().isBlank()) {
+			if(textFieldUserInput.getText().trim().length() == 1 || (textFieldUserInput.getText().trim().startsWith("-") && textFieldUserInput.getText().trim().length() == 2) || textFieldUserInput.getText().isBlank()) {
 				textFieldUserInput.setText(CURSOR_RIGHT_POSITION_W_ZERO);
 				break;
 			}
