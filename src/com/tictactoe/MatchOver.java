@@ -142,7 +142,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	private void matchOverOptions(Object source) {
 		window.dispose();
 
-		if (source.equals(btnPlayAgain)) {
+		if (btnPlayAgain.equals(source)) {
 			playAgain();
 		}
 		else {
@@ -161,7 +161,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	}
 
 	private void quit(Object source) {
-		if (source.equals(btnQuit) || (TicTacToe.PLAYER.equals(gameResult)
+		if (btnQuit.equals(source) || (TicTacToe.PLAYER.equals(gameResult)
 				|| TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
 
 			System.exit(0); // perform program termination with a normal exit status

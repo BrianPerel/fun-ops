@@ -305,6 +305,9 @@ public class PvPGameBoard implements ActionListener {
 				});
 			}
 
+			// pass in different string arg
+			// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer)
+			// 1 '!' at the end of the string indicates result is from player vs. player
 			new MatchOver(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!", ticTacToeGame);
 			LOG.info("Game Over! It's a draw!");
 		}

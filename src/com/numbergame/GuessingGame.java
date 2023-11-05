@@ -108,6 +108,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	    // changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/guessing-game.png").getImage());
 
+	    // set background image for window pane
 		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
 
 		JLabel lblScore = new JLabel("Score");
@@ -160,6 +161,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		textFieldGuessTheNumber = new JFormattedTextField();
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
+		textFieldGuessTheNumber.setCaretColor(Color.BLUE); // made the cursor color blue
+
 		// Use document filter to limit user entry box component input size. Using a custom DocumentFilter to filter all invalid data input
 		// ensure that the first digit entered is between 1 and 9, and subsequent digits can be in the range 0-9
 		((AbstractDocument) textFieldGuessTheNumber.getDocument()).setDocumentFilter(new DocumentFilter() {
@@ -169,7 +172,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		        String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
 		        String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
 
-		        if (((newText.length() <= maxCharsLimit) && newText.matches("^[1-9][0-9]*$")) || text.isEmpty()) {
+		        if (((newText.length() <= maxCharsLimit) && newText.matches("^[1-9]\\d*$")) || text.isEmpty()) {
 		            super.replace(fb, offset, length, text, attrs);
 		        }
 		    }
@@ -209,8 +212,6 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		closeTimerCheckBox.addActionListener(this);
 		closeTimerCheckBox.addKeyListener(this);
 		closeTimerCheckBox.setOpaque(false);
-
-		StopWatchPanel.isRedFontEnabled = true;
 	}
 
 	/**
@@ -238,7 +239,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Set up the stop watch feature implementation for the guessing game
 	 */
 	protected void setTimeCounterImpl() {
-		timeCounter = new StopWatch(300, 110); // launch the stop watch
+		timeCounter = new StopWatch(300, 110, true); // launch the stop watch, pass in parameters: width, height, and if you want to enable custom red font to appear in stop watch post 10 seconds
 
 		// prevents closure of the stopwatch window frame from closing the guessing game
 		timeCounter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -454,7 +455,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 			if(previousGuess == textFieldGuessTheNumberInt) {
 				JOptionPane.showMessageDialog(window.getComponent(0),
-					"Same incorrect guess as previous guess, try again");
+					"Same incorrect guess made as previous guess, try again");
 			}
 			else {
 				JOptionPane.showMessageDialog(window.getComponent(0),
@@ -476,7 +477,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout
 		if(gameScore >= 100000 || totalGuessesMade >= 100000) {
-			JOptionPane.showMessageDialog(window, "You beat the game! You won 100,000 times", "Game Completed",
+			JOptionPane.showMessageDialog(window, "You've beat the game! You've won 100,000 times or more", "Game Completed",
 					JOptionPane.INFORMATION_MESSAGE);
 
 			System.exit(0);

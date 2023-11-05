@@ -56,9 +56,9 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	private static final Color LIGHT_BLUE_COLOR = new Color(135, 206, 250); // regular color of GUI buttons
 	private static final Color DARK_LIGHT_BLUE_COLOR = new Color(102, 178, 255); // color of GUI buttons when hovering
 	protected static final String DEFAULT_FILENAME_ENTRY_TEXT = "Enter file name...";
+	protected static StringBuilder data = new StringBuilder();
 	protected static EncryptDecryptOp dataSet;
 	protected static boolean isFileLoaded;
-	protected static StringBuilder data;
 
 	private JButton btnBrowse;
 	private JButton btnEncrypt;
@@ -96,8 +96,6 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 	    // changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage());
-
-		data = new StringBuilder();
 
 		// create an array of 4 buttons for the GUI
 		JButton[] buttons = new JButton[4];
@@ -235,23 +233,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		String fileToLoad = textFieldEnterFileName.getText().trim();
 
 		if (source.equals(btnLoadFile)) {
-			if(fileToLoad.isEmpty() && !isFileLoaded) {
-				textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
-				textFieldEnterFileName.setForeground(Color.GRAY);
-				textFieldEnterFileName.setCaretPosition(0);
-			}
-
-			// if filename isn't empty or file hasn't yet been loaded
-			if (!(fileToLoad.isEmpty() || isFileLoaded || fileToLoad.contains(DEFAULT_FILENAME_ENTRY_TEXT))) {
-				EncryptDecryptFileUtils.loadFileData(fileToLoad);
-				return; // prevent below statements from executing if we fall into here
-			}
-
-			// if file has been already been loaded and load file btn pushed
-			// or if file load textfield is empty while load file btn is pushed
-			JOptionPane.showMessageDialog(window.getComponent(0), isFileLoaded ? "A file has already been loaded"
-					: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
-			Toolkit.getDefaultToolkit().beep();
+			loadFile(fileToLoad);
 		}
 		// if encrypt/decrypt btn pushed and file has not been loaded
 		else if (!isFileLoaded && (source.equals(btnEncrypt) || source.equals(btnDecrypt))) {
@@ -259,6 +241,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			JOptionPane.showMessageDialog(window.getComponent(0), "No file loaded yet", ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
+		// if GUI browse button is pressed
 		else if (source.equals(btnBrowse)) {
 			if (isFileLoaded) {
 				// if file has been already been loaded and load file btn pushed
@@ -272,6 +255,26 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		else {
 			checkOtherMenuActions(source, fileToLoad);
 		}
+	}
+
+	private void loadFile(String fileToLoad) {
+		if(fileToLoad.isEmpty() && !isFileLoaded) {
+			textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
+			textFieldEnterFileName.setForeground(Color.GRAY);
+			textFieldEnterFileName.setCaretPosition(0);
+		}
+
+		// if filename isn't empty or file hasn't yet been loaded
+		if (!(fileToLoad.isEmpty() || isFileLoaded || fileToLoad.contains(DEFAULT_FILENAME_ENTRY_TEXT))) {
+			EncryptDecryptFileUtils.loadFileData(fileToLoad);
+			return; // prevent below statements from executing if we fall into here
+		}
+
+		// if file has been already been loaded and load file btn pushed
+		// or if file load textfield is empty while load file btn is pushed
+		JOptionPane.showMessageDialog(window.getComponent(0), isFileLoaded ? "A file has already been loaded"
+				: "No file name entered", ERROR, JOptionPane.ERROR_MESSAGE);
+		Toolkit.getDefaultToolkit().beep();
 	}
 
 	@Override

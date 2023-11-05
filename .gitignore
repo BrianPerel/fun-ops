@@ -6,7 +6,7 @@
 /logs/
 /dist/
 /Launch4j/
-/docs/
+/doc/
 /target/
 *.jar
 *.log
@@ -15,5 +15,6 @@
 *.txt
 *.jks
 
+# only track these two text files
 !secret.txt
 !hangman_words.txt

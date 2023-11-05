@@ -47,21 +47,21 @@ public class StopWatch extends JFrame {
 			e.printStackTrace();
 		}
 
-		new StopWatch(400, 200); // 300 x 150 = default requested window measurements (width x height)
+		new StopWatch(400, 200, false); // 300 x 150 = default requested window measurements (width x height)
 	}
 
 	/**
 	 * Creates the GUI frame (box)
 	 */
-	public StopWatch(int x, int y) {
+	public StopWatch(int width, int height, boolean isRedFontEnabled) {
 		super("Stopwatch");
-		createGui(x, y);
+		createGui(width, height, isRedFontEnabled);
 	}
 
-	private void createGui(int x, int y) {
+	private void createGui(int width, int height, boolean isRedFontEnabled) {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setContentPane(new StopWatchPanel());
-		setSize(x, y);
+		setContentPane(new StopWatchPanel(isRedFontEnabled));
+		setSize(width, height);
 		setVisible(true);
 	    setLocationRelativeTo(null);
 
@@ -86,7 +86,6 @@ public class StopWatch extends JFrame {
 		public static final JButton BTN_START = new JButton("START");
 		public static final JButton BTN_STOP = new JButton("STOP");
 		public static final JButton BTN_RESET = new JButton("RESET");
-		public static boolean isRedFontEnabled;
 
 		/** represent the hours, minutes, and seconds in the watch */
 		private int hour;
@@ -94,11 +93,14 @@ public class StopWatch extends JFrame {
 		private int second;
 		private int centisecond;
 		private final Timer timer; // watch timer
+		private boolean isRedFontEnabled;
 
 		/**
 		 * Constructor: Sets up this panel to listen for mouse events
 		 */
-		public StopWatchPanel() {
+		public StopWatchPanel(boolean argIsRedFontEnabled) {
+			isRedFontEnabled = argIsRedFontEnabled;
+
 		    setLayout(new BorderLayout());
 
 		    Color lightGreenColor = new Color(0, 255, 128);

@@ -7,6 +7,7 @@
 	<groupId>fun-ops</groupId> <!-- Project folder name -->
 	<artifactId>src</artifactId> <!-- Project source folder name -->
 	<version>1.0-SNAPSHOT</version> <!-- Snapshot version ID -->
+	<packaging>jar</packaging>
 
 	<description>A maven script for my fun-ops project</description>
 

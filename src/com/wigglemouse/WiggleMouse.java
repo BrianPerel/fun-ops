@@ -69,6 +69,7 @@ public class WiggleMouse {
 	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    window.setSize(550, 182);
 
+	    // ultra light grey color
 		UIManager.put("Button.select", new Color(200, 203, 232));
 
 	    // changes the program's taskbar icon
@@ -121,6 +122,7 @@ public class WiggleMouse {
 	    btnSetTime.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseEntered(MouseEvent e) {
+	    	    // ultra light grey color
 	            btnSetTime.setBackground(new Color(200, 203, 232));
 	        }
 

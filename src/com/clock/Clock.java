@@ -99,17 +99,21 @@ public class Clock implements ActionListener {
 		menu.setDisplayedMnemonicIndex(-1); // force program to not decorate (don't underline) mnemonic
 		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menu.setToolTipText("Sets an alarm time");
+		
+		// default menu blue color
 		menu.setBackground(new Color(0, 126, 210));
 		menu.setForeground(Color.WHITE);
 		menu.setOpaque(true);
 		menu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				// dark blue menu hover color
 				menu.setBackground(new Color(31, 83, 162));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				// default menu button color
 				menu.setBackground(new Color(0, 126, 210));
 			}
 		});

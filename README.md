@@ -8,15 +8,15 @@
 
 ## Other Notes
 
-* Please comment out taskdef name="launch4j" in build.xml unless you're going to create executables
+* Please comment out `taskdef name="launch4j"` in build.xml unless you're going to create executables
 for the projects through ANT. In that case, make sure to download
-(https://sourceforge.net/projects/launch4j/files/launch4j) and paste a copy of the Launch4j folder into the root of the IDE workspace
+(https://sourceforge.net/projects/launch4j/files/launch4j) and paste a copy of the Launch4j folder into the root of your IDE workspace
 
-* Optionally, if you want the apps to be digitally signed during the jar process, make sure to create a signjar-key.properties file and place it under the directory Documents\keys\signjar-key.properties. The signjar-key.properties file must have the following properties defined with values: keystore, keystore.password, key.alias, kay.password
+* Optionally, if you want the apps to be digitally signed during the jar process, make sure to create a `signjar-key.properties` file and place it under the directory `Documents\keys\signjar-key.properties`. The signjar-key.properties file must have the following properties defined with values: keystore, keystore.password, key.alias, kay.password. The keystore property must point to your generated .jks file to be used in the ant sign-jar process
 
-* List of apps in project: Calculator, Data encryption-decryption, Stop watch, Guessing number game, Hangman, Tic tac toe, Wiggle Mouse, Clock, Ping Pong
+* List of apps in this repo: Calculator, Data encryption-decryption, Stop watch, Guessing number game, Hangman, Tic tac toe, Wiggle Mouse, Clock, Ping Pong
 
-* To run/do development on these apps you would need to have JDK 17 installed
+* To run/do development on these apps you would need to have `JDK 17` installed
 
 ## Author
 

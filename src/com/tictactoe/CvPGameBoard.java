@@ -9,6 +9,8 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +45,12 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	 */
 	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
 		super(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
+
+		if(LOG.getHandlers().length == 0 ||
+		        !LOG.getHandlers()[0].getFormatter().format(new LogRecord(Level.ALL, "")).contains("Thread")) {
+			TicTacToe.customizeLogger(LOG);
+		}
+
 		ticTacToeGame.setPlayerNames(TicTacToe.PLAYER, TicTacToe.COMPUTER);
 		this.initializeGame(argIsStart, argIsPlayerOnesTurn);
 

@@ -205,7 +205,6 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 
 			window.dispose();
 			new PvPGameBoard(true, true, ticTacToeGame);
-
 		}
 		else {
 			checkNamesInput(nameOne, nameTwo, source);
@@ -213,7 +212,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	private boolean namesValidationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
-		return keyChar == KeyEvent.VK_ENTER && source.equals(btnStart)
+		return (keyChar == KeyEvent.VK_ENTER || keyChar == KeyEvent.VK_SPACE) && source.equals(btnStart)
 				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo)
 				|| TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
 				|| TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo));
@@ -252,6 +251,8 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
 			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 					JOptionPane.ERROR_MESSAGE);
+
+			nameOneTextField.requestFocus();
 		}
 	}
 }

@@ -28,7 +28,7 @@ public class TicTacToe {
 	/**
 	 * Customizes the used logger by adding a custom color and having the output display thread name and line numbers
 	 */
-	protected static void customizeLogger(Logger LOG) {
+	protected static void customizeLogger(final Logger LOG) {
 		// set the console handler to use the custom formatter
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new Formatter() {

@@ -45,11 +45,10 @@
 
 	<!-- dump some basic environment-related info -->
 	<tstamp>
-		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy" locale="en, US" />
-		<format property="TODAY_US_TIME" pattern="hh:mm a" locale="en, US" />
+		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy-hh:mm a" locale="en, US" />
 	</tstamp>
 
-	<echo message="Current date and time: ${TODAY_US_DATE}, ${TODAY_US_TIME}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
+	<echo message="Project name: ${ant.project.name}${line.separator}Current date and time: ${TODAY_US_DATE}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
 
 	<!-- path reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
@@ -60,7 +59,7 @@
 	</path>
 
 	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
-		<available file="${user.home}\Documents\keys\signjar-key.properties" property="signjar.key.properties.found" />
+		<available file="${signjar.properties.file.path}" property="signjar.key.properties.found" />
 
 		<!-- Below code for setting of the property is a defect fix where previously if the properties file
 		wasn't found the property boolean value would be null for ${signjar.key.properties.found}.
@@ -69,12 +68,12 @@
 		<echo message="signjar properties file found? ${signjar.key.properties.found}" />
 	</target>
 
-	<target name="are-signjar-properties-missing" unless="${signjar.key.properties.found}">
+	<target name="are-signjar-properties-missing" depends="load-signjar-properties" unless="${signjar.key.properties.found}">
 		<echo message="Could not load signjar-key.properties, skipping the sign jar process" />
 	</target>
 
-	<target name="sign-jar-if-properties-exist" depends="load-signjar-properties, are-signjar-properties-missing" if="${signjar.key.properties.found}" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
-		<property name="signjar.properties.file" value="${user.home}\Documents\keys\signjar-key.properties" file="${user.home}\Documents\keys\signjar-key.properties" />
+	<target name="sign-jar-if-properties-exist" depends="are-signjar-properties-missing" if="${signjar.key.properties.found}" description="loads the signjar-key config file and signs the jar only if the signjar-key config file is found">
+		<property name="signjar.properties.file" value="${signjar.properties.file.path}" file="${signjar.properties.file.path}" />
 		<echo message="${signjar.properties.file} file has been loaded" />
 		<signjar jar="${jarPath}" keystore="${keystore}" storepass="${keystore.password}" alias="${key.alias}" keypass="${key.password}" />
 		<echo message="provided jar file '${jarPath}' has been signed" />
@@ -84,6 +83,7 @@
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" verbose="true" />
 		<delete dir="logs" verbose="true" />
+		<delete dir="doc" verbose="true" />
 	</target>
 
 	<!-- target to create all project executables -->
@@ -116,7 +116,6 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -152,7 +151,6 @@
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -202,7 +200,6 @@
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -263,7 +260,6 @@
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -291,7 +287,6 @@
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -320,7 +315,6 @@
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
 				<attribute name="Resource" value="${res.graphics.dir}/restart-sign.png" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -381,7 +375,6 @@
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -410,7 +403,6 @@
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
 				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -456,7 +448,6 @@
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
 				<attribute name="Resource" value="${res.graphics.dir}/image-mouse-shake.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
@@ -524,7 +515,6 @@
 				<attribute name="Resource3" value="${res.graphics.dir}/alarm-clock-sign.png" />
 				<attribute name="Resource4" value="${res.graphics.dir}/night-sky-stars-animation.gif" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
-				<attribute name="Built-Time" value="${TODAY_US_TIME}" />
 			</manifest>
 		</jar>
 
