@@ -4,6 +4,8 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.AbstractBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -105,10 +109,12 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 		textFieldEnterFileName.setBounds(148, 44, 112, 26);
 		textFieldEnterFileName.setForeground(Color.GRAY);
 		window.getContentPane().add(textFieldEnterFileName);
-		textFieldEnterFileName.setColumns(10);
-		allowFileDragNDrop();
 		textFieldEnterFileName.setToolTipText("Enter file name to load");
+		allowFileDragNDrop();
+		textFieldEnterFileName.setBorder(
+				BorderFactory.createCompoundBorder(new RoundedCornerBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 		textFieldEnterFileName.addKeyListener(this);
+		textFieldEnterFileName.setColumns(10);
 		textFieldEnterFileName.addCaretListener((CaretEvent e) -> {
 			// add a CaretListener to track caret (mouse pointer) position changes
 			// if the caret position is not 0 (at the beginning of the text field) and default text is still there then set it to the beginning
@@ -343,4 +349,19 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+	/**
+	 * Creates a custom decorative rounded-corner border by drawing a rounded rectangle around the component it is applied to.
+	 */
+	private class RoundedCornerBorder extends AbstractBorder {
+		private static final long serialVersionUID = 2907642624446200279L;
+
+		@Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            int arc = 12; // border corner arc degree
+            g2d.drawRoundRect(x, y, width-1, height-1, arc, arc);
+            g2d.dispose();
+        }
+    }
 }

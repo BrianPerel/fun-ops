@@ -1,9 +1,12 @@
 package com.numbergame;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -32,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -181,7 +185,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setColumns(10);
 		textFieldGuessTheNumber.addActionListener(this);
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		textFieldGuessTheNumber.setBorder(
+				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 		btnGuess = new JButton("Guess");
 		btnGuess.setBounds(255, 230, 105, 23);
@@ -349,7 +354,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		}
 
 		textFieldGuessTheNumber.setText("");
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		textFieldGuessTheNumber.setBorder(
+				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 		// forces focus to jump from button pressed to guessing text field again
 		textFieldGuessTheNumber.requestFocus();
@@ -392,13 +398,23 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		if (source.equals(btnGuess)) {
 			if (textFieldGuessTheNumber.getText().matches("-?\\d+")) {
 				evaluateGuess(isTimeout, 100);
+
+				// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout
+				if(gameScore >= 100000 || totalGuessesMade >= 100000) {
+					JOptionPane.showMessageDialog(window, "You've beat the game! You've won 100,000 times or more", "Game Completed",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					System.exit(0);
+				}
 			}
 			// if guess btn is pushed and input is empty
 			else if (textFieldGuessTheNumber.getText().isEmpty() || !textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
 				playSound(FAIL_SOUND);
-				textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				textFieldGuessTheNumber.setBorder(
+						BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 				JOptionPane.showMessageDialog(window.getComponent(0), "Please enter a number");
-				textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+				textFieldGuessTheNumber.setBorder(
+						BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 			}
 		}
 		// if play again btn is pushed
@@ -442,7 +458,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		// if input remainder entered is outside of range 1-99 or 100-999
 		if (textFieldGuessTheNumberInt >= TOTAL_SUM || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			textFieldGuessTheNumber.setBorder(
+					BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					"Please enter a valid number " + ((TOTAL_SUM == 100) ? "(1-99)" : "(100-999)"));
 		}
@@ -451,16 +468,12 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		}
 		else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
 			playSound(FAIL_SOUND);
-			textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			textFieldGuessTheNumber.setBorder(
+					BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
-			if(previousGuess == textFieldGuessTheNumberInt) {
-				JOptionPane.showMessageDialog(window.getComponent(0),
-					"Same incorrect guess made as previous guess, try again");
-			}
-			else {
-				JOptionPane.showMessageDialog(window.getComponent(0),
-					"Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1000"));
-			}
+			JOptionPane.showMessageDialog(window.getComponent(0),
+					(previousGuess == textFieldGuessTheNumberInt) ? "Same incorrect guess made as previous guess, try again"
+						: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1000"));
 
 			if (gameScore != 0) {
 				gameScore -= 10;
@@ -469,24 +482,18 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			previousGuess = textFieldGuessTheNumberInt;
 		}
 
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		textFieldGuessTheNumber.setBorder(
+				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 		// set score after action is completed
 		textFieldScore.setText(Integer.toString(gameScore));
 		textFieldGuesses.setText(Integer.toString(++totalGuessesMade));
-
-		// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout
-		if(gameScore >= 100000 || totalGuessesMade >= 100000) {
-			JOptionPane.showMessageDialog(window, "You've beat the game! You've won 100,000 times or more", "Game Completed",
-					JOptionPane.INFORMATION_MESSAGE);
-
-			System.exit(0);
-		}
 	}
 
 	private void gameWonCompleteSession(final int MAX_LIMIT, boolean isTimeout) {
 		playSound("res/audio/win.wav");
-		textFieldGuessTheNumber.setBorder(BorderFactory.createLineBorder(LIGHT_GREEN_COLOR, 2));
+		textFieldGuessTheNumber.setBorder(
+				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 		JOptionPane.showMessageDialog(window.getComponent(0),
 				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1000"));
 		randomNumber = randomGenerator.nextInt(1, 99);
@@ -516,5 +523,29 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	/**
+	 * Creates a custom decorative rounded-corner border by drawing a rounded rectangle around the component it is applied to.
+	 * Default border color applied is black.
+	 */
+	private class RoundedCornerLineBorder extends AbstractBorder {
+	    private static final long serialVersionUID = 1L;
+	    private Color borderColor = Color.BLACK;
+
+	    public RoundedCornerLineBorder() {}
+
+	    public RoundedCornerLineBorder(Color argBorderColor) {
+	    	borderColor = argBorderColor;
+	    }
+
+	    @Override
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        Graphics2D g2d = (Graphics2D) g.create();
+	        int arc = 7; // border corner arc degree
+	        g2d.setColor(borderColor);
+            g2d.drawRoundRect(x, y, width-1, height-1, arc, arc);
+	        g2d.dispose();
+	    }
 	}
 }

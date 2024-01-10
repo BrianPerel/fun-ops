@@ -14,6 +14,21 @@
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
 
+	<!-- dump some basic environment-related info -->
+	<tstamp>
+		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy-hh:mm a z" locale="en, US" />
+	</tstamp>
+
+	<echo message="Project name: ${ant.project.name}${line.separator}Current date and time: ${TODAY_US_DATE}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
+
+	<!-- path reference id for classpath holding references to all 3rd party jars in project
+	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
+	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
 	<!-- macrodef for creating a wrapped jar executable file-->
 	<macrodef name="launch4j-create-exe-task" description="creates an exe file from the provided content">
 		<attribute name="outfile" />
@@ -42,21 +57,6 @@
 			<delete dir="${release.dir}/@{app-name}-tmp" />
 		</sequential>
 	</macrodef>
-
-	<!-- dump some basic environment-related info -->
-	<tstamp>
-		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy-hh:mm a" locale="en, US" />
-	</tstamp>
-
-	<echo message="Project name: ${ant.project.name}${line.separator}Current date and time: ${TODAY_US_DATE}${line.separator}${ant.version}${line.separator}Java version used by Ant: ${ant.java.version}" level="info" />
-
-	<!-- path reference id for classpath holding references to all 3rd party jars in project
-	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
-	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
-		<fileset dir="lib">
-			<include name="*.jar" />
-		</fileset>
-	</path>
 
 	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
 		<available file="${signjar.properties.file.path}" property="signjar.key.properties.found" />

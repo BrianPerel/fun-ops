@@ -22,7 +22,10 @@ import static java.awt.event.KeyEvent.VK_PLUS;
 import static java.awt.event.KeyEvent.VK_SLASH;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -39,6 +42,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.AbstractBorder;
 
 /**
  * Application implementation for the calculator's UI. Builds and displays all
@@ -101,6 +105,8 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		textFieldUserInput.setColumns(10);
 		textFieldUserInput.setEditable(false);
 		textFieldUserInput.addKeyListener(this);
+		textFieldUserInput.setBorder(
+				BorderFactory.createCompoundBorder(new CompoundRoundedLineBorder(), BorderFactory.createEmptyBorder(0, 0, 0, 5)));
 
 		JButton[] buttons = new JButton[24]; // change this to 25 if removing frame.getContentPane().setLayout(null)
 		buttons[0] = new JButton("1/x");
@@ -566,5 +572,27 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Creates a custom decorative rounded-corner border by drawing a rounded rectangle around the component it is applied to.
+	 */
+	private class CompoundRoundedLineBorder extends AbstractBorder {
+	    private static final long serialVersionUID = 1L;
+
+	    @Override
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        Graphics2D g2d = (Graphics2D) g.create();
+
+	        int arc = 10; // border corner arc degree
+	        int borderThickness = 4;
+	        g2d.setColor(Color.GRAY);
+
+	        for (int i = 0; i < borderThickness; i++) {
+	            g2d.drawRoundRect(x+i, y+i, (width-1) - (2*i), (height-1) - (2*i), arc, arc);
+	        }
+
+	        g2d.dispose();
+	    }
 	}
 }

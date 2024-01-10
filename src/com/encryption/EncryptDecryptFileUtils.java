@@ -35,9 +35,7 @@ public class EncryptDecryptFileUtils {
 	protected static void loadFileData(String fileToLoad) {
 		if (loadFile(fileToLoad)) {
 
-			// use try with resources here, which will auto close resources
 			try (Scanner read = new Scanner(file)) {
-
 				// place every line of the file into a data StringBuilder, to use 'data' for encryption/decryption
 				while (read.hasNextLine()) {
 					data.append(read.nextLine());
