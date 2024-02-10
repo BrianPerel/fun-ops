@@ -14,7 +14,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
- * Implementation for 3x3 tic-tac-toe game board. Initiates the game and has functionality to support human player vs computer game mode<br>
+ * Implementation for a 3x3 tic-tac-toe game board. Initiates the game and functionality to support the human player
+ * vs computer game mode where the human player will go first<br>
  *
  * @author Brian Perel
  *
@@ -57,6 +58,14 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 		lblPlayersTurn.setText(String.format("%s's turn (%s):", ticTacToeGame.getPlayerOnesName(), PLAYER_SHAPE));
 	}
 
+	/**
+	 * Constructs a CvPGameBoard object with the specified parameters, allowing customization of the initial game state and window location.
+	 *
+	 * @param argIsStart             Boolean flag indicating whether the game has just begun
+	 * @param argIsPlayerOnesTurn    Boolean flag indicating if it's Player One's turn in the game
+	 * @param setLocationToHere      String representing the desired window location in the format "x,y"
+	 * @param argTicTacToeGame       Instance of the TicTacToe class managing the game logic
+	 */
 	public CvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere, TicTacToe argTicTacToeGame) {
 		this(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
@@ -126,7 +135,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Assist AI in choosing the best move to make in it's current turn by calling makeBestMoveComputer().
+	 * Assists the AI in choosing the best move to make in it's current turn by calling makeBestMoveComputer().
 	 * This secondary thread calls doClick on the randomly picked game board tile
 	 */
 	private synchronized void doClickThread() {
@@ -147,7 +156,7 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Assist AI in choosing the best move to make in it's current turn. This is done by scanning the board to see if other
+	 * Assists the AI in choosing the best move to make in it's current turn. This is done by scanning the board to see if other
 	 * player can win in their next move. If so code will block that combo from completing by placing AI's game shape there
 	 */
 	private void makeBestMoveComputer() {
@@ -172,8 +181,9 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 
 	/**
 	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo
+	 *
 	 * @return recommended blocking move for AI to make to prevent player from winning in their next move
-	 * (returns button that hasn't been pressed yet to prevent player's 3 in a row pattern)
+	 * (returns the button that hasn't been pressed yet to prevent the player from creating a 3 in a row winning pattern)
 	 */
 	private int canPlayerWinInNextMove(String[] tile) {
 

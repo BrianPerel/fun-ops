@@ -30,7 +30,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 /**
- * Implementation for app's start window. Prompts for player's 1 and 2's names.
+ * Implementation for the app's start window which prompts for player 1 and 2's names.
  *
  * @author Brian Perel
  *
@@ -49,7 +49,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	private TicTacToe ticTacToeGame;
 
 	/**
-	 * Create the application. Build all components
+	 * Initializes the application, customizes the logger for the current class instance, and builds all GUI components
 	 */
 	public StartMenu() {
 		TicTacToe.customizeLogger(LOG);
@@ -66,6 +66,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 
+		// declare max number of characters a player can use for their name entry
 		final int MAX_CHARS_LIMIT = 12;
 
 		// changes the program's taskbar icon
@@ -84,7 +85,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblPlayer1);
 
 		nameOneTextField = new JFormattedTextField();
-		// Use document filter to limit player 1's name to size of 12. Using a custom DocumentFilter to filter all invalid data input
+		// Using a custom GUI document filter to limit player one's name to a size of 12 and prevent all invalid data type input
 		((AbstractDocument) nameOneTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
@@ -105,7 +106,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblPlayer2);
 
 		nameTwoTextField = new JFormattedTextField();
-		// Use document filter to limit player 1's name to size of 12. Using a custom DocumentFilter to filter all invalid data input
+		// Using a custom GUI document filter to limit player two's name to a size of 12 and prevent all invalid data type input
 		((AbstractDocument) nameTwoTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
@@ -142,9 +143,9 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Sets a custom color to appear when you hover over a specific button
+	 * Sets a custom hover color for a specific button and then reverts to the default color when the mouse exits
 	 *
-	 * @param argBtn button on which you want a different color to appear when hovering
+	 * @param argBtn The button for which you want a custom hover color to appear
 	 */
 	protected static void setBtnHoverColor(JButton argBtn) {
 		argBtn.addMouseListener(new MouseAdapter() {
@@ -173,10 +174,9 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * A common method used by both types of listeners (for keys and action buttons)
-	 * that handles an event
+	 * A common handler used by both types of event listeners (action and key listener) for handling events
 	 *
-	 * @param source  the object on which the event initially occurred
+	 * @param source the object on which the event initially occurred
 	 * @param keyChar the character associated with the key in this event
 	 */
 	private void eventHandler(Object source, char keyChar) {
@@ -184,18 +184,15 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			// play against computer game flow
 			window.dispose();
 			new CvPGameBoard(true, true, ticTacToeGame);
-			return; // prevents below code from running
+			return; // prevents below code from running to complete the switching of game modes
 		}
 
 		String nameOne = nameOneTextField.getText().trim();
 		String nameTwo = nameTwoTextField.getText().trim();
 
-		// if start button is pushed and both name fields aren't empty and both names are
-		// different
-		if (namesValidationRulesCheck(keyChar, source, nameOne, nameTwo)) {
-			// first letter of name should be capitalized, and the rest of the name should
-			// be in lowercase
-
+		// check if the start button is pressed and both name fields are filled with distinct names
+		if (validateAndCheckNamesInput(keyChar, source, nameOne, nameTwo)) {
+			// ensures that the first letter of the name is capitalized and all other letters are in lowercase
 			String capitalizedNameOne = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
 			String capitalizedNameTwo = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
 
@@ -206,53 +203,58 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 			window.dispose();
 			new PvPGameBoard(true, true, ticTacToeGame);
 		}
-		else {
-			checkNamesInput(nameOne, nameTwo, source);
-		}
 	}
 
-	private boolean namesValidationRulesCheck(char keyChar, Object source, String nameOne, String nameTwo) {
-		return (keyChar == KeyEvent.VK_ENTER || keyChar == KeyEvent.VK_SPACE) && source.equals(btnStart)
-				&& !(nameOne.isEmpty() || nameTwo.isEmpty() || nameOne.equalsIgnoreCase(nameTwo)
-				|| TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
-				|| TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo));
-	}
+	/**
+	 * Validates input names and checks conditions for starting a game, providing feedback and handling errors.
+	 *
+	 * @param keyChar The key character associated with the event.
+	 * @param source The source object triggering the input check.
+	 * @param nameOne The name of player one.
+	 * @param nameTwo The name of player two.
+	 * @return {@code true} if conditions for starting a game are met, {@code false} otherwise.
+	 *         Conditions include pressing Enter or Space key, the source being the start button (btnStart),
+	 *         and both names being non-empty, distinct, and not equal to predefined values.
+	 */
+	private boolean validateAndCheckNamesInput(char keyChar, Object source, String nameOne, String nameTwo) {
+	    // if one or both name textfields are empty
+	    if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
+	        Toolkit.getDefaultToolkit().beep();
+	        nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
+	                : BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+	        nameTwoTextField.setBorder(nameTwo.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
+	                : BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
 
-	private void checkNamesInput(String nameOne, String nameTwo, Object source) {
-		// if one or both name textfields are empty
-		if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
-			Toolkit.getDefaultToolkit().beep();
-			nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
-		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
-		    nameTwoTextField.setBorder(nameTwo.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
-		    		: BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+	        JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
+	                JOptionPane.ERROR_MESSAGE);
 
-			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter names for both players", ERROR_TITLE,
-					JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
 
-			return;
-		}
+	    Toolkit.getDefaultToolkit().beep();
+	    nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+	    nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+	    nameOneTextField.setText("");
+	    nameTwoTextField.setText("");
+	    nameOneTextField.requestFocus();
 
-		Toolkit.getDefaultToolkit().beep();
-		nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-		nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-		nameOneTextField.setText("");
-		nameTwoTextField.setText("");
-		nameOneTextField.requestFocus();
+	    // if the entered names for player 1 or 2 are set as 'PLAYER' or 'COMPUTER'
+	    if (TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
+	            || TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo)) {
+	        JOptionPane.showMessageDialog(window.getComponent(0),
+	                String.format("Please don't use '%s' or '%s' as a name", TicTacToe.PLAYER, TicTacToe.COMPUTER), ERROR_TITLE,
+	                JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    // if player one's and two's textfields are equal
+	    else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
+	        JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
+	                JOptionPane.ERROR_MESSAGE);
 
-		// if entered player 1 or 2's name equals 'PLAYER' or 'COMPUTER'
-		if (TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
-				|| TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo)) {
-			JOptionPane.showMessageDialog(window.getComponent(0),
-					String.format("Please don't use '%s' or '%s' as a name", TicTacToe.PLAYER, TicTacToe.COMPUTER), ERROR_TITLE,
-					JOptionPane.ERROR_MESSAGE);
-		}
-		// if first player's name field equals the second one
-		else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
-			JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
-					JOptionPane.ERROR_MESSAGE);
+	        nameOneTextField.requestFocus();
+	        return false;
+	    }
 
-			nameOneTextField.requestFocus();
-		}
+	    return (keyChar == KeyEvent.VK_ENTER || keyChar == KeyEvent.VK_SPACE) && source.equals(btnStart);
 	}
 }

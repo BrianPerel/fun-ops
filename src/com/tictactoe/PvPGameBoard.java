@@ -30,7 +30,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
 /**
- * Implementation for 3x3 tic-tac-toe game board. Initiates the human player vs player game. Player 1 will go first.<br>
+ * Implementation for a 3x3 tic-tac-toe game board. Initiates the human player vs player game mode where player 1 will go first.<br>
  *
  * @author Brian Perel
  *
@@ -43,8 +43,8 @@ public class PvPGameBoard implements ActionListener {
 	private static final Logger LOG = Logger.getLogger(PvPGameBoard.class.getName());
 	protected static final Color LIGHT_RED_COLOR = new Color(232, 46, 6);
 
-	protected JButton[] gameBoardTiles; // the click-able board buttons
-	protected String[] tile; // the String version of the click-able board buttons
+	protected JButton[] gameBoardTiles; // the clickable board buttons
+	protected String[] tile; // the String version of the clickable board buttons
 	protected boolean isCvPGame; // determines current game mode, used to prevent bug
 	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
@@ -174,17 +174,24 @@ public class PvPGameBoard implements ActionListener {
 		window.setLocation(StartMenu.window.getX(), StartMenu.window.getY());
 	}
 
+	/**
+	 * Constructs a PvPGameBoard object with the specified parameters, allowing customization of the initial game state and window location.
+	 *
+	 * @param argIsStart             Boolean flag indicating whether the game has just begun
+	 * @param argIsPlayerOnesTurn    Boolean flag indicating if it's Player One's turn in the game
+	 * @param setLocationToHere      String representing the desired window location in the format "x,y"
+	 * @param argTicTacToeGame       Instance of the TicTacToe class managing the game logic
+	 */
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, String setLocationToHere, TicTacToe argTicTacToeGame) {
 		this(argIsStart, argIsPlayerOnesTurn, argTicTacToeGame);
 		window.setLocation(Integer.parseInt(setLocationToHere.split(",")[0]), Integer.parseInt(setLocationToHere.split(",")[1]));
 	}
 
-
 	/**
-	 * Setups the current game: makes decision on whose turn it is and assigns
-	 * player entered names. Enforces player1 to always start first: Sets p1 and p2's turns for first round
+	 * Sets up the current game, makes decision on whose turn it is and assigns player entered names.
+	 * Enforces that Player 1 always starts first by setting turns for Player 1 (p1) and Player 2 (p2) in the first round
 	 *
-	 * @param argIsStart         boolean flag indicating whether the game has just
+	 * @param argIsStart boolean flag indicating whether the game has just
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag indicating if it's player one's turn in the
 	 *                  game
@@ -215,12 +222,13 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Scans board for any 3 in a row combos made by either a player
-	 * @param argPlayerShape player's board shape
+	 * Scans the game board to check for any winning combinations of three in a row made by a player with the specified shape.
+	 *
+	 * @param argPlayerShape The player's board shape to check for ("X" or "O")
 	 */
 	private void checkForPattern(String argPlayerShape) {
 
-		// 3 in a row gameboard cells that trigger game win:
+		// 3 in a row gameboard cells that trigger a winning combo:
 		// if buttons 3, 4, 5 are triggered - 3 in a row vertically - down the middle column
 		// if buttons 6, 7, 8 are triggered - 3 in a row vertically - down the right side column
 		// if buttons 0, 3, 6 are triggered - 3 in a row horizontally - across the top row
@@ -235,6 +243,13 @@ public class PvPGameBoard implements ActionListener {
 		}
 	}
 
+	/**
+	 * Checks if a specific combination of three buttons in a row, identified by their indices is triggered by a player with the specified shape.
+	 * If a winning combination is detected, it initiates the game over process, displays the winner, and highlights the winning pattern on the game board.
+	 *
+	 * @param argPlayerShape The player's board shape to check for ("X" or "O")
+	 * @param argPair        The combination of three button indices, separated by '|', representing a potential winning pattern
+	 */
 	private void checkForPair(String argPlayerShape, String argPair) {
 	    String[] buttons = argPair.split("|");
 		int button1 = Integer.parseInt(buttons[0]);
@@ -255,7 +270,7 @@ public class PvPGameBoard implements ActionListener {
 
 	/**
 	 * Logs the current game's winner
-	 * @param argPlayerShape player's shape - used to get the winner's name
+	 * @param argPlayerShape player's shape used to get the winner's name
 	 */
 	private void logWinner(String argPlayerShape) {
 		LOG.log(Level.INFO, "{0} wins!", TicTacToe.PLAYER_ONE_SHAPE.equals(argPlayerShape) ? ticTacToeGame.getPlayerOnesName()
@@ -263,7 +278,9 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Scans board after every move to see if a pattern of 3 has been made in a row, column, or diagonally or if all tiles have been clicked
+	 * Scans the board after every move to see if a pattern of 3 has been achieved in a row, column, or diagonally, or if all tiles have been clicked resulting in a draw
+	 *
+	 * @param isCvPGame A boolean flag indicating whether the game mode is player vs. player (true) or player vs. computer (false)
 	 */
 	private void checkForWinner(boolean isCvPGame) {
 
@@ -278,18 +295,20 @@ public class PvPGameBoard implements ActionListener {
 		 *
 		 */
 
+	    // extracts the current state of each tile on the game board
 		for(int x = 0; x < tile.length; x++) {
 			tile[x] = gameBoardTiles[x].getText();
 		}
 
+	    // check for winning patterns for both Player 1 and Player 2
 		checkForPattern(TicTacToe.PLAYER_ONE_SHAPE);
 		checkForPattern(TicTacToe.PLAYER_TWO_SHAPE);
 
-		// isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls
+		// the isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row
 		// from displaying player won and draw at the same time error
 		if (!ticTacToeGame.isGameOver && isBoardFull()) {
-			// disables all 9 buttons on board after game is over
+			// disables all 9 buttons on the board after the game is over
 			for (JButton button : gameBoardTiles) {
 				button.setEnabled(false);
 			}
@@ -305,34 +324,37 @@ public class PvPGameBoard implements ActionListener {
 				});
 			}
 
-			// pass in different string arg
-			// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer)
-			// 1 '!' at the end of the string indicates result is from player vs. player
+			// pass in a different string arg
+	        // "Game Over! It's a draw!!" for player vs. player games
+	        // "Game Over! It's a draw!!!" for player vs. computer games
 			new MatchOver(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!", ticTacToeGame);
 			LOG.info("Game Over! It's a draw!");
 		}
 	}
 
 	/**
-	 * Checks if game board is full, displays game over - tie (draw).
-	 * Returns false if even just 1 of the tiles is empty, since then there's no way of finding the board to be filled out at that point
+	 * Checks if game board is full, indicating a draw.
+	 * Returns false if at least one tile is empty, since then there's no way of finding the board to be filled out at that point
+	 *
+	 * @return {@code true} if the game board is completely filled indicating a draw, {@code false} otherwise.
 	 */
 	private boolean isBoardFull() {
 		return Arrays.stream(gameBoardTiles).noneMatch(x -> x.getText().isEmpty());
 	}
 
 	/**
-	 * Highlights the winning player's selected tiles and disables the tiles
-	 * @param tileOne   first tile clicked
-	 * @param tileTwo   second tile clicked
-	 * @param tileThree third tile clicked
+	 * Highlights the winning player's selected tiles and disables the tiles after the game is won
+	 *
+	 * @param tileOne   first tile clicked in the winning pattern
+	 * @param tileTwo   second tile clicked in the winning pattern
+	 * @param tileThree third tile clicked in the winning pattern
 	 */
 	private void displayWinnersPattern(JButton tileOne, JButton tileTwo, JButton tileThree) {
 		ticTacToeGame.isGameOver = true;
 
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
 
-		// this will prevent game board tiles from changing color when a game is won
+		// prevents the game board tiles from changing color when a game is won
 		for (int i = 0; i < gameBoardTiles.length; i++) {
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new MouseAdapter() {
@@ -343,12 +365,12 @@ public class PvPGameBoard implements ActionListener {
 			});
 		}
 
-		// makes game board tiles that player won with green when a game is won
+		// makes the game board tiles of the winning player green when a game is won
 		for (JButton button : highlightWinnersTiles) {
 			button.setBackground(GREEN);
 			button.setBorder(new LineBorder(Color.BLUE, 3, true));
 
-			// this will prevent the program from changing colors when you hover after winning
+			// prevents the program from changing colors when you hover after winning
 			button.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent evt) {
@@ -369,8 +391,14 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Performs actions after player's turn
-	 * @param buttonPressed button that was just pressed by player
+	 * Performs actions after player's turn including updating the game board, checking for a winner,
+	 * and updating the displayed turn information.
+	 *
+	 * @param isCvPGame       A boolean flag indicating whether the game mode is player vs. player (true) or player vs. computer (false)
+	 * @param buttonPressed   The button that was just pressed by the player
+	 * @param playerPieceColor The color representing the player's piece on the game board
+	 * @param playersShape    The shape ("X" or "O") representing the player's moves on the game board
+	 * @param playersName     The name of the current player
 	 */
 	protected void makeMove(boolean isCvPGame, JButton buttonPressed, Color playerPieceColor, String playersShape, String playersName) {
 		buttonPressed.setForeground(playerPieceColor);

@@ -21,7 +21,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
- * Implementation for winner window. When a player wins, this window is displayed. <br>
+ * Implementation for the game's winner window. When a player/or the computer AI wins, this window is displayed.<br>
  *
  * @author Brian Perel
  */
@@ -37,9 +37,10 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	private TicTacToe ticTacToeGame;
 
 	/**
-	 * Builds GUI window to be displayed when a player wins
+	 * Builds the UI window to be displayed when a player wins or the game ends
+	 *
 	 * @param argMatchResult holds the result of the game - winner's name or game over message
-	 * @param argTicTacToeGame holds the games properties like player names and shapes
+	 * @param argTicTacToeGame holds the games properties like player names and shapes used to control the game's state
 	 */
 	public MatchOver(String argMatchResult, TicTacToe argTicTacToeGame) {
 		try {
@@ -105,7 +106,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		btnQuit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		StartMenu.setBtnHoverColor(btnQuit);
 
-		// if we minimize the game's winner window frame then minimize the other main game frame too
+	    // handles window iconifying and de-iconifying
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowIconified(WindowEvent e) {
@@ -137,7 +138,8 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 
 	/**
 	 * Determines and makes the necessary action associated to the button that was pressed when the game ends (play again or quit)
-	 * @param source the object on which the Event initially occurred
+	 *
+	 * @param source the object on which the event initially occurred
 	 */
 	private void matchOverOptions(Object source) {
 		window.dispose();
@@ -150,8 +152,13 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		}
 	}
 
+	/**
+	 * Restarts the Tic-Tac-Toe game when the "play again" button is pressed.
+     *
+	 * This method determines the appropriate game mode based on the result of the
+	 * previous game and launches a new game accordingly.
+	 */
 	private void playAgain() {
-		// launches appropriate game mode when play again btn is pressed
 		if (TicTacToe.PLAYER.equals(gameResult) || TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult)) {
 			new CvPGameBoard(false, false, PvPGameBoard.window.getX() + "," + PvPGameBoard.window.getY(), ticTacToeGame);
 		}
@@ -160,11 +167,16 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		}
 	}
 
+	/**
+	 * Quits the Tic-Tac-Toe game with a normal program exit status (0)
+	 *
+	 * @param source the object that triggered the quit action, typically the quit button
+	 */
 	private void quit(Object source) {
 		if (btnQuit.equals(source) || (TicTacToe.PLAYER.equals(gameResult)
 				|| TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
 
-			System.exit(0); // perform program termination with a normal exit status
+			System.exit(0);
 		}
 	}
 

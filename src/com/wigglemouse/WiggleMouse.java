@@ -28,15 +28,15 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 /**
- * Wiggle mouse program. Useful for when you want to be away from your computer
- * however appear to be available. <br>
+ * Wiggle mouse program useful for when you need to be away from your computer while appearing available.
+ * Allows for users to set the time interval for mouse wiggling in order to continuously maintain the appearance of activity.<br>
  *
  * @author Brian Perel
  *
  */
 public class WiggleMouse {
 
-	// using DefaultComboBoxModel to prevent problem with WindowBuilder
+	// using DefaultComboBoxModel type to prevent problem from arising with WindowBuilder eclipse plug-in
 	private static final JComboBox<String> WAIT_TIME_OPTIONS_COMBO_BOX = new JComboBox<>(
 		new DefaultComboBoxModel<>(new String[] {"1/2 minute", "1 minute", "3 minutes", "5 minutes"}));
 
@@ -45,18 +45,20 @@ public class WiggleMouse {
 	private long waitTime = 30L;
 
 	/**
-	 * Launch the application.
-	 * @throws InterruptedException	thrown if thread is interrupted while building the apps window and frame
-	 * @throws AWTException
+	 * Launches the application by creating an instance of the class
+	 *
+	 * @throws InterruptedException	thrown if thread is interrupted while building the app's window frame
+	 * @throws AWTException thrown if there is an issue with the Abstract Window Toolkit (AWT) during application initialization.
 	 */
 	public static void main(String[] args) throws InterruptedException, AWTException {
 		new WiggleMouse();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 * @throws AWTException
-	 * @throws InterruptedException
+	 * Initializes the contents of the frame and then enters mouse monitoring movement loop
+	 *
+	 * @throws InterruptedException	thrown if thread is interrupted while building the app's window frame
+	 * @throws AWTException thrown if there is an issue with the Abstract Window Toolkit (AWT) during application GUI creation/start.
 	 */
 	public WiggleMouse() throws InterruptedException, AWTException  {
 		createGui();
@@ -72,17 +74,18 @@ public class WiggleMouse {
 	    // ultra light grey color
 		UIManager.put("Button.select", new Color(200, 203, 232));
 
-	    // changes the program's taskbar icon
+		// applies a custom taskbar icon to the app
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/mouse.png").getImage());
 
 	    JPanel panel = new JPanel(new GridBagLayout());
 	    window.add(panel);
 
-	    // set minimum GUI size
+	    // set the minimum GUI size
 	    window.setMinimumSize(new Dimension(window.getWidth(), window.getHeight()));
 
+	    // using grid bag layout for GUI layout manager
 	    GridBagConstraints gbc = new GridBagConstraints();
-	    gbc.insets = new Insets(5, 5, 5, 5);
+	    gbc.insets = new Insets(5, 5, 5, 5); // insets used for margin spacing
 
 	    JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 	    lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
@@ -139,11 +142,13 @@ public class WiggleMouse {
 	    window.setLocationRelativeTo(null);
 	    window.setVisible(true);
 	    btnSetTime.doClick();
-	    window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized when launched
+	    window.setExtendedState(Frame.ICONIFIED); // makes the GUI window be minimized (iconified) when launched
 	}
 
 	/**
-	 * Updates the time to wait in minutes before wiggling the mouse
+	 * Retrieves the selected item from the wait time drop down box
+	 *
+	 * @return the time to wait in minutes before programmatically wiggling the mouse or the current waitTime value if no match is found
 	 */
 	private long updateIdleTime() {
 		return switch ((String) WAIT_TIME_OPTIONS_COMBO_BOX.getSelectedItem()) {
@@ -156,9 +161,13 @@ public class WiggleMouse {
 	}
 
 	/**
-	 * Performs mouse movement actions by getting current mouse coordinates, waiting the allotted time, then moving the mouse to the new coordinates
-	 * @throws InterruptedException thrown if thread is interrupted while performing thread sleep operation
-	 * @throws AWTException
+	 * Continuously monitors and performs mouse movement actions by retrieving the current mouse coordinates,
+	 * waiting the allotted time, and then moving the mouse to the new coordinates.
+	 * Wiggle effect is only done if the mouse coordinates remain unchanged during the waiting period.
+	 *
+	 * @param robot The Robot instance used for controlling mouse actions.
+	 * @throws InterruptedException thrown if the thread is interrupted during the sleep operation.
+	 * @throws AWTException thrown if there is an issue with the Abstract Window Toolkit (AWT) during mouse movement.
 	 */
 	private void moveMouse(Robot robot) throws InterruptedException {
 	    while (true) {
@@ -167,7 +176,7 @@ public class WiggleMouse {
 		    int previousY = mouseYCoordinate;
 
 	        TimeUnit.SECONDS.sleep(waitTime); // time to wait before next mouse move
-	        setMouseLocation(); // set the mouse coordinates again to see if the mouse was moved during the waiting period
+	        setMouseLocation(); // sets the current mouse coordinates after the wait time to see if the mouse was moved during the waiting period
 
 	        // check if the mouse coordinates have changed
 	        if (mouseXCoordinate != previousX || mouseYCoordinate != previousY) {
@@ -187,7 +196,7 @@ public class WiggleMouse {
 	}
 
 	/**
-	 * Obtains and sets the current mouse's position into variables (x, y coordinates)
+	 * Obtains and sets the current mouse's position into x, y coordinate variables
 	 */
 	private void setMouseLocation() {
 		mouseXCoordinate = (int) MouseInfo.getPointerInfo().getLocation().getX();

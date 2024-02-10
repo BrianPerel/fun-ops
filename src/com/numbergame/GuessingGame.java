@@ -46,13 +46,14 @@ import com.stopwatch.StopWatch;
 import com.stopwatch.StopWatch.StopWatchPanel;
 
 /**
- * A guessing number game in which the user receives a randomly generated secret
- * number between 1-99 and he/she must guess what the remainder is. Every
- * correct guess gives the player 10 points, every incorrect guess takes away 10
- * points. Score is kept for every session. The game also features a timer that
- * is enabled by default, but can be disabled by checking a box. <br>
+ * A guessing number game where the player receives a randomly generated secret
+ * number between 1 and 99 and must guess the remainder to make 100.
  *
- * NOTE: this program uses the fun-ops stopwatch app
+ * Every correct guess gives the player 10 points, every incorrect guess takes away 10 points.
+ * The player's score is kept for every session of the game. The game also features a timer that
+ * is enabled by default, but can be disabled by checking a box.<br>
+ *
+ * This program uses an optional timer app for timing functionality
  *
  * @author Brian Perel
  *
@@ -220,9 +221,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Sets the colors for when hovering over a button
+	 * Sets a custom hover color for a specific button and then reverts to the default color when the mouse exits
 	 *
-	 * @param argBtn the button on which to apply the hover effect
+	 * @param argBtn The button for which you want a custom hover color to appear
 	 * @param argBtnHoverColor the color for when hovering
 	 * @param argBtnNoHoverColor the color for when not hovering
 	 */
@@ -241,7 +242,13 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Set up the stop watch feature implementation for the guessing game
+	 * Sets up the stop watch feature implementation for the guessing game.
+	 * The stopwatch is launched with the specified width and height, and an option
+	 * to enable a custom red font to appear after 10 seconds.
+	 *
+	 * The method also configures the behavior of the stopwatch window frame to prevent
+	 * closure from closing the guessing game window. Additionally, it ensures that if the main
+	 * window frame is minimized, the stopwatch window frame is also minimized and vice versa.
 	 */
 	protected void setTimeCounterImpl() {
 		timeCounter = new StopWatch(300, 110, true); // launch the stop watch, pass in parameters: width, height, and if you want to enable custom red font to appear in stop watch post 10 seconds
@@ -283,7 +290,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		StopWatchPanel.BTN_STOP.setVisible(false);
 		StopWatchPanel.BTN_RESET.setVisible(false);
 
-		// timer auto starts as soon as game board appears
+		// timer auto starts as soon as the game board appears
 		StopWatchPanel.BTN_START.doClick();
 	}
 
@@ -301,9 +308,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * An event handler for both action and key event types
+	 * An event handler for both the action and key event types
 	 *
-	 * @param source the object on which the Event initially occurred
+	 * @param source the object on which the event initially occurred
 	 * @param keyChar the character associated with the key in this event
 	 */
 	private void eventHandler(Object source, char keyChar) {
@@ -360,12 +367,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		// forces focus to jump from button pressed to guessing text field again
 		textFieldGuessTheNumber.requestFocus();
 
-		// fixes problem when after counter is disabled the focus is still on the counter
+		// fixes the problem where after the counter is disabled the focus is still on the counter
 		window.toFront();
 	}
 
+	/**
+	 * Turns off the timer if the specified key character is pressed and the event source is the closeTimerCheckBox.
+	 *
+	 * @param source The object that triggered the event
+	 * @param keyChar The character of the key pressed
+	 */
 	private void turnOffTimer(Object source, char keyChar) {
-		// if you want to turn off the timer
 		if (keyChar == KeyEvent.VK_ENTER && source.equals(closeTimerCheckBox)) {
 			StopWatchPanel.BTN_STOP.doClick();
 
@@ -373,7 +385,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			closeTimerCheckBox.setSelected(StopWatchPanel.WATCH.isEnabled());
 
 			if (StopWatchPanel.WATCH.isEnabled()) {
-				StopWatchPanel.BTN_START.doClick(); // start the timer from 0
+				StopWatchPanel.BTN_START.doClick();
 			}
 		}
 	}
@@ -423,13 +435,17 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		}
 	}
 
+	/**
+	 * Resets the game by playing a sound, displaying a reset message, generating a new random number,
+	 * updating the text fields, and resetting the game scores
+	 */
 	private void playAgain() {
 		playSound("res/audio/chimes.wav");
 		JOptionPane.showMessageDialog(window.getComponent(0), "Game reset");
 		textFieldGuesses.setText("0");
 		randomNumber = randomGenerator.nextInt(1, 99);
 
-		// adds an extra layer of security - prevents random number chosen from being the previous number used
+		// adds an extra layer of security - prevents the new chosen random number from being the previous number used
 		if (randomNumber == previousRandomNumber) {
 			randomNumber = randomGenerator.nextInt(1, 99);
 		}
@@ -440,10 +456,10 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	}
 
 	/**
-	 * Evaluates the user's guess value
+	 * Evaluates the user's input guess value
 	 *
 	 * @param isTimeout is the user out of time
-	 * @param TOTAL_SUM game mode's correct guess + random number's sum (which is either 100 or 1000)
+	 * @param TOTAL_SUM game mode's correct guess plus random number's sum (which is either 100 or 1000 depending on game mode)
 	 */
 	protected void evaluateGuess(boolean isTimeout, final int TOTAL_SUM) {
 		int textFieldGuessTheNumberInt = 0;
@@ -455,7 +471,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			nfe.printStackTrace();
 		}
 
-		// if input remainder entered is outside of range 1-99 or 100-999
+		// if input remainder entered is outside of the range 1-99 or 100-999
 		if (textFieldGuessTheNumberInt >= TOTAL_SUM || textFieldGuessTheNumberInt <= 0) {
 			playSound(FAIL_SOUND);
 			textFieldGuessTheNumber.setBorder(
@@ -485,11 +501,18 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.setBorder(
 				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
-		// set score after action is completed
+		// sets the score after action is completed
 		textFieldScore.setText(Integer.toString(gameScore));
 		textFieldGuesses.setText(Integer.toString(++totalGuessesMade));
 	}
 
+	/**
+	 * Handles the completion of a successful game session, plays a winning sound, updates UI components,
+	 * displays a success message, generates a new random number, and adjusts game scores.
+	 *
+	 * @param MAX_LIMIT The maximum limit for the game (either 100 or 1000 depending on game mode)
+	 * @param isTimeout Indicates if the game ended due to timeout
+	 */
 	private void gameWonCompleteSession(final int MAX_LIMIT, boolean isTimeout) {
 		playSound("res/audio/win.wav");
 		textFieldGuessTheNumber.setBorder(

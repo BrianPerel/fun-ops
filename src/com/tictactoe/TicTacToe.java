@@ -21,7 +21,6 @@ public class TicTacToe {
 		customizeLogger(LOG);
 
 		LOG.info("Starting tic-tac-toe log");
-
 		new StartMenu();
 	}
 
@@ -43,9 +42,11 @@ public class TicTacToe {
 	}
 
 	/**
-	 * Adds a custom logging component to output the line numbers of log statements
+	 * Adds a custom logging component to output the line numbers of log statements.
+	 * Extracts the line number where the log statement is declared by analyzing the
+	 * stack trace information of the provided argument LogRecord
 	 *
-	 * @param logRecord object holding metadata about the logging event
+	 * @param logRecord object holding metadata about the current logging event
 	 * @return the line number where log statement is declared
 	 */
 	private static String getLineNumber(LogRecord logRecord) {
@@ -68,7 +69,7 @@ public class TicTacToe {
 	}
 
 	/**
-	 * Sets players names
+	 * Sets the player names
 	 * @param argPlayerOnesName player one's name
 	 * @param argPlayerTwosName player two's name
 	 */

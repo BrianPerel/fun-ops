@@ -40,8 +40,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
- * Clock application with an alarm feature. By default time is displayed in 12-hour time format, but user
- * has the option to switch to and from 24-hour time format. <br>
+ * Clock application with an alarm feature. By default the time is displayed in a 12-hour time format, but the user
+ * has the option to switch to and from a 24-hour time format<br>
  *
  * @author Brian Perel
  *
@@ -68,8 +68,7 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Create the clock application. Places all the buttons on the app's board
-	 * (initializes the contents of the frame), building the GUI.
+	 * Creates the clock application
 	 */
 	public Clock() {
 		createGui();
@@ -99,7 +98,7 @@ public class Clock implements ActionListener {
 		menu.setDisplayedMnemonicIndex(-1); // force program to not decorate (don't underline) mnemonic
 		menu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menu.setToolTipText("Sets an alarm time");
-		
+
 		// default menu blue color
 		menu.setBackground(new Color(0, 126, 210));
 		menu.setForeground(Color.WHITE);
@@ -197,10 +196,11 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Obtains the current time every second, applies formatting if needed, listens for if user
-	 * enters an alarm time, and repeats these actions every second
+	 * Continuously obtains the current time every second, applies formatting if needed, and listens for user
+	 * alarm time input
 	 *
-	 * @param argMilitaryTimeFormatCheckBox the display military time JCheckBox
+	 * @param argMilitaryTimeFormatCheckBox The checkbox indicating whether to display time in the military (24-hour) format.
+	 *                                      If selected, time will be displayed in 24-hour format; otherwise in 12-hour format.
 	 */
 	private void getTime(JCheckBox argMilitaryTimeFormatCheckBox) {
 		while (true) {
@@ -208,7 +208,7 @@ public class Clock implements ActionListener {
 
 			String currentUnformattedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")).substring(1);
 
-			// since the alarm time set should only be in am/pm time value, compare time using unformatted (am/pm) only time
+			// since the user set alarm time should be only in am/pm time, perform comparison of the time using unformatted (am/pm) time
 			if (alarmTime.isPresent() && !hasAlarmRung && currentUnformattedTime.equalsIgnoreCase(alarmTimeString)) {
 				ringAlarm();
 			}
@@ -243,15 +243,20 @@ public class Clock implements ActionListener {
 	}
 
 	/**
-	 * Rings the alarm if conditions are met. Plays alarm wav file
+	 * Rings the alarm if conditions are met and plays the alarm wav file for a fixed duration of 3 seconds,
+	 * using the Java Sound API (AudioSystem)
+	 *
+	 * @throws UnsupportedAudioFileException If the audio file format is not supported
+	 * @throws IOException If an I/O error occurs while reading the audio file
+	 * @throws LineUnavailableException If a line cannot be opened because it is unavailable
+	 * @throws InterruptedException If the thread is interrupted during the alarm sound duration
 	 */
 	private void ringAlarm() {
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
-			menuOption.setSelected(false); // removes check mark from the app menu option
+			menuOption.setSelected(false); // deselects the corresponding menu option to remove the check mark
 			clip.start();
-			// sound the alarm for a 3-second duration
 			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {

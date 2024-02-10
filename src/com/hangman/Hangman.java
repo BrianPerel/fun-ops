@@ -52,6 +52,7 @@ import javax.swing.text.DocumentFilter;
 
 /**
  * Hangman game app with a 4-letter car brand theme. <br>
+ *
  * @author Brian Perel
  */
 public class Hangman extends KeyAdapter implements FocusListener {
@@ -60,12 +61,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 			LocalDateTime.now().toString().getBytes(StandardCharsets.US_ASCII));
 	private static final Logger LOG = Logger.getLogger(Hangman.class.getName());
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-	// store contents of random words in arraylist to give ability to extract txt at
-	// specific line. Using an arraylist because this will allow us to modify our hangman
-	// word file list on the fly. On the contrary a regular array requires us to specify the size when we declare it,
-	// requiring us to change array size if we modify the txt file
+	// store contents of random words in an arraylist to give ability to extract txt at a specific line
 	private static final List<String> secretWordList = new ArrayList<>();
-	// store hangman drawing in an unmodifiable collection list, each part is to be displayed is in a separate
+	// store hangman drawing in an unmodifiable collection list, each part is to be displayed in a separate
 	// space of the array
 	private static final List<String> HANGMAN_DRAWING = List.of(
 			   					"  ____________",
@@ -120,6 +118,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	/**
 	 * Creates the application. Places all the buttons on the app's board (initializes the contents of the frame), building the GUI.
+	 *
 	 * @throws AWTException
 	 */
 	public Hangman() throws AWTException {
@@ -245,7 +244,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Customizes the used logger by adding a custom color and having the output display thread name and line numbers
+	 * Customizes the used logger by adding a custom color and having the output display the thread name and line number
 	 */
 	private void customizeLogger() {
 		// set the console handler to use the custom formatter
@@ -300,7 +299,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Loads file and obtains a list of hangman secret words
+	 * Loads the secret words file and obtains a list of the hangman words
 	 */
 	private boolean obtainSecretWords() {
 
@@ -347,7 +346,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Validates every word being loaded from our file of words
+	 * Validates every word being loaded from our file of hangman words
 	 *
 	 * @param word a secret hangman word
 	 * @return empty string indicating to not use a secret work or the validated secret word w/o formatting
@@ -372,7 +371,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Read and randomly select a word from a loaded file with a list of hangman words
+	 * Reads and randomly selects a word from the loaded file with a list of hangman words
 	 */
 	private String getSecretWord() {
 		guessesLeft = HANGMAN_DRAWING.size(); // initializes the tracker for the number of guesses you have at start
@@ -385,7 +384,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Resets the game, occurs when user wins or looses
+	 * Resets the game, occurs when the user wins or looses
 	 */
 	private void playAgain() {
 		hangmanTextArea.setText("");
@@ -437,6 +436,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 	/**
 	 * Performs actions to display the correct placements of '*' in the hangman words box, while user is guessing
+	 *
 	 * @return returns letters guessed to reveal along with the masking asterisks
 	 */
 	private String maskHangmanWord(char argUserGuess) {
@@ -508,9 +508,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	    }
 	}
 
-
 	/**
 	 * Examines the letter the user placed in a text field
+	 *
 	 * @param letterGuess users guess
 	 */
 	private void analyzeGuess(char letterGuess) {
@@ -527,18 +527,32 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 	}
 
-	private boolean isGuessCorrect(char guess, int x) {
-		if (textFieldHasFocus[x] && !letters[x] && (guess == secretWord.charAt(x))) {
-			// after correct guess unmask single letter from masked word making: x***, *x**, **x*, or ***x
+	/**
+	 * Checks if the guessed letter at a specific position is correct.
+	 * Updates the displayed hangman word and marks the correct letter if the guess is accurate.
+	 *
+	 * @param guess The letter guessed by the player
+	 * @param guessingLetterPosition The position/index where the guessed letter is being checked
+	 * @return True if the guess is correct, false otherwise
+	 */
+	private boolean isGuessCorrect(char guess, int guessingLetterPosition) {
+		if (textFieldHasFocus[guessingLetterPosition] && !letters[guessingLetterPosition] && (guess == secretWord.charAt(guessingLetterPosition))) {
+			// after a correct guess unmask single letter from masked word making: x***, *x**, **x*, or ***x
 			textFieldHangmanWord.setText(maskHangmanWord(guess));
 
-			letters[x] = true;
+			letters[guessingLetterPosition] = true;
 			return true;
 		}
 
 		return false;
 	}
 
+	/**
+	 * Handles the consequences of a wrong guess in the Hangman game by preventing decrementing of health
+	 * for repeated wrong letters, updates hangman drawing, and checks for game over conditions.
+	 *
+	 * @param guess The incorrect letter guessed by the player
+	 */
 	private void handleWrongGuess(char guess) {
 		// prevents player from loosing health if the same wrong letter was pressed more than once
 		if (guess != previousGuess) {
@@ -565,8 +579,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Indicates which text field is currently holding insertion pointer (at current
-	 * moment)
+	 * Highlights the text field that is currently holding the insertion pointer via a border to provide a visual cue
+	 *
+	 * @param e The FocusEvent indicating the gained focus
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -582,8 +597,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	}
 
 	/**
-	 * Indicates if specific text field doesn't have insertion pointer (at current
-	 * game moment)
+	 * Resets visual indicators when a text field loses focus during the game.
+	 * Clears the focus flag for all text fields, indicating no insertion pointer.
+	 *
+	 * @param e The FocusEvent indicating the lost focus
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {

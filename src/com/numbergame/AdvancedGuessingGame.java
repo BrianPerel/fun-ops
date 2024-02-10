@@ -1,10 +1,13 @@
 package com.numbergame;
 
 /**
- * An advanced (harder difficulty version) guessing number game in which the user receives a randomly generated number
- * between 10-999 and he/she must guess what the remainder is. Every correct guess
- * equates to 10 points, every incorrect guess equates to -10 points. Score is
- * kept for every session. <br>
+ * An advanced (harder difficulty version) of the guessing number game where the user receives
+ * a randomly generated number between 100 and 999 and must guess the remainder to make 1000.
+ * Every correct guess equates to 10 points while every incorrect guess equates to -10 points.
+ * The score is kept for every session.
+ *
+ * This class extends the {@link GuessingGame} class and overrides certain methods to customize
+ * the behavior for the advanced difficulty level<br>
  *
  * @author Brian Perel
  *
