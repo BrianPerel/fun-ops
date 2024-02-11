@@ -206,7 +206,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 	/**
 	 * JFileChooser file browse menu for GUI
 	 */
-	private void fileBrowse() {
+	private void browseForFile() {
 		// Create a fileChooser object while setting a custom icon for the file chooser GUI
 	    JFileChooser fileChooser = new JFileChooser() {
 
@@ -255,7 +255,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 				Toolkit.getDefaultToolkit().beep();
 			}
 			else {
-				fileBrowse();
+				browseForFile();
 			}
 		}
 		else {

@@ -480,7 +480,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 					"Please enter a valid number " + ((TOTAL_SUM == 100) ? "(1-99)" : "(100-999)"));
 		}
 		else if (textFieldGuessTheNumberInt + randomNumber == TOTAL_SUM) {
-			gameWonCompleteSession(TOTAL_SUM, isTimeout);
+			completeGameWonSession(TOTAL_SUM, isTimeout);
 		}
 		else if (textFieldGuessTheNumberInt + randomNumber != TOTAL_SUM) {
 			playSound(FAIL_SOUND);
@@ -513,7 +513,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * @param MAX_LIMIT The maximum limit for the game (either 100 or 1000 depending on game mode)
 	 * @param isTimeout Indicates if the game ended due to timeout
 	 */
-	private void gameWonCompleteSession(final int MAX_LIMIT, boolean isTimeout) {
+	private void completeGameWonSession(final int MAX_LIMIT, boolean isTimeout) {
 		playSound("res/audio/win.wav");
 		textFieldGuessTheNumber.setBorder(
 				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));

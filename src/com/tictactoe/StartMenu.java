@@ -191,7 +191,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		String nameTwo = nameTwoTextField.getText().trim();
 
 		// check if the start button is pressed and both name fields are filled with distinct names
-		if (validateAndCheckNamesInput(keyChar, source, nameOne, nameTwo)) {
+		if (validateNames(nameOne, nameTwo) && checkStartConditions(keyChar, source)) {
 			// ensures that the first letter of the name is capitalized and all other letters are in lowercase
 			String capitalizedNameOne = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
 			String capitalizedNameTwo = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
@@ -208,17 +208,14 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	/**
 	 * Validates input names and checks conditions for starting a game, providing feedback and handling errors.
 	 *
-	 * @param keyChar The key character associated with the event.
-	 * @param source The source object triggering the input check.
 	 * @param nameOne The name of player one.
 	 * @param nameTwo The name of player two.
 	 * @return {@code true} if conditions for starting a game are met, {@code false} otherwise.
-	 *         Conditions include pressing Enter or Space key, the source being the start button (btnStart),
-	 *         and both names being non-empty, distinct, and not equal to predefined values.
+	 *         Conditions include both names being non-empty, distinct, and not equal to predefined values.
 	 */
-	private boolean validateAndCheckNamesInput(char keyChar, Object source, String nameOne, String nameTwo) {
-	    // if one or both name textfields are empty
-	    if ((nameOne.isEmpty() || nameTwo.isEmpty()) && source.equals(btnStart)) {
+	private boolean validateNames(String nameOne, String nameTwo) {
+	    // If one or both name textfields are empty
+	    if (nameOne.isEmpty() || nameTwo.isEmpty()) {
 	        Toolkit.getDefaultToolkit().beep();
 	        nameOneTextField.setBorder(nameOne.isEmpty() ? BorderFactory.createLineBorder(Color.RED, 1)
 	                : BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
@@ -231,23 +228,19 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	        return false;
 	    }
 
-	    Toolkit.getDefaultToolkit().beep();
-	    nameOneTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-	    nameTwoTextField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-	    nameOneTextField.setText("");
-	    nameTwoTextField.setText("");
-	    nameOneTextField.requestFocus();
-
-	    // if the entered names for player 1 or 2 are set as 'PLAYER' or 'COMPUTER'
+	    // If the entered names for player 1 or 2 are set as 'PLAYER' or 'COMPUTER'
 	    if (TicTacToe.PLAYER.equalsIgnoreCase(nameOne) || TicTacToe.COMPUTER.equalsIgnoreCase(nameOne)
 	            || TicTacToe.PLAYER.equalsIgnoreCase(nameTwo) || TicTacToe.COMPUTER.equalsIgnoreCase(nameTwo)) {
+	        Toolkit.getDefaultToolkit().beep();
 	        JOptionPane.showMessageDialog(window.getComponent(0),
 	                String.format("Please don't use '%s' or '%s' as a name", TicTacToe.PLAYER, TicTacToe.COMPUTER), ERROR_TITLE,
 	                JOptionPane.ERROR_MESSAGE);
 	        return false;
 	    }
-	    // if player one's and two's textfields are equal
-	    else if (nameOne.equalsIgnoreCase(nameTwo) && source.equals(btnStart)) {
+
+	    // If player one's and two's textfields are equal
+	    else if (nameOne.equalsIgnoreCase(nameTwo)) {
+	        Toolkit.getDefaultToolkit().beep();
 	        JOptionPane.showMessageDialog(window.getComponent(0), "Please enter different player names", ERROR_TITLE,
 	                JOptionPane.ERROR_MESSAGE);
 
@@ -255,6 +248,18 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	        return false;
 	    }
 
+	    return true;
+	}
+
+	/**
+	 * Checks conditions for starting a game based on key character and source object.
+	 *
+	 * @param keyChar The key character associated with the event.
+	 * @param source The source object triggering the input check.
+	 * @return true if conditions for starting a game are met, false otherwise.
+	 *         Conditions include pressing Enter or Space key and the source being the start button (btnStart).
+	 */
+	private boolean checkStartConditions(char keyChar, Object source) {
 	    return (keyChar == KeyEvent.VK_ENTER || keyChar == KeyEvent.VK_SPACE) && source.equals(btnStart);
 	}
 }
