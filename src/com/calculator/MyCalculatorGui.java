@@ -236,13 +236,13 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 
 		case ".":
-			if (!userInput.contains(".")) {
+			if (!(userInput.contains(".") || CURSOR_RIGHT_POSITION.equals(userInput))) {
 				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(userInput)).concat("."));
 			}
 			break;
 
 		case "%":
-			if (!CURSOR_RIGHT_POSITION.equals(userInput)) {
+			if (!(CURSOR_RIGHT_POSITION.equals(userInput) || CURSOR_RIGHT_POSITION_W_ZERO.equals(userInput))) {
 				// save num in calculator's memory then display the % sign on calc display to avoid exception
 				MyCalculator.setNumber(String.valueOf(helper.calculatePercentage(Double.parseDouble(userInput))));
 				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(userInput)).concat("%"));

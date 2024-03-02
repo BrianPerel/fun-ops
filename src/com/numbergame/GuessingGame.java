@@ -98,9 +98,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			window.setVisible(true); // this needs to stay here, before the setTimeCounterImpl() method call because otherwise
 									 // the counter program GUI appears above this GUI in the computer's taskbar
 			setTimeCounterImpl();
+			textFieldGuessTheNumber.requestFocus();
 		}
-
-		textFieldGuessTheNumber.requestFocus();
 	}
 
 	private void createGui() {

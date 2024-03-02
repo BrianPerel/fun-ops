@@ -28,6 +28,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 		maxCharsLimit = 3;
 		window.setVisible(true); // allow the GUI to be visible only after applying the above changes because otherwise the GUI launches with the base class GUI values and then changes
 		setTimeCounterImpl();
+		textFieldGuessTheNumber.requestFocus();
 	}
 
 	@Override
