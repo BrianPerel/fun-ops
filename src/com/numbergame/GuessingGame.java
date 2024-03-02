@@ -33,6 +33,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.AbstractBorder;
@@ -97,8 +98,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			window.setVisible(true); // this needs to stay here, before the setTimeCounterImpl() method call because otherwise
 									 // the counter program GUI appears above this GUI in the computer's taskbar
 			setTimeCounterImpl();
-			textFieldGuessTheNumber.requestFocus();
 		}
+
+		textFieldGuessTheNumber.requestFocus();
 	}
 
 	private void createGui() {
@@ -158,6 +160,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldRandomNumber.setBounds(400, 90, 34, 20);
 		textFieldRandomNumber.setFocusable(false);
 		window.getContentPane().add(textFieldRandomNumber);
+
+		JSeparator lineJSeparator = new JSeparator();
+		lineJSeparator.setBounds(272, 130, 200, 10);
+		lineJSeparator.setForeground(Color.BLACK);
+		window.getContentPane().add(lineJSeparator);
 
 		lblGuessInstructions = new JLabel("Enter a number b/w 1-99 to make 100");
 		lblGuessInstructions.setFont(new Font("Tahoma", Font.PLAIN, 14));

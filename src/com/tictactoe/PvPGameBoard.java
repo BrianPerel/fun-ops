@@ -99,9 +99,12 @@ public class PvPGameBoard implements ActionListener {
 			window.getContentPane().add(gameBoardTiles[i]);
 			gameBoardTiles[i].addActionListener(this);
 			gameBoardTiles[i].setSize(80, 70);
-			gameBoardTiles[i].setFont(new Font("Magneto", Font.PLAIN, 35));
+			gameBoardTiles[i].setFont(new Font("Ariel", Font.PLAIN, 60));
 			gameBoardTiles[i].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
 			gameBoardTiles[i].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY));
+
+		    // set this to off to prevent showing focus border when button is clicked
+		    gameBoardTiles[i].setFocusPainted(false);
 
 			final int x = i;
 			gameBoardTiles[i].addMouseListener(new MouseAdapter() {
