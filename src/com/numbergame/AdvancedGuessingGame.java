@@ -2,7 +2,7 @@ package com.numbergame;
 
 /**
  * An advanced (harder difficulty version) of the guessing number game where the user receives
- * a randomly generated number between 100 and 999 and must guess the remainder to make 1000.
+ * a randomly generated number between 100 and 999 and must guess the remainder to make 1,000.
  * Every correct guess equates to 10 points while every incorrect guess equates to -10 points.
  * The score is kept for every session.
  *
@@ -23,7 +23,7 @@ public class AdvancedGuessingGame extends GuessingGame {
 		window.setTitle("Advanced ".concat(window.getTitle()));
 		randomNumber = randomGenerator.nextInt(100, 999);
 		textFieldRandomNumber.setText(Integer.toString(randomNumber)); // range is set to between 100-999
-		lblGuessInstructions.setText(lblGuessInstructions.getText().substring(0, lblGuessInstructions.getText().indexOf("1-99")).concat("100-999 to make 1000"));
+		lblGuessInstructions.setText(lblGuessInstructions.getText().substring(0, lblGuessInstructions.getText().indexOf("1-99")).concat("100-999 to make 1,000"));
 		lblGuessInstructions.setLocation(230, 140);
 		maxCharsLimit = 3;
 		window.setVisible(true); // allow the GUI to be visible only after applying the above changes because otherwise the GUI launches with the base class GUI values and then changes

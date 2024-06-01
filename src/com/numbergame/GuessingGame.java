@@ -183,7 +183,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		        String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
 		        String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
 
-		        if (((newText.length() <= maxCharsLimit) && newText.matches("^[1-9]\\d*$")) || text.isEmpty()) {
+		        // make sure the entered string value consists of only digits and is less than 3 positions long
+		        if (newText.matches("(?=^[1-9]\\d*$).{0," + maxCharsLimit + "}") || text.isEmpty()) {
 		            super.replace(fb, offset, length, text, attrs);
 		        }
 		    }
@@ -426,7 +427,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 				}
 			}
 			// if guess btn is pushed and input is empty
-			else if (textFieldGuessTheNumber.getText().isEmpty() || !textFieldGuessTheNumber.getText().matches("-?[1-9]\\d*|0")) {
+			else if (textFieldGuessTheNumber.getText().isEmpty()) {
 				playSound(FAIL_SOUND);
 				textFieldGuessTheNumber.setBorder(
 						BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
@@ -465,7 +466,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Evaluates the user's input guess value
 	 *
 	 * @param isTimeout is the user out of time
-	 * @param TOTAL_SUM game mode's correct guess plus random number's sum (which is either 100 or 1000 depending on game mode)
+	 * @param TOTAL_SUM game mode's correct guess plus random number's sum (which is either 100 or 1,000 depending on game mode)
 	 */
 	protected void evaluateGuess(boolean isTimeout, final int TOTAL_SUM) {
 		int textFieldGuessTheNumberInt = 0;
@@ -495,7 +496,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					(previousGuess == textFieldGuessTheNumberInt) ? "Same incorrect guess made as previous guess, try again"
-						: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1000"));
+						: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1,000"));
 
 			if (gameScore != 0) {
 				gameScore -= 10;
@@ -516,7 +517,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 * Handles the completion of a successful game session, plays a winning sound, updates UI components,
 	 * displays a success message, generates a new random number, and adjusts game scores.
 	 *
-	 * @param MAX_LIMIT The maximum limit for the game (either 100 or 1000 depending on game mode)
+	 * @param MAX_LIMIT The maximum limit for the game (either 100 or 1,000 depending on game mode)
 	 * @param isTimeout Indicates if the game ended due to timeout
 	 */
 	private void completeGameWonSession(final int MAX_LIMIT, boolean isTimeout) {
@@ -524,7 +525,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		textFieldGuessTheNumber.setBorder(
 				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 		JOptionPane.showMessageDialog(window.getComponent(0),
-				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1000"));
+				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1,000"));
 		randomNumber = randomGenerator.nextInt(1, 99);
 
 		// adds an extra layer of security - prevents random number chosen from being the previous number used

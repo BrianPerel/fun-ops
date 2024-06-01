@@ -252,9 +252,9 @@ public class Hangman extends KeyAdapter implements FocusListener {
         consoleHandler.setFormatter(new Formatter() {
         	@Override
         	 public String format(LogRecord logRecord) {
-                 String threadName = "Thread: [" + Thread.currentThread().getName() + "], ";
+                 String currentThreadName = "Thread: [" + Thread.currentThread().getName() + "], ";
  				 // ANSI color code for white (\u001B[37m)
-                 return "\u001B[37m" + threadName + getLineNumber(logRecord);
+                 return "\u001B[37m" + currentThreadName + getLineNumber(logRecord);
              }
         });
         LOG.addHandler(consoleHandler);
@@ -309,7 +309,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		if (hangmanFile.isFile() && hangmanFile.canRead()) {
 
 			try (BufferedReader reader = new BufferedReader(new FileReader(hangmanFile))) {
-				String line;
+				String line = "";
 
 				// read file of random hangman words
 				while ((line = reader.readLine()) != null) {
@@ -327,14 +327,14 @@ public class Hangman extends KeyAdapter implements FocusListener {
 
 				return true;
 
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e1) {
 				JOptionPane.showMessageDialog(window, "File of hangman words '" + hangmanFile + "' not found", "Error", JOptionPane.ERROR_MESSAGE);
-				LOG.severe("Error: File not found" + e);
-				e.printStackTrace();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(window, "Error reading '" + hangmanFile + "' hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
-		        LOG.severe("Error reading file" + e1);
+				LOG.severe("Error: File not found" + e1);
 				e1.printStackTrace();
+			} catch (IOException e2) {
+				JOptionPane.showMessageDialog(window, "Error reading '" + hangmanFile + "' hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
+		        LOG.severe("Error reading file" + e2);
+				e2.printStackTrace();
 			}
 
 		}
@@ -354,7 +354,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private String validateWord(String word) {
 		// if duplicate word is found in data file, if word accessed is not length of 4, if word is not all chars return empty string to avoid adding that String
 		// also allow txt file to contain comments by ignoring anything that starts with '#'
-		if (word.startsWith("#") || !word.matches("[a-zA-Z]+") || secretWordList.contains(word.toUpperCase()) || word.length() != 4) {
+		if (word.startsWith("#") || !word.matches("^[a-zA-Z]{4}$") || secretWordList.contains(word.toUpperCase())) {
 			return "";
 		}
 
@@ -516,8 +516,8 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	private void analyzeGuess(char letterGuess) {
 		// text field 1 chosen + letter entered matches first char of
 		// hangman word + the letter that hasn't been guessed yet
-		for (int i = 0; i <= 3; i++) {
-			if (isGuessCorrect(letterGuess, i)) {
+		for (int secretWordLetterPosition = 0; secretWordLetterPosition <= 3; secretWordLetterPosition++) {
+			if (isGuessCorrect(letterGuess, secretWordLetterPosition)) {
 				return;
 			}
 		}
