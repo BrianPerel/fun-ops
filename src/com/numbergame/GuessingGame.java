@@ -495,8 +495,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 					BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 			JOptionPane.showMessageDialog(window.getComponent(0),
-					(previousGuess == textFieldGuessTheNumberInt) ? "Same incorrect guess made as previous guess, try again"
-						: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1,000"));
+					(previousGuess == textFieldGuessTheNumberInt) ? "Same incorrect guess made again, try again"
+					: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1,000"),
+			        "Message", JOptionPane.ERROR_MESSAGE);
 
 			if (gameScore != 0) {
 				gameScore -= 10;
@@ -524,8 +525,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		playSound("res/audio/win.wav");
 		textFieldGuessTheNumber.setBorder(
 				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
-		JOptionPane.showMessageDialog(window.getComponent(0),
-				"Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1,000"));
+
+	        JOptionPane.showMessageDialog(window.getComponent(0),
+	            "Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1,000"),
+	            "Message", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("res/graphics/green_checkmark.png"));
+
 		randomNumber = randomGenerator.nextInt(1, 99);
 
 		// adds an extra layer of security - prevents random number chosen from being the previous number used
