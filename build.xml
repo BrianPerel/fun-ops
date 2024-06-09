@@ -9,11 +9,12 @@
 	</description>
 
 	<property file="build.properties" />
-	<property environment="env"/>
+	<property environment="env" />
 
-	<!-- creates the launch4j task -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-	        :${launch4j.dir}/lib/xstream.jar" />
+	<!-- defines the launch4j task -->
+	<target name="define-launch4j-task">
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+	</target>
 
 	<!-- dump some basic environment-related info -->
 	<tstamp>
@@ -62,7 +63,7 @@
 
 	<target name="load-signjar-properties" description="checks if the signjar-key.properties file is found">
 		<condition property="isSignJarPropertiesFound" value="Yes" else="No">
-			 <available file="${signjar.properties.file.path}"/>
+			<available file="${signjar.properties.file.path}" />
 		</condition>
 
 		<echo message="signjar properties file found under file path ${signjar.properties.file.path}? ${isSignJarPropertiesFound}" />
@@ -87,8 +88,7 @@
 	</target>
 
 	<!-- target to create all project executables -->
-	<target name="create-ALL-project-executables" description="creates all project executables" depends="clean, jar-calculator, jar-encryption,
-			jar-clock, jar-number_game, jar-hangman, jar-pong, jar-stopwatch, jar-tic-tac-toe, jar-wiggle-mouse">
+	<target name="create-ALL-project-executables" description="creates all project executables" depends="clean">
 
 		<antcall target="create-and-zip-calculator.exe" />
 		<antcall target="create-and-zip-stopwatch.exe" />
@@ -130,8 +130,8 @@
 	</target>
 
 	<!-- create calculator.exe target -->
-	<target name="create-and-zip-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator">
-		<mkdir dir="${release.dir}/calculator-tmp"/>
+	<target name="create-and-zip-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator, define-launch4j-task">
+		<mkdir dir="${release.dir}/calculator-tmp" />
 
 		<launch4j-create-exe-task outputFile="calculator" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico" />
 		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
@@ -179,8 +179,8 @@
 	</target>
 
 	<!-- create and zip encryption.exe target -->
-	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption">
-		<mkdir dir="${release.dir}/encryption-tmp"/>
+	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption, define-launch4j-task">
+		<mkdir dir="${release.dir}/encryption-tmp" />
 
 		<launch4j-create-exe-task outputFile="encryption" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico" />
 		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
@@ -230,8 +230,8 @@
 	</target>
 
 	<!-- create and zip hangman.exe target -->
-	<target name="create-and-zip-hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman">
-		<mkdir dir="${release.dir}/hangman-tmp"/>
+	<target name="create-and-zip-hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman, define-launch4j-task">
+		<mkdir dir="${release.dir}/hangman-tmp" />
 
 		<launch4j-create-exe-task outputFile="hangman" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico" />
 		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman-tmp/res/graphics" overwrite="true" verbose="${verbose.on}" />
@@ -241,8 +241,8 @@
 	</target>
 
 	<!-- create stopwatch.exe target -->
-	<target name="create-and-zip-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch">
-		<mkdir dir="${release.dir}/stopwatch-tmp"/>
+	<target name="create-and-zip-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch, define-launch4j-task">
+		<mkdir dir="${release.dir}/stopwatch-tmp" />
 
 		<launch4j-create-exe-task outputFile="stopwatch" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico" />
 		<copy file="${res.graphics.dir}/taskbar_icons/stopwatch.png" todir="${release.dir}/stopwatch-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
@@ -356,9 +356,9 @@
 	</target>
 
 	<!-- create and zip number_game.exe target -->
-	<target name="create-and-zip-number_game.exe" description="creates .exe file for number game" depends="jar-number_game, jar-adv-number_game">
-		<mkdir dir="${release.dir}/number_game-tmp"/>
-		<mkdir dir="${release.dir}/adv_number_game-tmp"/>
+	<target name="create-and-zip-number_game.exe" description="creates .exe file for number game" depends="jar-number_game, jar-adv-number_game, define-launch4j-task">
+		<mkdir dir="${release.dir}/number_game-tmp" />
+		<mkdir dir="${release.dir}/adv_number_game-tmp" />
 
 		<launch4j-create-exe-task outputFile="number_game" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
 		<launch4j-create-exe-task outputFile="adv_number_game" jarPath="${jar.dir}/adv-guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
@@ -446,8 +446,8 @@
 	</target>
 
 	<!-- create tic-tac-toe.exe target -->
-	<target name="create-and-zip-tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe">
-		<mkdir dir="${release.dir}/tic-tac-toe-tmp"/>
+	<target name="create-and-zip-tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe, define-launch4j-task">
+		<mkdir dir="${release.dir}/tic-tac-toe-tmp" />
 
 		<launch4j-create-exe-task outputFile="tic-tac-toe" jarPath="${jar.dir}/tic-tac-toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico" />
 		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
@@ -493,8 +493,8 @@
 	</target>
 
 	<!-- create wiggle mouse.exe target -->
-	<target name="create-and-zip-wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle-mouse">
-		<mkdir dir="${release.dir}/wigglemouse-tmp"/>
+	<target name="create-and-zip-wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle-mouse, define-launch4j-task">
+		<mkdir dir="${release.dir}/wigglemouse-tmp" />
 
 		<launch4j-create-exe-task outputFile="wigglemouse" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico" />
 		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
@@ -503,8 +503,8 @@
 	</target>
 
 	<!-- create and zip clock.exe target -->
-	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock">
-		<mkdir dir="${release.dir}/clock-tmp"/>
+	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock, define-launch4j-task">
+		<mkdir dir="${release.dir}/clock-tmp" />
 
 		<launch4j-create-exe-task outputFile="clock" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico" />
 		<copy file="res/fonts/clock-font.ttf" todir="${release.dir}/clock-tmp/res/fonts" overwrite="true" verbose="${verbose.on}" />
@@ -517,8 +517,8 @@
 	</target>
 
 	<!-- create and zip pong.exe target -->
-	<target name="create-and-zip-pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong">
-		<mkdir dir="${release.dir}/pong-tmp"/>
+	<target name="create-and-zip-pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong, define-launch4j-task">
+		<mkdir dir="${release.dir}/pong-tmp" />
 
 		<launch4j-create-exe-task outputFile="pong" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico" />
 		<copy file="${res.graphics.dir}/restart-sign.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
@@ -578,3 +578,4 @@
 	</target>
 
 </project>
+
