@@ -42,6 +42,7 @@
 		<sequential>
 			<launch4j>
 				<config headerType="gui" outfile="${release.dir}/@{outputFile}-tmp/@{outputFile}.exe" dontWrapJar="false" jarPath="@{jarPath}" icon="@{icon}">
+
 					<jre minVersion="${min.jre.version}">
 						<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 						<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
@@ -51,6 +52,11 @@
 			</launch4j>
 		</sequential>
 	</macrodef>
+
+	<!-- Checks build property to see if user wants all executables to be zipped -->
+	<target name="zip-executable" if="${zip.executable}">
+		<zip-and-delete-task app-name="${app-name}" />
+	</target>
 
 	<macrodef name="zip-and-delete-task" description="task to perform move, zip, and delete operations on a provided app and it's resources">
 		<attribute name="app-name" />
@@ -84,7 +90,6 @@
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="${build.dir}" verbose="${verbose.on}" />
 		<delete dir="logs" verbose="${verbose.on}" />
-		<delete dir="doc" verbose="${verbose.on}" />
 	</target>
 
 	<!-- target to create all project executables -->
@@ -135,7 +140,9 @@
 
 		<launch4j-create-exe-task outputFile="calculator" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico" />
 		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="calculator" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="calculator" />
+		</antcall>
 	</target>
 
 	<!-- targets for encryption program -->
@@ -187,7 +194,9 @@
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="encryption" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="encryption" />
+		</antcall>
 	</target>
 
 	<!-- targets for hangman -->
@@ -237,7 +246,9 @@
 		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman-tmp/res/graphics" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="hangman_words.txt" todir="${release.dir}/hangman-tmp" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="hangman" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="hangman" />
+		</antcall>
 	</target>
 
 	<!-- create stopwatch.exe target -->
@@ -246,7 +257,9 @@
 
 		<launch4j-create-exe-task outputFile="stopwatch" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico" />
 		<copy file="${res.graphics.dir}/taskbar_icons/stopwatch.png" todir="${release.dir}/stopwatch-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="stopwatch" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="stopwatch" />
+		</antcall>
 	</target>
 
 	<!-- targets for guessing game and advanced guessing game -->
@@ -374,7 +387,9 @@
 		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png, stopwatch.png" />
 		</copy>
-		<zip-and-delete-task app-name="number_game" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="number_game" />
+		</antcall>
 
 		<delete dir="${release.dir}/adv_number_game-tmp" verbose="${verbose.on}" />
 	</target>
@@ -452,7 +467,9 @@
 		<launch4j-create-exe-task outputFile="tic-tac-toe" jarPath="${jar.dir}/tic-tac-toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico" />
 		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="tic-tac-toe" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="tic-tac-toe" />
+		</antcall>
 	</target>
 
 	<!-- targets for wiggle mouse -->
@@ -499,7 +516,9 @@
 		<launch4j-create-exe-task outputFile="wigglemouse" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico" />
 		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/mouse.png" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="wigglemouse" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="wigglemouse" />
+		</antcall>
 	</target>
 
 	<!-- create and zip clock.exe target -->
@@ -513,7 +532,9 @@
 		</copy>
 		<copy file="${res.graphics.dir}/taskbar_icons/clock.png" todir="${release.dir}/clock-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.audio.dir}/clock-alarm.wav" todir="${release.dir}/clock-tmp/${res.audio.dir}" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="clock" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="clock" />
+		</antcall>
 	</target>
 
 	<!-- create and zip pong.exe target -->
@@ -523,7 +544,9 @@
 		<launch4j-create-exe-task outputFile="pong" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico" />
 		<copy file="${res.graphics.dir}/restart-sign.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/pingpong.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip-and-delete-task app-name="pong" />
+		<antcall target="zip-executable">
+			<param name="app-name" value="pong" />
+		</antcall>
 	</target>
 
 	<!-- targets for clock -->
@@ -578,4 +601,3 @@
 	</target>
 
 </project>
-
