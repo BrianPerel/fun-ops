@@ -18,7 +18,7 @@
 
 	<!-- dump some basic environment-related info -->
 	<tstamp>
-		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy-hh:mm a z" locale="en, US" />
+		<format property="TODAY_US_DATE" pattern="MM/dd/yyyy hh:mm a z" locale="en, US" />
 	</tstamp>
 
 	<echo message="Project name: ${ant.project.name}${line.separator}Current date and time: ${TODAY_US_DATE}
