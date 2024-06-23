@@ -8,7 +8,6 @@
 /Launch4j/
 /doc/
 /target/
-*.jar
 *.log
 *.class
 *.zip

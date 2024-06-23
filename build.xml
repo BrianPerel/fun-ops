@@ -105,7 +105,7 @@
 	<!-- targets for calculator -->
 	<target name="compile-calculator" description="compile the java sources that will be included in the build for the specified application">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/calculator" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-calculator" depends="compile-calculator" description="creates associated .jar file for the specified application">
@@ -113,6 +113,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/calculator/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
@@ -145,7 +147,7 @@
 	<!-- targets for encryption program -->
 	<target name="compile-encryption-program" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/encryption" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-encryption" depends="compile-encryption-program" description="creates associated .jar file">
@@ -153,6 +155,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/encryption/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
@@ -200,7 +204,7 @@
 	<!-- targets for hangman -->
 	<target name="compile-hangman" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/hangman" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-hangman" depends="compile-hangman" description="creates associated .jar file">
@@ -208,6 +212,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/hangman/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
@@ -265,7 +271,7 @@
 	<!-- targets for guessing game and advanced guessing game -->
 	<target name="compile-number_game" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch; ${src.dir}/com/numbergame" destdir="${classes.dir}" debug="true" classpath="${build.classpath}" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch; ${src.dir}/com/numbergame" destdir="${classes.dir}" debug="true" classpathref="build.classpath" compiler="modern" />
 	</target>
 
 	<target name="jar-number_game" depends="compile-number_game" description="creates associated .jar file">
@@ -275,6 +281,8 @@
 				<include name="com/stopwatch/*.class" />
 				<exclude name="com/numbergame/Advanced*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.GuessingGame" />
@@ -304,6 +312,8 @@
 				<include name="com/stopwatch/*.class" />
 			</fileset>
 
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
+
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.AdvancedGuessingGame" />
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
@@ -328,7 +338,7 @@
 	<!-- targets for ping pong game -->
 	<target name="compile-pong" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/pingpong" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-pong" depends="compile-pong" description="creates associated .jar file">
@@ -336,6 +346,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/pingpong/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
@@ -398,7 +410,7 @@
 	<!-- targets for stopwatch -->
 	<target name="compile-stopwatch" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/stopwatch" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="creates associated .jar file">
@@ -406,6 +418,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/stopwatch/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
@@ -426,7 +440,7 @@
 	<!-- targets for tic tac toe -->
 	<target name="compile-tic-tac-toe" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/tictactoe" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-tic-tac-toe" depends="compile-tic-tac-toe" description="creates associated .jar file">
@@ -434,6 +448,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/tictactoe/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
@@ -477,7 +493,7 @@
 	<!-- targets for wiggle mouse -->
 	<target name="compile-wiggle-mouse" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/wigglemouse" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-wiggle-mouse" depends="compile-wiggle-mouse" description="creates associated .jar file">
@@ -485,6 +501,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/wigglemouse/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
@@ -557,7 +575,7 @@
 	<!-- targets for clock -->
 	<target name="compile-clock" description="compile program">
 		<mkdir dir="${classes.dir}" />
-		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" classpath="${build.classpath}" debug="true" compiler="modern" />
+		<javac includeantruntime="false" srcdir="${src.dir}/com/clock" destdir="${classes.dir}" classpathref="build.classpath" debug="true" compiler="modern" />
 	</target>
 
 	<target name="jar-clock" depends="compile-clock" description="creates associated .jar file">
@@ -565,6 +583,8 @@
 			<fileset dir="${classes.dir}">
 				<include name="com/clock/*.class" />
 			</fileset>
+
+	        <zipgroupfileset dir="lib" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />
