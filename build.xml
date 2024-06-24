@@ -38,7 +38,7 @@
 
 		<sequential>
 			<launch4j>
-				<config headerType="gui" outfile="${release.dir}/@{outputFile}-tmp/@{outputFile}.exe" dontWrapJar="false" jarPath="@{jarPath}" icon="@{icon}">
+				<config headerType="gui" outfile="${release.dir}/@{outputFile}/@{outputFile}.exe" dontWrapJar="false" jarPath="@{jarPath}" icon="@{icon}">
 
 					<jre minVersion="${min.jre.version}">
 						<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
@@ -58,8 +58,8 @@
 		<attribute name="app-name" />
 
 		<sequential>
-			<zip destfile="${release.dir}/@{app-name}.zip" basedir="${release.dir}/@{app-name}-tmp" update="true" />
-			<delete dir="${release.dir}/@{app-name}-tmp" verbose="${verbose.on}" />
+			<zip destfile="${release.dir}/@{app-name}.zip" basedir="${release.dir}/@{app-name}" update="true" />
+			<delete dir="${release.dir}/@{app-name}" verbose="${verbose.on}" />
 		</sequential>
 	</macrodef>
 
@@ -134,10 +134,10 @@
 
 	<!-- create calculator.exe target -->
 	<target name="create-and-zip-calculator.exe" description="creates .exe file for calculator program" depends="jar-calculator, define-launch4j-task">
-		<mkdir dir="${release.dir}/calculator-tmp" />
+		<mkdir dir="${release.dir}/calculator" />
 
 		<launch4j-create-exe-task outputFile="calculator" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico" />
-		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="calculator" />
@@ -177,24 +177,24 @@
 
 	<!-- zip encryption program -->
 	<target name="zip-encryption-jar-with-resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption">
-		<copy file="secret.txt" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${jar.dir}/encryptDecrypt-${version.num}.jar" todir="${dist.dir}/encryption-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${dist.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption-tmp" update="true" />
-		<delete dir="${dist.dir}/encryption-tmp" verbose="${verbose.on}" />
+		<copy file="secret.txt" todir="${dist.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${jar.dir}/encryptDecrypt-${version.num}.jar" todir="${dist.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${dist.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${dist.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${dist.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
+		<delete dir="${dist.dir}/encryption" verbose="${verbose.on}" />
 	</target>
 
 	<!-- create and zip encryption.exe target -->
 	<target name="create-and-zip-encryption.exe" description="creates .exe file for encryption program" depends="jar-encryption, define-launch4j-task">
-		<mkdir dir="${release.dir}/encryption-tmp" />
+		<mkdir dir="${release.dir}/encryption" />
 
 		<launch4j-create-exe-task outputFile="encryption" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico" />
-		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${release.dir}/encryption-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<copy file="secret.txt" todir="${release.dir}/encryption-tmp" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="secret.txt" todir="${release.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="encryption" />
@@ -234,22 +234,22 @@
 
 	<!-- zip-hangman-jar with resources target -->
 	<target name="zip-hangman-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
-		<copy file="hangman_words.txt" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${jar.dir}/hangman-${version.num}.jar" todir="${dist.dir}/hangman-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${dist.dir}/hangman-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman-tmp" update="true" />
-		<delete dir="${dist.dir}/hangman-tmp" verbose="${verbose.on}" />
+		<copy file="hangman_words.txt" todir="${dist.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${jar.dir}/hangman-${version.num}.jar" todir="${dist.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${dist.dir}/hangman/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${dist.dir}/hangman/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
+		<delete dir="${dist.dir}/hangman" verbose="${verbose.on}" />
 	</target>
 
 	<!-- create and zip hangman.exe target -->
 	<target name="create-and-zip-hangman.exe" description="creates .exe file for hangman program" depends="jar-hangman, define-launch4j-task">
-		<mkdir dir="${release.dir}/hangman-tmp" />
+		<mkdir dir="${release.dir}/hangman" />
 
 		<launch4j-create-exe-task outputFile="hangman" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico" />
-		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman-tmp/res/graphics" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman-tmp/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<copy file="hangman_words.txt" todir="${release.dir}/hangman-tmp" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman/res/graphics" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="hangman_words.txt" todir="${release.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="hangman" />
@@ -258,10 +258,10 @@
 
 	<!-- create stopwatch.exe target -->
 	<target name="create-and-zip-stopwatch.exe" description="creates .exe file for stopwatch program" depends="jar-stopwatch, define-launch4j-task">
-		<mkdir dir="${release.dir}/stopwatch-tmp" />
+		<mkdir dir="${release.dir}/stopwatch" />
 
 		<launch4j-create-exe-task outputFile="stopwatch" jarPath="${jar.dir}/stopwatch-${version.num}.jar" icon="${res.graphics.icons.dir}/stopwatch.ico" />
-		<copy file="${res.graphics.dir}/taskbar_icons/stopwatch.png" todir="${release.dir}/stopwatch-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/stopwatch.png" todir="${release.dir}/stopwatch/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="stopwatch" />
@@ -368,35 +368,35 @@
 
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar-with-resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
-		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}" verbose="${verbose.on}">
+		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" overwrite="true" verbose="${verbose.on}" />
+		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
-		<copy todir="${dist.dir}/guessingGame-tmp/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
+		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
-		<copy file="${res.graphics.dir}/taskbar_icons/guessing-game.png" todir="${dist.dir}/guessingGame-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame-tmp" update="true" />
-		<delete dir="${dist.dir}/guessingGame-tmp" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/guessing-game.png" todir="${dist.dir}/guessingGame/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<zip destfile="${dist.dir}/guessingGame.zip" basedir="${dist.dir}/guessingGame" update="true" />
+		<delete dir="${dist.dir}/guessingGame" verbose="${verbose.on}" />
 	</target>
 
 	<!-- create and zip number_game.exe target -->
 	<target name="create-and-zip-number_game.exe" description="creates .exe file for number game" depends="jar-number_game, jar-adv-number_game, define-launch4j-task">
-		<mkdir dir="${release.dir}/number_game-tmp" />
-		<mkdir dir="${release.dir}/adv_number_game-tmp" />
+		<mkdir dir="${release.dir}/number_game" />
+		<mkdir dir="${release.dir}/adv_number_game" />
 
 		<launch4j-create-exe-task outputFile="number_game" jarPath="${jar.dir}/guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
 		<launch4j-create-exe-task outputFile="adv_number_game" jarPath="${jar.dir}/adv-guessingGame-${version.num}.jar" icon="${res.graphics.icons.dir}/guessing-game.ico" />
 
 		<!-- because I'm packaging 2 executables into 1 folder I need this additional move statement -->
-		<move file="${release.dir}/adv_number_game-tmp/adv_number_game.exe" todir="${release.dir}/number_game-tmp" verbose="${verbose.on}" />
-		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
+		<move file="${release.dir}/adv_number_game/adv_number_game.exe" todir="${release.dir}/number_game" verbose="${verbose.on}" />
+		<copy todir="${release.dir}/number_game/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
-		<copy todir="${release.dir}/number_game-tmp/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
+		<copy todir="${release.dir}/number_game/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
 		</copy>
-		<copy todir="${release.dir}/number_game-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}">
+		<copy todir="${release.dir}/number_game/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png, stopwatch.png" />
 		</copy>
 
@@ -404,7 +404,7 @@
 			<param name="app-name" value="number_game" />
 		</antcall>
 
-		<delete dir="${release.dir}/adv_number_game-tmp" verbose="${verbose.on}" />
+		<delete dir="${release.dir}/adv_number_game" verbose="${verbose.on}" />
 	</target>
 
 	<!-- targets for stopwatch -->
@@ -470,20 +470,20 @@
 
 	<!-- zip tic tac toe program -->
 	<target name="zip-tic-tac-toe-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic-tac-toe">
-		<copy file="${jar.dir}/tic-tac-toe-${version.num}.jar" todir="${dist.dir}/tic-tac-toe-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${dist.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<zip destfile="${dist.dir}/tic_tac_toe.zip" basedir="${dist.dir}/tic-tac-toe-tmp" update="true" />
-		<delete dir="${dist.dir}/tic-tac-toe-tmp" verbose="${verbose.on}" />
+		<copy file="${jar.dir}/tic-tac-toe-${version.num}.jar" todir="${dist.dir}/tic-tac-toe" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${dist.dir}/tic-tac-toe/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<zip destfile="${dist.dir}/tic_tac_toe.zip" basedir="${dist.dir}/tic-tac-toe" update="true" />
+		<delete dir="${dist.dir}/tic-tac-toe" verbose="${verbose.on}" />
 	</target>
 
 	<!-- create tic-tac-toe.exe target -->
 	<target name="create-and-zip-tic-tac-toe.exe" description="creates and zip .exe file for tic tac toe game" depends="jar-tic-tac-toe, define-launch4j-task">
-		<mkdir dir="${release.dir}/tic-tac-toe-tmp" />
+		<mkdir dir="${release.dir}/tic-tac-toe" />
 
 		<launch4j-create-exe-task outputFile="tic-tac-toe" jarPath="${jar.dir}/tic-tac-toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico" />
-		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${release.dir}/tic-tac-toe-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${release.dir}/tic-tac-toe/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="tic-tac-toe" />
@@ -523,19 +523,19 @@
 
 	<!-- zip wigglemouse program -->
 	<target name="zip-wigglemouse-jar-with-resources" description="Create zipped folder for wigglemouse with jar and resources" depends="jar-wiggle-mouse">
-		<copy file="${jar.dir}/wigglemouse-${version.num}.jar" todir="${dist.dir}/wigglemouse-tmp" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${dist.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse-tmp" update="true" />
-		<delete dir="${dist.dir}/wigglemouse-tmp" verbose="${verbose.on}" />
+		<copy file="${jar.dir}/wigglemouse-${version.num}.jar" todir="${dist.dir}/wigglemouse" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${dist.dir}/wigglemouse/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<zip destfile="${dist.dir}/wigglemouse.zip" basedir="${dist.dir}/wigglemouse" update="true" />
+		<delete dir="${dist.dir}/wigglemouse" verbose="${verbose.on}" />
 	</target>
 
 	<!-- create wiggle mouse.exe target -->
 	<target name="create-and-zip-wigglemouse.exe" description="creates .exe file for wiggle mouse program" depends="jar-wiggle-mouse, define-launch4j-task">
-		<mkdir dir="${release.dir}/wigglemouse-tmp" />
+		<mkdir dir="${release.dir}/wigglemouse" />
 
 		<launch4j-create-exe-task outputFile="wigglemouse" jarPath="${jar.dir}/wigglemouse-${version.num}.jar" icon="${res.graphics.icons.dir}/mouse.ico" />
-		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/mouse.png" todir="${release.dir}/wigglemouse-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/image-mouse-shake.jpg" todir="${release.dir}/wigglemouse/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/mouse.png" todir="${release.dir}/wigglemouse/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="wigglemouse" />
@@ -544,15 +544,15 @@
 
 	<!-- create and zip clock.exe target -->
 	<target name="create-and-zip-clock.exe" description="creates .exe file for wiggle mouse program" depends="jar-clock, define-launch4j-task">
-		<mkdir dir="${release.dir}/clock-tmp" />
+		<mkdir dir="${release.dir}/clock" />
 
 		<launch4j-create-exe-task outputFile="clock" jarPath="${jar.dir}/clock-${version.num}.jar" icon="${res.graphics.icons.dir}/clock.ico" />
-		<copy file="res/fonts/clock-font.ttf" todir="${release.dir}/clock-tmp/res/fonts" overwrite="true" verbose="${verbose.on}" />
-		<copy todir="${release.dir}/clock-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
+		<copy file="res/fonts/clock-font.ttf" todir="${release.dir}/clock/res/fonts" overwrite="true" verbose="${verbose.on}" />
+		<copy todir="${release.dir}/clock/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}" includes="alarm-clock-sign.png, night-sky-stars-animation.gif" />
 		</copy>
-		<copy file="${res.graphics.dir}/taskbar_icons/clock.png" todir="${release.dir}/clock-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.audio.dir}/clock-alarm.wav" todir="${release.dir}/clock-tmp/${res.audio.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/clock.png" todir="${release.dir}/clock/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.audio.dir}/clock-alarm.wav" todir="${release.dir}/clock/${res.audio.dir}" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="clock" />
@@ -561,11 +561,11 @@
 
 	<!-- create and zip pong.exe target -->
 	<target name="create-and-zip-pong.exe" description="creates .exe file for wiggle mouse program" depends="jar-pong, define-launch4j-task">
-		<mkdir dir="${release.dir}/pong-tmp" />
+		<mkdir dir="${release.dir}/pong" />
 
 		<launch4j-create-exe-task outputFile="pong" jarPath="${jar.dir}/pong-${version.num}.jar" icon="${res.graphics.icons.dir}/pingpong.ico" />
-		<copy file="${res.graphics.dir}/restart-sign.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/pingpong.png" todir="${release.dir}/pong-tmp/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/restart-sign.png" todir="${release.dir}/pong/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/pingpong.png" todir="${release.dir}/pong/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="pong" />
