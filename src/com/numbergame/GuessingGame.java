@@ -184,7 +184,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		        String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
 
 		        // make sure the entered string value consists of only digits and is less than 3 positions long
-		        if (newText.matches("(?=^[1-9]\\d*$).{0," + maxCharsLimit + "}") || text.isEmpty()) {
+		        if (newText.matches("^(|(?=^[1-9]\\d*$).{1," + maxCharsLimit + "})$")) {
 		            super.replace(fb, offset, length, text, attrs);
 		        }
 		    }

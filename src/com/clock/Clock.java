@@ -175,9 +175,8 @@ public class Clock implements ActionListener {
 					&& (alarmTimeString.length() == 7 || alarmTimeString.length() == 8)) {
 				alarmTime = Optional.ofNullable(alarmTimeString);
 
-				// index 0, 1, 3, and 4 of alarmTime string should be numbers only
-				if (alarmTimeString.substring(0, 1).matches("\\d") && alarmTimeString.substring(3, 4).matches("\\d")
-						&& (alarmTimeString.endsWith("AM") || alarmTimeString.endsWith("PM"))) {
+				// indices 0, 1, 3, and 4 of alarmTime string should be only numbers followed by a single space, and the string must end in 'am' or 'pm' (case insensitive)
+				if (alarmTimeString.matches("^\\d.*\\d [AP]M$")) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(window, "Alarm time has been set", "Alarm time set",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -206,7 +205,7 @@ public class Clock implements ActionListener {
 		while (true) {
 			createFormattedTime(argMilitaryTimeFormatCheckBox);
 
-			String currentUnformattedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")).substring(1);
+			String currentUnformattedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
 
 			// since the user set alarm time should be only in am/pm time, perform comparison of the time using unformatted (am/pm) time
 			if (alarmTime.isPresent() && !hasAlarmRung && currentUnformattedTime.equalsIgnoreCase(alarmTimeString)) {
