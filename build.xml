@@ -24,9 +24,9 @@
 		${line.separator}Java version used by Ant: ${ant.java.version}${line.separator}OS family = ${env.OS}" level="info" />
 
 	<!-- path reference id for classpath holding references to all 3rd party jars in project
-	If you add any 3rd party jars to use in your project, be sure to it to this lib folder  -->
+	If you add any 3rd party jars to use in this project, be sure to it to this lib folder  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
-		<fileset dir="lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -114,7 +114,7 @@
 				<include name="com/calculator/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.calculator.MyCalculatorGui" />
@@ -156,7 +156,7 @@
 				<include name="com/encryption/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
@@ -213,7 +213,7 @@
 				<include name="com/hangman/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
@@ -282,7 +282,7 @@
 				<exclude name="com/numbergame/Advanced*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.GuessingGame" />
@@ -291,6 +291,7 @@
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
 				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
 				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
+				<attribute name="Resource6" value="${res.graphics.dir}/green_checkmark.png" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
 			</manifest>
@@ -312,7 +313,7 @@
 				<include name="com/stopwatch/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.numbergame.AdvancedGuessingGame" />
@@ -347,7 +348,7 @@
 				<include name="com/pingpong/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.pingpong.PingPongGui" />
@@ -399,6 +400,7 @@
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}/taskbar_icons" includes="guessing-game.png, stopwatch.png" />
 		</copy>
+		<copy file="${res.graphics.dir}/green-checkmark.png" todir="${release.dir}/number_game/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="number_game" />
@@ -419,7 +421,7 @@
 				<include name="com/stopwatch/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.stopwatch.StopWatch" />
@@ -449,7 +451,7 @@
 				<include name="com/tictactoe/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
@@ -502,7 +504,7 @@
 				<include name="com/wigglemouse/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.wigglemouse.WiggleMouse" />
@@ -584,7 +586,7 @@
 				<include name="com/clock/*.class" />
 			</fileset>
 
-	        <zipgroupfileset dir="lib" includes="*.jar"/>
+	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
 			<manifest>
 				<attribute name="Main-Class" value="com.clock.Clock" />

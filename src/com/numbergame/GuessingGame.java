@@ -528,7 +528,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 	        JOptionPane.showMessageDialog(window.getComponent(0),
 	            "Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1,000"),
-	            "Message", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("res/graphics/green_checkmark.png"));
+	            "Message", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("res/graphics/green-checkmark.png"));
 
 		randomNumber = randomGenerator.nextInt(1, 99);
 

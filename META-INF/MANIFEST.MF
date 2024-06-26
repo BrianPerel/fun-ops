@@ -23,6 +23,7 @@ Resource2: res/audio/fail.wav
 Resource3: res/audio/win.wav
 Resource4: res/graphics/bg-image-guessing-figure.jpg
 Resource5: res/graphics/bg-image-guess.jpg
+Resource6: res/graphics/green-checkmark.png
 
 # Advanced guessing game app
 Main-Class: com.numbergame.AdvancedGuessingGame
