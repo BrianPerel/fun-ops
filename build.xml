@@ -26,9 +26,7 @@
 	<!-- path reference id for classpath holding references to all 3rd party jars in project
 	If you add any 3rd party jars to use in this project, be sure to it to this lib folder  -->
 	<path id="build.classpath" description="a path including all dependency libraries needed to build main application classes in this project">
-		<fileset dir="${lib.dir}">
-			<include name="*.jar" />
-		</fileset>
+		<fileset dir="${lib.dir}" includes="*.jar" />
 	</path>
 
 	<macrodef name="launch4j-create-exe-task" description="macrodef that creates a wrapped exe file from the provided jar content">
@@ -110,9 +108,7 @@
 
 	<target name="jar-calculator" depends="compile-calculator" description="creates associated .jar file for the specified application">
 		<jar destfile="${jar.dir}/calculator-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/calculator/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/calculator/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -152,9 +148,7 @@
 
 	<target name="jar-encryption" depends="compile-encryption-program" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/encryptDecrypt-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/encryption/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/encryption/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -209,9 +203,7 @@
 
 	<target name="jar-hangman" depends="compile-hangman" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/hangman-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/hangman/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/hangman/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -276,11 +268,7 @@
 
 	<target name="jar-number_game" depends="compile-number_game" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/guessingGame-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/numbergame/*.class" />
-				<include name="com/stopwatch/*.class" />
-				<exclude name="com/numbergame/Advanced*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/numbergame/*.class, com/stopwatch/*.class" excludes="com/numbergame/Advanced*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -308,10 +296,7 @@
 
 	<target name="jar-adv-number_game" depends="compile-number_game" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/adv-guessingGame-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/numbergame/*.class" />
-				<include name="com/stopwatch/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/numbergame/*.class, com/stopwatch/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -344,9 +329,7 @@
 
 	<target name="jar-pong" depends="compile-pong" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/pong-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/pingpong/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/pingpong/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -417,9 +400,7 @@
 
 	<target name="jar-stopwatch" depends="compile-stopwatch" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/stopwatch-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/stopwatch/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/stopwatch/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -447,9 +428,7 @@
 
 	<target name="jar-tic-tac-toe" depends="compile-tic-tac-toe" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/tic-tac-toe-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/tictactoe/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/tictactoe/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -500,9 +479,7 @@
 
 	<target name="jar-wiggle-mouse" depends="compile-wiggle-mouse" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/wigglemouse-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/wigglemouse/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/wigglemouse/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -582,9 +559,7 @@
 
 	<target name="jar-clock" depends="compile-clock" description="creates associated .jar file">
 		<jar destfile="${jar.dir}/clock-${version.num}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="com/clock/*.class" />
-			</fileset>
+			<fileset dir="${classes.dir}" includes="com/clock/*.class" />
 
 	        <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
 
@@ -618,7 +593,7 @@
 	    jar-clock, jar-encryption, jar-hangman, jar-number_game, jar-adv-number_game, jar-pong, jar-stopwatch,
 	    jar-tic-tac-toe, jar-wiggle-mouse">
 
-		<unjar dest="${unjar.dir}">
+		<unjar dest="${unjar.dir}" overwrite="true">
 			<fileset dir="${jar.dir}" includes="*.jar" />
 		</unjar>
 
