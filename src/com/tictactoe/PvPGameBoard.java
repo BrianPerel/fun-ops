@@ -317,14 +317,13 @@ public class PvPGameBoard implements ActionListener {
 			}
 
 			// this will prevent game board tiles from changing color when a game is won
-			for (int i = 0; i < gameBoardTiles.length; i++) {
-				final int x = i;
-				gameBoardTiles[i].addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent evt) {
-						gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
-					}
-				});
+			for (JButton gameBoardTile : gameBoardTiles) {
+				gameBoardTile.addMouseListener(new MouseAdapter() {
+			        @Override
+			        public void mouseEntered(MouseEvent evt) {
+			        	gameBoardTile.setBackground(ULTRA_LIGHT_ORANGE_COLOR);
+			        }
+			    });
 			}
 
 			// pass in a different string arg
@@ -358,14 +357,13 @@ public class PvPGameBoard implements ActionListener {
 		JButton[] highlightWinnersTiles = {tileOne, tileTwo, tileThree};
 
 		// prevents the game board tiles from changing color when a game is won
-		for (int i = 0; i < gameBoardTiles.length; i++) {
-			final int x = i;
-			gameBoardTiles[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent evt) {
-					gameBoardTiles[x].setBackground(ULTRA_LIGHT_ORANGE_COLOR);
-				}
-			});
+		for (JButton gameBoardTile : gameBoardTiles) {
+			gameBoardTile.addMouseListener(new MouseAdapter() {
+		        @Override
+		        public void mouseEntered(MouseEvent evt) {
+		        	gameBoardTile.setBackground(ULTRA_LIGHT_ORANGE_COLOR);
+		        }
+		    });
 		}
 
 		// makes the game board tiles of the winning player green when a game is won

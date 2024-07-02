@@ -303,7 +303,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	private boolean obtainSecretWords() {
 
-		File hangmanFile = new File("hangman_words.txt");
+		final File hangmanFile = new File("hangman_words.txt");
 
 		// ensure that the file is not a directory and that we have at least read access
 		if (hangmanFile.isFile() && hangmanFile.canRead()) {

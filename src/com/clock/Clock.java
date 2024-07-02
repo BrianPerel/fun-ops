@@ -254,7 +254,7 @@ public class Clock implements ActionListener {
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(new File("res/audio/clock-alarm.wav")));
-			menuOption.setSelected(false); // deselects the corresponding menu option to remove the check mark
+			menuOption.setSelected(false); // de-selects the corresponding menu option to remove the check mark
 			clip.start();
 			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
