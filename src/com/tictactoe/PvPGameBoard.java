@@ -18,6 +18,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -49,6 +50,8 @@ public class PvPGameBoard implements ActionListener {
 	protected JLabel lblPlayersTurn; // label that displays whose turn it is
 	protected boolean isPlayerOnesTurn;
 	protected TicTacToe ticTacToeGame;
+
+	ButtonGroup gameBoardButtons = new ButtonGroup();
 
 	/**
 	 * Builds the game's GUI board
@@ -307,7 +310,7 @@ public class PvPGameBoard implements ActionListener {
 		checkForPattern(TicTacToe.PLAYER_ONE_SHAPE);
 		checkForPattern(TicTacToe.PLAYER_TWO_SHAPE);
 
-		// the isGameFinished boolean variable enforces the isBoardFull() from running, unless above method calls
+		// the isGameOver boolean variable enforces the isBoardFull() from running, unless above method calls
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row
 		// from displaying player won and draw at the same time error
 		if (!ticTacToeGame.isGameOver && isBoardFull()) {
