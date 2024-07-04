@@ -175,8 +175,8 @@ public class Clock implements ActionListener {
 					&& (alarmTimeString.length() == 7 || alarmTimeString.length() == 8)) {
 				alarmTime = Optional.ofNullable(alarmTimeString);
 
-				// indices 0, 1, 3, and 4 of alarmTime string should be only numbers followed by a single space, and the string must end in 'am' or 'pm' (case insensitive)
-				if (alarmTimeString.matches("^\\d.*\\d [AP]M$")) {
+				// indices 0, 1, 3, and 4 of alarmTime string should be only numbers (with index 3 being of number 0-5) followed by a single space, and the string must end in 'am' or 'pm' (case insensitive)
+				if (alarmTimeString.matches("^\\d.*[0-5]\\d [AP]M$")) {
 					hasAlarmRung = false;
 					JOptionPane.showMessageDialog(window, "Alarm time has been set", "Alarm time set",
 							JOptionPane.INFORMATION_MESSAGE);
