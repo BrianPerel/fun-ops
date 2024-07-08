@@ -48,8 +48,13 @@
 		</sequential>
 	</macrodef>
 
-	<target name="zip-executable" if="${zip.executable}" description="checks build script's property to see if user wants all executables to be zipped">
+	<target name="zip-executable" depends="skip-zip-executable" if="${zip.executable}" description="checks build script's property to see if user wants all executables to be zipped">
+		<echo message="zip.executable build property set to true, zipping the parent folder of the executable along with resource files" />
 		<zip-and-delete-task app-name="${app-name}" />
+	</target>
+
+	<target name="skip-zip-executable" unless="${zip.executable}" description="Skips zip process if zip.executable property is set to false">
+	    <echo message="Skipping zip process because zip.executable build property is set to false" />
 	</target>
 
 	<macrodef name="zip-and-delete-task" description="task to perform move, zip, and delete operations on a provided app and it's resources">
@@ -585,7 +590,7 @@
 
 	<!-- javadoc target -->
 	<target name="create-project-javadoc" description="generate Javadoc for all applications">
-		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" classpath="${build.classpath}" docencoding="UTF-8" author="true" version="true" windowtitle="My API Page" />
+		<javadoc sourcepath="src" destdir="${build.dir}/docs/api" classpathref="build.classpath" docencoding="UTF-8" author="true" version="true" windowtitle="My API Page" />
 	</target>
 
 	<!-- unjar (extract jar files) target -->
