@@ -358,7 +358,7 @@
 	<!-- zip guessing game -->
 	<target name="zip-guessing-game-jar-with-resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" overwrite="true" verbose="${verbose.on}" />
-		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}" verbose="${verbose.on}">
+		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
 		</copy>
 		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
