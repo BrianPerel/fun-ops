@@ -85,6 +85,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblPlayer1);
 
 		nameOneTextField = new JFormattedTextField();
+		lblPlayer1.setLabelFor(nameOneTextField);
 		// Using a custom GUI document filter to limit player one's name to a size of 12 and prevent all invalid data type input
 		((AbstractDocument) nameOneTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override
@@ -106,6 +107,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblPlayer2);
 
 		nameTwoTextField = new JFormattedTextField();
+		lblPlayer2.setLabelFor(nameTwoTextField);
 		// Using a custom GUI document filter to limit player two's name to a size of 12 and prevent all invalid data type input
 		((AbstractDocument) nameTwoTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
 			@Override

@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -159,6 +160,11 @@ public class Clock implements ActionListener {
 		militaryTimeCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
 		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		// if the system locale is not USA then have the clock display the time in 24-hour format
+        if (!"US".equals(Locale.getDefault().getCountry())) {
+        	militaryTimeCheckBox.setSelected(true);
+        }
 	}
 
 	@Override

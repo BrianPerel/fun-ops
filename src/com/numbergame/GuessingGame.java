@@ -122,6 +122,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblScore);
 
 		textFieldScore = new JTextField(Integer.toString(gameScore));
+		lblScore.setLabelFor(textFieldScore);
 		textFieldScore.setEditable(false);
 		textFieldScore.setBounds(64, 22, 52, 20);
 		textFieldScore.setColumns(10);
@@ -133,6 +134,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblGuesses);
 
 		textFieldGuesses = new JTextField("0");
+		lblGuesses.setLabelFor(textFieldGuesses);
 		textFieldGuesses.setEditable(false);
 		textFieldGuesses.setColumns(10);
 		textFieldGuesses.setBounds(238, 22, 52, 20);
@@ -154,6 +156,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		previousRandomNumber = randomNumber = randomGenerator.nextInt(1, 99);
 		textFieldRandomNumber = new JTextField(Integer.toString(randomNumber));
+		lblNumberIs.setLabelFor(textFieldRandomNumber);
 		textFieldRandomNumber.setEditable(false);
 		textFieldRandomNumber.setColumns(10);
 		textFieldRandomNumber.setBounds(400, 90, 34, 20);
@@ -171,6 +174,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		window.getContentPane().add(lblGuessInstructions);
 
 		textFieldGuessTheNumber = new JFormattedTextField();
+		lblGuessInstructions.setLabelFor(textFieldGuessTheNumber);
 		textFieldGuessTheNumber.setBounds(352, 188, 41, 20);
 		textFieldGuessTheNumber.setCaretColor(Color.BLUE); // made the cursor color blue
 
