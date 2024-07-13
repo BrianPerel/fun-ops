@@ -176,6 +176,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		customFont = new Font("MV Boli", BOLD, 15);
 
 		textFieldGuessesLeft = new JTextField();
+		lblGuessesLeft.setLabelFor(textFieldGuessesLeft);
 		textFieldGuessesLeft.setEditable(false);
 		textFieldGuessesLeft.setFont(customFont);
 		textFieldGuessesLeft.setBounds(375, 85, 40, 20);
@@ -189,6 +190,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window.getContentPane().add(lblWordText);
 
 		textFieldHangmanWord = new JTextField("****");
+		lblWordText.setLabelFor(textFieldHangmanWord);
 		textFieldHangmanWord.setEditable(false);
 		textFieldHangmanWord.setFont(customFont);
 		textFieldHangmanWord.setBounds(368, 125, 50, 27);
@@ -235,6 +237,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window.getContentPane().add(lblGameScore);
 
 		textFieldGameScore = new JTextField("0");
+		lblGameScore.setLabelFor(textFieldGameScore);
 		textFieldGameScore.setEditable(false);
 		textFieldGameScore.setFont(customFont);
 		textFieldGameScore.setBounds(465, 250, 40, 20);

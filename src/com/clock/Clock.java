@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.AudioSystem;
@@ -56,6 +59,8 @@ public class Clock implements ActionListener {
 	private JCheckBoxMenuItem menuOption;
 	private JCheckBox militaryTimeCheckBox;
 	private Optional<String> alarmTime = Optional.ofNullable(null);
+
+    private static final Set<String> AM_PM_TIME_FORMAT_COUNTRIES = new HashSet<>(Set.of("US", "CA", "AU", "PH", "NZ"));
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		try {
@@ -128,6 +133,7 @@ public class Clock implements ActionListener {
 		menu.add(menuOption);
 
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setMargin(new Insets(2, 2, 2, 2));
 		menuBar.add(menu);
 		window.setJMenuBar(menuBar);
 
@@ -162,8 +168,11 @@ public class Clock implements ActionListener {
 		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		// if the system locale is not USA then have the clock display the time in 24-hour format
-        if (!"US".equals(Locale.getDefault().getCountry())) {
-        	militaryTimeCheckBox.setSelected(true);
+		String country = Locale.getDefault().getCountry();
+
+        // check if the locale is not in the specified am/pm format country set or if it is Quebec, Canada (Quebec is the only CA province that uses 24 hour format time)
+        if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("CA".equals(country) && Locale.getDefault().getDisplayName().contains("Quebec"))) {
+            militaryTimeCheckBox.setSelected(true);
         }
 	}
 

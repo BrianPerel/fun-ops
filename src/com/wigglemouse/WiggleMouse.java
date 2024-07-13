@@ -87,6 +87,7 @@ public class WiggleMouse {
 	    GridBagConstraints gbcLabel = new GridBagConstraints();
 	    gbcLabel.insets = new Insets(5, 5, 5, 5); // insets used for margin spacing
 	    JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
+	    lblDisplayMessage.setLabelFor(WAIT_TIME_OPTIONS_COMBO_BOX);
 	    lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
 	    gbcLabel.gridx = 0;
 	    gbcLabel.gridy = 0;

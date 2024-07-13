@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -51,7 +52,7 @@ public class PingPongGui extends JFrame {
 	}
 
 	private void createGui() {
-		this.setLayout(new FlowLayout());
+		getContentPane().setLayout(new FlowLayout());
 
 		// Set translucent background
 		setContentPane(new JPanel() {
@@ -67,12 +68,13 @@ public class PingPongGui extends JFrame {
 		    }
 		});
 
-		this.add(new GameBoard());
+		getContentPane().add(new GameBoard());
 
 		// changes the program's taskbar icon
 	    setIconImage(new ImageIcon("res/graphics/taskbar_icons/pingpong.png").getImage());
 
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setMargin(new Insets(2, 2, 2, 2));
 		JMenu menu = new JMenu("Menu ▼");
 		menu.setMnemonic('r'); // alt+r = menu keyboard shortcut/ keyboard mnemonic
 		menu.setDisplayedMnemonicIndex(-1);
