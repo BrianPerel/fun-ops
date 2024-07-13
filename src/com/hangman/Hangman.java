@@ -134,6 +134,10 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		}
 	}
 
+	/**
+	 * @wbp.parser.entryPoint annotation that marks the entry point for WindowBuilder's parser.
+	 * WindowBuilder will start parsing the GUI components from this method. I added this annotation here as otherwise the design view wouldn't open
+	 */
 	private void createGui() {
 		window = new JFrame("Hangman App by: Brian Perel");
 		window.setResizable(false);

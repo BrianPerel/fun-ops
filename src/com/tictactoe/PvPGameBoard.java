@@ -18,7 +18,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,8 +50,6 @@ public class PvPGameBoard implements ActionListener {
 	protected boolean isPlayerOnesTurn;
 	protected TicTacToe ticTacToeGame;
 
-	ButtonGroup gameBoardButtons = new ButtonGroup();
-
 	/**
 	 * Builds the game's GUI board
 	 *
@@ -60,6 +57,9 @@ public class PvPGameBoard implements ActionListener {
 	 *                  begun
 	 * @param argIsPlayerOnesTurn boolean flag for program indicating if it's player one's turn in the
 	 *                  game
+	 *
+	 * @wbp.parser.constructor special annotation that indicates the class constructor to be used by the Eclipse WindowBuilder plugin
+	 * in a class with multiple constructors. I added this annotation here as otherwise the design view wouldn't open
 	 */
 	public PvPGameBoard(boolean argIsStart, boolean argIsPlayerOnesTurn, TicTacToe argTicTacToeGame) {
 		if(LOG.getHandlers().length == 0 ||

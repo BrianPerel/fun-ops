@@ -78,34 +78,36 @@ public class WiggleMouse {
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/mouse.png").getImage());
 
 	    JPanel panel = new JPanel(new GridBagLayout());
-	    window.add(panel);
+	    window.getContentPane().add(panel);
 
 	    // set the minimum GUI size
 	    window.setMinimumSize(new Dimension(window.getWidth(), window.getHeight()));
 
 	    // using grid bag layout for GUI layout manager
-	    GridBagConstraints gbc = new GridBagConstraints();
-	    gbc.insets = new Insets(5, 5, 5, 5); // insets used for margin spacing
-
+	    GridBagConstraints gbcLabel = new GridBagConstraints();
+	    gbcLabel.insets = new Insets(5, 5, 5, 5); // insets used for margin spacing
 	    JLabel lblDisplayMessage = new JLabel("Time to wait before wiggling your mouse (in minutes):");
 	    lblDisplayMessage.setFont(new Font("Narkisim", Font.PLAIN, 15));
-	    gbc.gridx = 0;
-	    gbc.gridy = 0;
-	    gbc.gridwidth = 2;
-	    panel.add(lblDisplayMessage, gbc);
+	    gbcLabel.gridx = 0;
+	    gbcLabel.gridy = 0;
+	    gbcLabel.gridwidth = 2;
+	    panel.add(lblDisplayMessage, gbcLabel);
 
+	    GridBagConstraints gbcComboBox = new GridBagConstraints();
 	    WAIT_TIME_OPTIONS_COMBO_BOX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	    gbc.gridx = 2;
-	    gbc.gridy = 0;
-	    gbc.gridwidth = 1;
-	    panel.add(WAIT_TIME_OPTIONS_COMBO_BOX, gbc);
+	    gbcComboBox.gridx = 2;
+	    gbcComboBox.gridy = 0;
+	    gbcComboBox.gridwidth = 1;
+	    panel.add(WAIT_TIME_OPTIONS_COMBO_BOX, gbcComboBox);
 
+	    GridBagConstraints gbcArrowIcon = new GridBagConstraints();
 	    JLabel lblArrowIcon = new JLabel(new ImageIcon("res/graphics/image-mouse-shake.jpg"));
-	    gbc.gridx = 0;
-	    gbc.gridy = 1;
-	    gbc.gridwidth = 1;
-	    panel.add(lblArrowIcon, gbc);
+	    gbcArrowIcon.gridx = 0;
+	    gbcArrowIcon.gridy = 1;
+	    gbcArrowIcon.gridwidth = 1;
+	    panel.add(lblArrowIcon, gbcArrowIcon);
 
+	    GridBagConstraints gbcBtnSetTime = new GridBagConstraints();
 	    JButton btnSetTime = new JButton("SET TIME");
 	    btnSetTime.setFont(new Font("Book Antiqua", Font.ITALIC, 12));
 	    btnSetTime.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -134,10 +136,10 @@ public class WiggleMouse {
 	            btnSetTime.setBackground(UIManager.getColor(btnSetTime));
 	        }
 	    });
-	    gbc.gridx = 1;
-	    gbc.gridy = 1;
-	    gbc.gridwidth = 1;
-	    panel.add(btnSetTime, gbc);
+	    gbcBtnSetTime.gridx = 1;
+	    gbcBtnSetTime.gridy = 1;
+	    gbcBtnSetTime.gridwidth = 1;
+	    panel.add(btnSetTime, gbcBtnSetTime);
 
 	    window.setLocationRelativeTo(null);
 	    window.setVisible(true);
