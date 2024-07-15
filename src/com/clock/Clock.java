@@ -169,9 +169,8 @@ public class Clock implements ActionListener {
 
 		// if the system locale is not USA then have the clock display the time in 24-hour format
 		String country = Locale.getDefault().getCountry();
-
         // check if the locale is not in the specified am/pm format country set or if it is Quebec, Canada (Quebec is the only CA province that uses 24 hour format time)
-        if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("CA".equals(country) && Locale.getDefault().getDisplayName().contains("Quebec"))) {
+        if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("fr_CA".equals(Locale.getDefault().toString()))) {
             militaryTimeCheckBox.setSelected(true);
         }
 	}
