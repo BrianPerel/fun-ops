@@ -76,7 +76,7 @@ public class PvPGameBoard implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-		    LOG.log(Level.SEVERE, "Failed to set LookAndFeel", e);
+            LOG.log(Level.SEVERE, String.format("Failed to set '%s' UI LookAndFeel", e.getMessage()));
 		    e.printStackTrace();
 		}
 

@@ -62,7 +62,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			LOG.severe("Failed to set LookAndFeel\n" + e);
+			LOG.severe(String.format("Failed to set '%s' UI LookAndFeel", e.getMessage()));
 			e.printStackTrace();
 		}
 

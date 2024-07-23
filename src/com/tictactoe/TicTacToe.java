@@ -62,7 +62,7 @@ public class TicTacToe {
 			}
 		}
 		catch (Exception e) {
-			LOG.severe("An exception occurred while getting the line number: " + e.getMessage());
+			LOG.severe("An exception occurred while getting the stack trace line number: " + e.getMessage());
 		}
 
 		return "Line: [Line unknown] - ";

@@ -46,6 +46,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			System.out.println("Failed to set '" + e.getMessage() + "' UI LookAndFeel");
 			e.printStackTrace();
 		}
 

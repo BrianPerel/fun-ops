@@ -67,7 +67,8 @@ public class Clock implements ActionListener {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			throw new UnsupportedLookAndFeelException("Failed to set LookAndFeel\n" + e.getMessage());
+			System.out.println("Failed to set '" + e.getMessage() + "' UI LookAndFeel");
+			e.printStackTrace();
 		}
 
 		new Clock();
@@ -147,9 +148,11 @@ public class Clock implements ActionListener {
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf")).deriveFont(Font.BOLD, 110);
 			lblClockTime.setForeground(Color.GREEN);
 		} catch (FontFormatException | IOException e) {
-			lblClockTime.setForeground(Color.BLACK);
-			font = new Font("Bookman Old Style", Font.PLAIN, 70);
+			System.out.println("Failed to load and set custom file font type");
 			e.printStackTrace();
+
+			lblClockTime.setForeground(Color.GRAY);
+			font = new Font("Bookman Old Style", Font.PLAIN, 70);
 		}
 
 		lblClockTime.setFont(font);
@@ -167,9 +170,8 @@ public class Clock implements ActionListener {
 		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		// if the system locale is not USA then have the clock display the time in 24-hour format
+		// if the system locale is not a country from the AM_PM_TIME_FORMAT_COUNTRIES set or is not fr_CA (Quebec) then have the clock display the time in 24-hour format
 		String country = Locale.getDefault().getCountry();
-        // check if the locale is not in the specified am/pm format country set or if it is Quebec, Canada (Quebec is the only CA province that uses 24 hour format time)
         if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("fr_CA".equals(Locale.getDefault().toString()))) {
             militaryTimeCheckBox.setSelected(true);
         }
@@ -273,6 +275,7 @@ public class Clock implements ActionListener {
 			TimeUnit.SECONDS.sleep(3L);
 			clip.stop();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			System.out.println("Error - Couldn't open audio file to play");
 			e1.printStackTrace();
 		} catch (InterruptedException ie) {
 			Thread.currentThread().interrupt();

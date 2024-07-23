@@ -74,7 +74,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
+			System.out.println("Failed to set '" + e.getMessage() + "' UI LookAndFeel");
 			e.printStackTrace();
 		}
 

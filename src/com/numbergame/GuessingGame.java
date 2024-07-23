@@ -478,7 +478,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		try {
 			textFieldGuessTheNumberInt = Integer.parseInt(textFieldGuessTheNumber.getText());
 		} catch(NumberFormatException nfe) {
-			System.out.println("Error: NumberFormatException caught. Number entered is too large");
+			System.out.println("NumberFormatException caught - Number entered is too large or string to cast doesn't have the appropriate format");
 			nfe.printStackTrace();
 		}
 
@@ -559,6 +559,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			clip.open(AudioSystem.getAudioInputStream(new File(fileToPlay)));
 			clip.start();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			System.out.println("Error - Couldn't open audio file to play");
 			e1.printStackTrace();
 		}
 	}

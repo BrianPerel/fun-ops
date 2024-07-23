@@ -43,7 +43,7 @@ public class StopWatch extends JFrame {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			System.out.println("Failed to set LookAndFeel\n" + e.getMessage());
+			System.out.println("Failed to set '" + e.getMessage() + "' UI LookAndFeel");
 			e.printStackTrace();
 		}
 
