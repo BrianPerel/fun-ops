@@ -296,6 +296,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		if (secretWordList.isEmpty()) {
 			LOG.severe("Error: File of secret hangman words to load is empty");
 			JOptionPane.showMessageDialog(window, "File of secret hangman words to load is empty", "Error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		else {
 			secretWord = getSecretWord();

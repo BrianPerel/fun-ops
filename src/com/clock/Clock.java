@@ -145,10 +145,16 @@ public class Clock implements ActionListener {
 		Font font;
 
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/clock-font.ttf")).deriveFont(Font.BOLD, 110);
+			File customFontFile = new File("res/fonts/clock-font.ttf");
+
+			if(!(customFontFile.exists() || customFontFile.canRead())) {
+		        throw new IOException("Font file does not exist or cannot be read");
+			}
+
+			font = Font.createFont(Font.TRUETYPE_FONT, customFontFile).deriveFont(Font.BOLD, 110);
 			lblClockTime.setForeground(Color.GREEN);
 		} catch (FontFormatException | IOException e) {
-			System.out.println("Failed to load and set custom file font type");
+			System.out.println("Failed to load and read custom file font type");
 			e.printStackTrace();
 
 			lblClockTime.setForeground(Color.GRAY);

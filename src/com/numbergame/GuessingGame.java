@@ -572,7 +572,9 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	    private static final long serialVersionUID = 1L;
 	    private Color borderColor = Color.BLACK;
 
-	    public RoundedCornerLineBorder() {}
+	    public RoundedCornerLineBorder() {
+	    	// default no-arg constructor for creating black color border
+	    }
 
 	    public RoundedCornerLineBorder(Color argBorderColor) {
 	    	borderColor = argBorderColor;
