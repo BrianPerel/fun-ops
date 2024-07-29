@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -118,11 +119,19 @@ public class MyCalculator {
 	 * BigDecimal. This is performed when equals operator is hit
 	 */
 	private static void toBigDecimalConversion() {
-		for (String i : stringNumbers) { // get String value
-			bigDecimalNumbers.add(new BigDecimal(stringNumbers.get(stringNumbers.indexOf(i))));
-		}
+		// only get string values if the list of strings doesn't contain any empty values - avoids out of bounds exception
+        boolean listHasEmptyStrings = Collections.frequency(stringNumbers, "") > 0;
 
-		answer = bigDecimalNumbers.get(0);
+        if(listHasEmptyStrings) {
+        	stringNumbers.clear();
+        }
+        else {
+			for (String i : stringNumbers) { // get String value
+			    bigDecimalNumbers.add(new BigDecimal(stringNumbers.get(stringNumbers.indexOf(i))));
+			}
+
+			answer = bigDecimalNumbers.get(0);
+        }
 	}
 
 	/**
