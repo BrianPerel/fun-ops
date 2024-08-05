@@ -232,7 +232,7 @@ public class PvPGameBoard implements ActionListener {
 	 *
 	 * @param argPlayerShape The player's board shape to check for ("X" or "O")
 	 */
-	private void checkForPattern(String argPlayerShape) {
+	private void checkForWinningPattern(String argPlayerShape) {
 
 		// 3 in a row gameboard cells that trigger a winning combo:
 		// if buttons 3, 4, 5 are triggered - 3 in a row vertically - down the middle column
@@ -307,13 +307,13 @@ public class PvPGameBoard implements ActionListener {
 		}
 
 	    // check for winning patterns for both Player 1 and Player 2
-		checkForPattern(TicTacToe.PLAYER_ONE_SHAPE);
-		checkForPattern(TicTacToe.PLAYER_TWO_SHAPE);
+		checkForWinningPattern(TicTacToe.PLAYER_ONE_SHAPE);
+		checkForWinningPattern(TicTacToe.PLAYER_TWO_SHAPE);
 
 		// the isGameOver boolean variable enforces the isBoardFull() from running, unless above method calls
 		// don't get any matches. This will prevent a full board with a player getting 3 in a row
 		// from displaying player won and draw at the same time error
-		if (!ticTacToeGame.isGameOver && isBoardFull()) {
+		if (!ticTacToeGame.isGameOver && isGameBoardFull()) {
 			// disables all 9 buttons on the board after the game is over
 			for (JButton button : gameBoardTiles) {
 				button.setEnabled(false);
@@ -343,7 +343,7 @@ public class PvPGameBoard implements ActionListener {
 	 *
 	 * @return {@code true} if the game board is completely filled indicating a draw, {@code false} otherwise.
 	 */
-	private boolean isBoardFull() {
+	private boolean isGameBoardFull() {
 		return Arrays.stream(gameBoardTiles).noneMatch(x -> x.getText().isEmpty());
 	}
 

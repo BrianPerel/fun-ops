@@ -327,7 +327,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			try {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(window.getComponent(0),
-					dataSet.encrypt() ? "File successfully encrypted" : "File already encrypted. Could not encrypt");
+					dataSet.encryptData() ? "File successfully encrypted" : "File already encrypted. Could not encrypt");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -337,7 +337,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 			try {
 				Toolkit.getDefaultToolkit().beep();
 				JOptionPane.showMessageDialog(window.getComponent(0),
-					dataSet.decrypt() ? "File successfully decrypted" : "File already decrypted. Could not decrypt");
+					dataSet.decryptData() ? "File successfully decrypted" : "File already decrypted. Could not decrypt");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}

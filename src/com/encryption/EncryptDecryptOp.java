@@ -42,7 +42,7 @@ public class EncryptDecryptOp {
 	 *
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
-	protected boolean encrypt() throws IOException {
+	protected boolean encryptData() throws IOException {
 
 		// checks if encryption process has already occurred. Since you can't encrypt encrypted data
 		if (!isEncrypted) {
@@ -102,7 +102,7 @@ public class EncryptDecryptOp {
 	 * @return returns the unmasked/decrypted data string
 	 * @throws IOException signals that an I/O exception has occurred while attempting to write to a file
 	 */
-	protected boolean decrypt() throws IOException {
+	protected boolean decryptData() throws IOException {
 
 		// checks if encryption process has already occurred. Since you can't decrypt un-encrypted data
 		if (isEncrypted) {

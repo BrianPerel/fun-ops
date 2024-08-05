@@ -127,13 +127,13 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		matchOverOptions(e.getSource());
+		displayMatchOverOptions(e.getSource());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			matchOverOptions(e.getSource());
+			displayMatchOverOptions(e.getSource());
 		}
 	}
 
@@ -142,19 +142,19 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	 *
 	 * @param source the object on which the event initially occurred
 	 */
-	private void matchOverOptions(Object source) {
+	private void displayMatchOverOptions(Object source) {
 		window.dispose();
 
 		if (btnPlayAgain.equals(source)) {
 			playAgain();
 		}
 		else {
-			quit(source);
+			quitGame(source);
 		}
 	}
 
 	/**
-	 * Restarts the Tic-Tac-Toe game when the "play again" button is pressed.
+	 * Resets the Tic-Tac-Toe gameboard when the "play again" button is pressed.
      *
 	 * This method determines the appropriate game mode based on the result of the
 	 * previous game and launches a new game accordingly.
@@ -173,7 +173,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 	 *
 	 * @param source the object that triggered the quit action, typically the quit button
 	 */
-	private void quit(Object source) {
+	private void quitGame(Object source) {
 		if (btnQuit.equals(source) || (TicTacToe.PLAYER.equals(gameResult)
 				|| TicTacToe.COMPUTER.equals(gameResult) || (GAME_OVER_DRAW_MSG + "!").equals(gameResult))) {
 

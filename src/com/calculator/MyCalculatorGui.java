@@ -217,14 +217,14 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
 		if (userInput.trim().length() <= 29 && !userInput.contains("%")) {
-			String numberClicked = numberActionButtons(ae);
+			String numberClicked = clickNumberButtons(ae);
 
 			if(!numberClicked.isEmpty()) {
 				textFieldUserInput.setText(MyCalculator.df.format(Double.valueOf(textFieldUserInput.getText().replace(",", "").concat(numberClicked))));
 			}
 		}
 
-		operatorActionButtons(ae);
+		clickOperatorButtons(ae);
 
 		// actions for all calculator operators/symbol buttons
 		switch (ae.getActionCommand()) {
@@ -288,10 +288,10 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 			break;
 		} // end switch
 
-		symbolActionButtons(ae, userInput.replace(",", ""));
+		clickSymbolButtons(ae, userInput.replace(",", ""));
 	}
 
-	private void operatorActionButtons(ActionEvent ae) {
+	private void clickOperatorButtons(ActionEvent ae) {
 		switch(ae.getActionCommand()) {
 			case "*":
 				helper.setNumberText();
@@ -323,7 +323,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private void symbolActionButtons(ActionEvent ae, String argUserInput) {
+	private void clickSymbolButtons(ActionEvent ae, String argUserInput) {
 
 		switch(ae.getActionCommand()) {
 		// backspace symbol
@@ -386,7 +386,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private String numberActionButtons(ActionEvent ae) {
+	private String clickNumberButtons(ActionEvent ae) {
 		return switch(ae.getActionCommand()) {
 			case "0" -> {
 		        if (!CURSOR_RIGHT_POSITION_W_ZERO.equals(textFieldUserInput.getText())) {
@@ -449,9 +449,9 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		helper.removeAutoDisplayZero(hasUserEnteredZero);
 
 		// actions for numbers 0-9 buttons. No need for default case since all buttons are utilized as a case
-		numberKeyButtons(keyChar);
+		pressKeypadNumbers(keyChar);
 
-		operatorKeyButtons(keyChar);
+		pressKeypadOperators(keyChar);
 
 		// use e.getKeyChar() here for "*", "+", "C" because KeyEvent.VK_MULTIPLY, KeyEvent.VK_ADD, and KeyEvent.C don't work.
 
@@ -465,7 +465,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private void operatorKeyButtons(char keyChar) {
+	private void pressKeypadOperators(char keyChar) {
 
 		switch (keyChar) {
 		// actions for symbol buttons
@@ -519,7 +519,7 @@ public class MyCalculatorGui extends KeyAdapter implements ActionListener {
 		}
 	}
 
-	private void numberKeyButtons(char keyChar) {
+	private void pressKeypadNumbers(char keyChar) {
 		// bug fix: prevents user from prepending a zero before a number
 		if ("0".equals(textFieldUserInput.getText().trim())) {
 			textFieldUserInput.setText("");

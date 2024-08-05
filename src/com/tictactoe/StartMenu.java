@@ -193,7 +193,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		String nameTwo = nameTwoTextField.getText().trim();
 
 		// check if the start button is pressed and both name fields are filled with distinct names
-		if (validateNames(nameOne, nameTwo) && checkStartConditions(keyChar, source)) {
+		if (validatePlayerNames(nameOne, nameTwo) && checkGameStartConditions(keyChar, source)) {
 			// ensures that the first letter of the name is capitalized and all other letters are in lowercase
 			String capitalizedNameOne = nameOne.substring(0, 1).toUpperCase() + nameOne.substring(1).toLowerCase();
 			String capitalizedNameTwo = nameTwo.substring(0, 1).toUpperCase() + nameTwo.substring(1).toLowerCase();
@@ -215,7 +215,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * @return {@code true} if conditions for starting a game are met, {@code false} otherwise.
 	 *         Conditions include both names being non-empty, distinct, and not equal to predefined values.
 	 */
-	private boolean validateNames(String nameOne, String nameTwo) {
+	private boolean validatePlayerNames(String nameOne, String nameTwo) {
 	    // If one or both name textfields are empty
 	    if (nameOne.isEmpty() || nameTwo.isEmpty()) {
 	        Toolkit.getDefaultToolkit().beep();
@@ -261,7 +261,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 	 * @return true if conditions for starting a game are met, false otherwise.
 	 *         Conditions include pressing Enter or Space key and the source being the start button (btnStart).
 	 */
-	private boolean checkStartConditions(char keyChar, Object source) {
+	private boolean checkGameStartConditions(char keyChar, Object source) {
 	    return (keyChar == KeyEvent.VK_ENTER || keyChar == KeyEvent.VK_SPACE) && source.equals(btnStart);
 	}
 }

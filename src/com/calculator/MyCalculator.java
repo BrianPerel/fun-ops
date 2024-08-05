@@ -115,10 +115,10 @@ public class MyCalculator {
 	}
 
 	/**
-	 * Fills up the BigDecimal array with String array values after being cast to
+	 * Fills up the BigDecimal list with String array values after being cast to
 	 * BigDecimal. This is performed when equals operator is hit
 	 */
-	private static void toBigDecimalConversion() {
+	private static void convertToBigDecimal() {
 		// only get string values if the list of strings doesn't contain any empty values - avoids out of bounds exception
         boolean listHasEmptyStrings = Collections.frequency(stringNumbers, "") > 0;
 
@@ -140,7 +140,7 @@ public class MyCalculator {
 	 * @return formatted result value after performing operation
 	 */
 	protected static String compute() {
-		toBigDecimalConversion();
+		convertToBigDecimal();
 
 		if (MyCalculatorGui.operatorFlags[0]) {
 			return df.format(divide());

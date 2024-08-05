@@ -115,7 +115,7 @@ public class Paddle extends Rectangle {
 	/**
 	 * Moves the specified paddle
 	 */
-	public void move() {
+	public void movePaddles() {
 		y += yVelocity;
 	}
 
@@ -123,7 +123,7 @@ public class Paddle extends Rectangle {
 	 * Draws the game paddles
 	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {
+	public void drawPaddles(Graphics g) {
 		g.setColor("Paddle1".equals(id) ? Color.RED : Color.BLUE);
 		g.fillOval(x, y, width, height);
 	}

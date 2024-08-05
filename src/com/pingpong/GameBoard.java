@@ -97,7 +97,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	@Override
 	public void paint(Graphics g) {
 		Image image = createImage(getWidth(), getHeight());
-		draw(image.getGraphics());
+		drawGamePieces(image.getGraphics());
 		g.drawImage(image, 0, 0, this);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Magneto", Font.PLAIN, 40));
@@ -107,26 +107,26 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 	 * Draws the paddles, ball, and game score
 	 * @param g Graphics
 	 */
-	private void draw(Graphics g) {
+	private void drawGamePieces(Graphics g) {
 		gameScore.draw(g);
-		paddleOne.draw(g);
-		paddleTwo.draw(g);
-		pongBall.draw(g);
+		paddleOne.drawPaddles(g);
+		paddleTwo.drawPaddles(g);
+		pongBall.drawBall(g);
 	}
 
 	/**
 	 * Controls the movement for both paddles and the ball
 	 */
-	private void move() {
-		paddleOne.move();
-		paddleTwo.move();
-		pongBall.move();
+	private void moveGamePieces() {
+		paddleOne.movePaddles();
+		paddleTwo.movePaddles();
+		pongBall.moveBall();
 	}
 
 	/**
 	 * Detects edges and manages collision
 	 */
-	private void checkCollision() {
+	private void checkForCollision() {
 		// bounce ball off top & bottom window edges
 		if (pongBall.y <= 0) {
 			pongBall.setYDirection(-pongBall.getyVelocityOfBall());
@@ -157,8 +157,8 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			pongBall.setYDirection(pongBall.getyVelocityOfBall());
 		}
 
-		edgeChecker(paddleOne);
-		edgeChecker(paddleTwo);
+		checkForEdges(paddleOne);
+		checkForEdges(paddleTwo);
 
 		// give player 1 a point and create new paddles & ball
 		if (pongBall.x <= -22) {
@@ -211,7 +211,7 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 		System.exit(0);
 	}
 
-	private void edgeChecker(Paddle paddleNumber) {
+	private void checkForEdges(Paddle paddleNumber) {
 		// stops paddles at window edges
 		if (paddleNumber.y <= 0) {
 			paddleNumber.y = 0;
@@ -244,8 +244,8 @@ public class GameBoard extends JPanel implements Runnable, Serializable {
 			lastTime = now;
 
 			if (delta >= 1) {
-				move();
-				checkCollision();
+				moveGamePieces();
+				checkForCollision();
 				repaint();
 				delta--;
 			}

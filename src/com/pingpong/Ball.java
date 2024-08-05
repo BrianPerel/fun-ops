@@ -93,7 +93,7 @@ public class Ball extends Rectangle {
 	/**
 	 * Move the pong ball
 	 */
-	public void move() {
+	public void moveBall() {
 		x += getxVelocityOfBall();
 		y += getyVelocityOfBall();
 	}
@@ -102,7 +102,7 @@ public class Ball extends Rectangle {
 	 * Draws the ball animation with given configurations
 	 * @param g Graphics
 	 */
-	public void draw(Graphics g) {
+	public void drawBall(Graphics g) {
 		g.setColor(ballColor);
 		g.fillOval(x, y, width, height);
 	}
