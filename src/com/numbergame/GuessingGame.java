@@ -209,7 +209,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		this.setBtnHoverColor(btnGuess, new Color(46, 209, 63), Color.GREEN);
 		window.getContentPane().add(btnGuess);
 
-		btnPlayAgain = new JButton("Play again?");
+		btnPlayAgain = new JButton("Play again");
 		btnPlayAgain.setBounds(382, 230, 105, 23);
 		btnPlayAgain.addActionListener(this);
 		btnPlayAgain.addKeyListener(this);
@@ -422,7 +422,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			if (textFieldGuessTheNumber.getText().matches("-?\\d+")) {
 				evaluateGuess(isTimeout, 100);
 
-				// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout
+				// player's score should not exceed 100000, if it does then displaying of score will cause offset in GUI layout within either score or total guesses text fields
 				if(gameScore >= 100000 || totalGuessesMade >= 100000) {
 					JOptionPane.showMessageDialog(window, "You've beat the game! You've won 100,000 times or more", "Game Completed",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -498,9 +498,11 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			textFieldGuessTheNumber.setBorder(
 					BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(Color.RED), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
+			final String GAME_MODE_TOTAL_SUM = (TOTAL_SUM == 100) ? "100" : "1,000";
+
 			JOptionPane.showMessageDialog(window.getComponent(0),
 					(previousGuess == textFieldGuessTheNumberInt) ? "Same incorrect guess made again, try again"
-					: "Incorrect. That doesn't sum to " + ((TOTAL_SUM == 100) ? "100" : "1,000"),
+					: "Incorrect. That doesn't sum to " + GAME_MODE_TOTAL_SUM,
 			        "Message", JOptionPane.ERROR_MESSAGE);
 
 			if (gameScore != 0) {
@@ -527,6 +529,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	 */
 	private void completeGameWonSession(final int MAX_LIMIT, boolean isTimeout) {
 		playSound("res/audio/win.wav");
+
 		textFieldGuessTheNumber.setBorder(
 				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
