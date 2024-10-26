@@ -25,11 +25,11 @@ public class EncryptDecryptFileUtils {
 	private static String fileName;
 
 	private EncryptDecryptFileUtils() {
-		// private constructor will hide the implicit public one, b/c utility classes like this should not have public constructors
+		// private constructor will hide the implicit (default) public one, b/c utility classes like this should not have public constructors
 	}
 
 	/**
-	 * Loads the desired file and obtains the contents within
+	 * Loads the desired file and obtains it's contents
 	 * @param fileToLoad the file we're going to encrypt/decrypt
 	 */
 	protected static void loadFileData(String fileToLoad) {
@@ -47,22 +47,8 @@ public class EncryptDecryptFileUtils {
 					return;
 				}
 
-				JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
-				textFieldEnterFileName.setEditable(false);
-				textFieldEnterFileName.setBackground(Color.LIGHT_GRAY);
-				setFileName(file.toString());
-				dataSet = new EncryptDecryptOp(EncryptDecryptGui.data);
-				isFileLoaded = true;
-
-				// check if Desktop is supported by this Platform or not
-				if (!Desktop.isDesktopSupported()) {
-					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(window.getComponent(0), "Desktop is not supported by this application",
-							ERROR, JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				openFile();
+				handleSuccessfulFileLoadingStatus();
+				checkIfDesktopIsSupportedAndOpenFile();
 
 			} catch (FileNotFoundException e) {
 				Toolkit.getDefaultToolkit().beep();
@@ -70,11 +56,33 @@ public class EncryptDecryptFileUtils {
 				textFieldEnterFileName.setText(DEFAULT_FILENAME_ENTRY_TEXT);
 				textFieldEnterFileName.setForeground(Color.GRAY);
 				textFieldEnterFileName.setCaretPosition(0);
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
 			}
-
 		}
+	}
+
+	private static void checkIfDesktopIsSupportedAndOpenFile() {
+		// check if Desktop is supported by this Platform or not
+	    if (!Desktop.isDesktopSupported()) {
+	        Toolkit.getDefaultToolkit().beep();
+	        JOptionPane.showMessageDialog(window.getComponent(0), "Desktop is not supported by this application", ERROR, JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+
+	    try {
+			openFile();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void handleSuccessfulFileLoadingStatus() {
+	    JOptionPane.showMessageDialog(window.getComponent(0), "File successfully loaded");
+	    textFieldEnterFileName.setEditable(false);
+	    textFieldEnterFileName.setBackground(Color.LIGHT_GRAY);
+	    setFileName(file.toString());
+	    dataSet = new EncryptDecryptOp(EncryptDecryptGui.data);
+	    isFileLoaded = true;
 	}
 
 	/**

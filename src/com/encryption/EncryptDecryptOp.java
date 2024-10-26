@@ -72,25 +72,23 @@ public class EncryptDecryptOp {
 
 			data = maskedData.reverse(); // reverse the contents of the string builder for further encryption
 
-			try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
-				myWriter.write(data.toString()); // write newly created string of random characters into file
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
-
-			EncryptDecryptFileUtils.openFile();
-
-			// the icon is already set to this path in the creation of the GUI, in the case that it's already been set skip the below setting of the icon step
-			if (!EncryptDecryptGui.window.getIconImages().contains(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage())) {
-				// change the taskbar icon when message(s) have been encrypted
-				EncryptDecryptGui.window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption.png").getImage());
-			}
+			writeEncryptedOrDecryptedDataToFile();
+			updateAppTaskbarIcon();
 
 			isEncrypted = true;
 			return isEncrypted;
 		}
 
 		return false;
+	}
+
+	private void updateAppTaskbarIcon() {
+		// the icon is already set to this path in the creation of the GUI, in the case that it's already been set skip the below setting of the icon step
+	    ImageIcon encryptionIcon = new ImageIcon("res/graphics/taskbar_icons/encryption.png");
+
+	    if (!EncryptDecryptGui.window.getIconImages().contains(encryptionIcon.getImage())) {
+	        EncryptDecryptGui.window.setIconImage(encryptionIcon.getImage());
+	    }
 	}
 
 	/**
@@ -109,13 +107,7 @@ public class EncryptDecryptOp {
 			data.reverse(); // reverse back the encrypted contents of the string builder for decryption
 			data = decryptAndFormat(); // perform decryption process and format the data
 
-			try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
-				myWriter.write(data.toString()); // override with decrypted data
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
-
-			EncryptDecryptFileUtils.openFile();
+			writeEncryptedOrDecryptedDataToFile();
 
 			// change the taskbar icon when message(s) have been decrypted
 		    EncryptDecryptGui.window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/encryption-unlocked.png").getImage());
@@ -125,6 +117,20 @@ public class EncryptDecryptOp {
 		}
 
 		return false;
+	}
+
+	private void writeEncryptedOrDecryptedDataToFile() {
+		try(FileWriter myWriter = new FileWriter(EncryptDecryptFileUtils.getFileName())) {
+			myWriter.write(data.toString()); // override with encrypted/decrypted data
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		try {
+			EncryptDecryptFileUtils.openFile();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	/**
