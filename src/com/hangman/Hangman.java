@@ -161,7 +161,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		hangmanTextArea.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 		hangmanTextArea.setForeground(Color.BLUE);
 
-		JLabel lblHangmanTheme = new JLabel("4-LETTER CAR BRANDS");
+		JLabel lblHangmanTheme = new JLabel(letters.length + "-LETTER CAR BRANDS");
 		lblHangmanTheme.setFont(new Font("Segoe UI Semibold", PLAIN, 16));
 		lblHangmanTheme.setForeground(WHITE);
 		lblHangmanTheme.setBounds(270, 44, 183, 29);
@@ -311,7 +311,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	 */
 	private boolean obtainSecretWords() {
 
-		final File hangmanFile = new File("hangman_ords.txt");
+		final File hangmanFile = new File("hangman_words.txt");
 
 		// ensure that the file is not a directory and that we have at least read access
 		if (hangmanFile.exists() && hangmanFile.isFile() && hangmanFile.canRead()) {
@@ -332,7 +332,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 				}
 
 				Collections.shuffle(secretWordList); // shuffle the hangman words list, adding an extra layer of randomness to when selecting a secret word
-
 				return true;
 
 			} catch (FileNotFoundException e1) {
@@ -344,7 +343,6 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		        LOG.severe("Error reading file" + e2);
 				e2.printStackTrace();
 			}
-
 		}
 
 		JOptionPane.showMessageDialog(window, "File '" + hangmanFile + "' not found or error reading hangman words file", "Error", JOptionPane.ERROR_MESSAGE);
@@ -484,36 +482,40 @@ public class Hangman extends KeyAdapter implements FocusListener {
 	        char upperCaseChar = Character.toUpperCase(ke.getKeyChar());
 	        analyzeGuess(upperCaseChar);
 
-	        // set the text of the JFormattedTextField to the uppercase version of the character
+	        // set the text of the JFormattedTextField to the uppercase version of the letter
 	        JFormattedTextField textField = (JFormattedTextField) ke.getComponent();
 	        textField.setText(Character.toString(upperCaseChar));
 
-	        // if all letters are found
+	        // if all letters are found - word is guessed
 	        if (letters[0] && letters[1] && letters[2] && letters[3]) {
-	            // applies strikethrough text decoration to secret word as it's displayed when user wins
-	            textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
-
-	            JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.PLAIN_MESSAGE);
-
-	            // turns off strikethrough when next game begins
-	            textFieldHangmanWord.setFont(customFont);
-
-	            // stop counting the score at 100
-	            if (!"100".equals(textFieldGameScore.getText())) {
-	                textFieldGameScore.setText(Integer.toString(++gameScore));
-	            }
-
-	            // player's score should not exceed 999, if it does then displaying of score will cause offset in GUI layout
-	    		if(gameScore >= 999) {
-	    			JOptionPane.showMessageDialog(window, "You win the game!", "Game Over",
-	    					JOptionPane.INFORMATION_MESSAGE);
-
-	    			System.exit(0);
-	    		}
-
-	            playAgain();
+	            handleWinCondition();
 	        }
 	    }
+	}
+
+	private void handleWinCondition() {
+		// applies strikethrough text decoration to secret word as it's displayed when user wins
+		textFieldHangmanWord.setFont(customFont.deriveFont(Map.of(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON)));
+
+		JOptionPane.showMessageDialog(window.getComponent(0), "Correct, you win. The secret word is: " + secretWord, "Winner", JOptionPane.PLAIN_MESSAGE);
+
+		// turns off strikethrough when next game begins
+		textFieldHangmanWord.setFont(customFont);
+
+		// stop counting the score at 100
+		if (!"100".equals(textFieldGameScore.getText())) {
+		    textFieldGameScore.setText(Integer.toString(++gameScore));
+		}
+
+		// player's score should not exceed 999, if it does then displaying of score will cause offset in GUI layout
+		if(gameScore >= 999) {
+			JOptionPane.showMessageDialog(window, "You win the game!", "Game Over",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			System.exit(0);
+		}
+
+		playAgain();
 	}
 
 	/**

@@ -138,7 +138,7 @@
 		<mkdir dir="${release.dir}/calculator" />
 
 		<launch4j-create-exe-task outputFile="calculator" jarPath="${jar.dir}/calculator-${version.num}.jar" icon="${res.graphics.icons.dir}/calculator.ico" />
-		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/calculator.png" todir="${release.dir}/calculator/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
 			<param name="app-name" value="calculator" />
@@ -244,8 +244,8 @@
 		<mkdir dir="${release.dir}/hangman" />
 
 		<launch4j-create-exe-task outputFile="hangman" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico" />
-		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman/res/graphics" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman/res/graphics/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="hangman_words.txt" todir="${release.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">
