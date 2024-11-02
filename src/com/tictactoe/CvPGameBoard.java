@@ -180,20 +180,21 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo
+	 * Checks whether the player can win in their next move (in 1 move); if they can complete the 3 in a row combo.<br><br>
+	 *
+	 * Game board's tiles (buttons) array index numbers:<br>
+	 * -----<br>
+	 * 0|3|6<br>
+	 * -----<br>
+	 * 1|4|7<br>
+	 * -----<br>
+	 * 2|5|8<br>
+	 * -----<br>
 	 *
 	 * @return recommended blocking move for AI to make to prevent player from winning in their next move
 	 * (returns the button that hasn't been pressed yet to prevent the player from creating a 3 in a row winning pattern)
 	 */
 	private int canPlayerWinInNextMove(String[] tile) {
-
-		/*
-		 * Game board's tile/button index numbers
-		 *
-		 * 0 3 6
-		 * 1 4 7
-		 * 2 5 8
-		 */
 
 		// if player has pressed buttons 0, 2 and computer hasn't pressed button 1
 		if (PLAYER_SHAPE.equals(tile[0]) && PLAYER_SHAPE.equals(tile[2]) && !COMPUTER_SHAPE.equals(tile[1])) {
@@ -224,6 +225,6 @@ public class CvPGameBoard extends PvPGameBoard implements ActionListener {
 			return 5;
 		}
 
-		return -99; // this is an indication that the player hasn't chosen 2 spaces in a row yet
+		return -99; // this -99 value is an indication that the player hasn't chosen 2 spaces in a row yet
 	}
 }

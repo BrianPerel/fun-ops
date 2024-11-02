@@ -284,22 +284,21 @@ public class PvPGameBoard implements ActionListener {
 	}
 
 	/**
-	 * Scans the board after every move to see if a pattern of 3 has been achieved in a row, column, or diagonally, or if all tiles have been clicked resulting in a draw
+	 * Scans the board after every move to see if a pattern of 3 has been achieved in a row, column, or diagonally,
+	 * or if all tiles have been clicked resulting in a draw.<br><br>
+	 *
+	 * Game board's tiles (buttons) array index numbers:<br>
+	 * -----<br>
+	 * 0|3|6<br>
+	 * -----<br>
+	 * 1|4|7<br>
+	 * -----<br>
+	 * 2|5|8<br>
+	 * -----<br>
 	 *
 	 * @param isCvPGame A boolean flag indicating whether the game mode is player vs. player (true) or player vs. computer (false)
 	 */
 	private void checkForWinner(boolean isCvPGame) {
-
-		/*
-		 * Game board's tile/button index numbers
-		 *
-		 * 0|3|6
-		 * -----
-		 * 1|4|7
-		 * -----
-		 * 2|5|8
-		 *
-		 */
 
 	    // extracts the current state of each tile on the game board
 		for(int x = 0; x < tile.length; x++) {
@@ -330,8 +329,8 @@ public class PvPGameBoard implements ActionListener {
 			}
 
 			// pass in a different string arg
-	        // "Game Over! It's a draw!!" for player vs. player games
-	        // "Game Over! It's a draw!!!" for player vs. computer games
+	        // "Game Over! It's a draw!" for player vs. player games
+	        // "Game Over! It's a draw!!" for player vs. computer games
 			new MatchOver(isCvPGame ? "Game Over! It's a draw!!" : "Game Over! It's a draw!", ticTacToeGame);
 			LOG.info("Game Over! It's a draw!");
 		}
@@ -369,6 +368,15 @@ public class PvPGameBoard implements ActionListener {
 		    });
 		}
 
+		highlightWinningTiles(highlightWinnersTiles);
+
+		// disables all 9 buttons on board after game is over
+		for (JButton button : gameBoardTiles) {
+			button.setEnabled(false);
+		}
+	}
+
+	private void highlightWinningTiles(JButton[] highlightWinnersTiles) {
 		// makes the game board tiles of the winning player green when a game is won
 		for (JButton button : highlightWinnersTiles) {
 			button.setBackground(GREEN);
@@ -386,11 +394,6 @@ public class PvPGameBoard implements ActionListener {
 					button.setBackground(GREEN);
 				}
 			});
-		}
-
-		// disables all 9 buttons on board after game is over
-		for (JButton button : gameBoardTiles) {
-			button.setEnabled(false);
 		}
 	}
 

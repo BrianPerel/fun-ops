@@ -142,6 +142,30 @@ public class Clock implements ActionListener {
 		lblClockTime.setForeground(WHITE);
 		lblClockTime.setHorizontalAlignment(SwingConstants.CENTER);
 
+		setCustomClockTimeFont();
+		
+		lblClockTime.setBounds(32, 23, 365, 123);
+		window.getContentPane().add(lblClockTime);
+
+		militaryTimeCheckBox = new JCheckBox("24-hour clock");
+		militaryTimeCheckBox.setBounds(310, 172, 97, 25);
+		militaryTimeCheckBox.setBackground(BLACK);
+		militaryTimeCheckBox.setForeground(WHITE);
+		window.getContentPane().add(militaryTimeCheckBox);
+
+		// adding this code in case frame.getContentPane().setLayout(null); is removed
+		militaryTimeCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
+		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
+		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		// if the system locale is not a country from the AM_PM_TIME_FORMAT_COUNTRIES set or is not fr_CA (Quebec) then have the clock display the time in 24-hour format
+		String country = Locale.getDefault().getCountry();
+        if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("fr_CA".equals(Locale.getDefault().toString()))) {
+            militaryTimeCheckBox.setSelected(true);
+        }
+	}
+
+	private void setCustomClockTimeFont() {
 		Font font;
 
 		try {
@@ -162,25 +186,6 @@ public class Clock implements ActionListener {
 		}
 
 		lblClockTime.setFont(font);
-		lblClockTime.setBounds(32, 23, 365, 123);
-		window.getContentPane().add(lblClockTime);
-
-		militaryTimeCheckBox = new JCheckBox("24-hour clock");
-		militaryTimeCheckBox.setBounds(310, 172, 97, 25);
-		militaryTimeCheckBox.setBackground(BLACK);
-		militaryTimeCheckBox.setForeground(WHITE);
-		window.getContentPane().add(militaryTimeCheckBox);
-
-		// adding this code in case frame.getContentPane().setLayout(null); is removed
-		militaryTimeCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
-		militaryTimeCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
-		militaryTimeCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		// if the system locale is not a country from the AM_PM_TIME_FORMAT_COUNTRIES set or is not fr_CA (Quebec) then have the clock display the time in 24-hour format
-		String country = Locale.getDefault().getCountry();
-        if (!AM_PM_TIME_FORMAT_COUNTRIES.contains(country) || ("fr_CA".equals(Locale.getDefault().toString()))) {
-            militaryTimeCheckBox.setSelected(true);
-        }
 	}
 
 	@Override

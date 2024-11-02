@@ -332,22 +332,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 			return;
 		}
 
-		boolean isTimeout = false;
-		StopWatchPanel.BTN_STOP.doClick();
-
-		// if the timer is greater than 10 seconds when the user guesses
-		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.WATCH.getText().substring(6).compareTo("10") >= 0
-				&& !(source.equals(btnPlayAgain) || closeTimerCheckBox.isSelected())) {
-
-			StopWatchPanel.BTN_STOP.doClick();
-			isTimeout = true;
-			playSound(FAIL_SOUND);
-			JOptionPane.showMessageDialog(window.getComponent(0), "Your out of time.");
-
-			if (gameScore != 0) {
-				gameScore -= 10;
-			}
-		}
+	    boolean isTimeout = handleTimeout(source, keyChar);
 
 		turnOffTimer(source, keyChar);
 
@@ -380,6 +365,27 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 
 		// fixes the problem where after the counter is disabled the focus is still on the counter
 		window.toFront();
+	}
+
+	private boolean handleTimeout(Object source, char keyChar) {
+		StopWatchPanel.BTN_STOP.doClick();
+	    boolean isTimeout = false;
+
+		// if the timer is greater than 10 seconds when the user guesses
+		if (keyChar == KeyEvent.VK_ENTER && StopWatchPanel.WATCH.getText().substring(6).compareTo("10") >= 0
+				&& !(source.equals(btnPlayAgain) || closeTimerCheckBox.isSelected())) {
+
+			StopWatchPanel.BTN_STOP.doClick();
+			isTimeout = true;
+			playSound(FAIL_SOUND);
+			JOptionPane.showMessageDialog(window.getComponent(0), "Your out of time.");
+
+			if (gameScore != 0) {
+				gameScore -= 10;
+			}
+		}
+
+	    return isTimeout;
 	}
 
 	/**
@@ -531,7 +537,8 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		playSound("res/audio/win.wav");
 
 		textFieldGuessTheNumber.setBorder(
-				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
+				BorderFactory.createCompoundBorder(new RoundedCornerLineBorder(LIGHT_GREEN_COLOR),
+						BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 	        JOptionPane.showMessageDialog(window.getComponent(0),
 	            "Correct. You made " + ((MAX_LIMIT == 100) ? "100" : "1,000"),
