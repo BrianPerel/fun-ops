@@ -115,7 +115,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/guessing-game.png").getImage());
 
 	    // set background image for window pane
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-guess.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-guess.jpg")));
 
 		JLabel lblScore = new JLabel("Score");
 		lblScore.setBounds(21, 24, 34, 17);
@@ -145,7 +145,7 @@ public class GuessingGame extends KeyAdapter implements ActionListener {
 		lblScoringInfo.setBounds(315, 24, 172, 17);
 		window.getContentPane().add(lblScoringInfo);
 
-		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/bg-image-guessing-figure.jpg"));
+		JLabel lblImage = new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-guessing-figure.jpg"));
 		lblImage.setBounds(10, 66, 220, 238);
 		window.getContentPane().add(lblImage);
 

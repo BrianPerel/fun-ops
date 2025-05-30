@@ -145,7 +145,7 @@ public class Hangman extends KeyAdapter implements FocusListener {
 		window.getContentPane().setLayout(null); // centers the window
 		window.getContentPane().setBackground(WHITE);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-hangman.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-hangman.jpg")));
 
 	    // changes the program's taskbar icon
 	    window.setIconImage(new ImageIcon("res/graphics/taskbar_icons/hangman.png").getImage());

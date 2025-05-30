@@ -77,7 +77,7 @@ public class StartMenu extends KeyAdapter implements ActionListener {
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(null);
 
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-tac.jpg")));
 
 		JLabel lblPlayer1 = new JLabel("Player 1 (" + TicTacToe.PLAYER_ONE_SHAPE + "):");
 		lblPlayer1.setFont(new Font("MV Boli", Font.PLAIN, 20));

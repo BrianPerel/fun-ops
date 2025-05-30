@@ -159,7 +159,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.encryption.EncryptDecryptGui" />
-				<attribute name="Resource" value="${res.graphics.dir}/bg-image-encryption.jpg" />
+				<attribute name="Resource" value="${res.graphics.dir}/bg_images/bg-image-encryption.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
 			</manifest>
@@ -178,7 +178,7 @@
 	<target name="zip-encryption-jar-with-resources" description="Create a zipped folder for encryption folder with jar and resources" depends="jar-encryption">
 		<copy file="secret.txt" todir="${dist.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${jar.dir}/encryptDecrypt-${version.num}.jar" todir="${dist.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${dist.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-encryption.jpg" todir="${dist.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${dist.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${dist.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<zip destfile="${dist.dir}/encryption.zip" basedir="${dist.dir}/encryption" update="true" />
@@ -190,7 +190,7 @@
 		<mkdir dir="${release.dir}/encryption" />
 
 		<launch4j-create-exe-task outputFile="encryption" jarPath="${jar.dir}/encryptDecrypt-${version.num}.jar" icon="${res.graphics.icons.dir}/encryption.ico" />
-		<copy file="${res.graphics.dir}/bg-image-encryption.jpg" todir="${release.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-encryption.jpg" todir="${release.dir}/encryption/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption.png" todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/encryption-unlocked.png" todir="${release.dir}/encryption/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="secret.txt" todir="${release.dir}/encryption" overwrite="true" verbose="${verbose.on}" />
@@ -214,7 +214,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.hangman.Hangman" />
-				<attribute name="Resource" value="${res.graphics.dir}/bg-image-hangman.jpg" />
+				<attribute name="Resource" value="${res.graphics.dir}/bg_images/bg-image-hangman.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
 			</manifest>
@@ -233,7 +233,7 @@
 	<target name="zip-hangman-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-hangman">
 		<copy file="hangman_words.txt" todir="${dist.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${jar.dir}/hangman-${version.num}.jar" todir="${dist.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${dist.dir}/hangman/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-hangman.jpg" todir="${dist.dir}/hangman/${res.graphics.dir}/bg_images" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${dist.dir}/hangman/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<zip destfile="${dist.dir}/hangman.zip" basedir="${dist.dir}/hangman" update="true" />
 		<delete dir="${dist.dir}/hangman" verbose="${verbose.on}" />
@@ -244,7 +244,7 @@
 		<mkdir dir="${release.dir}/hangman" />
 
 		<launch4j-create-exe-task outputFile="hangman" jarPath="${jar.dir}/hangman-${version.num}.jar" icon="${res.graphics.icons.dir}/hangman.ico" />
-		<copy file="${res.graphics.dir}/bg-image-hangman.jpg" todir="${release.dir}/hangman/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-hangman.jpg" todir="${release.dir}/hangman/${res.graphics.dir}/bg_images" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/hangman.png" todir="${release.dir}/hangman/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<copy file="hangman_words.txt" todir="${release.dir}/hangman" overwrite="true" verbose="${verbose.on}" />
 
@@ -282,8 +282,8 @@
 				<attribute name="Resource1" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
-				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
-				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
+				<attribute name="Resource4" value="${res.graphics.dir}/bg_images/bg-image-guessing-figure.jpg" />
+				<attribute name="Resource5" value="${res.graphics.dir}/bg_images/bg-image-guess.jpg" />
 				<attribute name="Resource6" value="${res.graphics.dir}/green_checkmark.png" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
@@ -310,8 +310,8 @@
 				<attribute name="Resource" value="${res.audio.dir}/chimes.wav" />
 				<attribute name="Resource2" value="${res.audio.dir}/fail.wav" />
 				<attribute name="Resource3" value="${res.audio.dir}/win.wav" />
-				<attribute name="Resource4" value="${res.graphics.dir}/bg-image-guessing-figure.jpg" />
-				<attribute name="Resource5" value="${res.graphics.dir}/bg-image-guess.jpg" />
+				<attribute name="Resource4" value="${res.graphics.dir}/bg_images/bg-image-guessing-figure.jpg" />
+				<attribute name="Resource5" value="${res.graphics.dir}/bg_images/bg-image-guess.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
 			</manifest>
@@ -359,7 +359,7 @@
 	<target name="zip-guessing-game-jar-with-resources" description="Create zipped folder for guessing game with jar and resources" depends="jar-number_game">
 		<copy file="${jar.dir}/guessingGame-${version.num}.jar" todir="${dist.dir}/guessingGame" overwrite="true" verbose="${verbose.on}" />
 		<copy todir="${dist.dir}/guessingGame/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
+			<fileset dir="${res.graphics.dir}/bg_images" includes="bg-image-guess*.jpg" />
 		</copy>
 		<copy todir="${dist.dir}/guessingGame/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
@@ -380,7 +380,7 @@
 		<!-- because I'm packaging 2 executables into 1 folder I need this additional move statement -->
 		<move file="${release.dir}/adv_number_game/adv_number_game.exe" todir="${release.dir}/number_game" verbose="${verbose.on}" />
 		<copy todir="${release.dir}/number_game/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}">
-			<fileset dir="${res.graphics.dir}" includes="bg-image-guess*.jpg" />
+			<fileset dir="${res.graphics.dir}/bg_images" includes="bg-image-guess*.jpg" />
 		</copy>
 		<copy todir="${release.dir}/number_game/${res.audio.dir}" overwrite="true" verbose="${verbose.on}">
 			<fileset dir="${res.audio.dir}" includes="*.wav" />
@@ -439,7 +439,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="com.tictactoe.TicTacToe" />
-				<attribute name="Resource" value="${res.graphics.dir}/bg-image-tac.jpg" />
+				<attribute name="Resource" value="${res.graphics.dir}/bg_images/bg-image-tac.jpg" />
 				<attribute name="Built-Date" value="${TODAY_US_DATE}" />
 				<attribute name="Built-By" value="${env.USERNAME}" />
 			</manifest>
@@ -457,7 +457,7 @@
 	<!-- zip tic tac toe program -->
 	<target name="zip-tic-tac-toe-jar-with-resources" description="Create zipped folder for hangman game with jar and resources" depends="jar-tic-tac-toe">
 		<copy file="${jar.dir}/tic-tac-toe-${version.num}.jar" todir="${dist.dir}/tic-tac-toe" overwrite="true" verbose="${verbose.on}" />
-		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-tac.jpg" todir="${dist.dir}/tic-tac-toe/${res.graphics.dir}/bg_images" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${dist.dir}/tic-tac-toe/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 		<zip destfile="${dist.dir}/tic_tac_toe.zip" basedir="${dist.dir}/tic-tac-toe" update="true" />
 		<delete dir="${dist.dir}/tic-tac-toe" verbose="${verbose.on}" />
@@ -468,7 +468,7 @@
 		<mkdir dir="${release.dir}/tic-tac-toe" />
 
 		<launch4j-create-exe-task outputFile="tic-tac-toe" jarPath="${jar.dir}/tic-tac-toe-${version.num}.jar" icon="${res.graphics.icons.dir}/tic-tac-toe.ico" />
-		<copy file="${res.graphics.dir}/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe/${res.graphics.dir}" overwrite="true" verbose="${verbose.on}" />
+		<copy file="${res.graphics.dir}/bg_images/bg-image-tac.jpg" todir="${release.dir}/tic-tac-toe/${res.graphics.dir}/bg_images" overwrite="true" verbose="${verbose.on}" />
 		<copy file="${res.graphics.dir}/taskbar_icons/tic-tac-toe.png" todir="${release.dir}/tic-tac-toe/${res.graphics.dir}/taskbar_icons" overwrite="true" verbose="${verbose.on}" />
 
 		<antcall target="zip-executable">

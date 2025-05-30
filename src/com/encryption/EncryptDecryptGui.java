@@ -93,7 +93,7 @@ public class EncryptDecryptGui extends KeyAdapter implements ActionListener {
 
 	private void createGui() {
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-encryption.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-encryption.jpg")));
 		window.getContentPane().setLayout(null);
 		window.setResizable(false);
 		window.setSize(421, 264);

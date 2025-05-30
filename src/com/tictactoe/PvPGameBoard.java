@@ -94,7 +94,7 @@ public class PvPGameBoard implements ActionListener {
 		JSeparator[] gameBoardSeparators = new JSeparator[4]; // game board divider lines (separators)
 
 		// assigning a background image to the app
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-tac.jpg")));
 
 		// creates and sets up the board tiles
 		for (int i = 0; i < gameBoardTiles.length; i++) {

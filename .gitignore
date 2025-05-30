@@ -14,6 +14,6 @@
 *.txt
 *.jks
 
-# only track these two text files
+# only track these two text files of this untracked file type
 !secret.txt
 !hangman_words.txt

@@ -73,7 +73,7 @@ public class MatchOver extends KeyAdapter implements ActionListener {
 		window.setSize(315, 167);
 		window.getContentPane().setLayout(null);
 
-		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg-image-tac.jpg")));
+		window.setContentPane(new JLabel(new ImageIcon("res/graphics/bg_images/bg-image-tac.jpg")));
 
 		// 2 '!' at the end of the string indicates the result comes from tic-tac-toe v2 (player vs. computer)
 		// 1 '!' at the end of the string indicates result is from player vs. player
